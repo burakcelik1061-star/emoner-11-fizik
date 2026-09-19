@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+<!-- Tema, ilk boyamadan ÖNCE kurulur: sayfa açılırken renk sıçraması olmasın. -->
+<script>
+try {
+  var t = localStorage.getItem('fizik11-tema');
+  document.documentElement.dataset.tema = (t === 'acik') ? 'acik' : 'koyu';
+} catch (e) { document.documentElement.dataset.tema = 'koyu'; }
+</script>
+<title>Fizik 11 · Maarif Modeli</title>
+<meta name="description" content="11. sınıf fizik — konu anlatımı, formül türetimi, simülasyonlar, test taktikleri ve bağlam temelli sorular. Akıllı tahta için.">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/components.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9883;</text></svg>">
+</head>
+<body>
+
+<div id="uygulama">
+
+  <header id="ustbar">
+    <button class="dgm ikon" id="kenar-dgm" aria-label="Konu listesini aç/kapat" title="Konu listesi">☰</button>
+    <div class="marka">
+      <b>Fizik 11</b>
+      <span>Maarif Modeli</span>
+    </div>
+    <div class="ustbar-bosluk"></div>
+    <span class="ustbar-kunye" id="ustbar-kunye"></span>
+    <button class="dgm ikon" id="tema-dgm" aria-pressed="false"
+            aria-label="Açık veya koyu tema" title="Açık temaya geç">☀</button>
+    <button class="dgm" id="sunum-dgm" aria-pressed="false" title="Sunum modu — yazılar büyür (F11 ile tam ekran)">
+      <span aria-hidden="true">⛶</span> Sunum modu
+    </button>
+  </header>
+
+  <nav id="kenar" aria-label="Konular">
+    <div class="kenar-baslik">Müfredat</div>
+    <div class="kenar-liste" id="kenar-liste"></div>
+  </nav>
+
+  <main id="icerik" tabindex="-1">
+    <div class="bos-durum"><p>Yükleniyor…</p></div>
+  </main>
+
+</div>
+
+<!-- =========================================================================
+     Yükleme sırası önemlidir ve ES modülü KULLANILMAZ.
+     Sebep: sistem akıllı tahtada sunucusuz çalışacak — index.html'e çift
+     tıklanınca açılmalı. Tarayıcılar file:// üzerinden modül ve fetch()
+     engellediği için her şey klasik <script> ile yüklenir.
+
+       1) çizim + motor      2) müfredat      3) arayüz blokları
+       4) uygulama kabuğu    5) simülasyonlar 6) konular    7) başlat
+     ========================================================================= -->
+
+<script src="js/sim/draw2d.js"></script>
+<script src="js/sim/engine.js"></script>
+<script src="data/curriculum.js"></script>
+<script src="data/kunye.js"></script>
+<script src="js/ui/blok.js"></script>
+<script src="js/core/app.js"></script>
+
+<!-- Simülasyonlar — konulardan önce yüklenmeli -->
+<script src="sims/serbest-dusen-cisimler.js"></script>
+<script src="sims/serbest-dusme-veriler.js"></script>
+<script src="sims/dusey-atislar.js"></script>
+<script src="sims/atislar.js"></script>
+<script src="sims/bileske-kuvvet.js"></script>
+<script src="sims/serbest-cisim-diyagrami.js"></script>
+<script src="sims/statik-kinetik-surtunme.js"></script>
+<script src="sims/surtunme-degiskenler.js"></script>
+<script src="sims/limit-hiz.js"></script>
+<script src="sims/cembersel-yorunge-hiz.js"></script>
+<script src="sims/cembersel-degiskenler.js"></script>
+<script src="sims/elektriksel-kuvvet.js"></script>
+<script src="sims/elektriksel-alan.js"></script>
+<script src="sims/faraday-kafesi.js"></script>
+<script src="sims/miknatislar.js"></script>
+<script src="sims/duz-tel-manyetik.js"></script>
+<script src="sims/akim-makarasi.js"></script>
+<script src="sims/elektromiknatis.js"></script>
+<script src="sims/tele-etki-kuvvet.js"></script>
+<script src="sims/elektrik-motoru.js"></script>
+<script src="sims/manyetik-aki.js"></script>
+<script src="sims/induksiyon-gerilimi.js"></script>
+<script src="sims/alternatif-akim.js"></script>
+<script src="sims/transformator.js"></script>
+<script src="sims/aydinlanma.js"></script>
+<script src="sims/duzlem-ayna.js"></script>
+<script src="sims/kuresel-ayna.js"></script>
+<script src="sims/kuresel-goruntu.js"></script>
+<script src="sims/kirilma.js"></script>
+<script src="sims/gorunur-derinlik.js"></script>
+<script src="sims/fiber-optik.js"></script>
+<script src="sims/prizmalar.js"></script>
+<script src="sims/mercekler.js"></script>
+<script src="sims/mercek-goruntu.js"></script>
+
+<!-- Konular -->
+<script src="topics/u1-serbest-dusen-cisimler.js"></script>
+<script src="topics/u1-serbest-dusme-veriler.js"></script>
+<script src="topics/u1-yukari-atis.js"></script>
+<script src="topics/u1-asagi-atis.js"></script>
+<script src="topics/u1-iki-boyutta-hareket.js"></script>
+<script src="topics/u1-bileske-kuvvet.js"></script>
+<script src="topics/u1-serbest-cisim-diyagrami.js"></script>
+<script src="topics/u1-statik-kinetik-surtunme.js"></script>
+<script src="topics/u1-surtunme-degiskenler.js"></script>
+<script src="topics/u1-limit-hiz.js"></script>
+<script src="topics/u1-cembersel-yorunge-hiz.js"></script>
+<script src="topics/u1-cembersel-degiskenler.js"></script>
+<script src="topics/u2-elektriksel-kuvvet.js"></script>
+<script src="topics/u2-elektriksel-alan.js"></script>
+<script src="topics/u2-faraday-kafesi.js"></script>
+<script src="topics/u2-miknatislar.js"></script>
+<script src="topics/u2-duz-tel-manyetik.js"></script>
+<script src="topics/u2-akim-makarasi.js"></script>
+<script src="topics/u2-elektromiknatis.js"></script>
+<script src="topics/u2-tele-etki-kuvvet.js"></script>
+<script src="topics/u2-elektrik-motoru.js"></script>
+<script src="topics/u2-manyetik-aki.js"></script>
+<script src="topics/u2-induksiyon-gerilimi.js"></script>
+<script src="topics/u2-alternatif-akim.js"></script>
+<script src="topics/u2-transformator.js"></script>
+<script src="topics/u3-aydinlanma.js"></script>
+<script src="topics/u3-duzlem-ayna.js"></script>
+<script src="topics/u3-kuresel-ayna.js"></script>
+<script src="topics/u3-kuresel-goruntu.js"></script>
+<script src="topics/u3-kirilma.js"></script>
+<script src="topics/u3-gorunur-derinlik.js"></script>
+<script src="topics/u3-fiber-optik.js"></script>
+<script src="topics/u3-prizmalar.js"></script>
+<script src="topics/u3-mercekler.js"></script>
+<script src="topics/u3-mercek-goruntu.js"></script>
+
+<script>F11.basla();</script>
+</body>
+</html>

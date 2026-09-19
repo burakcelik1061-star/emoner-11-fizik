@@ -1,0 +1,545 @@
+/* ==========================================================================
+   components.css — Arayüz bileşenleri
+   ========================================================================== */
+
+/* --------------------------------------------------------------- Üst bar */
+#ustbar {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 16px; height: 62px;
+  background: var(--surface-0);
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+/* Üç ünitenin rengini taşıyan ince şerit — sistemin renk dilini baştan tanıtır */
+#ustbar::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+  background: linear-gradient(90deg,
+    var(--u1) 0%, var(--u1) 33%, var(--u2) 33%, var(--u2) 66%, var(--u3) 66%);
+  opacity: .8;
+}
+.marka { display: flex; align-items: baseline; gap: 9px; font-weight: 600; letter-spacing: -.02em; }
+.marka b { color: var(--accent); }
+.marka span { font-size: .78em; color: var(--text-3); font-weight: 400; letter-spacing: 0; }
+.ustbar-bosluk { flex: 1; }
+
+/* ---------------------------------------------------------------- Düğme */
+.dgm {
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: var(--touch); padding: 0 18px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+  font: inherit; font-size: .95em; font-weight: 500;
+  cursor: pointer; user-select: none;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.dgm:hover  { background: var(--surface-3); border-color: var(--accent); }
+.dgm:active { transform: translateY(1px); }
+.dgm[aria-pressed="true"], .dgm.etkin {
+  background: var(--accent-soft); border-color: var(--accent); color: var(--accent);
+}
+.dgm.birincil { background: var(--accent); border-color: var(--accent); color: #06121F; font-weight: 600; }
+.dgm.birincil:hover { background: #6BB4FF; }
+.dgm.ikon { padding: 0; width: var(--touch); }
+.dgm:disabled { opacity: .4; cursor: not-allowed; }
+
+/* -------------------------------------------------------- Kenar çubuğu */
+#kenar {
+  background: var(--surface-0);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+}
+.kenar-baslik {
+  padding: 16px 18px 10px;
+  font-size: .76em; font-weight: 600; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--text-3);
+}
+.kenar-liste { flex: 1; overflow-y: auto; padding: 0 10px 20px; }
+
+.unite-grup { margin-bottom: 6px; }
+.unite-bas {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 11px 12px; background: none; border: 0; border-radius: var(--r-sm);
+  color: var(--text); font: inherit; font-weight: 600; font-size: .95em;
+  text-align: left; cursor: pointer;
+}
+.unite-bas:hover { background: var(--surface-1); }
+.unite-no {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 7px;
+  display: grid; place-items: center;
+  background: var(--u, var(--accent)); color: #0B1220;
+  font-size: .8em; font-weight: 800;
+}
+.unite-ok { margin-left: auto; color: var(--text-3); transition: transform var(--dur) var(--ease); }
+.unite-grup[data-acik="1"] .unite-ok { transform: rotate(90deg); }
+.unite-konular { display: none; padding: 2px 0 8px 12px; }
+.unite-grup[data-acik="1"] .unite-konular { display: block; }
+
+.konu-bag {
+  display: flex; align-items: center; gap: 10px;
+  padding: 9px 12px; margin: 1px 0;
+  border-radius: var(--r-sm); border-left: 3px solid transparent;
+  color: var(--text-2); font-size: .92em; line-height: 1.35;
+  cursor: pointer; transition: background var(--dur) var(--ease);
+}
+.konu-bag:hover { background: var(--surface-1); color: var(--text); text-decoration: none; }
+.konu-bag[aria-current="page"] {
+  background: var(--us, var(--accent-soft));
+  border-left-color: var(--u, var(--accent));
+  color: var(--u, var(--accent)); font-weight: 600;
+}
+.konu-rozet {
+  margin-left: auto; flex: 0 0 auto;
+  font-size: .72em; padding: 2px 7px; border-radius: 20px;
+  background: var(--surface-2); color: var(--text-3);
+}
+.konu-bag[aria-current="page"] .konu-rozet { background: var(--u, var(--accent)); color: #06121F; }
+
+/* ------------------------------------------------------------- İçerik */
+.sayfa { max-width: 1180px; margin: 0 auto; padding: 26px var(--pad) 120px; }
+
+.kirilma {
+  display: flex; align-items: center; gap: 9px; flex-wrap: wrap;
+  font-size: .85em; color: var(--text-3); margin-bottom: 10px;
+}
+.kirilma .ayrac { opacity: .5; }
+.kirilma .simdi { color: var(--text-2); }
+.kazanim-kodu {
+  margin-left: auto;
+  font-family: var(--font-mono); font-size: .92em;
+  padding: 4px 11px; border-radius: 20px;
+  background: var(--accent-soft); color: var(--accent);
+}
+
+.sayfa-baslik { margin-bottom: 6px; font-size: 2em; }
+.sayfa-ozet { color: var(--text-2); font-size: 1.02em; margin: 0; max-width: 72ch; }
+
+/* --- Konu başlık bandı ---------------------------------------------------
+   Sayfanın "kapağı". Ünite rengini taşır, kazanım kodunu ve kitap numarasını
+   bir arada gösterir. Sağ üstteki soluk ızgara, arkada bir defter sayfası
+   olduğu hissini verir — sayfa düz bir metin bloğu gibi başlamasın diye. */
+.konu-hero {
+  position: relative; overflow: hidden;
+  margin-bottom: 30px; padding: 24px 28px 26px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--u, var(--accent));
+  border-radius: var(--r);
+}
+.konu-hero::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(760px 220px at 0% 0%, var(--us, var(--accent-soft)) 0%, transparent 72%);
+  pointer-events: none;
+}
+.konu-hero::after {
+  content: ""; position: absolute; right: -30px; top: -30px;
+  width: 230px; height: 230px; pointer-events: none; opacity: .5;
+  background:
+    repeating-linear-gradient(0deg,  var(--border) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(90deg, var(--border) 0 1px, transparent 1px 24px);
+}
+.konu-hero > * { position: relative; }
+
+.hero-ust {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-bottom: 12px; font-size: .84em;
+}
+.hero-unite {
+  display: inline-flex; align-items: center; gap: 8px;
+  color: var(--u, var(--accent)); font-weight: 600;
+}
+.hero-unite .nokta {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--u, var(--accent));
+}
+.hero-kitap {
+  padding: 3px 10px; border-radius: 20px;
+  background: var(--surface-3); color: var(--text-2);
+  font-family: var(--font-mono); font-size: .92em;
+}
+.hero-kod {
+  margin-left: auto; padding: 4px 12px; border-radius: 20px;
+  background: var(--us, var(--accent-soft)); color: var(--u, var(--accent));
+  font-family: var(--font-mono); font-size: .92em; font-weight: 600;
+}
+
+/* --------------------------------------------------------- Blok kartı */
+.blok { margin-bottom: 26px; }
+/* Blok başlığı bir "hap" — numarası ve adı tek bir renkli kapsülde.
+   Düz yazı başlık sayfayı tekdüze bırakıyordu; hap, bölümlerin nerede
+   başladığını uzaktan bakınca bile belli ediyor. */
+.blok-bas {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.blok-bas .hap {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 5px 15px 5px 5px; border-radius: 24px;
+  background: var(--bs, var(--surface-2));
+  border: 1px solid var(--b, var(--border));
+  font-size: .78em; font-weight: 700; letter-spacing: .09em;
+  text-transform: uppercase; color: var(--b, var(--text-3));
+  white-space: nowrap;
+}
+.blok-bas::after {
+  content: ""; flex: 1; height: 2px; border-radius: 1px;
+  background: linear-gradient(90deg, var(--b, var(--border)), transparent 88%);
+  opacity: .45;
+}
+.blok-bas .no {
+  width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--b, var(--surface-2)); color: #0B1220;
+  font-size: 1.1em; font-weight: 800; letter-spacing: 0;
+}
+
+.kart {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--b, var(--border));
+  border-radius: var(--r);
+  padding: var(--pad);
+}
+
+/* ---------------------------------------------------------- Formüller */
+.formul-serit { display: flex; flex-wrap: wrap; gap: 12px; }
+/* Formül kartı: arkasında ince kareli kâğıt dokusu var. Formüller düz
+   kutularda yazıya benziyordu; ızgara onları "deftere yazılmış" gibi
+   gösteriyor ve metinden ayırıyor. */
+.formul {
+  flex: 1 1 200px; position: relative; overflow: hidden;
+  background:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,.030) 0 1px, transparent 1px 21px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.030) 0 1px, transparent 1px 21px),
+    var(--surface-2);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--b, var(--border-strong));
+  border-radius: var(--r-sm); padding: 16px 18px;
+}
+.formul .fm { font-size: 1.42em; color: var(--text-guclu); letter-spacing: .005em; line-height: 1.45; }
+.formul .aciklama,
+.formul .fm-ad { font-size: .84em; color: var(--text-3); margin-top: 6px; }
+
+/* --- Ters sinerji ---
+   Formül kartı her zaman sayfanın TERSİ olur:
+     koyu sayfa  → aydınlık kart (simülasyonun kâğıt paneliyle aynı beyaz)
+     açık sayfa  → koyu kart (simülasyonun pano paneliyle aynı aile)
+   Böylece formüller ve simülasyon aynı görsel katmanda durur, ikisi birden
+   sayfadan ayrışır. */
+:root[data-tema="koyu"] .formul {
+  background:
+    repeating-linear-gradient(0deg,  rgba(20,35,60,.055) 0 1px, transparent 1px 21px),
+    repeating-linear-gradient(90deg, rgba(20,35,60,.055) 0 1px, transparent 1px 21px),
+    #F4F7FB;
+  border-color: #CAD6E6;
+}
+:root[data-tema="koyu"] .formul .fm       { color: #121924; }
+:root[data-tema="koyu"] .formul .aciklama,
+:root[data-tema="koyu"] .formul .fm-ad    { color: #5B6880; }
+:root[data-tema="koyu"] .formul code,
+:root[data-tema="koyu"] .formul kbd       { background: #E2E9F3; color: #1B2436; }
+:root[data-tema="koyu"] .formul strong    { color: #0B121C; }
+
+/* --- Açık sayfada formül kartları KOYU zemine geçer ---
+   Formüller "yazı tahtasına yazılmış" gibi durur ve açık sayfada metinden
+   belirgin biçimde ayrışır. Koyu sayfada kart zaten sayfayla aynı ailededir,
+   orada ayrışmayı simülasyonun kâğıt paneli sağlar. */
+:root[data-tema="acik"] .formul {
+  background:
+    repeating-linear-gradient(0deg,  rgba(255,255,255,.05) 0 1px, transparent 1px 21px),
+    repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 21px),
+    #1B2436;
+  border-color: #2E3C57;
+}
+:root[data-tema="acik"] .formul .fm       { color: #F2F6FC; }
+:root[data-tema="acik"] .formul .aciklama,
+:root[data-tema="acik"] .formul .fm-ad    { color: #98A8C2; }
+:root[data-tema="acik"] .formul code,
+:root[data-tema="acik"] .formul kbd       { background: #2A3752; color: #EAF0FA; }
+:root[data-tema="acik"] .formul strong    { color: #FFFFFF; }
+math { font-size: 1.05em; }
+
+.degisken-tablo { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: .92em; }
+.degisken-tablo th {
+  text-align: left; font-weight: 600; color: var(--text-3);
+  font-size: .82em; letter-spacing: .06em; text-transform: uppercase;
+  padding: 0 12px 8px 0; border-bottom: 1px solid var(--border);
+}
+.degisken-tablo td { padding: 9px 12px 9px 0; border-bottom: 1px solid var(--border); vertical-align: top; }
+.degisken-tablo tr:last-child td { border-bottom: 0; }
+.degisken-tablo .sembol {
+  font-family: var(--font-mono); font-size: 1.08em; color: var(--text-guclu); white-space: nowrap;
+}
+.degisken-tablo .birim { color: var(--text-3); font-family: var(--font-mono); white-space: nowrap; }
+
+/* ------------------------------------------------------ Türetim adımı */
+.turetim { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
+.turetim-ust {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; background: var(--surface-2); border-bottom: 1px solid var(--border);
+}
+.turetim-yol {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.yol-dgm {
+  padding: 7px 14px; min-height: 0;
+  font-size: .86em; border-radius: 20px;
+}
+.turetim-govde { padding: var(--pad); min-height: 150px; }
+.turetim-alt {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 16px; border-top: 1px solid var(--border); background: var(--surface-0);
+}
+.adim-say { font-size: .88em; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.adim-cizgi { flex: 1; display: flex; gap: 4px; }
+.adim-nokta { flex: 1; height: 4px; border-radius: 2px; background: var(--surface-3); transition: background var(--dur) var(--ease); }
+.adim-nokta.gecti { background: var(--accent); }
+
+/* ------------------------------------------------------- Simülasyon */
+.sim-kutu {
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: var(--r); overflow: hidden;
+}
+
+/* Simülasyonun üst şeridi: düzeneği bir "cihaz" gibi çerçeveliyor.
+   Adı ve canlı göstergesi, sayfadaki diğer kartlardan ayırıyor. */
+.sim-ust {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 16px; background: var(--surface-2);
+  border-bottom: 1px solid var(--border);
+}
+.sim-ad { font-weight: 600; font-size: .95em; color: var(--text); }
+.sim-canli {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
+  font-size: .76em; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--green);
+}
+.sim-canli .isik {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
+}
+.sim-kutu[data-oynuyor="1"] .sim-canli .isik { animation: nabiz 1.1s infinite; }
+@keyframes nabiz { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+.sim-tuval-sar {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: var(--border);
+  height: var(--sim-h, 340px);
+}
+.sim-panel.grafik { height: var(--grafik-h, 190px); }
+
+/* --- Akıllı tahta yerleşimi ---------------------------------------------
+   Metin okunur bir ölçüde (max 1180px) kalmalı; ama simülasyon, sınıfın
+   arka sırasından görülmesi gereken tek bileşendir. Bu yüzden simülasyon
+   bloğu geniş ekranlarda metnin dışına taşar ve tuval büyür.
+   Negatif kenar boşlukları, .sayfa'nın ortalanmasından artan boşluğu
+   yalnızca yeterli yer varken geri alır. */
+@media (min-width: 1700px) {
+  .blok.genis { margin-inline: -100px; }
+  .sim-tuval-sar { height: calc(var(--sim-h, 340px) * 1.14); }
+  .sim-panel.grafik { height: calc(var(--grafik-h, 190px) * 1.14); }
+}
+@media (min-width: 1900px) {
+  .blok.genis { margin-inline: -200px; }
+  .sim-tuval-sar { height: calc(var(--sim-h, 340px) * 1.28); }
+  .sim-panel.grafik { height: calc(var(--grafik-h, 190px) * 1.28); }
+}
+.sim-tuval-sar.tek { grid-template-columns: 1fr; }
+.sim-panel { position: relative; background: var(--surface-0); }
+.sim-panel canvas { width: 100%; height: 100%; }
+.sim-etiket {
+  position: absolute; top: 10px; left: 10px; z-index: 2;
+  font-size: .74em; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  padding: 5px 11px; border-radius: 20px;
+  background: rgba(11,18,32,.72); color: var(--text-2);
+  backdrop-filter: blur(4px);
+}
+.sim-panel.gercek .sim-etiket { background: rgba(255,255,255,.86); color: #2C3850; }
+/* Kâğıt paletinde klasik panel de aydınlık olur; etiketi de aydınlık yap. */
+:root[data-simtema="kagit"] .sim-panel .sim-etiket { background: rgba(255,255,255,.86); color: #2C3850; }
+
+/* Simülasyon bir kez başladıktan sonra etiketler sönükleşir: sol üst köşedeki
+   değerleri ve "tamamlandı" rozetini kapatmasınlar. Sıfırla’ya basınca geri gelir. */
+.sim-etiket { transition: opacity .3s ease, background-color .3s ease; }
+.sim-kutu[data-basladi="1"] .sim-etiket,
+.sim-kutu[data-basladi="1"] .sim-panel.gercek .sim-etiket {
+  opacity: .25;
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;
+}
+/* Fareyle üstüne gelince tam okunur — tahtada dokunmatik için de geçerli. */
+.sim-kutu[data-basladi="1"] .sim-panel:hover .sim-etiket { opacity: .85; }
+
+.sim-kontrol {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 16px; border-top: 1px solid var(--border); background: var(--surface-1);
+}
+.parametre { display: flex; align-items: center; gap: 8px; flex: 1 1 330px; min-width: 300px; }
+.parametre > label { font-size: .9em; color: var(--text-2); white-space: nowrap; min-width: 62px; }
+
+/* Kaydıraç adım düğmeleri — dokunmatik tahtada parmakla değer tutturmak için.
+   44px, dokunma hedefi alt sınırının üstünde kalacak kadar büyük. */
+.dgm.adim {
+  flex: 0 0 auto; width: 44px; min-height: 44px; padding: 0;
+  font-size: 1.3em; font-weight: 700; line-height: 1;
+  background: var(--surface-2); color: var(--text);
+}
+.dgm.adim:active { background: var(--accent); color: #06121F; }
+.parametre .deger {
+  font-family: var(--font-mono); font-size: .95em; font-weight: 600; color: var(--text-guclu);
+  min-width: 78px; text-align: right; font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  flex: 1; min-width: 70px; height: 24px;
+  -webkit-appearance: none; appearance: none; background: none; cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--surface-3); }
+input[type="range"]::-moz-range-track          { height: 5px; border-radius: 3px; background: var(--surface-3); }
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7.5px;
+  border-radius: 50%; background: var(--accent); border: 3px solid var(--surface-0); cursor: grab;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--accent); border: 3px solid var(--surface-0); cursor: grab;
+}
+
+select, input[type="number"], input[type="text"] {
+  min-height: 42px; padding: 0 12px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: var(--r-sm);
+  font: inherit; font-size: .94em;
+}
+
+.sim-okuma {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  gap: 1px; background: var(--border); border-top: 1px solid var(--border);
+}
+.okuma {
+  background: var(--surface-0); padding: 12px 16px;
+}
+.okuma .et { font-size: .78em; color: var(--text-3); margin-bottom: 2px; }
+.okuma .dg {
+  font-family: var(--font-mono); font-size: 1.32em; font-weight: 600; color: var(--text-guclu);
+  font-variant-numeric: tabular-nums;
+}
+.okuma .dg small { font-size: .62em; font-weight: 400; color: var(--text-3); margin-left: 3px; }
+
+/* --------------------------------------------------- Vurgu kutuları */
+.kutu { border-radius: var(--r); padding: 18px 22px; border: 1px solid; }
+.kutu-bas {
+  display: flex; align-items: center; gap: 9px;
+  font-weight: 700; font-size: .95em; margin-bottom: 8px;
+}
+.kutu-bas .ikon { font-size: 1.15em; }
+
+.kutu.puf     { background: var(--amber-soft);  border-color: #6B4A12; }
+.kutu.puf .kutu-bas { color: var(--amber); }
+.kutu.osym    { background: var(--violet-soft); border-color: #453A72; }
+.kutu.osym .kutu-bas { color: var(--violet); }
+.kutu.baglam  { background: var(--cyan-soft);   border-color: #14555E; }
+.kutu.baglam .kutu-bas { color: var(--cyan); }
+.kutu.dikkat  { background: var(--red-soft);    border-color: #6B2B33; }
+.kutu.dikkat .kutu-bas { color: var(--red); }
+.kutu.nott    { background: var(--surface-2);   border-color: var(--border); }
+.kutu.nott .kutu-bas { color: var(--text-2); }
+
+.kutu p:last-child { margin-bottom: 0; }
+
+/* ------------------------------------------------------------- Soru */
+.soru {
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: var(--r); padding: var(--pad); margin-bottom: 14px;
+}
+.soru-ust {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+  font-size: .8em; color: var(--text-3);
+}
+.soru-no {
+  width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+  background: var(--surface-3); color: var(--text); font-weight: 700; font-size: 1.05em;
+}
+.soru-kaynak {
+  margin-left: auto; padding: 3px 10px; border-radius: 20px;
+  background: var(--violet-soft); color: var(--violet); font-weight: 600;
+}
+.soru-govde { margin-bottom: 14px; }
+.soru-gorsel {
+  margin: 14px 0; border-radius: var(--r-sm); overflow: hidden;
+  background: var(--surface-0); border: 1px solid var(--border);
+}
+.soru-gorsel svg, .soru-gorsel canvas { display: block; width: 100%; height: auto; }
+
+.secenekler { display: grid; gap: 8px; }
+.secenek {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 12px 14px; min-height: var(--touch);
+  background: var(--surface-2); border: 1px solid var(--border);
+  border-radius: var(--r-sm); cursor: pointer; text-align: left;
+  color: var(--text); font: inherit; font-size: .96em;
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.secenek:hover { background: var(--surface-3); border-color: var(--border-strong); }
+.secenek .harf {
+  flex: 0 0 auto; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--surface-0); color: var(--text-2); font-weight: 700; font-size: .85em;
+}
+.secenek.dogru  { background: var(--green-soft); border-color: var(--green); color: var(--green); }
+.secenek.dogru .harf  { background: var(--green); color: #052018; }
+.secenek.yanlis { background: var(--red-soft); border-color: var(--red); color: var(--red); }
+.secenek.yanlis .harf { background: var(--red); color: #2A0A0E; }
+
+.cozum {
+  margin-top: 14px; padding: 16px 18px;
+  background: var(--surface-0); border: 1px solid var(--border);
+  border-left: 3px solid var(--green); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+}
+.cozum-bas { font-size: .8em; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--green); margin-bottom: 8px; }
+.cozum ol { padding-left: 1.3em; }
+.cozum ol li { margin-bottom: .5em; }
+
+.uyari-metin { color: var(--red); font-size: .88em; margin-top: 8px; }
+
+/* --------------------------------------------- Bağlam temelli adımlar */
+.baglam-adimlar { display: grid; gap: 10px; margin-top: 14px; counter-reset: ba; }
+.baglam-adim {
+  display: flex; gap: 12px; padding: 12px 14px;
+  background: var(--surface-0); border: 1px solid var(--border); border-radius: var(--r-sm);
+}
+.baglam-adim::before {
+  counter-increment: ba; content: counter(ba);
+  flex: 0 0 auto; width: 24px; height: 24px; border-radius: 50%;
+  display: grid; place-items: center;
+  background: var(--cyan-soft); color: var(--cyan); font-size: .8em; font-weight: 700;
+}
+.baglam-adim .ba-bas { font-weight: 600; font-size: .92em; margin-bottom: 2px; }
+.baglam-adim .ba-metin { font-size: .9em; color: var(--text-2); }
+
+/* ------------------------------------------------------------- Künye */
+.ustbar-kunye {
+  font-size: .82em; color: var(--text-3); white-space: nowrap;
+  padding-right: 4px;
+}
+.ustbar-kunye::before { content: "Hazırlayan: "; color: var(--text-3); opacity: .7; }
+
+.kunye {
+  margin-top: 40px; padding: 20px 22px;
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  position: relative; overflow: hidden;
+}
+/* Üç ünite rengini taşıyan üst şerit — üst bardaki şeridin eşi */
+.kunye::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: linear-gradient(90deg,
+    var(--u1) 0%, var(--u1) 33%, var(--u2) 33%, var(--u2) 66%, var(--u3) 66%);
+}
+.kunye-ad {
+  margin: 0; font-size: 1.05em; color: var(--text-2);
+  display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
+}
+.kunye-ad strong { font-size: 1.12em; color: var(--text-guclu); font-weight: 700; }
+.kunye-alt { color: var(--text-3); font-size: .88em; }
+.kunye-not { margin: 10px 0 0; font-size: .84em; color: var(--text-3); }
+
+/* -------------------------------------------------- Boş / yükleniyor */
+.bos-durum { display: grid; place-items: center; height: 70vh; text-align: center; color: var(--text-3); }
+.bos-durum h2 { color: var(--text-2); }

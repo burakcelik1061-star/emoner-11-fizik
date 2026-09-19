@@ -1,0 +1,159 @@
+/* ==========================================================================
+   tokens.css — Tasarım değişkenleri
+   Fizik 11 · Akıllı tahta sunum sistemi
+   Tüm renk / ölçü / tipografi kararları burada. Başka dosyada ham renk yok.
+   ========================================================================== */
+
+:root {
+  /* --- Kabuk yüzeyleri (koyu sunum teması) --- */
+  --bg:            #0B1220;
+  --surface-0:     #111A2B;
+  --surface-1:     #17223A;
+  --surface-2:     #1E2B47;
+  --surface-3:     #263654;
+
+  /* --- Kenarlıklar --- */
+  --border:        #2A3A5C;
+  --border-strong: #3A4E76;
+
+  /* --- Metin --- */
+  --text:          #EAF0FA;
+  --text-2:        #A7B8D4;
+  --text-3:        #6F84A8;
+  --text-guclu:    #FFFFFF;   /* kalın vurgu, formül metni */
+
+  /* --- Arka plan dokusu ---
+     Çok hafif: ders içeriğinin okunurluğunu bozmamalı. İki yumuşak ışık
+     lekesi + milimetrik kâğıt ızgarası. */
+  --bg-cizgi:      rgba(125,165,225,.055);
+  --bg-isik1:      rgba(45,110,200,.16);
+  --bg-isik2:      rgba(120,80,200,.10);
+  --bg-izgara:     48px;
+
+  /* --- Vurgu renkleri --- */
+  --accent:        #4DA3FF;   /* birincil · seçili konu, bağlantı */
+  --accent-soft:   #16304F;
+  --amber:         #FFB020;   /* püf noktası kutusu */
+  --amber-soft:    #3A2A0C;
+  --violet:        #A78BFA;   /* ÖSYM arşivi */
+  --violet-soft:   #2A2348;
+  --green:         #35C08A;   /* doğru cevap, onay */
+  --green-soft:    #10322A;
+  --red:           #FF6B6B;   /* yanlış cevap, uyarı */
+  --red-soft:      #3A1A1F;
+  --cyan:          #38D6E0;   /* bağlam temelli soru */
+  --cyan-soft:     #0E3238;
+
+  /* --- Fizik büyüklüklerinin sabit renkleri ---
+     Bu renkler TÜM simülasyonlarda aynı anlamı taşır.
+     Öğrenci bir kez öğrenir, her konuda tanır. */
+  --q-konum:       #4DA3FF;   /* konum, yer değiştirme */
+  --q-hiz:         #35C08A;   /* hız vektörü */
+  --q-ivme:        #FFB020;   /* ivme, g */
+  --q-kuvvet:      #FF6B6B;   /* kuvvet */
+  --q-surtunme:    #A78BFA;   /* sürtünme kuvveti */
+  --q-normal:      #38D6E0;   /* normal kuvvet */
+  --q-agirlik:     #FF8FA3;   /* ağırlık */
+  --q-merkezcil:   #FF7A45;   /* merkezcil kuvvet/ivme */
+
+  /* --- Blok kimlik renkleri ---
+     Konu sayfasındaki 7 bloğun her biri kendi rengini taşır. Öğrenci sayfayı
+     kaydırırken hangi bölümde olduğunu başlığı okumadan renkten anlar.
+     --bN solid renk, --bNs o rengin koyu zemindeki yumuşak karşılığı. */
+  --b1: #4DA3FF;  --b1s: #12304F;   /* kavram        · mavi      */
+  --b2: #38D6E0;  --b2s: #0E3238;   /* formüller     · camgöbeği */
+  --b3: #A78BFA;  --b3s: #2A2348;   /* türetim       · mor       */
+  --b4: #35C08A;  --b4s: #10322A;   /* simülasyon    · yeşil     */
+  --b5: #FFB020;  --b5s: #3A2A0C;   /* püf noktası   · amber     */
+  --b6: #FF8FA3;  --b6s: #3C1C26;   /* ÖSYM arşivi   · pembe     */
+  --b7: #FF7A45;  --b7s: #3B1F12;   /* bağlam temelli· turuncu   */
+
+  /* --- Ünite renkleri --- */
+  --u1: #4DA3FF;  --u1s: #12304F;   /* kuvvet ve hareket     */
+  --u2: #FFB020;  --u2s: #3A2A0C;   /* elektrik ve manyetizma*/
+  --u3: #A78BFA;  --u3s: #2A2348;   /* optik                 */
+
+  /* --- Ölçü --- */
+  --r-sm: 8px;
+  --r:    12px;
+  --r-lg: 18px;
+  --pad:  20px;
+  --gap:  14px;
+
+  /* --- Tipografi ---
+     --fs-base akıllı tahtada sunum moduna geçince büyür (bkz. base.css) */
+  --fs-base: 17px;
+  --font: "Segoe UI", Ubuntu, Cantarell, "DejaVu Sans", system-ui, sans-serif;
+  --font-mono: "Cascadia Mono", "Ubuntu Mono", "DejaVu Sans Mono", monospace;
+
+  /* --- Dokunma hedefi (akıllı tahta parmakla kullanılıyor) --- */
+  --touch: 48px;
+
+  /* --- Geçişler --- */
+  --dur: 160ms;
+  --ease: cubic-bezier(.2,.7,.3,1);
+}
+
+/* Sunum modu: F11 / "Sunum" düğmesi <html data-sunum="1"> yapar.
+   Uzaktan okunurluk için her şey büyür. */
+:root[data-sunum="1"] {
+  --fs-base: 21px;
+  --pad: 26px;
+  --touch: 56px;
+}
+
+/* Hareket azaltma tercihi olan kullanıcı için animasyonları kıs.
+   Simülasyonlar çalışmaya devam eder, sadece arayüz geçişleri durur. */
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0ms; }
+}
+
+
+/* ==========================================================================
+   AÇIK TEMA — <html data-tema="acik">
+   --------------------------------------------------------------------------
+   Kâğıt tonu, saf beyaz değil: akıllı tahtada saf beyaz parlar ve uzun derste
+   göz yorar. Metin de saf siyah değil, koyu kurşun. Vurgu renkleri açık zeminde
+   yeterli kontrast için koyulaştırıldı.
+
+   Simülasyon tuvalleri bu temadan ETKİLENMEZ — onlar kendi görünümünü korur.
+   ========================================================================== */
+:root[data-tema="acik"] {
+  --bg:            #EDE8DE;
+  --surface-0:     #F7F3EB;
+  --surface-1:     #FCF9F3;
+  --surface-2:     #F1ECE2;
+  --surface-3:     #E5DED0;
+
+  --border:        #D8D0BF;
+  --border-strong: #BAB09E;
+
+  --text:          #22272F;
+  --text-2:        #515A66;
+  --text-3:        #6B7482;
+  --text-guclu:    #14181E;
+
+  --accent:        #1C6DD0;   --accent-soft: #DCE8F9;
+  --amber:         #8A5606;   --amber-soft:  #F7EDD5;
+  --violet:        #6A46C0;   --violet-soft: #E8E1F8;
+  --green:         #13744F;   --green-soft:  #D8EFE4;
+  --red:           #A82C2C;   --red-soft:    #F9DFDF;
+  --cyan:          #0B6F79;   --cyan-soft:   #D4EEF0;
+
+  --b1: #1C6DD0;  --b1s: #DCE8F9;
+  --b2: #0B6F79;  --b2s: #D4EEF0;
+  --b3: #6A46C0;  --b3s: #E8E1F8;
+  --b4: #13744F;  --b4s: #D8EFE4;
+  --b5: #8A5606;  --b5s: #F7EDD5;
+  --b6: #B24560;  --b6s: #F8DDE4;
+  --b7: #B24A19;  --b7s: #F8E1D3;
+
+  --u1: #1C6DD0;  --u1s: #DCE8F9;
+  --u2: #8A5606;  --u2s: #F7EDD5;
+  --u3: #6A46C0;  --u3s: #E8E1F8;
+
+  /* Kâğıt dokusu: sıcak ışık + soluk ızgara */
+  --bg-cizgi:  rgba(95,80,55,.07);
+  --bg-isik1:  rgba(214,180,120,.26);
+  --bg-isik2:  rgba(150,175,210,.20);
+}
