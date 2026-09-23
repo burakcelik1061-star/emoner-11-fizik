@@ -109,30 +109,71 @@ function kaldirilanKutle(p) { return kaldirmaKuvveti(p) / G; }
 
 /* -------------------------------------------------------------- Durum */
 
+/* VİNÇ DÖNGÜSÜ
+   Mıknatıs yüke uzaktan kuvvet uygulayıp onu yerden çekmez — kuvvet aradaki
+   boşlukla çok hızlı düşer. Gerçekte vinç mıknatısı yükün ÜSTÜNE indirir,
+   temas anında akım yükü tutar ve vinç kaldırır. Kaldırma kuvveti yükün
+   ağırlığından azsa (ya da akım azalırsa) yük kopar ve SERBEST DÜŞER. */
+const KALDIRMA_H = 1.5;          // m — vincin kaldırma yüksekliği
+const VINC_PERIYOT = 7;          // s
+
+/** Mıknatısın alt yüzünün, yerdeki yükün üst yüzünden yüksekliği (m). */
+function vincYuksekligi(t) {
+  const u = t % VINC_PERIYOT;
+  if (u < 2)   return KALDIRMA_H * (1 - u / 2);          // iniyor
+  if (u < 2.8) return 0;                                  // temas
+  if (u < 4.8) return KALDIRMA_H * (u - 2.8) / 2;         // kaldırıyor
+  return KALDIRMA_H;                                      // yukarıda bekliyor
+}
+
 function durum(p) {
-  /* st.i: canlı (taranan) akım */
-  return { t: 0, cekildi: false, vurus: 0, zilFaz: 0, kaldirmaY: 0 };
+  /* st.i: canlı (taranan) akım · yukH: yükün yerden yüksekliği (m) */
+  return { t: 0, cekildi: false, vurus: 0, zilFaz: 0,
+           yukH: 0, yukV: 0, bagli: false, koptu: false, kayit: [], vKayit: [] };
 }
 
 function adim(st, dt, p) {
   st.t += dt;
   /* Akım taranır: B'nin doyuma gidişi hem sahnede hem B−i eğrisi üzerindeki
-     çalışma noktasında canlı görünür. Kaydırıcı taramanın başladığı akım. */
-  st.i = D.tarama(st.t, p.i, Math.abs(p.i) < 5 ? 10 : 0.5, 12);
+     çalışma noktasında canlı görünür. Akımın YÖNÜ korunur; kaydırıcı
+     taramanın başladığı akımdır. */
+  /* Zilde akım taranmaz (zil sabit akımla çalışır); akım sıfır seçildiyse
+     hiçbir düzenekte akım verilmez. */
+  const s = p.i < 0 ? -1 : 1;
+  st.i = p.mod > 1.5 || p.i === 0 ? p.i
+       : D.tarama(st.t, p.i, s * (Math.abs(p.i) < 5 ? 10 : 0.5), 12);
+  const pe = etkin(st, p);
 
   if (p.mod > 1.5) {
-    /* Zil: elektromıknatıs çeker → kontak açılır → yay geri çeker → kapanır */
-    const hiz = 8 + Math.abs(p.i) * 1.2;
-    st.zilFaz = (st.zilFaz + dt * hiz) % 2;
-    const yeni = st.zilFaz < 1;
-    if (yeni !== st.cekildi) { st.cekildi = yeni; if (yeni) st.vurus++; }
+    /* Zil: elektromıknatıs çeker → kontak açılır → yay geri çeker → kapanır.
+       Akım yoksa mıknatıslık da yoktur: dil kıpırdamaz, zil çalmaz. */
+    if (pe.i !== 0) {
+      const hiz = 8 + Math.abs(pe.i) * 1.2;
+      st.zilFaz = (st.zilFaz + dt * hiz) % 2;
+      const yeni = st.zilFaz < 1;
+      if (yeni !== st.cekildi) { st.cekildi = yeni; if (yeni) st.vurus++; }
+    } else st.cekildi = false;
+    /* Bobin akımı: kontak KAPALIYKEN akar, dil çekilip kontak açılınca kesilir.
+       Kaydı kesintili (aç-kapa) bir akım verir. */
+    if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.004) {
+      st.kayit.push({ t: st.t, v: st.cekildi || pe.i === 0 ? 0 : Math.abs(pe.i) });
+      st.vKayit.push({ t: st.t, v: st.vurus });
+    }
+    if (st.kayit.length > 500) { st.kayit.shift(); st.vKayit.shift(); }
     return;
   }
 
-  /* Kaldırma: yeterli kuvvet varsa yük yükselir */
-  const yeter = kaldirilanKutle(p) >= p.yuk;
-  const hedef = yeter ? 1 : 0;
-  st.kaldirmaY += (hedef - st.kaldirmaY) * Math.min(1, dt * 3);
+  const hm = vincYuksekligi(st.t);
+  const yeter = kaldirilanKutle(pe) >= p.yuk;
+  if (st.bagli && !yeter) { st.bagli = false; st.koptu = true; }   // kuvvet yetmedi
+  if (!st.bagli && yeter && st.yukH <= 1e-6 && hm <= 1e-6) { st.bagli = true; st.koptu = false; }
+
+  if (st.bagli) { st.yukH = hm; st.yukV = 0; }
+  else if (st.yukH > 0) {
+    st.yukV += G * dt;                                  // serbest düşme
+    st.yukH = Math.max(0, st.yukH - st.yukV * dt);
+    if (st.yukH === 0) st.yukV = 0;
+  }
 }
 
 /** Taranan akımla güncellenmiş parametreler. */
@@ -160,14 +201,24 @@ function cizVinc(ctx, w, h, st, p) {
   const c = cek(p);
   const B = alan(p);
 
+  /* ölçek: yük yerdeyken üst yüzü ile vincin en üst konumu arası KALDIRMA_H */
+  const yeter = kaldirilanKutle(p) >= p.yuk;
+  const yukBoy = 38 + Math.min(46, p.yuk / 18);
+  const gh = 74;
+  const tamAlt = zeminY - yukBoy;                     // yerdeki yükün üst yüzü (px)
+  const enUst = 58 + gh;                              // mıknatısın en yüksek alt yüzü (px)
+  const pxM = (tamAlt - enUst) / KALDIRMA_H;
+  const hm = vincYuksekligi(st.t);
+
   /* tavan kirişi ve halat */
   ctx.fillStyle = '#5F6B78'; ctx.fillRect(0, 6, w, 10);
   ctx.strokeStyle = '#3A4049'; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(cx, 16); ctx.lineTo(cx, 58); ctx.stroke();
+  const gy = tamAlt - hm * pxM - gh;                  // mıknatıs gövdesinin üstü
+  ctx.beginPath(); ctx.moveTo(cx, 16); ctx.lineTo(cx, gy); ctx.stroke();
 
   /* elektromıknatıs gövdesi (U biçimli) */
-  const gw = Math.min(150, w * 0.26), gh = 74;
-  const gx = cx - gw / 2, gy = 58;
+  const gw = Math.min(150, w * 0.26);
+  const gx = cx - gw / 2;
   ctx.fillStyle = c.renk || '#4A5059';
   ctx.fillRect(gx, gy, gw, 22);
   ctx.fillRect(gx, gy, 26, gh);
@@ -184,18 +235,17 @@ function cizVinc(ctx, w, h, st, p) {
   }
   ctx.restore();
 
-  /* kutup etiketleri */
+  /* kutup etiketleri — gövdenin İÇ yüzüne; akım yoksa kutup da yok */
   const kutupY = gy + gh;
-  D.rozet(ctx, p.i > 0 ? 'N' : 'S', gx + 13, kutupY + 10,
-          p.i > 0 ? '#E2483F' : '#2F6FD0', '#FFFFFF', '700 13px system-ui, sans-serif', true);
-  D.rozet(ctx, p.i > 0 ? 'S' : 'N', gx + gw - 13, kutupY + 10,
-          p.i > 0 ? '#2F6FD0' : '#E2483F', '#FFFFFF', '700 13px system-ui, sans-serif', true);
+  if (p.i !== 0) {
+    D.rozet(ctx, p.i > 0 ? 'N' : 'S', gx + 40, kutupY - 14,
+            p.i > 0 ? '#E2483F' : '#2F6FD0', '#FFFFFF', '700 13px system-ui, sans-serif', true);
+    D.rozet(ctx, p.i > 0 ? 'S' : 'N', gx + gw - 40, kutupY - 14,
+            p.i > 0 ? '#2F6FD0' : '#E2483F', '#FFFFFF', '700 13px system-ui, sans-serif', true);
+  }
 
-  /* kaldırılan hurda */
-  const yeter = kaldirilanKutle(p) >= p.yuk;
-  const yukBoy = 38 + Math.min(46, p.yuk / 18);
-  const tamAlt = zeminY - yukBoy;
-  const yukY = tamAlt - st.kaldirmaY * (tamAlt - (kutupY + 24));
+  /* kaldırılan hurda — mıknatısa bağlıysa onunla yükselir, koparsa düşer */
+  const yukY = tamAlt - st.yukH * pxM;
   ctx.fillStyle = '#7D8A99';
   D.yuvarlakDik(ctx, cx - yukBoy * 0.9, yukY, yukBoy * 1.8, yukBoy, 6); ctx.fill();
   ctx.fillStyle = '#5F6B78';
@@ -204,7 +254,9 @@ function cizVinc(ctx, w, h, st, p) {
                  '700 13px system-ui, sans-serif', 'center');
 
   /* bilgi */
-  D.rozet(ctx, yeter ? 'KALDIRIYOR' : 'YETERSİZ', w / 2, 52,
+  const rozetYazi = st.bagli ? 'YÜKÜ TUTUYOR' : st.koptu ? 'YÜK KOPTU · SERBEST DÜŞME'
+                  : yeter ? 'YETERLİ · temas bekleniyor' : 'KUVVET YETERSİZ';
+  D.rozet(ctx, rozetYazi, w / 2, 52,
           yeter ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
           yeter ? '#0A2A1E' : '#FFFFFF', '700 12px system-ui, sans-serif', true);
 
@@ -231,6 +283,8 @@ function cizZil(ctx, w, h, st, p) {
   ctx.fillStyle = '#4A5059';
   D.yuvarlakDik(ctx, 14, cy + 54, 44, 24, 4); ctx.fill();
   D.yaziAydinlik(ctx, 'pil', 36, cy + 66, '#FFFFFF', '600 10px system-ui, sans-serif', 'center');
+
+  const akimVar = p.i !== 0;
 
   /* elektromıknatıs */
   const mx = solX + 60, my = cy - 16;
@@ -263,25 +317,28 @@ function cizZil(ctx, w, h, st, p) {
   ctx.stroke();
   ctx.restore();
 
-  /* tokmak ve çan */
-  const tokX = dilX - sapma + 54, tokY = cy + 34;
+  /* Tokmak dilin alt ucundaki çubuğun ucundadır. Dil mıknatısa (SOLA)
+     çekilince tokmak da sola gider ve mıknatısın altındaki ÇANA vurur. */
+  const tokX = dilX - sapma * 1.6, tokY = cy + 80;
+  ctx.strokeStyle = '#7D8A99'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(dilX - sapma, cy + 34); ctx.lineTo(tokX, tokY - 8); ctx.stroke();
   ctx.fillStyle = '#B87333';
   ctx.beginPath(); ctx.arc(tokX, tokY, 9, 0, 6.2832); ctx.fill();
-  ctx.strokeStyle = '#7D8A99'; ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(dilX - sapma, cy + 20); ctx.lineTo(tokX - 8, tokY); ctx.stroke();
 
-  const canX = w * 0.80;
+  /* çan: sağ kenarı, çekilmiş tokmağın sol kenarına denk gelir */
+  const canR = 30;
+  const canX = dilX - 14 * 1.6 - 9 - canR;             // sabit; 14 = çekilmiş dilin sapması
   ctx.fillStyle = '#C9A24B';
-  ctx.beginPath();
-  ctx.arc(canX, cy + 16, 34, Math.PI, 0);
-  ctx.lineTo(canX + 34, cy + 34); ctx.lineTo(canX - 34, cy + 34);
-  ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.arc(canX, tokY, canR, 0, 6.2832); ctx.fill();
+  ctx.fillStyle = '#8A6B25';
+  ctx.beginPath(); ctx.arc(canX, tokY, 8, 0, 6.2832); ctx.fill();
 
-  if (st.cekildi && tokX > canX - 44) {
+  if (st.cekildi) {
+    /* vuruş anı: çandan ses dalgaları yayılır */
     ctx.save();
-    ctx.strokeStyle = '#FFD24A'; ctx.lineWidth = 2.4;
-    [16, 26, 36].forEach(r => {
-      ctx.beginPath(); ctx.arc(canX - 34, cy + 18, r + 18, -0.9, 0.9); ctx.stroke();
+    ctx.strokeStyle = '#E0A000'; ctx.lineWidth = 2.4;
+    [12, 22, 32].forEach(r => {
+      ctx.beginPath(); ctx.arc(canX, tokY, canR + r, Math.PI * 0.55, Math.PI * 1.45); ctx.stroke();
     });
     ctx.restore();
   }
@@ -295,8 +352,9 @@ function cizZil(ctx, w, h, st, p) {
   D.yaziAydinlik(ctx, st.cekildi ? 'kontak AÇIK' : 'kontak KAPALI', kx + 40, ky - 6,
                  st.cekildi ? '#B03030' : '#1A7A55', '700 11px system-ui, sans-serif', 'left');
 
-  D.rozet(ctx, 'ELEKTRİKLİ ZİL · kendi kendini kesen devre', w / 2, 52,
-          'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
+  D.rozet(ctx, akimVar ? 'ELEKTRİKLİ ZİL · kendi kendini kesen devre' : 'AKIM YOK · zil çalmaz', w / 2, 52,
+          akimVar ? 'rgba(47,111,208,.92)' : 'rgba(110,118,132,.92)', '#FFFFFF',
+          '700 11px system-ui, sans-serif', true);
   D.yaziAydinlik(ctx, 'vuruş: ' + st.vurus, w - 10, h - 12, R.mur,
                  '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'akım → çeker → kontak açılır → akım kesilir → yay geri çeker → tekrar',
@@ -322,13 +380,24 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['5', 'Yay dili geri çeker · kontak kapanır', R.hiz],
       ['→', 'Döngü saniyede onlarca kez tekrarlanır', K.metin2]
     ];
+    /* Döngünün o anki adımı vurgulanır: dil çekiliyken 2–3–4, bırakılmışken
+       5–1. Akım yoksa hiçbir adım işlemez. */
+    const z = st.zilFaz || 0;
+    const etkinAdim = p.i === 0 ? -1 : z < 1 ? (z < 0.33 ? 1 : z < 0.66 ? 2 : 3) : (z < 1.5 ? 4 : 0);
     let sy = 52;
-    adim.forEach(([n, t, c2]) => {
+    adim.forEach(([n, t, c2], i) => {
+      if (i === etkinAdim) {
+        ctx.save(); ctx.fillStyle = 'rgba(255,196,60,.22)';
+        ctx.fillRect(10, sy - 12, w * 0.62, 22); ctx.restore();
+      }
       D.yaziHaleli(ctx, n, 22, sy, c2, '700 13px system-ui, sans-serif', 'center');
       D.yaziHaleli(ctx, t, 40, sy, c2 === K.metin2 ? K.metin2 : K.beyaz,
                    '12px system-ui, sans-serif', 'left');
       sy += 24;
     });
+    if (p.i === 0)
+      D.yaziHaleli(ctx, 'Akım yok ⟹ döngü başlamaz', w - 12, 52, R.kuvvet,
+                   '700 12px system-ui, sans-serif', 'right');
     D.yaziHaleli(ctx, 'Anahtar fikir: mıknatıslık AÇILIP KAPANABİLİYOR',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
     return;
@@ -348,7 +417,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
   D.yaziHaleli(ctx, 'i', gx + gw2 + 6, gy + gh2, K.metin2, '11px system-ui, sans-serif', 'left');
 
   const iMax = 10;
-  const bTepe = Math.min(c.doyma * 1.25, Math.max(c.doyma * 1.25, 0.2));
+  /* Havada doyma yoktur ve alan mT mertebesindedir; ölçek o zaman 10 A’deki
+     alana göre kurulur, yoksa eğri eksene yapışık kalırdı. */
+  const bTepe = c.doyma > 90 ? Math.max(1e-6, MU0 * sarimYog(p) * iMax * 1.15) : c.doyma * 1.25;
   ctx.save();
   ctx.strokeStyle = R.normal; ctx.lineWidth = 2.6;
   ctx.beginPath();
@@ -408,6 +479,25 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const c = cek(p);
 
+  if (p.mod > 1.5) {
+    /* Zil: bobin akımı aç-kapa (kare dalga) ve vuruş sayısı */
+    const kay = st.kayit || [], vk = st.vKayit || [];
+    const t0 = kay.length ? kay[0].t : 0;
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: 'Bobin akımı − t   (kontak aç-kapa · KESİNTİLİ)', birim: 'A',
+      veri: kay, tMin: t0, tMax: Math.max(t0 + 0.5, st.t), vMin: 0,
+      vMax: Math.max(1, Math.abs(p.i) * 1.2), renk: R.ivme
+    });
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'Vuruş sayısı − t   (akım büyükse daha hızlı)', birim: 'kez',
+      veri: vk, tMin: t0, tMax: Math.max(t0 + 0.5, st.t), vMin: 0,
+      vMax: Math.max(5, st.vurus * 1.2), renk: R.kuvvet
+    });
+    return;
+  }
+
   const v1 = [];
   for (let ii = 0; ii <= 10; ii += 0.2)
     v1.push({ t: ii, v: c.doyma > 90 ? MU0 * c.mur * sarimYog(p) * ii
@@ -416,7 +506,8 @@ function cizGrafik(ctx, w, h, st, pHam) {
     x: pay, y: 3, w: gw, h: gh,
     baslik: 'B − i   (doyma sonrası DÜZLEŞİR)', birim: 'T', tEtiket: 'i (A)',
     imlec: { t: Math.abs(p.i), v: alan(p) },
-    veri: v1, tMax: 10, vMin: 0, vMax: Math.max(0.05, Math.min(c.doyma, 2) * 1.2),
+    veri: v1, tMax: 10, vMin: 0,
+    vMax: c.doyma > 90 ? Math.max(1e-6, v1[v1.length - 1].v * 1.1) : Math.min(c.doyma, 2) * 1.2,
     renk: R.normal
   });
 
@@ -444,7 +535,7 @@ function okumalar(st, pHam) {
   if (p.mod > 1.5) {
     return [
       { et: 'Düzenek',   dg: 'Elektrikli zil',                   birim: '' },
-      { et: 'Kontak',    dg: st.cekildi ? 'AÇIK' : 'KAPALI',     birim: '' },
+      { et: 'Kontak',    dg: p.i === 0 ? 'KAPALI (akım yok)' : st.cekildi ? 'AÇIK' : 'KAPALI', birim: '' },
       { et: 'Vuruş',     dg: String(st.vurus),                   birim: 'kez' },
       { et: 'Akım  i',   dg: D.biçim(Math.abs(p.i)),             birim: 'A' },
       { et: 'Çalışma',   dg: 'Kendi kendini keser',              birim: '' }
@@ -456,7 +547,8 @@ function okumalar(st, pHam) {
     { et: 'Doyma olmasa',  dg: D.biçim(alanHam(p), 3),      birim: 'T' },
     { et: 'Gerçek  B',     dg: D.biçim(alan(p), 3) + (doymusMu(p) ? ' ⚠' : ''), birim: 'T' },
     { et: 'Kaldırma  F',   dg: D.biçim(kaldirmaKuvveti(p)), birim: 'N' },
-    { et: 'Kaldırdığı',    dg: D.biçim(kaldirilanKutle(p)), birim: 'kg' }
+    { et: 'Kaldırdığı',    dg: D.biçim(kaldirilanKutle(p)), birim: 'kg' },
+    { et: 'Yük',           dg: st.bagli ? 'Tutuluyor' : st.koptu ? 'Koptu' : 'Yerde', birim: '' }
   ];
 }
 
@@ -476,9 +568,9 @@ D.simler['elektromiknatis'] = {
     ]},
     { anahtar: 'cekirdek', etiket: 'Çekirdek', tur: 'secim', deger: 4, secenekler: [
       { d: 1, e: 'Hava (çekirdeksiz) · μr = 1' },
-      { d: 2, e: 'Nikel · μr = 250' },
-      { d: 3, e: 'Ferrit · μr = 1500' },
-      { d: 4, e: 'Yumuşak demir · μr = 5000' }
+      { d: 2, e: 'Nikel · etkin μr ≈ 100' },
+      { d: 3, e: 'Ferrit · etkin μr ≈ 600' },
+      { d: 4, e: 'Yumuşak demir · etkin μr ≈ 1200' }
     ]},
     { anahtar: 'N', etiket: 'Sarım sayısı N', min: 20, max: 600, adim: 10, deger: 200, birim: '' },
     { anahtar: 'L', etiket: 'Bobin uzunluğu L', min: 5, max: 60, adim: 5, deger: 20, birim: 'cm' },

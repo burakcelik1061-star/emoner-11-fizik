@@ -237,10 +237,10 @@ function cizDalga(ctx, w, h, st, p, ox, oy) {
   ctx.lineWidth = 1.8;
 
   if (Math.abs(s1) < 0.035) {
-    /* dik geliş — cepheler yüzeye paralel */
+    /* dik geliş — cepheler yüzeye paralel ve AŞAĞI (yüzeye doğru) ilerler */
     const faz = (st.t * 60) % lam1;
     ctx.strokeStyle = R.ivme;
-    for (let y = oy - faz; y > 0; y -= lam1) cizgi(ctx, 0, y, w, y);
+    for (let y = oy - lam1 + faz; y > 0; y -= lam1) cizgi(ctx, 0, y, w, y);
     if (t2 !== null) {
       ctx.strokeStyle = R.kuvvet;
       const faz2 = (st.t * 60 * (p.n1 / p.n2)) % lam2;

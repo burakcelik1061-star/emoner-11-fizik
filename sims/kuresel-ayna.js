@@ -100,11 +100,15 @@ const TARAMA_PERIYOT = 12;
 
 function durum(p) { return { t: 0, yaricap: p.yaricap, cisimUzaklik: p.cisimUzaklik, aciklik: p.aciklik }; }
 
+function hedefR(p)  { return p.yaricap < 70 ? 120 : 20; }
+function hedefA(p)  { return p.cisimUzaklik < 85 ? 160 : 15; }
+function hedefAc(p) { return p.aciklik < 25 ? 45 : 4; }
+
 function adim(st, dt, p) {
   st.t += dt;
-  if (p.mod < 1.5)      st.yaricap      = D.tarama(st.t, p.yaricap, p.yaricap < 70 ? 120 : 20, TARAMA_PERIYOT);
-  else if (p.mod < 2.5) st.cisimUzaklik = D.tarama(st.t, p.cisimUzaklik, p.cisimUzaklik < 85 ? 160 : 15, TARAMA_PERIYOT);
-  else                  st.aciklik      = D.tarama(st.t, p.aciklik, p.aciklik < 25 ? 45 : 4, TARAMA_PERIYOT);
+  if (p.mod < 1.5)      st.yaricap      = D.tarama(st.t, p.yaricap, hedefR(p), TARAMA_PERIYOT);
+  else if (p.mod < 2.5) st.cisimUzaklik = D.tarama(st.t, p.cisimUzaklik, hedefA(p), TARAMA_PERIYOT);
+  else                  st.aciklik      = D.tarama(st.t, p.aciklik, hedefAc(p), TARAMA_PERIYOT);
 }
 
 function bitti() { return false; }
@@ -119,17 +123,23 @@ function etkin(st, p) {
  * Panel yerleşimi. Işık daima SOLDAN gelir.
  * Çukur aynada tepe sağda, M ve F solda; tümsekte tepe ortada, M ve F sağda.
  */
-function yerlesim(w, h, p) {
+function yerlesim(w, h, p, pHam) {
   const cukur = p.tur < 1.5;
   const cy = h * 0.54;
   const ax = cukur ? w * 0.80 : w * 0.56;          // tepe noktası T
   const t = aciklikRad(p);
+  const ham = pHam || p;
 
-  /* Ölçek: hem yatayda hem düşeyde sığmalı */
+  /* Ölçek, TARAMA BOYUNCA SABİT tutulur: taranan büyüklüğün alacağı en
+     büyük değere göre kurulur. Ölçek anlık değere göre kurulsaydı R taranırken
+     F ve M ekranda hiç kıpırdamaz, yalnızca sayılar değişirdi. */
+  const Rolcek = p.mod < 1.5 ? Math.max(ham.yaricap, hedefR(ham)) : p.yaricap;
+  const aOlcek = Math.max(ham.cisimUzaklik, hedefA(ham));
+  const tOlcek = p.mod > 2.5 ? (Math.max(ham.aciklik, hedefAc(ham)) * Math.PI) / 180 : t;
   const yatayCm = p.mod > 1.5 && p.mod < 2.5
-    ? Math.max(p.yaricap * 1.10, p.cisimUzaklik * 1.08)
-    : p.yaricap * 1.12;
-  const dusey = Math.max(6, p.yaricap * Math.sin(t));
+    ? Math.max(p.yaricap * 1.10, aOlcek * 1.08)
+    : Rolcek * 1.12;
+  const dusey = Math.max(6, Rolcek * Math.sin(tOlcek));
 
   /* Çukurda M/F solda, tümsekte SAĞDA kalır. Her iki durumda da işaret
      etiketleri panel kenarında kesilmesin diye kullanılabilir genişlik
@@ -151,7 +161,7 @@ function xKonum(y, d) { return y.ax - d * y.olcek; }
 
 function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
-  const y = yerlesim(w, h, p);
+  const y = yerlesim(w, h, p, pHam);
 
   /* asal eksen */
   D.kesikliCizgi(ctx, w * 0.03, y.cy, w * 0.97, y.cy, 'rgba(150,170,200,.55)', 1.4, [7, 5]);
@@ -313,13 +323,26 @@ function cizOzelIsinlar(ctx, w, h, y, p) {
                    '700 12px system-ui, sans-serif', 'center');
   } else if (b !== null) {
     const bx = xKonum(y, b);
-    const gBoy = -boy * (b / a);            // gerçek görüntü ters (aşağı)
+    const gBoyGercek = -boy * (b / a);      // gerçek görüntü ters (aşağı)
     const sanal = b < 0;
-    ctx.save();
-    if (sanal) ctx.globalAlpha = 0.75;
-    D.nesneOku(ctx, bx, y.cy, gBoy, sanal ? '#9FB8D8' : R.kuvvet,
-               sanal ? 'sanal görüntü' : 'görüntü');
-    ctx.restore();
+    if (bx < w * 0.01 || bx > w * 0.99) {
+      /* görüntü panelin dışına düşüyor: yerini ve yönünü söyle */
+      D.yaziAydinlik(ctx, (sanal ? 'sanal görüntü ' : 'görüntü ') + D.biçim(Math.abs(b)) +
+                     ' cm ' + (sanal ? 'aynanın arkasında' : 'önde') + ' — panelin dışında',
+                     w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
+    } else {
+      /* çok büyük görüntü panel yüksekliğine kırpılır; gerçek boy yazılır */
+      const sinir = y.cy - 8;
+      const gBoy = Math.max(-sinir, Math.min(sinir, gBoyGercek));
+      ctx.save();
+      if (sanal) ctx.globalAlpha = 0.75;
+      D.nesneOku(ctx, bx, y.cy, gBoy, sanal ? '#9FB8D8' : R.kuvvet,
+                 sanal ? 'sanal görüntü' : 'görüntü');
+      ctx.restore();
+      if (gBoy !== gBoyGercek)
+        D.yaziAydinlik(ctx, 'görüntü ' + D.biçim(buyutme(p), 2) + ' kat büyük — ok kırpıldı',
+                       w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
+    }
   } else {
     D.yaziAydinlik(ctx, 'Cisim tam odakta ⟹ görüntü oluşmaz',
                    w * 0.5, h * 0.92, R.kuvvet,
@@ -403,15 +426,17 @@ function cizKlasik(ctx, w, h, st, pHam) {
     D.yaziHaleli(ctx, 'Üç özel ışın', 12, 22, K.beyaz,
                  '700 12px system-ui, sans-serif', 'left');
 
-    /* küçük şema */
+    /* küçük şema: paralel gelen ışın F’den (tümsekte F’nin uzantısından) */
     const ex = w * 0.05, ax = w * 0.30, cy = h * 0.52;
     ctx.strokeStyle = K.eksen; ctx.lineWidth = 1.4;
-    ctx.beginPath(); ctx.moveTo(ex, cy); ctx.lineTo(w * 0.33, cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(ex, cy); ctx.lineTo(w * 0.36, cy); ctx.stroke();
     ctx.strokeStyle = '#8FB6EC'; ctx.lineWidth = 3;
     ctx.beginPath(); ctx.moveTo(ax, cy - 34); ctx.lineTo(ax, cy + 34); ctx.stroke();
-    const fxk = ax - (w * 0.30 - ex) * 0.42;
+    const fxk = cukur ? ax - (ax - ex) * 0.42 : ax + w * 0.05;
     D.isin(ctx, ex, cy - 26, ax, cy - 26, R.ivme, 1.6, false);
-    D.isin(ctx, ax, cy - 26, ex, cy + 14, R.ivme, 1.6, false);
+    const egim = 26 / (fxk - ax);                     // yansıyan doğrunun eğimi
+    D.isin(ctx, ax, cy - 26, ex, cy - 26 + egim * (ex - ax), R.ivme, 1.6, false);
+    if (!cukur) D.sanalIsin(ctx, ax, cy - 26, fxk, cy, 'rgba(180,200,230,.75)');
     ctx.fillStyle = R.ivme;
     ctx.beginPath(); ctx.arc(fxk, cy, 3, 0, 6.2832); ctx.fill();
     D.yaziHaleli(ctx, 'F', fxk, cy + 16, R.ivme, '700 11px system-ui, sans-serif', 'center');

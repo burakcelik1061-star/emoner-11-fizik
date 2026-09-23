@@ -60,17 +60,23 @@ function ivme(p, st) {
 }
 
 /**
- * Kuvvetin işaretli yönü (+1 / −1).
- * Açı düzeneğinde alan sayfa düzlemindedir, kuvvet sayfaya diktir:
- *   +1 → sayfadan dışarı ⊙,  −1 → sayfanın içine ⊗   (yalnız akımın işareti belirler)
- * Ray ve hoparlör düzeneklerinde alan sayfaya diktir, kuvvet sayfa düzlemindedir:
- *   +1 → sağa,  −1 → sola    (akım ve alan yönü birlikte belirler)
+ * Kuvvetin işaretli yönü (+1 / −1), F = i·L × B vektör çarpımından.
+ * Eksenler: x sağa, y yukarı, z sayfadan dışarı.
+ * Açı düzeneğinde B = +x (sağa), akım (i > 0) L = (cosα, sinα) yönünde:
+ *   L × B = (0, 0, −B·sinα)  ⟹  i > 0 iken kuvvet sayfanın İÇİNE ⊗.
+ *   +1 → sayfadan dışarı ⊙,  −1 → sayfanın içine ⊗
+ * Ray ve hoparlör düzeneklerinde akım (i > 0) +y (yukarı), B = ±z:
+ *   ŷ × (±ẑ) = ±x̂  ⟹  ⊙ alanda sağa, ⊗ alanda sola.
+ *   +1 → sağa,  −1 → sola
  */
 function kuvvetYonu(p) {
   const iIsaret = p.i >= 0 ? 1 : -1;
-  if (p.mod < 1.5) return iIsaret;
+  if (p.mod < 1.5) return -iIsaret;
   return iIsaret * (p.Byon >= 0 ? 1 : -1);
 }
+
+/** Ekranda gösterilen α (derece): açı düzeneğinde taranan, diğerlerinde 90°. */
+function aciDerece(p, st) { return (etkinAci(p, st) * 180) / Math.PI; }
 
 /* -------------------------------------------------------------- Durum */
 
@@ -94,7 +100,6 @@ function adim(st, dt, p) {
     st.hopX = Math.sin(st.hopFaz);
     return;
   }
-  if (p.mod < 1.5) return;                 // açı düzeneği durağan
 
   if (st.cikti) return;
 
@@ -178,17 +183,18 @@ function cizAci(ctx, w, h, st, p) {
   ctx.lineTo(cx + ux * boy, cy + uy * boy);
   ctx.stroke(); ctx.restore();
 
-  /* akım yönü oku telin üstünde */
+  /* akım yönü oku telin üstünde (akım yoksa ok da yok) */
   const yon = p.i >= 0 ? 1 : -1;
-  D.vektor(ctx, cx - ux * 26 * yon, cy - uy * 26 * yon,
-           cx + ux * 30 * yon, cy + uy * 30 * yon, R.ivme, '', { kalinlik: 3 });
+  if (p.i !== 0)
+    D.vektor(ctx, cx - ux * 26 * yon, cy - uy * 26 * yon,
+             cx + ux * 30 * yon, cy + uy * 30 * yon, R.ivme, '', { kalinlik: 3 });
   D.yaziAydinlik(ctx, 'i = ' + D.biçim(Math.abs(p.i)) + ' A',
                  cx + ux * boy * 0.72, cy + uy * boy * 0.72 - 16, R.ivme,
                  '700 12px system-ui, sans-serif', 'center');
 
   /* referans doğrultu (alan yönü, yatay) ve açı yayı */
   D.kesikliCizgi(ctx, cx, cy, cx + boy * 0.8, cy, 'rgba(47,111,208,.8)', 1.6, [6, 5]);
-  D.aciYayi(ctx, cx, cy, 46, 0, -a, R.ivme, D.biçim(p.mod < 1.5 ? (st.aci ?? p.aci) : 90) + '°');
+  D.aciYayi(ctx, cx, cy, 46, 0, -a, R.ivme, D.biçim(aciDerece(p, st), 0) + '°');
 
   /* kuvvet — sayfaya dik! ⊙ ya da ⊗ */
   const F = kuvvet(p, st);
@@ -199,8 +205,8 @@ function cizAci(ctx, w, h, st, p) {
     D.yaziAydinlik(ctx, 'F = ' + D.biçim(F, 3) + ' N ' + (disari ? '⊙ dışarı' : '⊗ içeri'),
                    fx + 26, fy, R.kuvvet, '700 12px system-ui, sans-serif', 'left');
   } else {
-    D.yaziAydinlik(ctx, 'F = 0 — tel alana PARALEL', cx, by + bh + 32, R.hiz,
-                   '700 13px system-ui, sans-serif', 'center');
+    D.yaziAydinlik(ctx, p.i === 0 ? 'F = 0 — telde akım yok' : 'F = 0 — tel alana PARALEL',
+                   cx, by + bh + 32, R.hiz, '700 13px system-ui, sans-serif', 'center');
   }
 
   /* Panel köşesindeki etiketin ALTINA konur. */
@@ -231,8 +237,9 @@ function cizRay(ctx, w, h, st, p) {
 
   /* akım yönü — telde yukarı/aşağı */
   const iy = p.i >= 0 ? -1 : 1;
-  D.vektor(ctx, tx, (ust + alt) / 2 - iy * 16, tx, (ust + alt) / 2 + iy * 22,
-           R.ivme, '', { kalinlik: 2.6 });
+  if (p.i !== 0)
+    D.vektor(ctx, tx, (ust + alt) / 2 - iy * 16, tx, (ust + alt) / 2 + iy * 22,
+             R.ivme, '', { kalinlik: 2.6 });
 
   /* kuvvet oku — raylar boyunca */
   const F = kuvvet(p, st), yon = kuvvetYonu(p);
@@ -263,8 +270,9 @@ function cizHoparlor(ctx, w, h, st, p) {
   ctx.fillStyle = '#E2483F'; ctx.fillRect(cx - 76, cy - 62, 44, 20);
   ctx.fillStyle = '#2F6FD0'; ctx.fillRect(cx - 76, cy + 42, 44, 20);
 
-  /* bobin — akımla ileri geri */
-  const kayma = st.hopX * 18;
+  /* bobin — akımla ileri geri. Kuvvet (dolayısıyla genlik) akımla orantılı;
+     akım yoksa bobin ve koni kıpırdamaz, ses de çıkmaz. */
+  const kayma = st.hopX * 24 * (Math.abs(p.i) / 20) * (p.i < 0 ? -1 : 1) * (p.Byon >= 0 ? 1 : -1);
   ctx.save();
   ctx.strokeStyle = '#B87333'; ctx.lineWidth = 4;
   for (let k = 0; k < 5; k++) {
@@ -285,21 +293,25 @@ function cizHoparlor(ctx, w, h, st, p) {
   ctx.strokeStyle = 'rgba(120,100,70,.9)'; ctx.lineWidth = 2; ctx.stroke();
   ctx.restore();
 
-  /* ses dalgaları */
-  ctx.save();
-  ctx.strokeStyle = 'rgba(53,192,138,.8)'; ctx.lineWidth = 2;
-  for (let k = 1; k <= 3; k++) {
-    const r = 26 + k * 24 + st.hopX * 6;
-    ctx.beginPath();
-    ctx.arc(cx + 124, cy, r, -0.7, 0.7);
-    ctx.stroke();
+  /* ses dalgaları — genlikle orantılı parlaklıkta, dışa doğru ilerler */
+  if (p.i !== 0) {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(53,192,138,.8)'; ctx.lineWidth = 2;
+    ctx.globalAlpha = 0.25 + 0.75 * Math.abs(p.i) / 20;
+    const ilerle = ((st.hopFaz / (2 * Math.PI)) % 1) * 24;
+    for (let k = 1; k <= 3; k++) {
+      const r = 26 + k * 24 + ilerle;
+      ctx.beginPath();
+      ctx.arc(cx + 124, cy, r, -0.7, 0.7);
+      ctx.stroke();
+    }
+    ctx.restore();
   }
-  ctx.restore();
 
   const F = p.B * Math.abs(p.i * st.hopX) * (p.L / 100);
   D.yaziAydinlik(ctx, 'anlık F = ' + D.biçim(F, 3) + ' N', w - 10, 22, R.kuvvet,
                  '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'f = ' + D.biçim(p.f) + ' Hz', w - 10, 40, R.ivme,
+  D.yaziAydinlik(ctx, 'f = ' + D.biçim(p.f) + ' Hz (gözle izlenmesi için yavaş)', w - 10, 40, R.ivme,
                  '700 12px system-ui, sans-serif', 'right');
   D.rozet(ctx, 'HOPARLÖR · akım yön değiştirdikçe bobin gider gelir', w / 2, 52,
           'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
@@ -323,12 +335,18 @@ function cizKlasik(ctx, w, h, st, p) {
   if (p.mod < 1.5) {
     /* Açı düzeneği: B sayfa düzleminde yatay, i açılı, F sayfaya dik */
     D.vektor(ctx, cx - 54, cy + 34, cx + 54, cy + 34, R.normal, 'B', { kalinlik: 2.4 });
-    D.vektor(ctx, cx - Math.cos(a) * 46, cy + 34 + Math.sin(a) * 46,
-             cx + Math.cos(a) * 46, cy + 34 - Math.sin(a) * 46, R.ivme, 'i', { kalinlik: 2.4 });
-    (disari ? D.alanDisari : D.alanIceri)(ctx, cx, cy - 34, 13, R.kuvvet);
-    D.yaziHaleli(ctx, 'F ' + (disari ? '⊙' : '⊗'), cx + 24, cy - 34, R.kuvvet,
-                 '700 12px system-ui, sans-serif', 'left');
-    D.aciYayi(ctx, cx, cy + 34, 34, 0, -a, K.metin2, D.biçim(p.mod < 1.5 ? (st.aci ?? p.aci) : 90) + '°');
+    const iy = p.i >= 0 ? 1 : -1;
+    if (p.i !== 0)
+      D.vektor(ctx, cx - Math.cos(a) * 46 * iy, cy + 34 + Math.sin(a) * 46 * iy,
+               cx + Math.cos(a) * 46 * iy, cy + 34 - Math.sin(a) * 46 * iy, R.ivme, 'i', { kalinlik: 2.4 });
+    if (F > 1e-9) {
+      (disari ? D.alanDisari : D.alanIceri)(ctx, cx, cy - 34, 13, R.kuvvet);
+      D.yaziHaleli(ctx, 'F ' + (disari ? '⊙' : '⊗'), cx + 24, cy - 34, R.kuvvet,
+                   '700 12px system-ui, sans-serif', 'left');
+    } else {
+      D.yaziHaleli(ctx, 'F = 0', cx, cy - 34, R.hiz, '700 12px system-ui, sans-serif', 'center');
+    }
+    D.aciYayi(ctx, cx, cy + 34, 34, 0, -a, K.metin2, D.biçim(aciDerece(p, st), 0) + '°');
   } else {
     /* Ray ve hoparlör: B sayfaya dik (⊗/⊙), i düşey, F sayfa düzleminde yatay.
        Gerçekçi panelle aynı geometri gösterilmezse öğrenci iki paneli
@@ -339,8 +357,12 @@ function cizKlasik(ctx, w, h, st, p) {
     D.yaziHaleli(ctx, 'B ' + (p.Byon > 0 ? '⊙' : '⊗'), cx - 46, cy + 62, R.normal,
                  '700 12px system-ui, sans-serif', 'center');
     const iy = p.i >= 0 ? -1 : 1;
-    D.vektor(ctx, cx + 26, cy - iy * 40, cx + 26, cy + iy * 40, R.ivme, 'i', { kalinlik: 2.4 });
-    D.vektor(ctx, cx + 26, cy, cx + 26 + 48 * (disari ? 1 : -1), cy, R.kuvvet, 'F', { kalinlik: 2.6 });
+    if (p.i !== 0) {
+      D.vektor(ctx, cx + 26, cy - iy * 40, cx + 26, cy + iy * 40, R.ivme, 'i', { kalinlik: 2.4 });
+      D.vektor(ctx, cx + 26, cy, cx + 26 + 48 * (disari ? 1 : -1), cy, R.kuvvet, 'F', { kalinlik: 2.6 });
+    } else {
+      D.yaziHaleli(ctx, 'i = 0 ⟹ F = 0', cx + 26, cy, R.hiz, '700 12px system-ui, sans-serif', 'center');
+    }
   }
 
   /* sağ: hesap */
@@ -350,26 +372,41 @@ function cizKlasik(ctx, w, h, st, p) {
     ['B = ' + D.biçim(p.B, 2) + ' T', K.metin2, '11px system-ui, sans-serif'],
     ['i = ' + D.biçim(Math.abs(p.i)) + ' A', K.metin2, '11px system-ui, sans-serif'],
     ['L = ' + D.biçim(p.L / 100, 2) + ' m', K.metin2, '11px system-ui, sans-serif'],
-    ['sin' + D.biçim(p.mod < 1.5 ? p.aci : 90) + '° = ' +
+    ['sin' + D.biçim(aciDerece(p, st), 0) + '° = ' +
       D.biçim(Math.sin(etkinAci(p, st)), 3), R.ivme, '11px system-ui, sans-serif'],
     ['F = ' + D.biçim(F, 4) + ' N', R.kuvvet, '700 13px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     /* Açı düzeneğinde F sayfaya DİK; ray/hoparlörde sayfa DÜZLEMİNDE. */
-    ['Yön: ' + (p.mod < 1.5
+    ['Yön: ' + (F < 1e-9 ? 'kuvvet yok' : p.mod < 1.5
         ? (disari ? 'sayfadan DIŞARI ⊙' : 'sayfanın İÇİNE ⊗')
         : (disari ? 'SAĞA →' : 'SOLA ←')),
       R.normal, '700 12px system-ui, sans-serif'],
     ['F ⊥ i  ve  F ⊥ B', K.metin2, '11px system-ui, sans-serif']
   ];
+  if (p.mod > 1.5 && p.mod < 2.5) {
+    /* raylı tel: hareketin canlı değerleri */
+    satir.push(['', K.metin2, '11px']);
+    satir.push(['a = F/m = ' + D.biçim(ivme(p, st), 3) + ' m/s²', R.ivme, '700 12px system-ui, sans-serif']);
+    satir.push(['ϑ = a·t = ' + D.biçim(Math.abs(st.v), 3) + ' m/s', R.hiz, '700 12px system-ui, sans-serif']);
+    satir.push(['x = ½·a·t² = ' + D.biçim(Math.abs(st.x) * 100, 3) + ' cm', R.konum, '12px system-ui, sans-serif']);
+  } else if (p.mod > 2.5) {
+    /* hoparlör: akım sinüs gibi salınır, kuvvet de onunla */
+    const iAn = p.i * st.hopX;
+    satir.push(['', K.metin2, '11px']);
+    satir.push(['anlık i = ' + D.biçim(iAn, 2) + ' A', R.ivme, '700 12px system-ui, sans-serif']);
+    satir.push(['anlık F = ' + D.biçim(p.B * Math.abs(iAn) * (p.L / 100), 3) + ' N ' +
+                (iAn > 0.01 ? '→' : iAn < -0.01 ? '←' : ''), R.kuvvet, '700 12px system-ui, sans-serif']);
+  }
   let sy = 46;
   satir.forEach(([t, c, f]) => {
     if (t) D.yaziHaleli(ctx, t, bx, sy, c, f, 'left');
     sy += 17;
   });
 
-  D.yaziHaleli(ctx, p.aci < 1 ? 'α = 0 ⟹ sinα = 0 ⟹ KUVVET YOK'
-                              : 'SAĞ el alan üretir · SOL el kuvvet verir',
-               12, h - 16, p.aci < 1 ? R.hiz : R.ivme,
+  const paralel = p.mod < 1.5 && Math.abs(Math.sin(etkinAci(p, st))) < 0.02;
+  D.yaziHaleli(ctx, paralel ? 'α ≈ 0° / 180° ⟹ sinα ≈ 0 ⟹ KUVVET YOK'
+                            : 'SAĞ el alan üretir · SOL el kuvvet verir',
+               12, h - 16, paralel ? R.hiz : R.ivme,
                '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -425,7 +462,7 @@ function okumalar(st, p) {
     { et: 'Alan  B',   dg: D.biçim(p.B, 2) + (p.mod < 1.5 ? ' (düzlemde)' : (p.Byon > 0 ? ' ⊙' : ' ⊗')), birim: 'T' },
     { et: 'Akım  i',   dg: D.biçim(Math.abs(p.i)),          birim: 'A' },
     { et: 'Uzunluk  L',dg: D.biçim(p.L),                    birim: 'cm' },
-    { et: 'Açı  α',    dg: D.biçim(p.aci),                  birim: '°' },
+    { et: 'Açı  α',    dg: D.biçim(aciDerece(p, st), 0),    birim: '°' },
     { et: 'Kuvvet  F', dg: D.biçim(F, 4),                   birim: 'N' },
     { et: 'Kuvvetin yönü', dg: F < 1e-9 ? 'Kuvvet yok'
         : (p.mod < 1.5 ? (kuvvetYonu(p) > 0 ? 'Sayfadan dışarı ⊙' : 'Sayfanın içine ⊗')
@@ -462,7 +499,7 @@ D.simler['tele-etki-kuvvet'] = {
     { anahtar: 'L',   etiket: 'Tel uzunluğu L', min: 5, max: 100, adim: 5, deger: 40, birim: 'cm' },
     { anahtar: 'aci', etiket: 'Açı α', min: 0, max: 180, adim: 5, deger: 90, birim: '°' },
     { anahtar: 'm',   etiket: 'Tel kütlesi', min: 5, max: 200, adim: 5, deger: 40, birim: 'g' },
-    { anahtar: 'f',   etiket: 'Ses frekansı', min: 1, max: 12, adim: 1, deger: 3, birim: 'Hz' }
+    { anahtar: 'f',   etiket: 'Titreşim frekansı (yavaş)', min: 1, max: 12, adim: 1, deger: 3, birim: 'Hz' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
 };

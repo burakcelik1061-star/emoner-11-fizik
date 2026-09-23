@@ -106,7 +106,7 @@ function sapmaAcisi(p, st) { return (st && st.sapma != null) ? st.sapma : p.sapm
    çekmede yaklaştıkça HIZLANIR, itmede uzaklaştıkça YAVAŞLAR. */
 const HIZ_KATSAYI = 12000;      // br³/s
 const EN_AZ_HIZ   = 6;          // br/s — çok uzakta bile gözle görülür kalsın
-const EN_YAKIN_ARA = 6;         // br — yapıştılar
+const EN_YAKIN_ARA = 6;         // br — kuvvet hesabında yumuşatma (sonsuza kaçmasın)
 const EN_UZAK_ARA  = 95;        // br — panelden çıkmasınlar
 
 function durum(p) { return { t: 0, ara: p.ara, durdu: false, gezginAci: 0, sapma: p.sapma }; }
@@ -125,8 +125,9 @@ function adim(st, dt, p) {
   const hiz = Math.max(EN_AZ_HIZ, HIZ_KATSAYI / (r * r));
   st.ara += yon * hiz * dt;
 
-  if (st.ara <= EN_YAKIN_ARA) { st.ara = EN_YAKIN_ARA; st.durdu = true; }
-  if (st.ara >= EN_UZAK_ARA)  { st.ara = EN_UZAK_ARA;  st.durdu = true; }
+  /* Çeken mıknatıslar arada boşluk kalmadan TEMAS edince yapışır. */
+  if (st.ara <= 0)           { st.ara = 0;           st.durdu = true; }
+  if (st.ara >= EN_UZAK_ARA) { st.ara = EN_UZAK_ARA; st.durdu = true; }
 }
 
 function bitti(st, p) { return p.mod < 1.5 && st.durdu; }
@@ -229,10 +230,10 @@ function cizGercek(ctx, w, h, st, p) {
     const yon = cek ? 1 : -1;
     /* Ok boyu gerçek kuvvetle ölçeklenir: yaklaştıkça uzar, uzaklaştıkça kısalır. */
     const boyOk = Math.max(14, Math.min(54, 10 + bagilKuvvet(st) * 2.2));
-    D.vektor(ctx, m1.x + m1.boy / 2 + 6, my, m1.x + m1.boy / 2 + 6 + boyOk * yon, my,
-             R.kuvvet, '', { kalinlik: 3 });
-    D.vektor(ctx, m2.x - m2.boy / 2 - 6, my, m2.x - m2.boy / 2 - 6 - boyOk * yon, my,
-             R.kuvvet, '', { kalinlik: 3 });
+    /* Oklar mıknatısların altında, merkezlerinden çıkar; yapıştıklarında da
+       birbirinin üstüne binmez. */
+    D.vektor(ctx, m1.x, my + 28, m1.x + boyOk * yon, my + 28, R.kuvvet, '', { kalinlik: 3 });
+    D.vektor(ctx, m2.x, my + 28, m2.x - boyOk * yon, my + 28, R.kuvvet, '', { kalinlik: 3 });
 
     if (!cek)
       D.yaziAydinlik(ctx, 'aralarında NÖTR NOKTA var', w / 2, my + 108, R.mur,
@@ -313,7 +314,7 @@ function cizDunya(ctx, w, h, st, p) {
 function cizKlasik(ctx, w, h, st, p) {
   D.izgara(ctx, w, h, 26);
 
-  if (p.mod > 2.5) { klasikDunya(ctx, w, h, p); return; }
+  if (p.mod > 2.5) { klasikDunya(ctx, w, h, p, st); return; }
 
   const mknlar = mknListesi(w, h, p, st);
   const my = h * 0.40;
@@ -326,10 +327,11 @@ function cizKlasik(ctx, w, h, st, p) {
     const cek = cekiyor(p);
     const [m1, m2] = mk;
     const yon = cek ? 1 : -1;
-    D.vektor(ctx, m1.x + m1.boy / 2 + 6, my, m1.x + m1.boy / 2 + 6 + 30 * yon, my,
-             R.kuvvet, 'F', { kalinlik: 2.4 });
-    D.vektor(ctx, m2.x - m2.boy / 2 - 6, my, m2.x - m2.boy / 2 - 6 - 30 * yon, my,
-             R.kuvvet, 'F', { kalinlik: 2.4 });
+    /* Ok boyu kuvvetle ölçeklenir (gerçekçi paneldekiyle aynı kural). Oklar
+       mıknatısların ALTINA, merkezlerinden çizilir: temas anında da okunur. */
+    const boyOk = Math.max(14, Math.min(54, 10 + bagilKuvvet(st) * 2.2));
+    D.vektor(ctx, m1.x, my + 30, m1.x + boyOk * yon, my + 30, R.kuvvet, 'F', { kalinlik: 2.4 });
+    D.vektor(ctx, m2.x, my + 30, m2.x - boyOk * yon, my + 30, R.kuvvet, 'F', { kalinlik: 2.4 });
 
     /* nötr nokta yalnız aynı kutuplarda ve tam ortada */
     if (!cek) {
@@ -351,6 +353,19 @@ function cizKlasik(ctx, w, h, st, p) {
     satir.forEach(([t, c]) => {
       D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
     });
+  } else {
+    /* Gezici pusulanın bulunduğu noktada B vektörü: çizgiye teğettir ve
+       mıknatısın çevresinde dolaşırken yönü sürekli değişir. */
+    const m = mk[0];
+    const a = (st && st.gezginAci) || 0;
+    const rg = Math.min(w * 0.26, 118);
+    const px = w * 0.46 + rg * Math.cos(a), py = my + rg * 0.52 * Math.sin(a);
+    const { bx, by } = alan(px, py, mk);
+    const b = Math.hypot(bx, by) || 1;
+    D.kesikliCizgi(ctx, m.x, my, px, py, K.metin2, 1, [3, 4]);
+    D.noktaCisim(ctx, px, py, 5, K.beyaz);
+    D.vektor(ctx, px, py, px + (bx / b) * 36, py + (by / b) * 36, R.normal, 'B', { kalinlik: 2.4 });
+    D.yaziHaleli(ctx, 'B, çizgiye teğet', w - 12, 26, R.normal, '700 12px system-ui, sans-serif', 'right');
   }
 
   /* alan çizgisi kuralları */
@@ -367,8 +382,8 @@ function cizKlasik(ctx, w, h, st, p) {
   });
 }
 
-function klasikDunya(ctx, w, h, p) {
-  const sapma = sapmaAcisi(p);
+function klasikDunya(ctx, w, h, p, st) {
+  const sapma = sapmaAcisi(p, st);
   const rad = (sapma * Math.PI) / 180;
   const cx = w * 0.28, cy = h * 0.46, L = 78;
 
@@ -425,7 +440,7 @@ function okumalar(st, p) {
       { et: 'Etkileşim',              dg: cek ? 'Çekme' : 'İtme', birim: '' },
       { et: 'Aralık (canlı)',         dg: D.biçim(st.ara),        birim: 'br' },
       { et: 'Bağıl kuvvet',           dg: D.biçim(bagilKuvvet(st) / (HIZ_KATSAYI / (p.ara * p.ara)), 3), birim: '× başlangıç' },
-      { et: 'Durum',                  dg: st.durdu ? (cek ? 'Yapıştılar' : 'Ayrıldılar') : (cek ? 'Yaklaşıyorlar' : 'İtiliyorlar'), birim: '' },
+      { et: 'Durum',                  dg: st.durdu ? (cek ? 'Yapıştılar' : 'Ayrıldılar') : (cek ? 'Yaklaşıyorlar' : 'Uzaklaşıyorlar'), birim: '' },
       { et: 'Nötr nokta',             dg: cek ? 'Yok (aralarında)' : 'Var (tam ortada)', birim: '' }
     ];
   }

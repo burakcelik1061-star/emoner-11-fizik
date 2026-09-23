@@ -32,29 +32,30 @@ const { R, K } = D;
 
 function cerceveAlani(p) { return (p.a / 100) * (p.a / 100); }
 
-/* --- 1. düzenek: mıknatıs bobine yaklaşıp uzaklaşır --- */
+/* --- 1. düzenek: mıknatıs bobine girip çıkar --- */
 
-/** Mıknatısın bobin merkezine uzaklığı (m), zamana bağlı. */
+/* Mıknatıs merkezinin bobin merkezine en uzak konumu (m). Mıknatıs bu
+   uzaklıktan bobinin tam ortasına kadar girer, sonra geri çekilir. */
+const EN_UZAK = 0.9;
+/* Bobinin etkin yarıçapı (m): akının uzaklıkla sönme ölçeği. */
+const X0 = 0.06;
+
+/** Mıknatıs merkezinin bobin merkezine uzaklığı (m), zamana bağlı.
+    t = 0’da en uzakta; yarım periyotta bobinin ORTASINDA (x = 0). */
 function miknatisX(st, p) {
-  return 0.45 * Math.cos(p.v * st.t * 0.8);
+  return EN_UZAK * (1 + Math.cos(p.v * st.t * 0.8)) / 2;
 }
 
-/** Bobindeki alan — mıknatısa yaklaştıkça artar (dipol benzeri). */
-/* Mıknatısın bobine en çok yaklaştığı uzaklık (m). */
-const EN_YAKIN = 0.05;
-
 /**
- * Bobinin gördüğü alan (T). Çubuk mıknatıs bir dipoldür: alan uzaklığın
- * KÜPÜYLE azalır.
- *
- * Katsayı, p.B "mıknatıs en yakınken bobindeki alan" olacak şekilde seçildi.
- * (Önceki sürümde sabit 0,001 kullanılıyordu ve en yakın noktada alan 4 T
- * çıkıyordu — laboratuvar elektromıknatısı bile 2 T'yi zor bulur. Biçim
- * doğruydu ama büyüklük fiziksel değildi.)
+ * Bobinin gördüğü alan (T). Eksen üzerinde dipol / halka alanı biçimi:
+ *     B(x) = B₀ / (1 + (x/X0)²)^(3/2)
+ * Uzakta ~1/x³ (dipol) gibi söner; mıknatıs bobinin ORTASINA geldiğinde
+ * akı EN BÜYÜK olur (B₀ = p.B). Mıknatıs orada durup döndüğü an akı
+ * değişmez ⟹ o an ε = 0.
  */
 function bobinAlani(st, p) {
-  const x = Math.abs(miknatisX(st, p)) + EN_YAKIN;
-  return p.B * Math.pow(EN_YAKIN / x, 3);
+  const u = miknatisX(st, p) / X0;
+  return p.B / Math.pow(1 + u * u, 1.5);
 }
 
 /* --- Ortak: anlık akı --- */
@@ -78,8 +79,10 @@ function gerilim(st, p) {
     return -p.N * (f1 - f0) / (2 * h);
   }
   if (p.mod < 2.5) {
-    /* hareket emk’sı — kapalı form */
-    return -p.N * p.B * (p.L / 100) * p.v;
+    /* Hareket emk’sı — kapalı form. Raylı tel TEK sarımlık bir devredir:
+       N çarpanı YOKTUR. Tel geri dönerken ϑ’nin işareti, dolayısıyla ε’nin
+       işareti de değişir. */
+    return -p.B * (p.L / 100) * p.v * rayYonu(st);
   }
   /* dönen çerçeve: Φ = BAcos(ωt) ⟹ ε = N·B·A·ω·sin(ωt) */
   return p.N * p.B * cerceveAlani(p) * p.omega * Math.sin(st.aci);
@@ -96,15 +99,23 @@ function akim(st, p) { return gerilim(st, p) / Math.max(0.1, p.R); }
 function akimTamOlcek(st, p) {
   const Rr = Math.max(0.1, p.R);
   if (p.mod < 1.5) {
-    /* Tepe emk, mıknatıs bobine en çok yaklaştığı anda oluşur:
-       |ε| = N·A·|dB/dx|·ϑ   ve   |dB/dx| = 3B/x  (x = EN_YAKIN) */
-    const vMaks = 0.45 * 0.8 * p.v;
-    const epsTepe = p.N * cerceveAlani(p) * (3 * p.B / EN_YAKIN) * vMaks;
-    return Math.max(0.05, epsTepe / Rr);
+    /* Tepe emk bir periyot boyunca örneklenerek bulunur (mıknatıs bobine
+       girerken, en hızlı olduğu yerde değil akının en dik değiştiği yerde). */
+    if (!(p.v > 0)) return 0.05;
+    const T = (2 * Math.PI) / (p.v * 0.8);
+    let tepe = 0;
+    for (let k = 0; k < 160; k++) {
+      const e = Math.abs(gerilim({ t: (k / 160) * T }, p));
+      if (e > tepe) tepe = e;
+    }
+    return Math.max(0.05, tepe / Rr);
   }
-  if (p.mod < 2.5) return Math.max(0.05, Math.abs(akim(st, p)) * 1.4);
+  if (p.mod < 2.5) return Math.max(0.05, p.B * (p.L / 100) * 4 / Rr);
   return Math.max(0.05, (p.N * p.B * cerceveAlani(p) * p.omega) / Rr);
 }
+
+/** Raylı telin hareket yönü: +1 sağa (alan büyüyor), −1 sola. */
+function rayYonu(st) { return st && st.yon != null ? st.yon : 1; }
 
 /** Raylı telde indüklenen akımın tele uyguladığı KARŞI kuvvet (N). */
 function karsiKuvvet(st, p) {
@@ -116,14 +127,17 @@ function karsiKuvvet(st, p) {
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
-  return { t: 0, x: 0.25, aci: 0, kayit: [], akiKayit: [] };
+  return { t: 0, x: 0.25, yon: 1, aci: 0, kayit: [], akiKayit: [] };
 }
 
 function adim(st, dt, p) {
   st.t += dt;
   if (p.mod > 1.5 && p.mod < 2.5) {
-    st.x += p.v * dt;
-    if (st.x > 0.9) st.x = 0.05;
+    /* Tel rayın sonuna varınca GERİ çekilir: çevrelenen alan küçülmeye
+       başlar, ε ve akım yön değiştirir (Lenz). Işınlanma yok. */
+    st.x += st.yon * p.v * dt;
+    if (st.x >= 0.9)  { st.x = 0.9;  st.yon = -1; }
+    if (st.x <= 0.05) { st.x = 0.05; st.yon = 1; }
   }
   if (p.mod > 2.5) {
     st.aci += p.omega * dt;
@@ -172,41 +186,51 @@ function galvanometre(ctx, x, y, r, i, enBuyuk) {
 function cizMiknatis(ctx, w, h, st, p) {
   const cy = h * 0.46;
   const bobinX = w * 0.62;
+  const bobinMerkez = bobinX + 32;
+  const pxM = (bobinMerkez - 70) / EN_UZAK;          // px / m
 
-  /* bobin */
+  /* bobinin arka yarıları */
+  ctx.save();
+  ctx.strokeStyle = '#8A5A2B'; ctx.lineWidth = 4;
+  for (let k = 0; k < 6; k++) {
+    const x = bobinX + k * 13;
+    ctx.beginPath(); ctx.ellipse(x, cy, 7, 38, 0, Math.PI / 2, Math.PI * 1.5); ctx.stroke();
+  }
+  ctx.restore();
+
+  /* mıknatıs — N ucu bobine bakar; bobinin İÇİNE kadar girer */
+  const mx = bobinMerkez - miknatisX(st, p) * pxM;
+  D.miknatis(ctx, mx - 44, cy - 16, 88, 32, true);
+
+  /* bobinin ön yarıları (mıknatısın önünden geçer) */
   ctx.save();
   ctx.strokeStyle = '#B87333'; ctx.lineWidth = 5;
   for (let k = 0; k < 6; k++) {
     const x = bobinX + k * 13;
-    ctx.beginPath(); ctx.ellipse(x, cy, 7, 38, 0, 0, 6.2832); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(x, cy, 7, 38, 0, -Math.PI / 2, Math.PI / 2); ctx.stroke();
   }
   ctx.restore();
 
-  /* mıknatıs */
-  const mx = bobinX - 60 + miknatisX(st, p) * (-260);
-  D.miknatis(ctx, mx - 44, cy - 16, 88, 32, false);
-
-  /* hareket oku */
-  const hiz = -(miknatisX({ t: st.t + 0.01 }, p) - miknatisX({ t: st.t - 0.01 }, p)) / 0.02 * 260;
+  /* hareket oku — ekrandaki gerçek hareket yönü */
+  const hiz = -(miknatisX({ t: st.t + 0.01 }, p) - miknatisX({ t: st.t - 0.01 }, p)) / 0.02 * pxM;
   if (Math.abs(hiz) > 4)
     D.vektor(ctx, mx, cy - 34, mx + Math.sign(hiz) * 40, cy - 34, R.hiz, 'ϑ', { kalinlik: 2.4 });
 
   /* galvanometre */
   const eps = gerilim(st, p), i = akim(st, p);
-  galvanometre(ctx, w * 0.20, cy + 4, 34, i, akimTamOlcek(st, p));
-  D.yaziAydinlik(ctx, 'galvanometre', w * 0.20, cy + 56, R.mur,
-                 '600 11px system-ui, sans-serif', 'center');
-
-  /* bağlantı telleri */
+  /* Galvanometre mıknatısın yolunun ALTINDA durur; mıknatıs üstünden geçer. */
+  const gX = w * 0.30, gY = cy + 100, gR = 28;
+  /* bağlantı telleri (galvanometrenin altından önce çizilir) */
   ctx.strokeStyle = '#7D8A99'; ctx.lineWidth = 2.4;
   ctx.beginPath();
-  ctx.moveTo(bobinX - 8, cy - 38); ctx.lineTo(bobinX - 8, cy - 62);
-  ctx.lineTo(w * 0.20, cy - 62); ctx.lineTo(w * 0.20, cy - 30);
+  ctx.moveTo(bobinX, cy + 38); ctx.lineTo(bobinX, gY - 8); ctx.lineTo(gX + gR, gY - 8);
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(bobinX + 73, cy + 38); ctx.lineTo(bobinX + 73, cy + 76);
-  ctx.lineTo(w * 0.20, cy + 76); ctx.lineTo(w * 0.20, cy + 38);
+  ctx.moveTo(bobinX + 65, cy + 38); ctx.lineTo(bobinX + 65, gY + 8); ctx.lineTo(gX + gR, gY + 8);
   ctx.stroke();
+  galvanometre(ctx, gX, gY, gR, i, akimTamOlcek(st, p));
+  D.yaziAydinlik(ctx, 'galvanometre', gX - gR - 8, gY, R.mur,
+                 '600 11px system-ui, sans-serif', 'right');
 
   D.yaziAydinlik(ctx, 'ε = ' + D.biçim(eps, 3) + ' V', w - 10, 44, R.normal,
                  '700 13px system-ui, sans-serif', 'right');
@@ -214,7 +238,7 @@ function cizMiknatis(ctx, w, h, st, p) {
                  '700 12px system-ui, sans-serif', 'right');
 
   if (Math.abs(hiz) < 4)
-    D.yaziAydinlik(ctx, 'mıknatıs durdu ⟹ akı değişmiyor ⟹ ε = 0', w / 2, h - 12,
+    D.yaziAydinlik(ctx, 'mıknatıs duruyor ⟹ akı değişmiyor ⟹ ε = 0', w / 2, h - 12,
                    '#B03030', '700 12px system-ui, sans-serif', 'center');
   else
     D.yaziAydinlik(ctx, 'akı DEĞİŞİYOR ⟹ gerilim doğuyor', w / 2, h - 12, R.mur,
@@ -248,16 +272,19 @@ function cizRay(ctx, w, h, st, p) {
   ctx.fillRect(bx + 12, ust, tx - bx - 12, alt - ust);
   ctx.restore();
 
-  /* çekme ve karşı kuvvet */
-  D.vektor(ctx, tx, ust - 22, tx + 44, ust - 22, R.hiz, 'ϑ', { kalinlik: 2.6 });
+  /* hız ve karşı kuvvet — karşı kuvvet daima harekete ZIT */
+  const yon = rayYonu(st);
+  if (p.v > 0)
+    D.vektor(ctx, tx, ust - 22, tx + 44 * yon, ust - 22, R.hiz, 'ϑ', { kalinlik: 2.6 });
   const Fk = karsiKuvvet(st, p);
   if (Fk > 1e-6)
-    D.vektor(ctx, tx, alt + 22, tx - 44, alt + 22, R.kuvvet, 'F_karşı', { kalinlik: 2.6 });
+    D.vektor(ctx, tx, alt + 22, tx - 44 * yon, alt + 22, R.kuvvet, 'F_karşı', { kalinlik: 2.6 });
 
   const eps = gerilim(st, p), i = akim(st, p);
-  galvanometre(ctx, bx + 34, (ust + alt) / 2, 24, i, Math.max(0.05, p.B * (p.L / 100) * 3 / p.R));
+  galvanometre(ctx, bx + 34, (ust + alt) / 2, 24, i, akimTamOlcek(st, p));
 
-  D.yaziAydinlik(ctx, 'ε = B·L·ϑ = ' + D.biçim(Math.abs(eps), 3) + ' V', w - 10, 44,
+  D.yaziAydinlik(ctx, (yon > 0 ? 'alan BÜYÜYOR' : 'alan KÜÇÜLÜYOR') + ' · ε = B·L·ϑ = ' +
+                 D.biçim(Math.abs(eps), 3) + ' V', w - 10, 44,
                  R.normal, '700 13px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'i = ' + D.biçim(Math.abs(i), 3) + ' A', w - 10, 62, R.ivme,
                  '700 12px system-ui, sans-serif', 'right');
@@ -285,17 +312,31 @@ function cizJenerator(ctx, w, h, st, p) {
   }
   ctx.restore();
 
-  /* dönen çerçeve */
-  const ux = Math.cos(st.aci), uy = Math.sin(st.aci);
+  /* Dönen çerçeve, dönme ekseni boyunca bakılarak (eksen sayfaya dik).
+     Φ = B·A·cos(ωt): t = 0’da akı EN BÜYÜK, yani çerçeve düzlemi alana DİK
+     (ekranda düşey) durur ve normali alana paraleldir. */
+  const eps = gerilim(st, p);
+  const sx = Math.sin(st.aci), sy = Math.cos(st.aci);
+  const k1x = cx + sx * R0, k1y = cy - sy * R0;
+  const k2x = cx - sx * R0, k2y = cy + sy * R0;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(120,130,150,.45)'; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+  ctx.beginPath(); ctx.arc(cx, cy, R0, 0, 6.2832); ctx.stroke();
+  ctx.restore();
   ctx.save();
   ctx.strokeStyle = '#B87333'; ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.moveTo(cx + ux * R0, cy + uy * R0 * 0.42);
-  ctx.lineTo(cx - ux * R0, cy - uy * R0 * 0.42);
-  ctx.stroke(); ctx.restore();
+  ctx.beginPath(); ctx.moveTo(k1x, k1y); ctx.lineTo(k2x, k2y); ctx.stroke();
+  ctx.restore();
   D.noktaCisim(ctx, cx, cy, 4, K.beyaz);
 
-  const eps = gerilim(st, p);
+  /* indüklenen akım kenarlarda ⊙/⊗ — ε’nin işaretiyle döner, boyu |ε| ile */
+  const epsM = Math.max(1e-9, p.N * p.B * cerceveAlani(p) * p.omega);
+  const oranE = Math.abs(eps) / epsM;
+  if (oranE > 0.06) {
+    const r = 4 + 8 * oranE;
+    (eps > 0 ? D.alanDisari : D.alanIceri)(ctx, k1x, k1y, r, '#7A4A10');
+    (eps > 0 ? D.alanIceri : D.alanDisari)(ctx, k2x, k2y, r, '#7A4A10');
+  }
   galvanometre(ctx, w * 0.91, cy + 70, 26, akim(st, p),
                Math.max(0.05, p.N * p.B * cerceveAlani(p) * p.omega / p.R));
 
@@ -318,7 +359,8 @@ function cizKlasik(ctx, w, h, st, p) {
     ['ε = −N · ΔΦ / Δt', K.beyaz, '700 13px system-ui, sans-serif'],
     ['eksi işareti = LENZ', R.kuvvet, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
-    ['N = ' + D.biçim(p.N) + ' sarım', K.metin2, '11px system-ui, sans-serif'],
+    [p.mod < 1.5 ? 'N = ' + D.biçim(p.N) + ' sarım' : 'N = 1 (raylı tel tek halka)',
+     K.metin2, '11px system-ui, sans-serif'],
     ['Φ = ' + D.biçim(F, 4) + ' Wb', K.metin2, '11px system-ui, sans-serif'],
     ['ε = ' + D.biçim(eps, 3) + ' V', R.normal, '700 13px system-ui, sans-serif'],
     ['i = ε/R = ' + D.biçim(akim(st, p), 3) + ' A', R.ivme, '700 12px system-ui, sans-serif']
@@ -340,23 +382,29 @@ function cizKlasik(ctx, w, h, st, p) {
   /* sol: Lenz kuralının şeması */
   const cx = w * 0.22, cy = h * 0.48;
   if (p.mod > 1.5 && p.mod < 2.5) {
-    D.vektor(ctx, cx - 40, cy - 30, cx + 40, cy - 30, R.hiz, 'ϑ', { kalinlik: 2.4 });
-    D.vektor(ctx, cx + 40, cy + 10, cx - 40, cy + 10, R.kuvvet, 'F_karşı', { kalinlik: 2.4 });
-    D.yaziHaleli(ctx, 'hareket sağa ⟹ kuvvet sola', cx, cy + 46, R.kuvvet,
-                 '600 11px system-ui, sans-serif', 'center');
+    const yon = rayYonu(st);
+    if (p.v > 0) {
+      D.vektor(ctx, cx - 40 * yon, cy - 30, cx + 40 * yon, cy - 30, R.hiz, 'ϑ', { kalinlik: 2.4 });
+      D.vektor(ctx, cx + 40 * yon, cy + 10, cx - 40 * yon, cy + 10, R.kuvvet, 'F_karşı', { kalinlik: 2.4 });
+    }
+    D.yaziHaleli(ctx, p.v === 0 ? 'tel duruyor ⟹ ε = 0'
+                   : yon > 0 ? 'hareket sağa ⟹ kuvvet sola' : 'hareket sola ⟹ kuvvet sağa',
+                 cx, cy + 46, R.kuvvet, '600 11px system-ui, sans-serif', 'center');
     D.yaziHaleli(ctx, 'ε = B·L·ϑ', cx, cy + 70, K.beyaz,
                  '700 12px system-ui, sans-serif', 'center');
   } else {
-    const buyuyor = p.mod < 1.5
-      ? (bobinAlani({ t: st.t + 0.01 }, p) > bobinAlani({ t: st.t - 0.01 }, p))
-      : Math.sin(st.aci) > 0;
-    D.yaziHaleli(ctx, buyuyor ? 'Akı ARTIYOR' : 'Akı AZALIYOR', cx, cy - 34,
-                 buyuyor ? R.kuvvet : R.hiz, '700 13px system-ui, sans-serif', 'center');
+    /* Akının değişim yönü: dΦ/dt = −ε/N */
+    const degisim = -eps;
+    const sabit = Math.abs(eps) < 1e-4;
+    const buyuyor = degisim > 0;
+    D.yaziHaleli(ctx, sabit ? 'Akı DEĞİŞMİYOR' : buyuyor ? 'Akı ARTIYOR' : 'Akı AZALIYOR', cx, cy - 34,
+                 sabit ? K.metin2 : buyuyor ? R.kuvvet : R.hiz, '700 13px system-ui, sans-serif', 'center');
     /* Kısa tutuldu: uzun satır sağ sütunun üstüne biniyordu. */
-    D.yaziHaleli(ctx, buyuyor ? 'akım artışa karşı koyar' : 'akım azalmaya karşı koyar',
+    D.yaziHaleli(ctx, sabit ? 'indüklenen akım yok' : buyuyor ? 'akım artışa karşı koyar' : 'akım azalmaya karşı koyar',
                  cx, cy - 10, K.metin2, '11px system-ui, sans-serif', 'center');
-    D.yaziHaleli(ctx, buyuyor ? '⟹ zıt yönde alan üretir' : '⟹ aynı yönde alan üretir',
-                 cx, cy + 12, K.beyaz, '600 11px system-ui, sans-serif', 'center');
+    if (!sabit)
+      D.yaziHaleli(ctx, buyuyor ? '⟹ zıt yönde alan üretir' : '⟹ aynı yönde alan üretir',
+                   cx, cy + 12, K.beyaz, '600 11px system-ui, sans-serif', 'center');
   }
 
   D.yaziHaleli(ctx, 'Lenz: doğa değişime direnir — enerji korunumunun sonucu',
@@ -397,11 +445,11 @@ function okumalar(st, p) {
     { et: 'Akı  Φ',      dg: D.biçim(aki(st, p), 4),      birim: 'Wb' },
     { et: 'Gerilim  ε',  dg: D.biçim(eps, 3),             birim: 'V' },
     { et: 'Akım  i',     dg: D.biçim(akim(st, p), 3),     birim: 'A' },
-    { et: 'Sarım  N',    dg: D.biçim(p.N),                birim: '' }
+    { et: 'Sarım  N',    dg: p.mod > 1.5 && p.mod < 2.5 ? '1' : D.biçim(p.N), birim: '' }
   ];
   if (p.mod > 1.5 && p.mod < 2.5) {
     o.push({ et: 'Karşı kuvvet', dg: D.biçim(karsiKuvvet(st, p), 3), birim: 'N' });
-    o.push({ et: 'Hız  ϑ',       dg: D.biçim(p.v, 2),                birim: 'm/s' });
+    o.push({ et: 'Hız  ϑ',       dg: D.biçim(p.v * rayYonu(st), 2) + (rayYonu(st) > 0 ? ' →' : ' ←'), birim: 'm/s' });
   }
   if (p.mod > 2.5) {
     o.push({ et: 'ε_maks', dg: D.biçim(p.N * p.B * cerceveAlani(p) * p.omega, 3), birim: 'V' });

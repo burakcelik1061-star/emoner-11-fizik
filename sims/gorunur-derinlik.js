@@ -63,14 +63,26 @@ function paraksiyel(p) {
   return (p.h * nG) / nC;
 }
 
-/** Seçilen bakış açısındaki TAM görünür derinlik (cm). */
-function tamGorunur(p) {
+/**
+ * BAKIŞ AÇISI gözün bulunduğu ortamda, normalden ölçülür (θ_göz). Işığın
+ * cismin ortamındaki açısı Snell’den: nC·sin θ_cisim = nG·sin θ_göz.
+ * Sudan havaya bakışta θ_göz sınır açısını aşarsa havadan o doğrultuda ışık
+ * GELEMEZ (Snell penceresinin dışı) ⟹ null.
+ */
+function cisimAcisi(p, tGoz) {
   const { nC, nG } = indisler(p);
-  const t1 = rad(p.aci);
+  const s = (nG / nC) * Math.sin(tGoz);
+  return Math.abs(s) > 1 ? null : Math.asin(s);
+}
+
+/** Seçilen bakış açısındaki TAM görünür derinlik (cm):
+    h′ = h · tan θ_cisim / tan θ_göz. */
+function tamGorunur(p) {
   if (p.aci < 0.5) return paraksiyel(p);
-  const t2 = kirilma(nC, nG, t1);
-  if (t2 === null) return null;                   // tam yansıma
-  return (p.h * Math.tan(t1)) / Math.tan(t2);
+  const tg = rad(p.aci);
+  const tc = cisimAcisi(p, tg);
+  if (tc === null) return null;
+  return (p.h * Math.tan(tc)) / Math.tan(tg);
 }
 
 /** Cam levhada yanal kayma (cm). */
@@ -93,10 +105,12 @@ const TARAMA_PERIYOT = 12;
 
 function durum(p) { return { t: 0, h: p.h, aci: p.aci }; }
 
+function hHedef(p) { return p.h < 105 ? 200 : 10; }
+
 function adim(st, dt, p) {
   st.t += dt;
   if (p.mod > 2.5) st.aci = D.tarama(st.t, p.aci, p.aci < 35 ? 70 : 2, TARAMA_PERIYOT);
-  else             st.h   = D.tarama(st.t, p.h, p.h < 105 ? 200 : 10, TARAMA_PERIYOT);
+  else             st.h   = D.tarama(st.t, p.h, hHedef(p), TARAMA_PERIYOT);
 }
 
 function bitti() { return false; }
@@ -125,34 +139,44 @@ function cizGercek(ctx, w, h, st, pHam) {
      Bu ikisi karıştırılırsa gözlemci ve ışınlar panelin dışına taşar. */
   const bosluk   = p.mod < 1.5 ? h - suUst : suUst;          // cismin tarafı
   const gozTaraf = p.mod < 1.5 ? suUst : h - suUst;          // gözün tarafı
-  const olcek = Math.min((bosluk * 0.74) / Math.max(1, p.h), 2.2);
+  /* Ölçek tarama boyunca SABİT (en büyük h’ye göre): cisim gerçekten
+     derine iner / yükselir. Anlık h’ye göre kurulsaydı cisim hep aynı
+     yerde dururdu. */
+  const hEnBuyuk = Math.max(pHam.h, hHedef(pHam));
+  const olcek = Math.min((bosluk * 0.74) / Math.max(1, hEnBuyuk), 2.2);
   const cx = w * 0.30;
   const yon = p.mod < 1.5 ? +1 : -1;               // cisim aşağıda mı yukarıda mı
   const cisimY = suUst + yon * p.h * olcek;
 
   /* gerçek cisim */
   D.noktaCisim(ctx, cx, cisimY, 7, R.hiz);
-  D.yaziAydinlik(ctx, 'gerçek yer', cx, cisimY + (yon > 0 ? 22 : -16), R.hiz,
-                 '700 12px system-ui, sans-serif', 'center');
+  /* sudan bakışta etiket noktanın sağına: soldaki kalkma ölçüsüyle çakışmasın */
+  if (yon > 0)
+    D.yaziAydinlik(ctx, 'gerçek yer', cx, cisimY + 22, R.hiz, '700 12px system-ui, sans-serif', 'center');
+  else
+    D.yaziAydinlik(ctx, 'gerçek yer', cx + 14, cisimY + 4, R.hiz, '700 12px system-ui, sans-serif', 'left');
 
-  /* iki ışın: eksene yakın (referans) ve seçilen açı */
-  const t1 = rad(Math.max(0.6, p.aci));
-  const t2 = kirilma(nC, nG, t1);
+  /* iki ışın: eksene yakın (referans) ve seçilen BAKIŞ açısı. t2 gözün
+     ortamındaki açı (bakış), t1 cismin ortamındaki açı (Snell’den). */
+  const t2Ham = rad(Math.max(0.6, p.aci));
+  const t1Ham = cisimAcisi(p, t2Ham);
+  const t2 = t1Ham === null ? null : t2Ham;
+  const t1 = t1Ham === null ? t2Ham : t1Ham;
   const gorunur = tamGorunur(p);
 
   if (t2 === null) {
-    D.yaziAydinlik(ctx, 'Bu açıda TAM YANSIMA — ışık yüzeyden çıkamıyor',
-                   w * 0.5, h * 0.94, R.kuvvet, '700 13px system-ui, sans-serif', 'center');
+    D.yaziAydinlik(ctx, 'Bu bakış açısında havadan ışık gelemez — Snell penceresinin dışı (su yüzeyi ayna gibi)',
+                   w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   }
 
   /* ışın 1: düşey (eksene yakın) */
   D.isin(ctx, cx, cisimY, cx, suUst, R.ivme, 1.8, false);
   D.isin(ctx, cx, suUst, cx, suUst - yon * gozTaraf * 0.72, R.ivme, 1.8, true);
 
-  /* ışın 2: θ₁ açısıyla */
+  /* ışın 2: cisimden θ_cisim açısıyla çıkar, yüzeyde kırılıp θ_göz ile göze gider */
   const yatay = Math.abs(cisimY - suUst) * Math.tan(t1);
   const kx = cx + yatay;
-  D.isin(ctx, cx, cisimY, kx, suUst, R.ivme, 2.4, true);
+  if (t2 !== null) D.isin(ctx, cx, cisimY, kx, suUst, R.ivme, 2.4, true);
 
   if (t2 !== null) {
     const uz = gozTaraf * 0.72;
@@ -292,13 +316,13 @@ function cizKlasik(ctx, w, h, st, pHam) {
   sol.forEach(([t, c, f]) => { if (t) D.yaziHaleli(ctx, t, 12, sy, c, f, 'left'); sy += 17; });
 
   const sx = w * 0.52;
-  const t2 = kirilma(nC, nG, rad(Math.max(0.6, p.aci)));
+  const tc = cisimAcisi(p, rad(Math.max(0.6, p.aci)));
   const sag = [
     ['Eğik bakışta (tam bağıntı)', K.beyaz, '700 12px system-ui, sans-serif'],
-    ['h′ = h · tanθ₁ / tanθ₂', K.metin, '12px system-ui, sans-serif'],
+    ['h′ = h · tanθ_cisim / tanθ_göz', K.metin, '12px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
-    ['θ₁ = ' + D.biçim(p.aci) + '°', R.ivme, '12px system-ui, sans-serif'],
-    ['θ₂ = ' + (t2 === null ? 'tam yansıma' : D.biçim(der(t2), 4) + '°'),
+    ['θ_göz = ' + D.biçim(p.aci, 0) + '°  (bakış)', R.ivme, '12px system-ui, sans-serif'],
+    ['θ_cisim = ' + (tc === null ? 'yok — Snell penceresi dışı' : D.biçim(der(tc), 4) + '°'),
       R.kuvvet, '12px system-ui, sans-serif'],
     ['h′ = ' + (tg === null ? '—' : D.biçim(tg, 4) + ' cm'),
       R.kuvvet, '700 14px system-ui, sans-serif'],
@@ -327,6 +351,7 @@ function cizGrafik(ctx, w, h, st, pHam) {
     D.miniGrafik(ctx, {
       x: pay, y: 3, w: gw, h: gh,
       baslik: 'Yanal kayma − θ₁   (0°’de sıfır)', birim: 'cm', tEtiket: 'θ₁ (°)',
+      imlec: { t: p.aci, v: yanalKayma(p) },
       veri: v1, tMax: 85, vMin: 0, vMax: p.kalinlik * 1.05, renk: R.surtunme
     });
 
@@ -338,6 +363,7 @@ function cizGrafik(ctx, w, h, st, pHam) {
     D.miniGrafik(ctx, {
       x: pay * 2 + gw, y: 3, w: gw, h: gh,
       baslik: 'Yanal kayma − kalınlık   (DOĞRU orantı)', birim: 'cm', tEtiket: 't (cm)',
+      imlec: { t: p.kalinlik, v: yanalKayma(p) },
       veri: v2, tMax: 20, vMin: 0, vMax: Math.max(0.5, yanalKayma(p) * 20 / p.kalinlik * 1.05),
       renk: R.normal
     });
@@ -403,8 +429,8 @@ function okumalar(st, pHam) {
     { et: p.mod < 1.5 ? 'Gerçek derinlik h' : 'Gerçek yükseklik H', dg: D.biçim(p.h), birim: 'cm' },
     { et: 'Dik bakışta h′',  dg: D.biçim(ph, 4), birim: 'cm' },
     { et: 'Kalkma h − h′',   dg: D.biçim(Math.abs(p.h - ph), 4), birim: 'cm' },
-    { et: D.biçim(p.aci) + '° bakışta h′',
-      dg: tg === null ? 'Tam yansıma' : D.biçim(tg, 4), birim: tg === null ? '' : 'cm' },
+    { et: D.biçim(p.aci, 0) + '° bakışta h′',
+      dg: tg === null ? 'Işık gelmez (Snell penceresi dışı)' : D.biçim(tg, 4), birim: tg === null ? '' : 'cm' },
     { et: 'Sonuç',
       dg: p.mod < 1.5 ? 'Cisim SIĞ görünür' : 'Cisim YÜKSEK görünür', birim: '' }
   ];
@@ -427,7 +453,7 @@ D.simler['gorunur-derinlik'] = {
     ]},
     { anahtar: 'n',        etiket: 'Ortamın indisi n', min: 1.05, max: 2.50, adim: 0.01, deger: 1.33, birim: '' },
     { anahtar: 'h',        etiket: 'Gerçek derinlik / yükseklik', min: 10, max: 200, adim: 5, deger: 100, birim: 'cm' },
-    { anahtar: 'aci',      etiket: 'Bakış / gelme açısı', min: 0, max: 70, adim: 1, deger: 20, birim: '°' },
+    { anahtar: 'aci',      etiket: 'Bakış açısı (1-2) / gelme açısı (3)', min: 0, max: 70, adim: 1, deger: 20, birim: '°' },
     { anahtar: 'kalinlik', etiket: 'Levha kalınlığı t', min: 2, max: 20, adim: 1, deger: 10, birim: 'cm' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar

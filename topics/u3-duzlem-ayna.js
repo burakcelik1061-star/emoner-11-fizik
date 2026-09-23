@@ -210,8 +210,10 @@ turetim: {
                  <div class="formul" style="max-width:240px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">n = 360/α − 1</div>
                  </div>
-                 <p>Bölme tam sayı değilse (örneğin α = 50°) formül değişir; o durumda
-                 <code>360/α</code>&rsquo;nın <strong>tam kısmı</strong> alınır.</p>` }
+                 <p>Bölme tam sayı değilse (örneğin α = 50°) zincir çemberi tam kapatmaz ve
+                 görüntü sayısı <strong>cismin iki ayna arasındaki yerine bağlı</strong> olur;
+                 bu formül o durumda kullanılmaz. Simülasyon her açıda görüntüleri ardışık
+                 yansımalarla tek tek bulur.</p>` }
       ]
     }
   ]

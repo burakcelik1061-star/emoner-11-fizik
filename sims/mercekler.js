@@ -81,13 +81,19 @@ const TARAMA_PERIYOT = 12;
 
 function durum(p) { return { t: 0, f: p.f, n: p.n, cisimUzaklik: p.cisimUzaklik }; }
 
+function fHedef(p) { return p.f < 34 ? 60 : 8; }
+function nHedef(p) { return p.n < 1.65 ? 2.0 : 1.3; }
+function aHedef(p) { return p.cisimUzaklik < 80 ? 150 : 12; }
+
+/* Her düzenekte YALNIZ o düzeneğin anahtar büyüklüğü taranır:
+   1) f  ·  2) n (yapıcı denklemden f değişir)  ·  3) cisim uzaklığı.
+   1. ve 3. düzenekte f doğrudan verildiği için n’yi taramak hiçbir şeyi
+   değiştirmez; bu yüzden orada taranmaz. */
 function adim(st, dt, p) {
   st.t += dt;
-  /* n her düzenekte taranır: hem odak konumu (sahne) hem f−n eğrisindeki
-     çalışma noktası oynar. 3. düzenekte ayrıca cisim taşınır. */
-  st.n = D.tarama(st.t, p.n, p.n < 1.65 ? 2.0 : 1.3, TARAMA_PERIYOT);
-  if (p.mod < 1.5) st.f = D.tarama(st.t, p.f, p.f < 34 ? 60 : 8, TARAMA_PERIYOT);
-  if (p.mod > 2.5) st.cisimUzaklik = D.tarama(st.t, p.cisimUzaklik, p.cisimUzaklik < 80 ? 150 : 12, TARAMA_PERIYOT);
+  if (p.mod < 1.5)      st.f = D.tarama(st.t, p.f, fHedef(p), TARAMA_PERIYOT);
+  else if (p.mod < 2.5) st.n = D.tarama(st.t, p.n, nHedef(p), TARAMA_PERIYOT);
+  else                  st.cisimUzaklik = D.tarama(st.t, p.cisimUzaklik, aHedef(p), TARAMA_PERIYOT);
 }
 
 function bitti() { return false; }
@@ -98,26 +104,64 @@ function etkin(st, p) {
 
 /* ------------------------------------------------- Ortak yerleşim */
 
-function yerlesim(w, h, p) {
+function yerlesim(w, h, p, pHam) {
+  const ham = pHam || p;
   const f = odak(p);
+  const duz = !isFinite(f) || Math.abs(f) > 1e6;         // düz cam: f = ∞
   const cy = h * 0.52;
   const mx = w * 0.50;
   const boy = Math.min(h * 0.62, 190);
-  const olcek = Math.min((w * 0.40) / Math.max(6, Math.abs(f) * 1.3), 6.0);
-  return { f, cy, mx, boy, olcek, ince: f > 0 };
+
+  /* Ölçek TARAMA BOYUNCA SABİT: taranan büyüklüğün en uç değerine göre.
+     Anlık f’ye göre kurulsaydı f değişirken odaklar ekranda hiç kıpırdamazdı. */
+  let fOlcek;
+  if (p.mod < 1.5) fOlcek = Math.max(ham.f, fHedef(ham));
+  else if (p.mod < 2.5) {
+    const f1 = odakYapici(Object.assign({}, ham, { n: ham.n }));
+    const f2 = odakYapici(Object.assign({}, ham, { n: nHedef(ham) }));
+    const adaylar = [f1, f2].filter(x => x !== null).map(Math.abs);
+    fOlcek = adaylar.length ? Math.min(150, Math.max(...adaylar)) : 60;
+  } else fOlcek = Math.abs(f);
+  let olcek = Math.min((w * 0.40) / Math.max(6, fOlcek * 1.3), 6.0);
+  if (p.mod > 2.5) {
+    /* cisim, taramanın en uzak noktasında da panelde kalsın */
+    const aMax = Math.max(ham.cisimUzaklik, aHedef(ham));
+    olcek = Math.min(olcek, (w * 0.44) / aMax);
+  }
+  return { f, duz, cy, mx, boy, olcek, ince: !duz && f > 0 };
 }
 
 function cizMercekVeOdaklar(ctx, w, h, y, p) {
   D.kesikliCizgi(ctx, w * 0.02, y.cy, w * 0.98, y.cy, 'rgba(150,170,200,.55)', 1.4, [7, 5]);
-  D.mercek(ctx, y.mx, y.cy, y.boy, y.ince ? 'ince' : 'kalin');
+  if (y.duz) {
+    /* gücü sıfır: iki yüzey aynı eğrilikte — ince paralel levha gibi davranır */
+    ctx.save();
+    ctx.fillStyle = 'rgba(127,212,230,.25)'; ctx.strokeStyle = '#7FD4E6'; ctx.lineWidth = 2;
+    ctx.fillRect(y.mx - 5, y.cy - y.boy / 2, 10, y.boy);
+    ctx.strokeRect(y.mx - 5, y.cy - y.boy / 2, 10, y.boy);
+    ctx.restore();
+  } else {
+    D.mercek(ctx, y.mx, y.cy, y.boy, y.ince ? 'ince' : 'kalin');
+  }
+  isaret(ctx, y.mx, y.cy, 'O', K.beyaz);
+
+  if (y.duz) {
+    D.yaziAydinlik(ctx, 'Güç sıfır · f = ∞ (düz cam gibi)', w - 10, 18, K.metin2,
+                   '700 12px system-ui, sans-serif', 'right');
+    return;
+  }
 
   const fp = Math.abs(y.f) * y.olcek;
-  isaret(ctx, y.mx, y.cy, 'O', K.beyaz);
-  isaret(ctx, y.mx + fp, y.cy, y.ince ? 'F' : 'F′', R.ivme);
-  isaret(ctx, y.mx - fp, y.cy, y.ince ? 'F′' : 'F', R.ivme);
+  const icerde = x => x > w * 0.01 && x < w * 0.99;
+  if (icerde(y.mx + fp)) isaret(ctx, y.mx + fp, y.cy, y.ince ? 'F' : 'F′', R.ivme);
+  if (icerde(y.mx - fp)) isaret(ctx, y.mx - fp, y.cy, y.ince ? 'F′' : 'F', R.ivme);
 
-  D.olcu(ctx, y.mx, y.cy + h * 0.30, y.mx + fp, y.cy + h * 0.30,
-         'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm', R.ivme);
+  if (icerde(y.mx + fp))
+    D.olcu(ctx, y.mx, y.cy + h * 0.30, y.mx + fp, y.cy + h * 0.30,
+           'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm', R.ivme);
+  else
+    D.yaziAydinlik(ctx, 'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm — odak panelin dışında',
+                   y.mx, y.cy + h * 0.30, R.ivme, '700 11px system-ui, sans-serif', 'center');
   D.yaziAydinlik(ctx, y.ince ? 'İnce kenarlı · f > 0' : 'Kalın kenarlı · f < 0',
                  w - 10, 18, y.ince ? R.hiz : R.kuvvet,
                  '700 12px system-ui, sans-serif', 'right');
@@ -135,7 +179,7 @@ function isaret(ctx, x, yy, ad, renk) {
 
 function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
-  const y = yerlesim(w, h, p);
+  const y = yerlesim(w, h, p, pHam);
   cizMercekVeOdaklar(ctx, w, h, y, p);
 
   if (p.mod > 2.5) { cizOzelIsinlar(ctx, w, h, y, p); return; }
@@ -154,7 +198,8 @@ function cizGercek(ctx, w, h, st, pHam) {
       10, h - 10, R.ivme, '700 13px system-ui, sans-serif', 'left');
   } else {
     D.yaziAydinlik(ctx,
-      y.ince ? 'Paralel ışınlar F’de GERÇEKTEN kesişir — odak gerçek'
+      y.duz ? 'Güç sıfır — ışınlar sapmadan geçer'
+      : y.ince ? 'Paralel ışınlar F’de GERÇEKTEN kesişir — odak gerçek'
              : 'Paralel ışınlar ıraksar; UZANTILARI F’de kesişir — odak sanal',
       10, h - 10, y.ince ? R.hiz : R.kuvvet,
       '700 12px system-ui, sans-serif', 'left');
@@ -175,6 +220,9 @@ function cizParalelIsinlar(ctx, w, h, y, p) {
 
     /* gelen ışın */
     D.isin(ctx, sol, yy, y.mx, yy, R.ivme, 2, true);
+
+    /* gücü sıfır mercek (düz cam): ışın doğrultusunu değiştirmez */
+    if (y.duz) { D.isin(ctx, y.mx, yy, sag, yy, R.ivme, 2, true); continue; }
 
     /* çıkan ışın — odağa doğru (f>0) ya da odaktan kaçarak (f<0) */
     const dx = Math.sign(y.f) * fp;
@@ -216,7 +264,8 @@ function cizOzelIsinlar(ctx, w, h, y, p) {
     const y3 = ty + (y.mx - ox) * (y.cy - ty) / (fx - ox);
     if (y3 > 6 && y3 < h - 6) {
       D.isin(ctx, ox, ty, y.mx, y3, R.kuvvet, 2, true);
-      if (!y.ince) D.sanalIsin(ctx, ox, ty, fx, y.cy, 'rgba(180,200,230,.8)');
+      /* ıraksakta ışın ARKA odağa yönelir; uzantı merceğin ötesinde kesikli */
+      if (!y.ince) D.sanalIsin(ctx, y.mx, y3, fx, y.cy, 'rgba(180,200,230,.8)');
       D.isin(ctx, y.mx, y3, sag, y3, R.kuvvet, 2, true);
     }
   }
@@ -337,7 +386,37 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
 
-  /* f − n */
+  if (p.mod < 1.5 || p.mod > 2.5) {
+    /* 1. ve 3. düzenek: gösterilen merceğin kendi grafikleri */
+    const f = odak(p);
+    const s = f < 0 ? -1 : 1;
+    const d1 = [];
+    for (let fq = 8; fq <= 60; fq += 1) d1.push({ t: fq, v: s * 100 / fq });
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: 'D − |f|   (D = 1/f · odak kısaldıkça güç artar)', birim: 'D', tEtiket: '|f| (cm)',
+      imlec: { t: Math.abs(f), v: dioptri(f) },
+      veri: d1, tMin: 8, tMax: 60, vMin: s < 0 ? -13 : 0, vMax: s < 0 ? 0 : 13, renk: R.normal
+    });
+    const a0 = p.cisimUzaklik;
+    const d2 = [];
+    for (let aq = 2; aq <= 150; aq += 1) {
+      if (Math.abs(aq - f) < 1.5) continue;
+      const b = (aq * f) / (aq - f);
+      if (Math.abs(b) <= 200) d2.push({ t: aq, v: b });
+    }
+    const b0 = Math.abs(a0 - f) < 1e-6 ? null : (a0 * f) / (a0 - f);
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'b − a   (1/f = 1/a + 1/b · bu merceğin görüntü uzaklığı)', birim: 'cm', tEtiket: 'a (cm)',
+      imlec: b0 === null || Math.abs(b0) > 200 ? null : { t: a0, v: b0 },
+      veri: d2, tMax: 150, vMin: -200, vMax: 200, renk: R.kuvvet
+    });
+    return;
+  }
+
+  /* f − n (merceğin biçimi sabit, cam değişiyor) */
+  const sk = Math.sign(ters(p.R1) - ters(p.R2)) || 1;       // + toplayıcı, − dağıtıcı biçim
   const v1 = [];
   for (let n = 1.3; n <= 2.0; n += 0.01) {
     const guc = (n - 1) * (ters(p.R1) - ters(p.R2));
@@ -348,23 +427,26 @@ function cizGrafik(ctx, w, h, st, pHam) {
   }
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
-    baslik: 'f − n   (n büyüdükçe mercek GÜÇLENİR)', birim: 'cm', tEtiket: 'n',
+    baslik: v1.length ? 'f − n   (n büyüdükçe |f| küçülür · mercek GÜÇLENİR)' : 'f − n   (R₁ = R₂: güç sıfır, f = ∞)',
+    birim: 'cm', tEtiket: 'n',
     imlec: (() => { const fy = odakYapici(p); return (fy === null || Math.abs(fy) > 200) ? null : { t: p.n, v: fy }; })(),
-    veri: v1, tMin: 1.3, tMax: 2.0, vMin: 0, vMax: 200, renk: R.ivme
+    veri: v1, tMin: 1.3, tMax: 2.0, vMin: sk < 0 ? -200 : 0, vMax: sk < 0 ? 0 : 200, renk: R.ivme
   });
 
-  /* dioptri − R₁ */
+  /* dioptri − |R₁| (R₁’in işareti korunur) */
+  const s1 = p.R1 < 0 ? -1 : 1;
   const v2 = [];
   for (let Rq = 5; Rq <= 60; Rq += 1) {
-    const guc = (p.n - 1) * (1 / Rq - ters(p.R2));
+    const guc = (p.n - 1) * (1 / (s1 * Rq) - ters(p.R2));
     v2.push({ t: Rq, v: guc * 100 });
   }
+  let dMin = 0, dMax = 0;
+  v2.forEach(d => { if (d.v < dMin) dMin = d.v; if (d.v > dMax) dMax = d.v; });
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
-    baslik: 'Dioptri − R₁   (R küçüldükçe güç artar)', birim: 'D', tEtiket: 'R₁ (cm)',
-    imlec: { t: Math.abs(p.R1), v: dioptri(odakYapici(p)) },
-    veri: v2, tMin: 5, tMax: 60, vMin: 0,
-    vMax: Math.max(2, (p.n - 1) * (1 / 5 - ters(p.R2)) * 100 * 1.05), renk: R.normal
+    baslik: 'Dioptri − |R₁|   (yüzey ne kadar kavisliyse etkisi o kadar büyük)', birim: 'D', tEtiket: '|R₁| (cm)',
+    imlec: Math.abs(p.R1) >= 5 ? { t: Math.abs(p.R1), v: dioptri(odakYapici(p)) } : null,
+    veri: v2, tMin: 5, tMax: 60, vMin: dMin * 1.05, vMax: Math.max(1, dMax * 1.05), renk: R.normal
   });
 }
 

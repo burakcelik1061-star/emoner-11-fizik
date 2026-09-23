@@ -45,11 +45,22 @@ function kuvvet(p, d) {
   return KC * Math.abs(q1C(p) * q2C(p)) / (dd * dd);
 }
 
-/** Çekme mi itme mi? Zıt işaretler çeker. */
+/** Çekme mi itme mi? Zıt işaretler çeker, aynı işaretler iter. Yüklerden
+    biri SIFIRSA q₁·q₂ = 0 olur: ne çekme ne itme vardır, kuvvet yoktur. */
 function cekiyor(p) { return p.q1 * p.q2 < 0; }
+function kuvvetYok(p) { return p.q1 * p.q2 === 0; }
 
-/** q₂ üzerindeki kuvvetin işaretli yönü: +1 sağa (q₁’den uzağa), −1 sola. */
-function yon(p) { return cekiyor(p) ? -1 : +1; }
+/** q₂ üzerindeki kuvvetin işaretli yönü: +1 sağa (q₁’den uzağa), −1 sola,
+    0 kuvvet yok. */
+function yon(p) { return kuvvetYok(p) ? 0 : cekiyor(p) ? -1 : +1; }
+
+function turMetni(p) { return kuvvetYok(p) ? 'Kuvvet yok' : cekiyor(p) ? 'Çekme' : 'İtme'; }
+
+/** Yükü işaretiyle yazar: +3, −2, 0 (sıfırın işareti olmaz). */
+function isaretli(q) { return (q > 0 ? '+' : q < 0 ? '−' : '') + D.biçim(Math.abs(q)); }
+
+/** Yük rengi: artı kırmızı, eksi mavi, yüksüz gri. */
+function yukRengi(q) { return q > 0 ? '#E2483F' : q < 0 ? '#2F6FD0' : '#8A949F'; }
 
 function kutleKg(p) { return p.m / 1000; }
 
@@ -64,7 +75,7 @@ function adim(st, dt, p) {
   if (p.mod < 1.5) {
     /* Ölçüm düzeneği: oynatınca uzaklık taranır, F'nin uzaklığın KARESİYLE
        nasıl azaldığı canlı görünür. Kaydırıcı taramanın başladığı uzaklık. */
-    const hedef = p.d < 120 ? 220 : 12;
+    const hedef = p.d < 60 ? 110 : 12;
     st.x2 = D.tarama(st.t, p.d, hedef, 12) / 100;
     st.v2 = 0;
     return;
@@ -73,7 +84,8 @@ function adim(st, dt, p) {
   if (st.durdu) return;
 
   /* Serbest yük: kuvvet uzaklığa bağlı olduğu için her adımda yeniden
-     hesaplanır. Sabit ivmeli hareket DEĞİLDİR. */
+     hesaplanır. Sabit ivmeli hareket DEĞİLDİR. Yüklerden biri sıfırsa yon=0
+     olur ve araba hiç kıpırdamaz — gerçekte de öyledir. */
   const F = kuvvet(p, st.x2);
   const a = (F / kutleKg(p)) * yon(p);
   st.v2 += a * dt;
@@ -105,9 +117,9 @@ function olcekle(w, st, p) {
 /** Yük küresi: artı kırmızı, eksi mavi; yarıçap yük büyüklüğüyle artar. */
 function yukKuresi(ctx, x, y, q, etiket, hiza = 'center', kaydir = 0) {
   const r = 11 + Math.min(Math.abs(q), 10) * 1.15;
-  const arti = q > 0;
-  const ana = arti ? '#E2483F' : '#2F6FD0';
-  const isik = arti ? '#F3958E' : '#8FB6EC';
+  const arti = q > 0, yuksuz = q === 0;
+  const ana = yukRengi(q);
+  const isik = yuksuz ? '#C9CFD6' : arti ? '#F3958E' : '#8FB6EC';
 
   ctx.save();
   const g = ctx.createRadialGradient(x - r * .3, y - r * .35, r * .2, x, y, r);
@@ -115,12 +127,14 @@ function yukKuresi(ctx, x, y, q, etiket, hiza = 'center', kaydir = 0) {
   ctx.fillStyle = g;
   ctx.beginPath(); ctx.arc(x, y, r, 0, 6.2832); ctx.fill();
 
-  /* işaret */
-  ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
-  ctx.beginPath();
-  ctx.moveTo(x - r * .42, y); ctx.lineTo(x + r * .42, y);
-  if (arti) { ctx.moveTo(x, y - r * .42); ctx.lineTo(x, y + r * .42); }
-  ctx.stroke();
+  /* işaret — yüksüz kürede işaret yok */
+  if (!yuksuz) {
+    ctx.strokeStyle = '#FFFFFF'; ctx.lineWidth = 2.6; ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(x - r * .42, y); ctx.lineTo(x + r * .42, y);
+    if (arti) { ctx.moveTo(x, y - r * .42); ctx.lineTo(x, y + r * .42); }
+    ctx.stroke();
+  }
   ctx.restore();
 
   /* Yükler birbirine yaklaşınca iki etiket üst üste biner; bu yüzden
@@ -183,7 +197,7 @@ function cizGercek(ctx, w, h, st, p) {
 
   /* kuvvet okları — Newton III: eşit büyüklük, zıt yön */
   const F = kuvvet(p, st.x2);
-  if (Math.abs(p.q1) > 0 && Math.abs(p.q2) > 0) {
+  if (!kuvvetYok(p)) {
     const boy = Math.min(78, 22 + Math.sqrt(F) * 34);
     const y2 = yon(p);
     D.vektor(ctx, x1 + r1 * y2 * -1, merkezY, x1 - boy * y2, merkezY,
@@ -197,10 +211,18 @@ function cizGercek(ctx, w, h, st, p) {
   }
 
   /* Rozet, panel köşesindeki "GERÇEKÇİ GÖRÜNÜM" etiketinin altına yerleşir. */
-  D.rozet(ctx, cekiyor(p) ? 'ZIT YÜKLER · ÇEKME' : 'AYNI YÜKLER · İTME',
+  D.rozet(ctx, kuvvetYok(p) ? 'YÜKSÜZ CİSİM VAR · KUVVET YOK'
+              : cekiyor(p) ? 'ZIT YÜKLER · ÇEKME' : 'AYNI YÜKLER · İTME',
           w / 2, 52,
-          cekiyor(p) ? 'rgba(47,111,208,.92)' : 'rgba(226,72,63,.92)', '#FFFFFF',
+          kuvvetYok(p) ? 'rgba(110,118,132,.92)'
+            : cekiyor(p) ? 'rgba(47,111,208,.92)' : 'rgba(226,72,63,.92)', '#FFFFFF',
           '700 12px system-ui, sans-serif', true);
+
+  /* Ölçüm düzeneğinde yükler kendi kendine hareket ETMEZ; deneyi yapan kişi
+     q₂’nin ayağını kaydırarak uzaklığı değiştirir. */
+  if (p.mod < 1.5 && st.t > 0)
+    D.yaziAydinlik(ctx, 'q₂’nin ayağı elle kaydırılıyor (ölçüm)', 12, h - 12, R.mur,
+                   '600 11px system-ui, sans-serif', 'left');
 
   if (st.durdu)
     D.yaziAydinlik(ctx, st.x2 <= EN_YAKIN + 1e-6 ? 'yükler çarpıştı' : 'raydan çıktı',
@@ -224,11 +246,11 @@ function cizKlasik(ctx, w, h, st, p) {
   const y2 = yon(p);
 
   /* yükler nokta cisim olarak */
-  D.noktaCisim(ctx, x1, ekseny, 7, p.q1 > 0 ? '#E2483F' : '#2F6FD0');
-  D.noktaCisim(ctx, x2, ekseny, 7, p.q2 > 0 ? '#E2483F' : '#2F6FD0');
-  D.yaziHaleli(ctx, 'q₁ ' + (p.q1 > 0 ? '+' : '−') + D.biçim(Math.abs(p.q1)) + ' μC',
+  D.noktaCisim(ctx, x1, ekseny, 7, yukRengi(p.q1));
+  D.noktaCisim(ctx, x2, ekseny, 7, yukRengi(p.q2));
+  D.yaziHaleli(ctx, 'q₁ ' + isaretli(p.q1) + ' μC',
                x1 - 6, ekseny + 22, K.beyaz, '600 11px system-ui, sans-serif', 'right');
-  D.yaziHaleli(ctx, 'q₂ ' + (p.q2 > 0 ? '+' : '−') + D.biçim(Math.abs(p.q2)) + ' μC',
+  D.yaziHaleli(ctx, 'q₂ ' + isaretli(p.q2) + ' μC',
                x2 + 6, ekseny + 22, K.beyaz, '600 11px system-ui, sans-serif', 'left');
 
   /* d ölçüsü */
@@ -237,10 +259,15 @@ function cizKlasik(ctx, w, h, st, p) {
   D.olcu(ctx, x1, ekseny - 52, x2, ekseny - 52,
          'd = ' + D.biçim(st.x2) + ' m', K.metin2);
 
-  /* eşit ve zıt kuvvet vektörleri */
-  const boy = Math.min(62, 20 + Math.sqrt(F) * 28);
-  D.vektor(ctx, x1, ekseny, x1 - boy * y2, ekseny, R.kuvvet, 'F₂₁', { kalinlik: 2.6 });
-  D.vektor(ctx, x2, ekseny, x2 + boy * y2, ekseny, R.kuvvet, 'F₁₂', { kalinlik: 2.6 });
+  /* eşit ve zıt kuvvet vektörleri — q₁·q₂ = 0 ise kuvvet yok, ok da yok */
+  if (y2 !== 0) {
+    const boy = Math.min(62, 20 + Math.sqrt(F) * 28);
+    D.vektor(ctx, x1, ekseny, x1 - boy * y2, ekseny, R.kuvvet, 'F₂₁', { kalinlik: 2.6 });
+    D.vektor(ctx, x2, ekseny, x2 + boy * y2, ekseny, R.kuvvet, 'F₁₂', { kalinlik: 2.6 });
+  } else {
+    D.yaziHaleli(ctx, 'q₁·q₂ = 0  →  F = 0  (yüksüz cisme elektriksel kuvvet etki etmez)',
+                 12, ekseny - 22, R.normal, '600 11px system-ui, sans-serif', 'left');
+  }
 
   /* hesap dökümü */
   const dd = Math.max(st.x2, EN_YAKIN);
@@ -257,12 +284,14 @@ function cizKlasik(ctx, w, h, st, p) {
   });
 
   /* Newton III vurgusu — sağdaki hesap dökümüyle aynı satıra düşmesin */
-  D.yaziHaleli(ctx, '|F₁₂| = |F₂₁|  — yükler farklı olsa bile eşittir (Newton III)',
-               12, ekseny + 46, R.normal, '600 11px system-ui, sans-serif', 'left');
+  if (y2 !== 0)
+    D.yaziHaleli(ctx, '|F₁₂| = |F₂₁|  — yükler farklı olsa bile eşittir (Newton III)',
+                 12, ekseny + 46, R.normal, '600 11px system-ui, sans-serif', 'left');
 
   if (p.mod > 1.5) {
     const a = F / kutleKg(p);
-    D.yaziHaleli(ctx, 'q₂ serbest:  a = F/m = ' + D.biçim(a) + ' m/s²  (SABİT DEĞİL)',
+    D.yaziHaleli(ctx, 'q₂ serbest:  a = F/m = ' + D.biçim(a) + ' m/s²' +
+                 (y2 !== 0 ? '  (SABİT DEĞİL)' : ''),
                  12, 20, R.ivme, '600 11px system-ui, sans-serif', 'left');
     D.yaziHaleli(ctx, 'ϑ = ' + D.biçim(Math.abs(st.v2)) + ' m/s',
                  12, 37, R.hiz, '600 11px system-ui, sans-serif', 'left');
@@ -275,15 +304,22 @@ function cizGrafik(ctx, w, h, st, p) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
 
   /* F − d eğrisi: ters kare yasası gözle görünür olsun */
+  /* Serbest düzenekte yük 2,4 m’ye kadar itilebilir; eksen onu da kapsar ki
+     çalışma noktası kenara yapışmasın. Yaklaşırken (d < 10 cm) üst sınır da
+     büyür. */
+  const dMax = p.mod > 1.5 ? 2.4 : 1.2;
+  const dMin = Math.max(EN_YAKIN, Math.min(0.08, st.x2));
   const veri = [];
-  for (let d = 0.08; d <= 1.2; d += 0.02) veri.push({ t: d, v: kuvvet(p, d) });
-  const Fmax = kuvvet(p, 0.1);
+  for (let d = dMin; d <= dMax + 1e-9; d += (dMax - dMin) / 120) veri.push({ t: d, v: kuvvet(p, d) });
+  const Fmax = kuvvet(p, Math.min(0.1, st.x2));
 
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
-    baslik: 'F − d   (ters kare:  d 2 katına → F dörtte bire)', birim: 'N', tEtiket: 'd (m)',
+    baslik: kuvvetYok(p) ? 'F − d   (q₁·q₂ = 0 → her uzaklıkta F = 0)'
+                         : 'F − d   (ters kare:  d 2 katına → F dörtte bire)',
+    birim: 'N', tEtiket: 'd (m)',
     imlec: { t: st.x2, v: kuvvet(p, st.x2) },
-    veri, tMax: 1.2, vMin: 0, vMax: Fmax * 1.05,
+    veri, tMax: dMax, vMin: 0, vMax: Math.max(1e-6, Fmax * 1.05),
     renk: R.kuvvet
   });
 
@@ -291,19 +327,26 @@ function cizGrafik(ctx, w, h, st, p) {
   if (p.mod > 1.5) {
     D.miniGrafik(ctx, {
       x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'ϑ − t   (serbest yük · eğim artıyor)', birim: 'm/s',
+      /* Eğim = ivme = F/m. Yaklaşan (çeken) yükte F büyür → eğim ARTAR;
+         uzaklaşan (iten) yükte F küçülür → eğim AZALIR. */
+      baslik: kuvvetYok(p) ? 'ϑ − t   (kuvvet yok · yük durgun)'
+            : cekiyor(p) ? 'ϑ − t   (yaklaşıyor · eğim artıyor)'
+                         : 'ϑ − t   (uzaklaşıyor · eğim azalıyor)',
+      birim: 'm/s',
       veri: st.kayit, tMin: st.kayit.length ? st.kayit[0].t : 0,
       tMax: Math.max(1, st.t), vMin: 0,
       vMax: Math.max(1, Math.abs(st.v2) * 1.2),
       renk: R.hiz
     });
   } else {
+    const dd2 = Math.pow(Math.max(st.x2, EN_YAKIN), 2);
     const v2 = [];
-    for (let q = 0.5; q <= 10; q += 0.25)
-      v2.push({ t: q, v: KC * Math.abs(q1C(p)) * (q * 1e-6) / Math.pow(Math.max(st.x2, EN_YAKIN), 2) });
+    for (let q = 0; q <= 10; q += 0.25)
+      v2.push({ t: q, v: KC * Math.abs(q1C(p)) * (q * 1e-6) / dd2 });
     D.miniGrafik(ctx, {
       x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'F − q₂   (doğru orantı:  q 2 katına → F 2 katına)', birim: 'N', tEtiket: 'q₂ (μC)',
+      baslik: 'F − |q₂|   (doğru orantı:  q 2 katına → F 2 katına)', birim: 'N', tEtiket: '|q₂| (μC)',
+      imlec: { t: Math.abs(p.q2), v: kuvvet(p, st.x2) },
       veri: v2, tMax: 10, vMin: 0,
       vMax: Math.max(1e-6, v2[v2.length - 1].v * 1.05),
       renk: R.konum
@@ -320,7 +363,7 @@ function okumalar(st, p) {
     { et: 'q₂',            dg: D.biçim(p.q2),          birim: 'μC' },
     { et: 'Uzaklık  d',    dg: D.biçim(st.x2 * 100),   birim: 'cm' },
     { et: 'Kuvvet  F',     dg: D.biçim(F),             birim: 'N' },
-    { et: 'Tür',           dg: cekiyor(p) ? 'Çekme' : 'İtme', birim: '' }
+    { et: 'Tür',           dg: turMetni(p), birim: '' }
   ];
   if (p.mod > 1.5) {
     o.push({ et: 'İvme  a', dg: D.biçim(F / kutleKg(p)), birim: 'm/s²' });

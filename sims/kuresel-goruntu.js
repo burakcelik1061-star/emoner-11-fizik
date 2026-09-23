@@ -96,9 +96,20 @@ function goruntuOzellik(a, f) {
    dönüştüğü Oynat'a basıldığı anda görünür. Kaydırıcı başlangıcı verir. */
 function durum(p) { return { t: 0, a: p.a }; }
 
+/* Tarama beş durumu da geçecek yöne gider: cisim 2F’nin dışındaysa aynaya
+   doğru (2F’yi ve F’yi geçerek), içindeyse aynadan uzağa (F’yi ve 2F’yi
+   geçerek). Ölçek bu aralığa göre kurulur. */
+function taramaHedefi(p) { return p.a > 2.2 * p.f ? 0.4 * p.f : 3 * p.f; }
+
+/** Cismin bu düzenekte alabileceği en büyük uzaklık — ölçek ve grafik ekseni
+    buna göre kurulur ki tarama boyunca SABİT kalsın. */
+function aEnBuyuk(p) {
+  return p.mod < 1.5 ? Math.max(p.a, taramaHedefi(p)) : 4 * p.f;
+}
+
 function adim(st, dt, p) {
   st.t += dt;
-  if (p.mod < 1.5) st.a = D.tarama(st.t, p.a, p.a < 100 ? 190 : 8, 14);
+  if (p.mod < 1.5) st.a = D.tarama(st.t, p.a, taramaHedefi(p), 14);
 }
 function bitti(st, p) { return p.mod > 1.5 && st.t >= TUR_SURESI; }
 
@@ -111,12 +122,18 @@ function yerlesim(w, h, st, p) {
   const b = goruntuB(a, f);
 
   const cy = h * 0.52;
-  const ax = cukur ? w * 0.78 : w * 0.54;
 
-  /* Ölçek: cisim, M ve (sığıyorsa) görüntü görünsün */
-  const bGorunur = b !== null && Math.abs(b) < 260 ? Math.abs(b) : 0;
-  const yatayCm = Math.max(a * 1.10, Math.abs(f) * 2.4, bGorunur * 1.08, 1);
-  const olcek = Math.min((ax - w * 0.08) / yatayCm, 6.5);
+  /* Yerleşim tarama boyunca SABİT: cismin en uzak konumu, M ve (taramada
+     oluşuyorsa) aynanın ARKASINDAKİ sanal görüntü sığacak şekilde. Anlık a’ya
+     göre kurulsaydı cisim ekranda yerinde durur, ayna ile odak kayıyormuş gibi
+     görünürdü. Panele yine sığmayan görüntü ayrıca bildirilir. */
+  const aMinS = p.mod < 1.5 ? Math.min(p.a, taramaHedefi(p)) : 0.35 * p.f;
+  const sanalVar = !cukur || aMinS < p.f;
+  const solCm = Math.max(aEnBuyuk(p) * 1.10, cukur ? p.f * 2.4 : p.f * 0.5, 1);
+  const sagCm = cukur ? (sanalVar ? p.f * 2.2 : solCm * 0.28) : p.f * 2.3;
+  const solKenar = w * 0.06, sagKenar = w * 0.96;
+  const ax = solKenar + (sagKenar - solKenar) * solCm / (solCm + sagCm);
+  const olcek = Math.min((sagKenar - solKenar) / (solCm + sagCm), 6.5);
 
   const boyPx = Math.min(h * 0.24, p.cisimBoyu * olcek * 2.2, 66);
   return { cukur, cy, ax, olcek, f, a, b, boyPx };
@@ -186,10 +203,12 @@ function cizGercek(ctx, w, h, st, p) {
                    '600 11px system-ui, sans-serif', 'right');
 
   /* ---- görüntü ---- */
-  if (y.b === null || Math.abs(y.b) > 400) {
+  const bxPanel = y.b === null ? null : xKonum(y, y.b);
+  if (y.b === null || bxPanel < w * 0.01 || bxPanel > w * 0.99) {
     D.yaziAydinlik(ctx,
       y.b === null ? 'Cisim tam odakta — yansıyan ışınlar PARALEL, görüntü oluşmaz'
-                   : 'Görüntü ' + D.biçim(Math.abs(y.b)) + ' cm uzakta — panele sığmıyor',
+                   : (y.b > 0 ? 'Görüntü önde ' : 'Sanal görüntü arkada ') + D.biçim(Math.abs(y.b)) +
+                     ' cm uzakta — panelin dışında',
       w * 0.5, h * 0.95, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   } else {
     const bx = xKonum(y, y.b);
@@ -202,22 +221,33 @@ function cizGercek(ctx, w, h, st, p) {
     const sanal = y.b < 0;
     const etiket = (sanal ? 'sanal görüntü' : 'görüntü') +
                    (tasti ? '  (×' + D.biçim(Math.abs(y.b / y.a), 3) + ')' : '');
+    /* Sanal görüntü aynanın ARKASINDA: yansıyan ışınların geri uzantıları
+       (kesikli) orada kesişir. 1. ışın (paralel gelen) ile tepe noktasına
+       gelen ışın her durumda çizilebilir. */
+    if (sanal) {
+      const tepeY = y.cy - gBoyTam;                 // ok ucu: taban − boy
+      D.sanalIsin(ctx, y.ax, ty, bx, tepeY, 'rgba(150,175,210,.85)');
+      D.sanalIsin(ctx, y.ax, y.cy, bx, tepeY, 'rgba(150,175,210,.85)');
+      /* tepe noktasına gelen ışın: eksenle eşit açıyla yansır */
+      D.isin(ctx, ox, ty, y.ax, y.cy, R.hiz, 1.6, true);
+      D.isin(ctx, y.ax, y.cy, solKenar, y.cy + (y.cy - ty) * (y.ax - solKenar) / (y.ax - ox), R.hiz, 1.6, true);
+    }
     ctx.save();
     if (sanal) ctx.globalAlpha = 0.72;
     D.nesneOku(ctx, bx, y.cy, gBoy, sanal ? '#8FA8C8' : R.kuvvet, etiket);
     if (tasti) {
       /* kesildiğini göstermek için ucunda kesik çizgi */
-      D.kesikliCizgi(ctx, bx - 9, y.cy + gBoy, bx + 9, y.cy + gBoy,
+      D.kesikliCizgi(ctx, bx - 9, y.cy - gBoy, bx + 9, y.cy - gBoy,
                      sanal ? '#8FA8C8' : R.kuvvet, 1.4, [4, 3]);
     }
     ctx.restore();
   }
 
   /* ---- ölçüler ---- */
-  D.olcu(ctx, ox, y.cy + h * 0.30, y.ax, y.cy + h * 0.30,
+  D.olcu(ctx, Math.min(ox, y.ax), y.cy + h * 0.30, Math.max(ox, y.ax), y.cy + h * 0.30,
          'a = ' + D.biçim(y.a) + ' cm', R.hiz);
-  if (y.b !== null && Math.abs(y.b) < 400) {
-    D.olcu(ctx, xKonum(y, y.b), y.cy + h * 0.38, y.ax, y.cy + h * 0.38,
+  if (bxPanel !== null && bxPanel >= w * 0.01 && bxPanel <= w * 0.99) {
+    D.olcu(ctx, Math.min(bxPanel, y.ax), y.cy + h * 0.38, Math.max(bxPanel, y.ax), y.cy + h * 0.38,
            'b = ' + D.biçim(y.b) + ' cm', R.kuvvet);
   }
 
@@ -304,7 +334,7 @@ function cizGrafik(ctx, w, h, st, p) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const f = odak(p);
   const cukur = p.tur < 1.5;
-  const aMax = p.f * 5;
+  const aMax = Math.max(p.f * 5, aEnBuyuk(p));
   /* Canlı çalışma noktası — tarama oynatılınca eğri üzerinde kayar. */
   const aCanli = cisimA(st, p);
   const bCanli = goruntuB(aCanli, f);

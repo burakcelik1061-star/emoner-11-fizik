@@ -80,8 +80,9 @@ function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   if (p.mod > 1.5) { cizOda(ctx, w, h, st, p); return; }
 
-  const kx = w * 0.20, ky = h * 0.32;
-  const olcek = (w * 0.52) / 1.0;                    // 1 m ekranda w*0.52 px
+  /* Ölçek SABİT: 4 m (kaydırıcının en büyük değeri) ekranda w·0,70 px. */
+  const kx = w * 0.14, ky = h * 0.38;
+  const olcek = (w * 0.70) / 4.0;
   const d = p.d / 100;
   const yx = kx + d * olcek;
 
@@ -90,13 +91,27 @@ function cizGercek(ctx, w, h, st, pHam) {
   D.yaziAydinlik(ctx, 'I = ' + D.biçim(p.I) + ' cd', kx, ky - 44, R.mur,
                  '700 12px system-ui, sans-serif', 'center');
 
-  /* yayılan ışınlar — yüzeye doğru bir demet */
+  /* Yayılan ışınlar: kaynaktan SABİT açılarla çıkan bir demet. Uzaklık
+     arttıkça demet genişler; yüzeye düşen ışın sayısı azalır — ters kare
+     yasası tam olarak budur. Yüzey eğikse ışınlara dik izdüşümü cosα kadar
+     küçülür ve yine daha az ışın yakalar. */
   const alfa = aciRad(p);
   const yuzeyBoy = 74;
+  const yakalar = (yuzeyBoy / 2) * Math.cos(alfa);
+  let isabet = 0;
   ctx.save();
-  for (let k = -3; k <= 3; k++) {
-    const hedefY = ky + k * 16;
-    D.isin(ctx, kx + 14, ky, yx - 6, hedefY, 'rgba(255,196,60,.75)', 1.6, false);
+  for (let k = -8; k <= 8; k++) {
+    const a = k * 0.05;
+    const dy = Math.tan(a) * (yx - kx);
+    if (Math.abs(dy) <= yakalar) {
+      isabet++;
+      D.isin(ctx, kx + 14 * Math.cos(a), ky + 14 * Math.sin(a), yx - 6, ky + dy, 'rgba(255,196,60,.85)', 1.6, false);
+    } else {
+      /* yüzeyi ıskalayan ışın: panelin kenarına kadar soluk */
+      const ux = w - 8 - kx;
+      D.isin(ctx, kx + 14 * Math.cos(a), ky + 14 * Math.sin(a), w - 8, ky + Math.tan(a) * ux,
+             'rgba(255,196,60,.22)', 1.2, false);
+    }
   }
   ctx.restore();
 
@@ -115,14 +130,18 @@ function cizGercek(ctx, w, h, st, pHam) {
   /* uzaklık ölçüsü */
   D.olcu(ctx, kx, ky + 96, yx, ky + 96, 'd = ' + D.biçim(p.d) + ' cm', R.mur);
 
-  /* aydınlanma göstergesi — yüzeyin parlaklığı */
+  /* aydınlanma göstergesi — yüzeyin parlaklığı (göz duyarlılığına yakın
+     olsun diye karekök ölçek; en yakın uzaklıktaki E’ye göre) */
   const E = aydinlanma(p);
-  const enB = p.I / 0.01;
+  const Eref = p.I / (0.2 * 0.2);
   ctx.save();
-  ctx.globalAlpha = Math.min(0.85, 0.1 + E / Math.max(1, enB) * 6);
-  ctx.fillStyle = '#FFE9A8';
+  ctx.translate(yx, ky); ctx.rotate(alfa); ctx.translate(-yx, -ky);
+  ctx.globalAlpha = Math.min(0.95, 0.08 + 0.87 * Math.sqrt(Math.max(0, E) / Eref));
+  ctx.fillStyle = '#FFF3B0';
   ctx.fillRect(yx - 5, ky - yuzeyBoy / 2, 10, yuzeyBoy);
   ctx.restore();
+  D.yaziAydinlik(ctx, 'yüzeye düşen ışın: ' + isabet + ' / 17', yx, ky + yuzeyBoy / 2 + 18, R.mur,
+                 '600 11px system-ui, sans-serif', 'center');
 
   D.yaziAydinlik(ctx, 'E = ' + D.biçim(E) + ' lx', w - 10, 28, R.normal,
                  '700 14px system-ui, sans-serif', 'right');

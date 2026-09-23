@@ -44,11 +44,14 @@ const { R, K } = D;
 
 const TUR_SURESI = 20;
 
-/* Optik alet ön ayarları: [f (cm), a (cm)] */
+/* Optik alet ön ayarları: f (cm), a (cm) ve kullanımda a’nın gezdiği pay.
+   Fotoğraf makinesinde konu yaklaşıp uzaklaşır; projeksiyonda slayt
+   netleme için merceğe yaklaşıp uzaklaşır; büyüteçte mercek cisme
+   yaklaştırılıp uzaklaştırılır (a < f kalır, görüntü hep sanal). */
 const ALETLER = [
-  { ad: 'Fotoğraf makinesi', f: 5,  a: 200 },
-  { ad: 'Projeksiyon',       f: 10, a: 12 },
-  { ad: 'Büyüteç',           f: 10, a: 6 }
+  { ad: 'Fotoğraf makinesi', f: 5,  a: 200, pay: 80 },
+  { ad: 'Projeksiyon',       f: 10, a: 12.5, pay: 1.5 },
+  { ad: 'Büyüteç',           f: 10, a: 6,  pay: 2 }
 ];
 
 /* ------------------------------------------------------------- Fizik */
@@ -64,8 +67,14 @@ function turUzakligi(st, p) {
   return bas * Math.pow(son / bas, Math.min(1, st.t / TUR_SURESI));
 }
 
+function aletAl(st, p) { return ALETLER[Math.round((st && st.alet) || p.alet) - 1]; }
+
 function cisimA(st, p) {
-  if (p.mod > 2.5) return ALETLER[Math.round((st && st.alet) || p.alet) - 1].a;
+  if (p.mod > 2.5) {
+    const al = aletAl(st, p);
+    const u = st && st.t ? (st.t % ALET_SURESI) / ALET_SURESI : 0;
+    return al.a + al.pay * Math.sin(2 * Math.PI * u);
+  }
   return p.mod < 1.5 ? (st.a ?? p.a) : turUzakligi(st, p);
 }
 
@@ -107,7 +116,7 @@ const ALET_SURESI = 5;          // s — her aletin ekranda kalma süresi
 
 function adim(st, dt, p) {
   st.t += dt;
-  if (p.mod < 1.5) st.a = D.tarama(st.t, p.a, p.a < 100 ? 190 : 8, 14);
+  if (p.mod < 1.5) st.a = D.tarama(st.t, p.a, taramaHedefi(p), 14);
   else if (p.mod > 2.5) {
     /* Optik aletler sırayla gezilir: fotoğraf makinesi → projeksiyon → büyüteç */
     const bas = Math.round(p.alet) - 1;
@@ -118,15 +127,42 @@ function bitti(st, p) { return p.mod > 1.5 && p.mod < 2.5 && st.t >= TUR_SURESI;
 
 /* ------------------------------------------------- Ortak yerleşim */
 
+/** Cismin bu düzenekte alabileceği en büyük uzaklık (1: tarama, 2: tur). */
+/* Tarama beş durumu da geçecek yöne gider (2F’nin dışındaysa merceğe doğru,
+   içindeyse uzağa); ölçek bu aralığa göre kurulur. */
+function taramaHedefi(p) { return p.a > 2.2 * p.f ? 0.4 * p.f : 3 * p.f; }
+
+function aEnBuyuk(p) {
+  return p.mod < 1.5 ? Math.max(p.a, taramaHedefi(p)) : 4 * Math.abs(p.f);
+}
+
 function yerlesim(w, h, st, p) {
   const f = odak(p, st);
   const a = cisimA(st, p);
   const b = goruntuB(a, f);
   const cy = h * 0.52;
 
-  const bGor = b !== null && Math.abs(b) < 300 ? Math.abs(b) : 0;
-  const solCm = Math.max(a * 1.10, Math.abs(f) * 2.3, b !== null && b < 0 ? bGor * 1.06 : 0);
-  const sagCm = Math.max(Math.abs(f) * 2.3, b !== null && b > 0 ? bGor * 1.06 : 0);
+  /* 1. ve 2. düzenekte yerleşim TARAMA BOYUNCA SABİT: cisim gerçekten
+     merceğe yaklaşır, görüntü gerçekten kayar. (Anlık a’ya göre kurulsaydı
+     cisim yerinde durur, mercek ile odaklar kayıyormuş gibi görünürdü.)
+     Optik aletlerde her alet kendi a’sı için ayrı yerleştirilir. */
+  let solCm, sagCm;
+  if (p.mod > 2.5) {
+    /* alet boyunca sabit: a’nın gezdiği aralığın iki ucu da sığsın */
+    const al = aletAl(st, p);
+    solCm = Math.abs(f) * 2.3; sagCm = Math.abs(f) * 2.3;
+    for (const aq of [al.a - al.pay, al.a, al.a + al.pay]) {
+      const bq = goruntuB(aq, f);
+      solCm = Math.max(solCm, aq * 1.10);
+      if (bq !== null && Math.abs(bq) < 300) {
+        if (bq < 0) solCm = Math.max(solCm, -bq * 1.2);      // etiketi de sığsın
+        else        sagCm = Math.max(sagCm, bq * 1.06);
+      }
+    }
+  } else {
+    solCm = Math.max(aEnBuyuk(p) * 1.08, Math.abs(f) * 2.3);
+    sagCm = Math.max(Math.abs(f) * 4.2, 1);
+  }
 
   /* Merceğin yatay yeri SABİT değil, iki tarafın ihtiyacına göre dengelenir.
      Sabit ortada dururken projeksiyon gibi a≪b durumlarında sol taraf birkaç
@@ -181,16 +217,19 @@ function cizGercek(ctx, w, h, st, p) {
     const y3 = ty + (y.mx - ox) * (y.cy - ty) / (fx - ox);
     if (y3 > 6 && y3 < h - 6) {
       D.isin(ctx, ox, ty, y.mx, y3, R.kuvvet, 2, true);
-      if (!y.ince) D.sanalIsin(ctx, ox, ty, fx, y.cy, 'rgba(150,175,210,.8)');
+      /* ıraksakta ışın ARKA odağa yönelir; uzantısı merceğin ötesinde kesikli */
+      if (!y.ince) D.sanalIsin(ctx, y.mx, y3, fx, y.cy, 'rgba(150,175,210,.8)');
       D.isin(ctx, y.mx, y3, sag, y3, R.kuvvet, 2, true);
     }
   }
 
   /* görüntü */
-  if (y.b === null || Math.abs(y.b) > 400) {
+  const bxPanel = y.b === null ? null : y.mx + y.b * y.olcek;
+  if (y.b === null || bxPanel < w * 0.01 || bxPanel > w * 0.99) {
     D.yaziAydinlik(ctx,
       y.b === null ? 'Cisim tam odakta — çıkan ışınlar PARALEL, görüntü oluşmaz'
-                   : 'Görüntü ' + D.biçim(Math.abs(y.b)) + ' cm uzakta — panele sığmıyor',
+                   : (y.b > 0 ? 'Görüntü merceğin ötesinde ' : 'Sanal görüntü cisim tarafında ') +
+                     D.biçim(Math.abs(y.b)) + ' cm uzakta — panelin dışında',
       w * 0.5, h * 0.95, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   } else {
     const bx = y.mx + y.b * y.olcek;
@@ -203,21 +242,28 @@ function cizGercek(ctx, w, h, st, p) {
     const sanal = y.b < 0;
     const etiket = (sanal ? 'sanal görüntü' : 'görüntü') +
                    (tasti ? '  (×' + D.biçim(Math.abs(y.b / y.a), 3) + ')' : '');
+    /* Sanal görüntü: çıkan ışınlar ıraksar; GERİ UZANTILARI (kesikli) görüntünün
+       tepesinde kesişir. Göz, ışığı oradan geliyormuş gibi görür. */
+    if (sanal) {
+      const tepeY = y.cy - gBoyTam;                 // ok ucu: taban − boy
+      D.sanalIsin(ctx, y.mx, ty, bx, tepeY, 'rgba(150,175,210,.85)');
+      D.sanalIsin(ctx, y.mx, y.cy, bx, tepeY, 'rgba(150,175,210,.85)');
+    }
     ctx.save();
     if (sanal) ctx.globalAlpha = 0.72;
     D.nesneOku(ctx, bx, y.cy, gBoy, sanal ? '#8FA8C8' : R.kuvvet, etiket);
     if (tasti) {
       /* kesildiğini göstermek için ucunda kesik çizgi */
-      D.kesikliCizgi(ctx, bx - 9, y.cy + gBoy, bx + 9, y.cy + gBoy,
+      D.kesikliCizgi(ctx, bx - 9, y.cy - gBoy, bx + 9, y.cy - gBoy,
                      sanal ? '#8FA8C8' : R.kuvvet, 1.4, [4, 3]);
     }
     ctx.restore();
 
-    D.olcu(ctx, y.mx, y.cy + h * 0.38, bx, y.cy + h * 0.38,
+    D.olcu(ctx, Math.min(y.mx, bx), y.cy + h * 0.38, Math.max(y.mx, bx), y.cy + h * 0.38,
            'b = ' + D.biçim(y.b, 4) + ' cm', R.kuvvet);
   }
 
-  D.olcu(ctx, ox, y.cy + h * 0.30, y.mx, y.cy + h * 0.30,
+  D.olcu(ctx, Math.min(ox, y.mx), y.cy + h * 0.30, Math.max(ox, y.mx), y.cy + h * 0.30,
          'a = ' + D.biçim(y.a, 4) + ' cm', R.hiz);
 
   D.yaziAydinlik(ctx, durumAdi(y.a, y.f), 10, 18, R.surtunme,
@@ -302,7 +348,7 @@ function cizGrafik(ctx, w, h, st, p) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const f = odak(p, st);
   const ince = f > 0;
-  const aMax = Math.abs(f) * 5;
+  const aMax = Math.max(Math.abs(f) * 5, p.mod > 2.5 ? cisimA(st, p) * 1.1 : aEnBuyuk(p));
   const sinir = Math.abs(f) * 4;
 
   const v1 = [];
@@ -366,7 +412,7 @@ function okumalar(st, p) {
   ];
 
   if (p.mod > 2.5) {
-    const al = ALETLER[Math.round((st && st.alet) || p.alet) - 1];
+    const al = aletAl(st, p);
     ek.push({ et: 'Alet', dg: al.ad, birim: '' });
     ek.push({ et: 'Perdeye düşer mi?', dg: o.b > 0 ? 'Evet' : 'Hayır (sanal)', birim: '' });
   }

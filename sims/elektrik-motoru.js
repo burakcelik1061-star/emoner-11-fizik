@@ -35,9 +35,11 @@ const { R, K } = D;
 
 function alanCerceve(p) { return (p.a / 100) * (p.b / 100); }   // m²
 
-/** Anlık döndürme etkisi (N·m). θ: çerçeve düzlemi ile alan arasındaki açı. */
+/** Anlık döndürme etkisi (N·m), İŞARETLİ. θ: çerçeve düzlemi ile alan
+    arasındaki açı; pozitif tork θ’yı artırır (eksen boyunca bakınca saat
+    yönünün tersi). Akımın yönü değişirse dönme yönü de değişir. */
 function tork(st, p) {
-  return p.B * Math.abs(p.i) * alanCerceve(p) * p.N * Math.cos(st.aci);
+  return p.B * p.i * alanCerceve(p) * p.N * Math.cos(st.aci);
 }
 
 /**
@@ -71,7 +73,7 @@ function eylemsizlik(p) {
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
-  return { t: 0, aci: 0, omega: 0, tur: 0, kayit: [] };
+  return { t: 0, aci: 0, omega: 0, tur: 0, toplamAci: 0, kayit: [] };
 }
 
 function adim(st, dt, p) {
@@ -82,9 +84,11 @@ function adim(st, dt, p) {
 
   st.omega += acisalIvme * dt;
   st.aci += st.omega * dt;
+  st.toplamAci += st.omega * dt;
 
-  if (st.aci >= 2 * Math.PI) { st.aci -= 2 * Math.PI; st.tur++; }
-  if (st.aci < 0) { st.aci += 2 * Math.PI; }
+  /* Tam tur, hangi yöne dönülürse dönülsün toplam açıdan sayılır. */
+  st.tur = Math.floor(Math.abs(st.toplamAci) / (2 * Math.PI));
+  st.aci = ((st.aci % (2 * Math.PI)) + 2 * Math.PI) % (2 * Math.PI);
 
   if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.02)
     st.kayit.push({ t: st.t, v: st.omega });
@@ -118,30 +122,42 @@ function cizGercek(ctx, w, h, st, p) {
   }
   ctx.restore();
 
-  /* dönme ekseni */
-  D.kesikliCizgi(ctx, cx, cy - R0 - 24, cx, cy + R0 + 24, 'rgba(120,130,150,.7)', 1.4, [5, 5]);
-
-  /* çerçeve — yandan görünüş: iki kenarın kesiti daire olarak çizilir */
+  /* Dönme EKSENİ boyunca bakılıyor: eksen sayfaya diktir (ortadaki nokta),
+     çerçevenin eksene paralel iki kenarı ⊙/⊗ kesitleri olarak bir çember
+     üzerinde döner. Açı matematik yönünde ölçülür (y yukarı): θ artınca
+     çerçeve saat yönünün TERSİNE döner. */
   const ux = Math.cos(st.aci), uy = Math.sin(st.aci);
-  const k1x = cx + ux * R0, k1y = cy + uy * R0 * 0.42;
-  const k2x = cx - ux * R0, k2y = cy - uy * R0 * 0.42;
+  const k1x = cx + ux * R0, k1y = cy - uy * R0;
+  const k2x = cx - ux * R0, k2y = cy + uy * R0;
+
+  D.kesikliCizgi(ctx, cx + R0, cy, cx - R0, cy, 'rgba(120,130,150,.35)', 1, [3, 5]);
+  ctx.save();
+  ctx.strokeStyle = 'rgba(120,130,150,.45)'; ctx.lineWidth = 1; ctx.setLineDash([4, 5]);
+  ctx.beginPath(); ctx.arc(cx, cy, R0, 0, 6.2832); ctx.stroke();
+  ctx.restore();
 
   ctx.save();
   ctx.strokeStyle = '#B87333'; ctx.lineWidth = 5;
   ctx.beginPath(); ctx.moveTo(k1x, k1y); ctx.lineTo(k2x, k2y); ctx.stroke();
   ctx.restore();
+  D.noktaCisim(ctx, cx, cy, 4, '#3A4049');           // dönme ekseni (sayfaya dik)
 
-  const isaret = akimIsareti(st, p) * (p.i >= 0 ? 1 : -1);
-  /* iki kenarda akım ZIT yönlüdür */
-  (isaret > 0 ? D.alanDisari : D.alanIceri)(ctx, k1x, k1y, 11, '#7A4A10');
-  (isaret > 0 ? D.alanIceri : D.alanDisari)(ctx, k2x, k2y, 11, '#7A4A10');
+  const isaret = akimIsareti(st, p) * Math.sign(p.i);
+  /* İki kenarda akım ZIT yönlüdür. F = iL×B: ⊙ akım, sağa bakan alanda
+     YUKARI; ⊗ akım AŞAĞI kuvvet görür. Akım yoksa kuvvet de yok. */
+  if (isaret !== 0) {
+    (isaret > 0 ? D.alanDisari : D.alanIceri)(ctx, k1x, k1y, 11, '#7A4A10');
+    (isaret > 0 ? D.alanIceri : D.alanDisari)(ctx, k2x, k2y, 11, '#7A4A10');
 
-  /* kuvvetler — zıt yönlü, çerçeveyi döndürür */
-  const F = p.B * Math.abs(p.i) * (p.b / 100) * p.N;
-  const boy = Math.min(52, 16 + F * 26);
-  const fy = isaret > 0 ? -1 : 1;
-  D.vektor(ctx, k1x, k1y, k1x, k1y + boy * fy, R.kuvvet, '', { kalinlik: 3 });
-  D.vektor(ctx, k2x, k2y, k2x, k2y - boy * fy, R.kuvvet, '', { kalinlik: 3 });
+    const F = p.B * Math.abs(p.i) * (p.b / 100) * p.N;
+    const boy = Math.min(52, 16 + F * 26);
+    const fy = isaret > 0 ? -1 : 1;
+    D.vektor(ctx, k1x, k1y, k1x, k1y + boy * fy, R.kuvvet, '', { kalinlik: 3 });
+    D.vektor(ctx, k2x, k2y, k2x, k2y - boy * fy, R.kuvvet, '', { kalinlik: 3 });
+  } else {
+    D.noktaCisim(ctx, k1x, k1y, 7, '#7A4A10');
+    D.noktaCisim(ctx, k2x, k2y, 7, '#7A4A10');
+  }
 
   /* komütatör */
   const ky = cy + R0 + 34;
@@ -159,7 +175,10 @@ function cizGercek(ctx, w, h, st, p) {
   D.yaziAydinlik(ctx, 'tur: ' + st.tur, w - 60, 38, R.mur,
                  '700 12px system-ui, sans-serif', 'right');
 
-  if (!p.komutator)
+  if (p.i === 0)
+    D.yaziAydinlik(ctx, 'akım yok ⟹ kuvvet yok ⟹ çerçeve dönmez',
+                   cx, h - 12, '#B03030', '700 11px system-ui, sans-serif', 'center');
+  else if (!p.komutator)
     D.yaziAydinlik(ctx, 'komütatör yok ⟹ çerçeve dönmez, SALINIR',
                    cx, h - 12, '#B03030', '700 11px system-ui, sans-serif', 'center');
   else if (oluNoktada(st, p))
@@ -181,14 +200,15 @@ function cizKlasik(ctx, w, h, st, p) {
   ctx.beginPath(); ctx.moveTo(cx - 84, cy); ctx.lineTo(cx + 84, cy); ctx.stroke();
   D.yaziHaleli(ctx, 'B', cx + 90, cy, R.normal, '700 12px system-ui, sans-serif', 'left');
 
+  /* Gerçekçi panelle aynı yön kuralı: θ saat yönünün tersine ölçülür. */
   const ux = Math.cos(st.aci), uy = Math.sin(st.aci);
   ctx.save();
   ctx.strokeStyle = R.ivme; ctx.lineWidth = 4;
   ctx.beginPath();
-  ctx.moveTo(cx - ux * L, cy - uy * L); ctx.lineTo(cx + ux * L, cy + uy * L);
+  ctx.moveTo(cx - ux * L, cy + uy * L); ctx.lineTo(cx + ux * L, cy - uy * L);
   ctx.stroke(); ctx.restore();
   D.noktaCisim(ctx, cx, cy, 4, K.beyaz);
-  D.aciYayi(ctx, cx, cy, 38, 0, st.aci, K.metin2, D.biçim(st.aci * 180 / Math.PI) + '°');
+  D.aciYayi(ctx, cx, cy, 38, -st.aci, 0, K.metin2, D.biçim(st.aci * 180 / Math.PI, 0) + '°');
 
   const T = Math.abs(etkinTork(st, p));
   const enBuyuk = p.B * Math.abs(p.i) * alanCerceve(p) * p.N;
@@ -233,32 +253,33 @@ function cizKlasik(ctx, w, h, st, p) {
 function cizGrafik(ctx, w, h, st, p) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
 
-  /* τ − θ */
+  /* τ − θ  (işaretli; komütatör akımı θ = 90° ve 270°’de çevirir) */
   const v1 = [];
-  const enBuyuk = p.B * Math.abs(p.i) * alanCerceve(p) * p.N;
-  for (let d = 0; d <= 360; d += 3) {
-    const rad = d * Math.PI / 180;
-    let t = enBuyuk * Math.cos(rad);
-    if (p.komutator) t = Math.abs(t) * (Math.floor(rad / Math.PI) % 2 === 0 ? 1 : 1);
-    v1.push({ t: d, v: p.komutator ? Math.abs(enBuyuk * Math.cos(rad)) : enBuyuk * Math.cos(rad) });
-  }
+  const enBuyuk = Math.max(1e-9, p.B * Math.abs(p.i) * alanCerceve(p) * p.N);
+  for (let d = 0; d <= 360; d += 3)
+    v1.push({ t: d, v: etkinTork({ aci: d * Math.PI / 180 }, p) });
+  const s = p.i < 0 ? -1 : 1;
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
     baslik: p.komutator ? 'τ − θ  (komütatörle: hep AYNI yönde)'
                         : 'τ − θ  (komütatörsüz: yön DEĞİŞİR)',
     birim: 'N·m', tEtiket: 'θ (°)',
+    imlec: { t: st.aci * 180 / Math.PI, v: etkinTork(st, p) },
     veri: v1, tMax: 360,
-    vMin: p.komutator ? 0 : -enBuyuk * 1.1, vMax: enBuyuk * 1.1,
+    vMin: p.komutator ? Math.min(0, s * enBuyuk * 1.1) : -enBuyuk * 1.1,
+    vMax: p.komutator ? Math.max(0, s * enBuyuk * 1.1) : enBuyuk * 1.1,
     renk: R.kuvvet
   });
 
+  let wMin = 0, wMax = 0;
+  for (const d of st.kayit) { if (d.v < wMin) wMin = d.v; if (d.v > wMax) wMax = d.v; }
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
-    baslik: 'ω − t   (açısal hız)', birim: 'rad/s',
+    baslik: 'ω − t   (açısal hız · işaret = dönme yönü)', birim: 'rad/s',
     veri: st.kayit, tMin: st.kayit.length ? st.kayit[0].t : 0,
     tMax: Math.max(1, st.t),
-    vMin: Math.min(0, ...st.kayit.map(d => d.v)) * 1.1 || -1,
-    vMax: Math.max(1, ...st.kayit.map(d => d.v)) * 1.1,
+    vMin: wMin < 0 ? wMin * 1.1 : 0,
+    vMax: wMax > 0 ? wMax * 1.1 : (wMin < 0 ? 0 : 1),
     renk: R.hiz
   });
 }
@@ -282,9 +303,10 @@ function okumalar(st, p) {
     { et: 'Devir',         dg: D.biçim(st.omega * 60 / (2 * Math.PI)), birim: 'dev/dk' },
     { et: 'Tam tur',       dg: String(st.tur),                   birim: '' },
     { et: 'Komütatör',     dg: p.komutator ? 'Açık' : 'Kapalı',  birim: '' },
-    { et: 'Durum',         dg: oluNoktada(st, p)
-        ? (p.komutator ? 'ÖLÜ NOKTADA TAKILDI' : 'Dengede salınıyor')
-        : (Math.abs(st.omega) > 0.5 ? 'Dönüyor' : 'Hızlanıyor'), birim: '' }
+    { et: 'Durum',         dg: p.i === 0 ? 'Akım yok · durgun' : oluNoktada(st, p)
+        ? (p.komutator ? 'ÖLÜ NOKTADA TAKILDI' : 'Dengede durdu')
+        : !p.komutator ? 'Salınıyor'
+        : (Math.abs(st.omega) > 0.5 ? (st.omega > 0 ? 'Dönüyor ↺' : 'Dönüyor ↻') : 'Hızlanıyor'), birim: '' }
   ];
 }
 

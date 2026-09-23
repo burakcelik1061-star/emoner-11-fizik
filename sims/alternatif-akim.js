@@ -110,6 +110,15 @@ function cizGercek(ctx, w, h, st, p) {
   ctx.moveTo(px + 46, py); ctx.lineTo(w * 0.52, py); ctx.lineTo(w * 0.52, h * 0.52);
   ctx.stroke();
 
+  /* Kablodaki yükler bir yöne AKIP GİTMEZ, yerinde ileri-geri SALINIR:
+     yer değiştirme ∝ ∫i dt ∝ −cos(2πft). Genlik akımla orantılı. */
+  const yerDeg = -Math.cos(2 * Math.PI * p.f * sahneT(st)) * Math.min(12, 3 + iTepe(p) * 2);
+  ctx.save(); ctx.fillStyle = '#2F6FD0';
+  for (let x = px + 62; x < w * 0.52 - 8; x += 28) {
+    ctx.beginPath(); ctx.arc(x + yerDeg, py, 3.2, 0, 6.2832); ctx.fill();
+  }
+  ctx.restore();
+
   /* ampul — parlaklığı anlık güçle */
   const bx = w * 0.62, by = h * 0.46;
   const parlaklik = Math.min(1, gucAn(st, p) / Math.max(1, ortGuc(p) * 2));
@@ -135,7 +144,7 @@ function cizGercek(ctx, w, h, st, p) {
                  '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'anlık V = ' + D.biçim(v) + ' V', w - 10, 66, R.mur,
                  '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'f = ' + D.biçim(p.f) + ' Hz · T = ' + D.biçim(periyot(p), 3) + ' s',
+  D.yaziAydinlik(ctx, 'f = ' + D.biçim(p.f) + ' Hz · T = ' + D.biçim(periyot(p), 3) + ' s · ağır çekim ×' + YAVASLATMA,
                  10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
   D.yaziAydinlik(ctx, 'ampul saniyede ' + D.biçim(2 * p.f) + ' kez sönüp yanıyor',
                  w - 10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'right');
@@ -166,6 +175,10 @@ function cizKlasik(ctx, w, h, st, p) {
     k ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy);
   }
   ctx.stroke(); ctx.restore();
+
+  /* anlık faz: şemadaki iki periyot üzerinde ilerleyen nokta */
+  const faz = (p.f * sahneT(st)) % 2;
+  D.noktaCisim(ctx, gx + (faz / 2) * gw, orta - Math.sin(faz * 2 * Math.PI) * (gh / 2 - 6), 5, R.ivme);
 
   /* etkin değer seviyesi */
   const eSeviye = (p.Vetkin / tepe) * (gh / 2 - 6);
@@ -226,6 +239,8 @@ function cizGrafik(ctx, w, h, st, p) {
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
     baslik: 'V − t   (sinüs · yön değiştiriyor)', birim: 'V',
+    /* o anki an: pencere dolana kadar imleç ilerler, sonra pencere kayar */
+    imlec: { t: sahneT(st) - t0, v: vAn(st, p) },
     veri: vVeri, tMax: pencere, vMin: -tepe * 1.15, vMax: tepe * 1.15,
     renk: R.normal
   });
@@ -233,6 +248,7 @@ function cizGrafik(ctx, w, h, st, p) {
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: 'P − t   (güç HEP POZİTİF · frekansı 2 katı)', birim: 'W',
+    imlec: { t: sahneT(st) - t0, v: gucAn(st, p) },
     veri: gVeri, tMax: pencere, vMin: 0, vMax: Math.max(1, ortGuc(p) * 2.2),
     renk: R.kuvvet
   });

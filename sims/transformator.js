@@ -121,11 +121,13 @@ function cizGercek(ctx, w, h, st, pHam) {
   }
   ctx.restore();
 
-  /* akı halkası — çekirdek boyunca dolaşan ok */
+  /* akı halkası — AC’de çekirdek boyunca bir o yana bir bu yana salınır
+     (akı sinüs gibi yön değiştirir); DC’de akı sabittir, kıpırdamaz. */
   if (p.ac) {
     ctx.save();
     ctx.strokeStyle = 'rgba(56,150,200,.85)'; ctx.lineWidth = 2;
     ctx.setLineDash([7, 5]);
+    ctx.lineDashOffset = 18 * Math.sin(2 * Math.PI * 0.5 * st.t);
     ctx.strokeRect(cx - cw / 2, cy - ch / 2, cw, ch);
     ctx.restore();
     D.yaziAydinlik(ctx, 'Φ değişiyor', cx, cy, R.normal,
@@ -184,7 +186,7 @@ function cizGercek(ctx, w, h, st, pHam) {
           '#FFFFFF', '700 12px system-ui, sans-serif', true);
 
   if (!p.ac)
-    D.yaziAydinlik(ctx, 'DC ⟹ akı sabit ⟹ ΔΦ = 0 ⟹ indüksiyon YOK',
+    D.yaziAydinlik(ctx, 'DC ⟹ akı sabit ⟹ ΔΦ = 0 ⟹ indüksiyon YOK · birincil sargı ISINIR',
                    w / 2, h - 12, '#B03030', '700 12px system-ui, sans-serif', 'center');
   else
     D.yaziAydinlik(ctx, 'gerilim yükselirse akım düşer — güç korunur',
@@ -241,7 +243,10 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['ε = −N·ΔΦ/Δt = 0', R.kuvvet, '700 13px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Transformatör yalnızca AC’de', K.beyaz, '700 12px system-ui, sans-serif'],
-    ['çalışır.', K.beyaz, '700 12px system-ui, sans-serif']
+    ['çalışır.', K.beyaz, '700 12px system-ui, sans-serif'],
+    ['', K.metin2, '11px'],
+    ['DC’de birincil akımı yalnız sargı', K.metin2, '11px system-ui, sans-serif'],
+    ['direnci sınırlar ⟹ sargı ısınır', R.kuvvet, '11px system-ui, sans-serif']
   ];
   let sy = 46;
   satir.forEach(([t, c, f]) => {
@@ -297,7 +302,7 @@ function okumalar(st, pHam) {
     { et: 'N₁ / N₂',    dg: D.biçim(p.N1) + ' / ' + D.biçim(p.N2), birim: '' },
     { et: 'V₁',         dg: D.biçim(p.V1),                    birim: 'V' },
     { et: 'V₂',         dg: D.biçim(v2(p)),                   birim: 'V' },
-    { et: 'i₁',         dg: D.biçim(i1(p), 3),                birim: 'A' },
+    { et: 'i₁',         dg: p.ac ? D.biçim(i1(p), 3) : 'Çok büyük (ısınır)', birim: p.ac ? 'A' : '' },
     { et: 'i₂',         dg: D.biçim(i2(p), 3),                birim: 'A' },
     { et: 'P₁ (giren)', dg: D.biçim(p1(p)),                   birim: 'W' },
     { et: 'P₂ (çıkan)', dg: D.biçim(p2(p)),                   birim: 'W' },

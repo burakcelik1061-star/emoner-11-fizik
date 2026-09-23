@@ -238,10 +238,11 @@ osym: [
     baslik: 'Açı ve alan içindeki uzunluk',
     kaynak: 'İki tuzak bir arada',
     govde: `
-      <p>Genişliği <strong>20 cm</strong> olan bir bölgede, sayfa düzleminde soldan sağa doğru
-      <strong>B = 0,5 T</strong>&rsquo;lık düzgün bir manyetik alan vardır.</p>
-      <p>Uzunluğu <strong>80 cm</strong> olan bir telden <strong>6 A</strong> akım geçmektedir
-      ve tel, alanla <strong>30°</strong>&rsquo;lik açı yapacak biçimde yerleştirilmiştir.</p>
+      <p>Bir bölgede, sayfa düzleminde soldan sağa doğru <strong>B = 0,5 T</strong>&rsquo;lık
+      düzgün bir manyetik alan vardır.</p>
+      <p>Uzunluğu <strong>80 cm</strong> olan bir telden <strong>6 A</strong> akım geçmektedir.
+      Tel, alanla <strong>30°</strong>&rsquo;lik açı yapacak biçimde yerleştirilmiştir ve
+      telin yalnızca <strong>20 cm</strong>&rsquo;lik kısmı alanın içinde kalmaktadır.</p>
       <p>Tele etki eden kuvvetin büyüklüğü kaç N&rsquo;dir?</p>`,
     gorsel: `
       <svg viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -256,8 +257,8 @@ osym: [
           <path d="M328 110 l-10 -5 l0 10 z"/><path d="M328 138 l-10 -5 l0 10 z"/>
         </g>
         <path d="M70 150 L450 38" stroke="#B87333" stroke-width="7" stroke-linecap="round"/>
-        <text x="96" y="176" fill="#EAF0FA" font-size="12" font-family="system-ui">tel · 80 cm · i = 6 A</text>
-        <text x="260" y="20" fill="#38D6E0" font-size="12" font-family="system-ui" text-anchor="middle">B = 0,5 T · genişlik 20 cm</text>
+        <text x="96" y="176" fill="#EAF0FA" font-size="12" font-family="system-ui">tel · 80 cm · i = 6 A · alan içinde 20 cm</text>
+        <text x="260" y="20" fill="#38D6E0" font-size="12" font-family="system-ui" text-anchor="middle">B = 0,5 T</text>
         <path d="M250 110 A 34 34 0 0 0 274 96" fill="none" stroke="#FFB020" stroke-width="2"/>
         <text x="292" y="112" fill="#FFB020" font-size="12" font-family="system-ui">30°</text>
       </svg>`,
@@ -270,8 +271,8 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Tuzak 1 — Hangi uzunluk?</strong> Telin boyu 80 cm ama alan bölgesinin
-      genişliği yalnızca <strong>20 cm</strong>. Kuvvet, telin <em>yalnızca alan içinde
+      <p><strong>Tuzak 1 — Hangi uzunluk?</strong> Telin boyu 80 cm ama alanın içinde
+      kalan kısmı yalnızca <strong>20 cm</strong>. Kuvvet, telin <em>yalnızca alan içinde
       kalan kısmına</em> etki eder:</p>
       <div class="formul" style="max-width:260px;margin:10px 0">
         <div class="fm">L = 0,20 m &nbsp;(0,80 değil)</div>
@@ -286,10 +287,10 @@ osym: [
         kullanıp açıyı da unutanlar için — iki hatayı birden yapanlar buraya düşer.
         <br><strong>C şıkkı (0,6 N)</strong> açıyı unutanlar için.
         <br><strong>D şıkkı (2,4 N)</strong> hem 0,80 m hem açısız.
-        <br><strong>Not:</strong> Gerçekte tel eğik olduğu için alan içinde kalan
-        <em>tel parçası</em> 20 cm&rsquo;den uzundur; ancak formüldeki L, alanın
-        <strong>akım doğrultusundaki</strong> etkin uzunluğudur ve bölge genişliği
-        üzerinden alınır. Sınav sorularında istenen budur.</p>
+        <br><strong>Not:</strong> Formüldeki L, telin alan içinde kalan
+        <em>parçasının kendi uzunluğudur</em>. Soru bölgenin <em>genişliğini</em>
+        verseydi, eğik telin alandaki parçası genişlik/cos30° olurdu; bu ayrıntıya
+        dikkat et.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },

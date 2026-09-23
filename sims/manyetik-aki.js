@@ -83,7 +83,11 @@ function adim(st, dt, p) {
   if (st.kayit.length > 500) st.kayit.shift();
 }
 
-function bitti(st, p) { return st.t > 6; }
+/* Dönen çerçevede en az BİR TAM TUR izlenir (yavaş ω’da 6 s yetmiyordu). */
+function bitti(st, p) {
+  if (p.mod < 1.5) return st.t > Math.max(6, (2 * Math.PI) / Math.max(0.05, p.omega));
+  return st.t > 6;
+}
 
 /* --------------------------------------------- Gerçekçi görünüm */
 
@@ -103,23 +107,35 @@ function cizGercek(ctx, w, h, st, p) {
   const sıklık = Math.max(24, 70 - B * 28);
   D.alanBolgesi(ctx, bx, by, bw, bh, -1, 'rgba(47,111,208,.7)', sıklık);
 
-  /* çerçeve — yandan görünüş (açıya göre yassılır) */
+  /* Çerçeve a × b dikdörtgenidir ve DÜŞEY bir eksen etrafında döner. Alan
+     sayfanın içine (⊗) olduğundan θ = 0’da çerçeve bize tam yüzünü gösterir;
+     θ büyüdükçe eni cosθ oranında daralır, θ = 90°’de kenardan görünür. */
   const cx = bx + bw / 2, cy = by + bh / 2;
   const A = alanA(st, p);
-  const olcek = Math.min(bw, bh) * 0.40 / Math.max(0.01, Math.sqrt(alanCerceve(p)));
-  const yari = Math.sqrt(A) * olcek / 2;
+  const k = Math.sqrt(A / alanCerceve(p));                  // 3. düzenekte büyüme
+  const olcek = (Math.min(bw, bh) * 0.62) / (Math.max(p.a, p.b) / 100);
+  const yariEn = (p.a / 100) * k * olcek / 2, yariBoy = (p.b / 100) * k * olcek / 2;
   const th = acı(st, p);
-  const gen = Math.abs(Math.cos(th)) * yari;
+  const gen = Math.abs(Math.cos(th)) * yariEn;
 
   ctx.save();
-  ctx.strokeStyle = '#B87333'; ctx.lineWidth = 5;
-  ctx.beginPath();
-  ctx.ellipse(cx, cy, Math.max(2, gen), yari, 0, 0, 6.2832);
-  ctx.stroke(); ctx.restore();
+  ctx.fillStyle = 'rgba(184,115,51,.10)';
+  ctx.fillRect(cx - gen, cy - yariBoy, gen * 2, yariBoy * 2);
+  ctx.strokeStyle = '#B87333'; ctx.lineWidth = 5; ctx.lineJoin = 'round';
+  ctx.strokeRect(cx - Math.max(1, gen), cy - yariBoy, Math.max(2, gen * 2), yariBoy * 2);
+  ctx.restore();
+  D.kesikliCizgi(ctx, cx, cy - yariBoy - 16, cx, cy + yariBoy + 16, 'rgba(120,130,150,.7)', 1.2, [5, 4]);
 
-  /* yüzey normali */
-  const nx = Math.cos(th), ny = -Math.sin(th) * 0.4;
-  D.vektor(ctx, cx, cy, cx + nx * 56, cy + ny * 56, R.ivme, 'n', { kalinlik: 2.4 });
+  /* Yüzey normali n = (sinθ, 0, −cosθ): sayfaya dik bileşeni ⊗/⊙ ile,
+     sayfa düzlemindeki bileşeni (sinθ) yatay okla gösterilir. θ = 0’da n
+     tamamen sayfanın içine, yani B ile AYNI yöndedir. */
+  const nDik = Math.cos(th), nYatay = Math.sin(th);
+  if (Math.abs(nDik) > 0.08)
+    (nDik > 0 ? D.alanIceri : D.alanDisari)(ctx, cx, cy, 5 + 9 * Math.abs(nDik), R.ivme);
+  if (Math.abs(nYatay) > 0.08)
+    D.vektor(ctx, cx, cy, cx + nYatay * 60, cy, R.ivme, 'n', { kalinlik: 2.4 });
+  else
+    D.yaziAydinlik(ctx, 'n', cx + 18, cy - 14, R.ivme, '700 12px system-ui, sans-serif', 'left');
 
   /* akıyı temsil eden "delen çizgi" sayısı */
   const F = aki(st, p);
@@ -158,7 +174,7 @@ function cizKlasik(ctx, w, h, st, p) {
   const B = alanB(st, p), A = alanA(st, p), th = acı(st, p);
   const F = aki(st, p);
 
-  D.yaziHaleli(ctx, 'Akı = alanı "delen" çizgi sayısı', 12, 22, K.beyaz,
+  D.yaziHaleli(ctx, 'Akı = alanı "delen" çizgi sayısı · üstten bakış', 12, 22, K.beyaz,
                '700 12px system-ui, sans-serif', 'left');
 
   /* şematik: yüzey ve normal */
@@ -172,7 +188,7 @@ function cizKlasik(ctx, w, h, st, p) {
   D.vektor(ctx, cx, cy, cx + Math.cos(th) * 48, cy - Math.sin(th) * 48,
            R.hiz, 'n', { kalinlik: 2.2 });
   D.vektor(ctx, cx - 70, cy, cx + 70, cy, R.normal, 'B', { kalinlik: 2.2 });
-  D.aciYayi(ctx, cx, cy, 34, 0, -th, K.metin2, D.biçim(th * 180 / Math.PI) + '°');
+  D.aciYayi(ctx, cx, cy, 34, 0, -th, K.metin2, D.biçim(th * 180 / Math.PI, 0) + '°');
 
   /* sağ sütun */
   const bx = w * 0.46;
@@ -212,13 +228,15 @@ function cizGrafik(ctx, w, h, st, p) {
     renk: R.normal
   });
 
-  /* Φ − θ eğrisi */
+  /* Φ − θ eğrisi — o anki B ve A ile (2. ve 3. düzenekte eğri büyür) */
+  const BA = alanB(st, p) * alanA(st, p);
   const v2 = [];
   for (let d = 0; d <= 360; d += 3)
-    v2.push({ t: d, v: enBuyuk * Math.cos(d * Math.PI / 180) });
+    v2.push({ t: d, v: BA * Math.cos(d * Math.PI / 180) });
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: 'Φ − θ   (kosinüs · 90°’de sıfır)', birim: 'Wb', tEtiket: 'θ (°)',
+    imlec: { t: acı(st, p) * 180 / Math.PI, v: aki(st, p) },
     veri: v2, tMax: 360, vMin: -enBuyuk * 1.1, vMax: enBuyuk * 1.1,
     renk: R.ivme
   });
@@ -231,7 +249,7 @@ function okumalar(st, p) {
   return [
     { et: 'Alan  B',     dg: D.biçim(B, 2),                      birim: 'T' },
     { et: 'Yüzey  A',    dg: D.biçim(A, 4),                      birim: 'm²' },
-    { et: 'Açı  θ',      dg: D.biçim(th * 180 / Math.PI),        birim: '°' },
+    { et: 'Açı  θ',      dg: D.biçim(th * 180 / Math.PI, 0),     birim: '°' },
     { et: 'cosθ',        dg: D.biçim(Math.cos(th), 3),           birim: '' },
     { et: 'Akı  Φ',      dg: D.biçim(aki(st, p), 4),             birim: 'Wb' },
     { et: 'Durum',       dg: Math.abs(Math.cos(th)) < 0.03 ? 'Φ = 0 (paralel)' : 'Çizgiler deliyor', birim: '' }

@@ -191,16 +191,39 @@ function cizIsinYolu(ctx, w, h, g, p, n, renk, kalinlik, oranSol, etiket,
   const iAci = A2 - gec.t2;
   const iux = Math.cos(iAci), iuy = Math.sin(iAci);
 
-  /* sağ yüzeyle kesişim */
+  /* sağ yüzeyle kesişim — kesişim yüzeyin DIŞINDAYSA (tabandan aşağıda)
+     ışın önce TABANA çarpar; bu açıda sağ yüzeye hiç ulaşmaz. */
   const rux = Math.sin(A2), ruy = Math.cos(A2);
   const k = kesisim(Qx, Qy, iux, iuy, g.tx, g.ty, rux, ruy);
   if (!k || k.t <= 0) return null;
+  const sSag = (k.x - g.tx) * rux + (k.y - g.ty) * ruy;
+  if (sSag > g.kenar + 1e-6) {
+    const kt = kesisim(Qx, Qy, iux, iuy, g.lx, g.ly, 1, 0);
+    if (kt && kt.t > 0) D.isin(ctx, Qx, Qy, kt.x, kt.y, renk, kalinlik, true);
+    if (gelenCiz)
+      D.yaziAydinlik(ctx, 'Bu açıda ışın sağ yüzeye değil TABANA çarpıyor',
+                     w * 0.5, h - 30, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
+    return null;
+  }
 
   D.isin(ctx, Qx, Qy, k.x, k.y, renk, kalinlik, true);
 
   if (gec.tamYansima) {
-    D.yaziAydinlik(ctx, 'TAM YANSIMA — ışın prizmadan çıkamıyor',
-                   w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
+    /* Tam yansıma: ışın kaybolmaz, sağ yüzeyden İÇERİYE yansır ve tabana
+       (ya da sol yüzeye) doğru ilerler. d′ = d − 2(d·n)n */
+    const nx = Math.cos(A2), ny = -Math.sin(A2);             // sağ yüzeyin dış normali
+    const dn = iux * nx + iuy * ny;
+    const yx = iux - 2 * dn * nx, yy = iuy - 2 * dn * ny;
+    const adaylar = [
+      kesisim(k.x, k.y, yx, yy, g.lx, g.ly, 1, 0),                          // taban
+      kesisim(k.x, k.y, yx, yy, g.tx, g.ty, -Math.sin(A2), Math.cos(A2))    // sol yüzey
+    ].filter(q => q && q.t > 1e-6);
+    if (adaylar.length) {
+      const q = adaylar.reduce((a, b) => (b.t < a.t ? b : a));
+      D.isin(ctx, k.x, k.y, q.x, q.y, renk, kalinlik, true);
+    }
+    D.yaziAydinlik(ctx, 'TAM YANSIMA — ışın sağ yüzeyden çıkamıyor, içeri yansıyor',
+                   w * 0.5, h - 30, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
     return gec;
   }
 
@@ -357,10 +380,14 @@ function cizTamYansimaPrizmasi(ctx, w, h, p) {
     D.yaziAydinlik(ctx, 'TAM YANSIMA · ışın 90° döndü, kayıp YOK',
                    10, h - 28, R.hiz, '700 12px system-ui, sans-serif', 'left');
   } else {
-    /* sınır açısı 45°'den büyük: ışık hipotenüsten kaçar */
+    /* sınır açısı 45°'den büyük: ışığın çoğu hipotenüsten kaçar; bir kısmı
+       (Fresnel) yine de yansır — soluk ışın. */
     const t2 = Math.asin(Math.min(1, n * Math.sin(Math.PI / 4)));
     D.isin(ctx, hx, hy, hx + gL * 0.7 * Math.cos(-Math.PI / 4 + t2),
            hy + gL * 0.7 * Math.sin(-Math.PI / 4 + t2), R.kuvvet, 2.4, true);
+    ctx.save(); ctx.globalAlpha = 0.3;
+    D.isin(ctx, hx, hy, hx, Cy, R.hiz, 1.6, true);
+    ctx.restore();
     D.yaziAydinlik(ctx, 'n çok küçük — sınır açısı 45°’den büyük, ışık KAÇIYOR',
                    10, h - 28, R.kuvvet, '700 12px system-ui, sans-serif', 'left');
   }

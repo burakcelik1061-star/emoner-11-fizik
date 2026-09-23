@@ -170,8 +170,10 @@ class SimKoşucu {
     }
   }
 
-  #okumalariKur() {
-    const o = this.t.okumalar(this.st, this.p);
+  #okumalariKur(hazir) {
+    const o = hazir || this.t.okumalar(this.st, this.p);
+    /* Etiket imzası: düzenek (mod) değişince okuma listesi de değişir. */
+    this.okumaImza = o.map(r => r.et).join('|');
     this.okumaKap.innerHTML = o.map((r, i) => `
       <div class="okuma">
         <div class="et">${r.et}</div>
@@ -182,6 +184,9 @@ class SimKoşucu {
 
   #okumalariTazele() {
     const o = this.t.okumalar(this.st, this.p);
+    /* Düzenek değiştiyse etiketler ve kutu sayısı da değişmiştir; yalnızca
+       değerleri yazmak eski düzeneğin etiketlerini yerinde bırakırdı. */
+    if (o.map(r => r.et).join('|') !== this.okumaImza) { this.#okumalariKur(o); return; }
     for (let i = 0; i < this.okumaAlan.length; i++) {
       if (!o[i]) continue;
       this.okumaAlan[i].innerHTML = `${o[i].dg}<small>${o[i].birim || ''}</small>`;

@@ -96,8 +96,8 @@ function sureEnUzun(p) {
   return (p.L * 1000 * p.nc * p.nc) / (p.nk * C_ISIK);
 }
 
-/** Mod dağılımı gecikmesi (s). */
-function gecikme(p) { return sureEnUzun(p) - sureEksen(p); }
+/** Mod dağılımı gecikmesi (s). n_ç ≤ n_k ise fiber ışığı hiç tutamaz: null. */
+function gecikme(p) { return p.nc > p.nk ? sureEnUzun(p) - sureEksen(p) : null; }
 
 /** 1 km'de yaklaşık yansıma sayısı — seçilen giriş açısı için. */
 function yansimaSayisi(p) {
@@ -296,6 +296,19 @@ function cizKabulKonisi(ctx, w, h, p) {
            renk, 1.8, false);
   });
 
+  /* kullanıcının seçtiği giriş ışını (θ₀) — kalın, sarı */
+  {
+    const t = rad(p.giris);
+    const ok = p.giris <= kabul + 1e-9;
+    D.isin(ctx, solX - L * 0.9 * Math.cos(t), cy - L * 0.9 * Math.sin(t), solX, cy, R.ivme, 3, true);
+    const tr = Math.asin(Math.min(1, Math.sin(t) / p.nc));
+    const uz = Math.min(w - solX - 6, cek / Math.max(0.02, Math.tan(tr)));
+    D.isin(ctx, solX, cy, solX + uz, cy + uz * Math.tan(tr), ok ? R.ivme : R.kuvvet, 2.4, false);
+    D.yaziAydinlik(ctx, 'θ₀ = ' + D.biçim(p.giris) + '° ' + (ok ? '✓' : '✕'),
+                   solX - L * 0.9 * Math.cos(t) + 4, cy - L * 0.9 * Math.sin(t) - 8, R.ivme,
+                   '700 11px system-ui, sans-serif', 'left');
+  }
+
   D.aciYayi(ctx, solX, cy, 62, Math.PI, Math.PI + rad(kabul), R.hiz,
             D.biçim(kabul, 4) + '°');
 
@@ -333,6 +346,12 @@ function cizGecikme(ctx, w, h, st, p) {
     }
     D.yaziAydinlik(ctx, 'sınır açısındaki ışın · en uzun yol', solX + 12, cy + cek + 26,
                    R.kuvvet, '700 11px system-ui, sans-serif', 'left');
+  }
+
+  if (gecikme(p) === null) {
+    D.yaziAydinlik(ctx, 'n_ç ≤ n_k ⟹ tam yansıma YOK, fiber ışığı taşıyamaz',
+                   10, h - 18, R.kuvvet, '700 13px system-ui, sans-serif', 'left');
+    return;
   }
 
   /* darbe gösterimi */
@@ -398,8 +417,8 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['', K.metin2, '11px'],
     ['L = ' + D.biçim(p.L) + ' km', R.normal, '12px system-ui, sans-serif'],
     ['Eksen ışını: ' + D.biçim(sureEksen(p) * 1e6, 4) + ' µs', R.hiz, '12px system-ui, sans-serif'],
-    ['En eğik ışın: ' + D.biçim(sureEnUzun(p) * 1e6, 4) + ' µs', R.kuvvet, '12px system-ui, sans-serif'],
-    ['Δt = ' + D.biçim(gecikme(p) * 1e9, 4) + ' ns', R.surtunme, '700 13px system-ui, sans-serif'],
+    ['En eğik ışın: ' + (gecikme(p) === null ? 'tutunamaz' : D.biçim(sureEnUzun(p) * 1e6, 4) + ' µs'), R.kuvvet, '12px system-ui, sans-serif'],
+    ['Δt = ' + (gecikme(p) === null ? '—' : D.biçim(gecikme(p) * 1e9, 4) + ' ns'), R.surtunme, '700 13px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Yol farkı oranı = n_ç/n_k', K.metin2, '11px system-ui, sans-serif'],
     ['= ' + D.biçim(p.nc / p.nk, 5), K.metin2, '11px system-ui, sans-serif'],
@@ -433,15 +452,15 @@ function cizGrafik(ctx, w, h, st, pHam) {
     renk: R.normal
   });
 
-  /* gecikme − uzunluk */
+  /* gecikme − uzunluk (fiber ışığı tutamıyorsa gecikme tanımsız: 0 çizilir) */
   const v2 = [];
-  const kat = (p.nc / C_ISIK) * (p.nc / p.nk - 1) * 1000 * 1e9;   // ns/km
+  const kat = Math.max(0, (p.nc / C_ISIK) * (p.nc / p.nk - 1) * 1000 * 1e9);   // ns/km
   for (let L = 0; L <= 100; L += 2) v2.push({ t: L, v: kat * L });
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: 'Gecikme − uzunluk   (' + D.biçim(kat, 4) + ' ns/km · DOĞRU orantı)',
     birim: 'ns', tEtiket: 'L (km)',
-    imlec: { t: p.L, v: gecikme(p) * 1e9 },
+    imlec: { t: p.L, v: (gecikme(p) || 0) * 1e9 },
     veri: v2, tMax: 100, vMin: 0, vMax: Math.max(1, kat * 100 * 1.05), renk: R.kuvvet
   });
 }
@@ -477,6 +496,12 @@ function okumalar(st, pHam) {
   }
 
   const gec = gecikme(p);
+  if (gec === null) {
+    return [
+      { et: 'Fiber uzunluğu L',  dg: D.biçim(p.L), birim: 'km' },
+      { et: 'Durum',             dg: 'n_ç ≤ n_k — fiber ışığı tutamaz', birim: '' }
+    ];
+  }
   return [
     { et: 'Fiber uzunluğu L',  dg: D.biçim(p.L),                 birim: 'km' },
     { et: 'Eksen ışını süresi',dg: D.biçim(sureEksen(p) * 1e6, 5), birim: 'µs' },

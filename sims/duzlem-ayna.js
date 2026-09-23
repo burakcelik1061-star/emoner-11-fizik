@@ -40,11 +40,47 @@ function aynaAcisi(p)  { return (p.aynaAci * Math.PI) / 180; }
 /** Ayna döndürülünce yansıyan ışının döndüğü açı (derece). */
 function isinDonmesi(p) { return 2 * p.aynaAci; }
 
-/** İki düzlem ayna arasındaki açı için görüntü sayısı. */
-function goruntuSayisi(p) {
-  const n = 360 / Math.max(1, p.ikiAci);
-  return Number.isInteger(n) ? n - 1 : Math.floor(n);
+/**
+ * İki düzlem ayna arasındaki görüntülerin açısal konumları (derece, matematik
+ * yönü; 1. ayna 0°’de, 2. ayna α’da; cisim AÇIORTAYDA). Görüntüler ardışık
+ * yansımalarla bulunur: bir görüntü ancak bir aynanın ÖNÜNDEYSE o aynada
+ * yeniden yansır. İki zincir (önce 1. aynada / önce 2. aynada) birleştirilir,
+ * çakışan görüntüler bir kez sayılır. 360/α tam sayıysa sonuç 360/α − 1’dir.
+ */
+function goruntuAcilari(alfa) {
+  const phi = alfa / 2;
+  const norm = a => ((a % 360) + 360) % 360;
+  const onunde1 = a => { const x = norm(a); return x > 1e-6 && x < 180 - 1e-6; };
+  const onunde2 = a => { const x = norm(a - alfa + 180); return x > 1e-6 && x < 180 - 1e-6; };
+  const ayni = (a, b) => { const d = Math.abs(norm(a) - norm(b)); return Math.min(d, 360 - d) < 1e-6; };
+  const sonuc = [];
+  for (const ilk of [1, 2]) {
+    let a = phi, ayna = ilk;
+    for (let k = 0; k < 60; k++) {
+      if (ayna === 1) { if (!onunde1(a)) break; a = -a; }
+      else            { if (!onunde2(a)) break; a = 2 * alfa - a; }
+      if (!ayni(a, phi) && !sonuc.some(b => ayni(a, b))) sonuc.push(norm(a));
+      ayna = 3 - ayna;
+    }
+  }
+  return sonuc;
 }
+
+function goruntuSayisi(p) { return goruntuAcilari(Math.max(1, p.ikiAci)).length; }
+
+/** Mod 1: gelen ışın uzayda SABİTTİR; ayna θ dönünce gelme açısı i − θ olur. */
+function gercekGelme(p) { return p.gelme - p.aynaAci; }
+function arkadanMi(p) { return Math.abs(gercekGelme(p)) >= 90; }
+
+/** Mod 2: göz yüksekliği (boyun 0,92’si) ve doğru yerleştirilmiş aynanın
+    üst ucu (baş ile göz arasının ortası). */
+function gozYuk(p) { return 0.92 * p.boy; }
+function aynaUstYuk(p) { return (p.boy + gozYuk(p)) / 2; }
+function aynaAltYuk(p) { return Math.max(0, aynaUstYuk(p) - p.aynaBoy); }
+/** Aynada görülebilen en alçak vücut noktası (cm, yerden). Bir noktanın ışını
+    aynaya (y + göz)/2 yüksekliğinde çarpar; bu nokta aynanın altındaysa
+    görülemez. */
+function gorulenAlt(p) { return Math.max(0, 2 * aynaAltYuk(p) - gozYuk(p)); }
 
 /** Boydan boya görmek için gereken en küçük ayna boyu (cm). */
 function gerekenAynaBoyu(p) { return p.boy / 2; }
@@ -92,31 +128,44 @@ function cizYansima(ctx, w, h, st, p) {
   D.yaziAydinlik(ctx, 'normal', ax - Math.cos(th) * 96, ay - Math.sin(th) * 96,
                  R.mur, '600 11px system-ui, sans-serif', 'center');
 
-  /* gelen ışın */
+  /* Gelen ışın uzayda SABİT: ayna dönmeden önceki normale göre i açısıyla
+     gelir. Ayna θ dönünce gelme açısı i − θ olur ve yansıyan ışın 2θ döner. */
   const i = gelmeAcisi(p);
   const L = Math.min(w * 0.36, 190);
-  const gx = ax - Math.cos(th + i) * L, gy = ay - Math.sin(th + i) * L;
+  const gx = ax - Math.cos(i) * L, gy = ay - Math.sin(i) * L;
   D.isin(ctx, gx, gy, ax, ay, '#FFB020', 2.4);
   D.yaziAydinlik(ctx, 'gelen', gx + 8, gy - 10, '#B07800',
                  '700 11px system-ui, sans-serif', 'left');
 
+  if (arkadanMi(p)) {
+    D.yaziAydinlik(ctx, 'ışın aynanın ARKASINA düşüyor — yansıma yok', w / 2, h - 12, '#B03030',
+                   '700 12px system-ui, sans-serif', 'center');
+    return;
+  }
+
   /* yansıyan ışın — normalin diğer tarafında, eşit açıyla */
-  const rx = ax - Math.cos(th - i) * L, ry = ay - Math.sin(th - i) * L;
+  const ig = i - th;                                   // gerçek gelme açısı
+  const ry0 = 2 * th - i;
+  const rx = ax - Math.cos(ry0) * L, ry = ay - Math.sin(ry0) * L;
   D.isin(ctx, ax, ay, rx, ry, '#E24B4A', 2.4);
   D.yaziAydinlik(ctx, 'yansıyan', rx + 8, ry - 10, '#B03030',
                  '700 11px system-ui, sans-serif', 'left');
 
-  /* açı yayları */
-  D.aciYayi(ctx, ax, ay, 52, Math.PI + th, Math.PI + th + i,
-            R.ivme, D.biçim(p.gelme) + '°');
-  D.aciYayi(ctx, ax, ay, 68, Math.PI + th - i, Math.PI + th,
-            R.kuvvet, D.biçim(p.gelme) + '°');
+  /* ayna dönmeseydi yansıyan ışın nerede olurdu — 2θ farkı görünsün */
+  if (p.aynaAci !== 0) {
+    D.sanalIsin(ctx, ax, ay, ax - Math.cos(-i) * L * 0.8, ay - Math.sin(-i) * L * 0.8, 'rgba(176,48,48,.45)');
+  }
+
+  /* açı yayları — normalden ölçülür */
+  const aci = D.biçim(Math.abs(gercekGelme(p)), 0) + '°';
+  D.aciYayi(ctx, ax, ay, 52, Math.PI + th, Math.PI + th + ig, R.ivme, aci);
+  D.aciYayi(ctx, ax, ay, 68, Math.PI + th - ig, Math.PI + th, R.kuvvet, aci);
 
   D.yaziAydinlik(ctx, 'gelme açısı = yansıma açısı', w / 2, h - 12, R.mur,
                  '700 12px system-ui, sans-serif', 'center');
   if (p.aynaAci !== 0)
     D.yaziAydinlik(ctx, 'ayna ' + D.biçim(p.aynaAci) + '° döndü ⟹ yansıyan ışın ' +
-                   D.biçim(isinDonmesi(p)) + '° döner', w - 10, 26, R.ivme,
+                   D.biçim(isinDonmesi(p)) + '° döndü (kesikli: eski yeri)', w - 10, 26, R.ivme,
                    '700 12px system-ui, sans-serif', 'right');
 }
 
@@ -128,16 +177,16 @@ function cizGoruntu(ctx, w, h, st, p) {
   /* zemin */
   ctx.fillStyle = '#C9A06A'; ctx.fillRect(0, zemin, w, h - zemin);
 
-  /* ayna — gereken boy ve seçilen boy */
-  const gerekli = gerekenAynaBoyu(p) * olcek;
-  const secilen = p.aynaBoy * olcek;
-  const aynaAlt = zemin - (p.boy / 4) * olcek;         // göz hizası merkezli
+  /* Ayna DOĞRU yere asılır: üst ucu baş ile göz arasının ortasında. Boyu
+     yetmezse aşağı uzanamaz ve ayaklar görünmez. */
+  const aynaUst = zemin - aynaUstYuk(p) * olcek;
+  const aynaAlt = zemin - aynaAltYuk(p) * olcek;
   ctx.save();
   ctx.fillStyle = 'rgba(143,182,236,.30)';
-  ctx.fillRect(ax - 4, aynaAlt - secilen, 8, secilen);
+  ctx.fillRect(ax - 4, aynaUst, 8, aynaAlt - aynaUst);
   ctx.strokeStyle = '#8FB6EC'; ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(ax, aynaAlt - secilen); ctx.lineTo(ax, aynaAlt);
+  ctx.moveTo(ax, aynaUst); ctx.lineTo(ax, aynaAlt);
   ctx.stroke();
   ctx.restore();
 
@@ -159,17 +208,29 @@ function cizGoruntu(ctx, w, h, st, p) {
 
   /* baş ve ayak ışınları */
   const bas = zemin - boyPx, ayak = zemin;
-  const goz = zemin - boyPx * 0.92;
+  const goz = zemin - gozYuk(p) * olcek;
   D.isin(ctx, ix, bas, ax, (bas + goz) / 2, 'rgba(255,176,32,.85)', 1.8, false);
   D.isin(ctx, ax, (bas + goz) / 2, ix, goz, 'rgba(226,75,74,.85)', 1.8, false);
-  D.isin(ctx, ix, ayak, ax, (ayak + goz) / 2, 'rgba(255,176,32,.85)', 1.8, false);
-  D.isin(ctx, ax, (ayak + goz) / 2, ix, goz, 'rgba(226,75,74,.85)', 1.8, false);
+
+  const yeterli = gorulenAlt(p) <= 0.5;
+  if (yeterli) {
+    D.isin(ctx, ix, ayak, ax, (ayak + goz) / 2, 'rgba(255,176,32,.85)', 1.8, false);
+    D.isin(ctx, ax, (ayak + goz) / 2, ix, goz, 'rgba(226,75,74,.85)', 1.8, false);
+  } else {
+    /* ayaktan çıkan ışın aynanın ALTINDAN geçer — göze ulaşamaz */
+    D.sanalIsin(ctx, ix, ayak, ax, (ayak + goz) / 2, 'rgba(176,48,48,.6)');
+    D.yaziAydinlik(ctx, '✕ ayak görünmez', ax + 8, (ayak + goz) / 2, '#B03030',
+                   '700 11px system-ui, sans-serif', 'left');
+    /* görülebilen en alt noktanın ışını */
+    const gAlt = zemin - gorulenAlt(p) * olcek;
+    D.isin(ctx, ix, gAlt, ax, aynaAlt, 'rgba(255,176,32,.85)', 1.8, false);
+    D.isin(ctx, ax, aynaAlt, ix, goz, 'rgba(226,75,74,.85)', 1.8, false);
+    D.olcu(ctx, ix - 22, gAlt, ix - 22, ayak, 'görünmeyen ' + D.biçim(gorulenAlt(p), 0) + ' cm', '#B03030');
+  }
 
   /* gereken ayna aralığı işaretle */
   const ust = (bas + goz) / 2, alt = (ayak + goz) / 2;
   D.olcu(ctx, ax + 30, ust, ax + 30, alt, D.biçim(gerekenAynaBoyu(p)) + ' cm', R.hiz);
-
-  const yeterli = p.aynaBoy >= gerekenAynaBoyu(p) - 0.5;
   D.rozet(ctx, yeterli ? 'BOYDAN BOYA GÖRÜYOR' : 'AYNA KISA — tamamı görünmüyor',
           w / 2, 52, yeterli ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
           yeterli ? '#0A2A1E' : '#FFFFFF', '700 11px system-ui, sans-serif', true);
@@ -187,11 +248,12 @@ function cizIkiAyna(ctx, w, h, st, p) {
   const L = Math.min(w * 0.30, h * 0.40);
   const a = (p.ikiAci * Math.PI) / 180;
 
-  /* iki ayna */
-  D.duzlemAyna(ctx, cx + Math.cos(0) * L / 2, cy, L, Math.PI / 2);
+  /* İki ayna: sırlı (yansıtan) yüzleri aradaki bölgeye, taramalı arka
+     yüzleri DIŞARIYA bakar. */
+  D.duzlemAyna(ctx, cx + L / 2, cy, L, Math.PI / 2);
   ctx.save();
   ctx.translate(cx, cy); ctx.rotate(-a); ctx.translate(-cx, -cy);
-  D.duzlemAyna(ctx, cx + L / 2, cy, L, Math.PI / 2);
+  D.duzlemAyna(ctx, cx + L / 2, cy, L, -Math.PI / 2);
   ctx.restore();
 
   D.aciYayi(ctx, cx, cy, 46, -a, 0, R.ivme, D.biçim(p.ikiAci) + '°');
@@ -203,22 +265,29 @@ function cizIkiAyna(ctx, w, h, st, p) {
   D.yaziAydinlik(ctx, 'cisim', nx, ny - 20, R.mur,
                  '700 11px system-ui, sans-serif', 'center');
 
-  /* görüntüler — cismin etrafında dairesel dizilim */
-  const n = goruntuSayisi(p);
+  /* Görüntüler — ardışık yansımalarla bulunan GERÇEK konumlar. Hepsi köşeye
+     eşit uzaklıkta, yani aynı çember üzerindedir. */
+  const acilar = goruntuAcilari(p.ikiAci);
+  const n = acilar.length;
   const rr = Math.hypot(nx - cx, ny - cy);
-  for (let k = 1; k <= n; k++) {
-    const ac = -a / 2 + k * a * (k % 2 ? 1 : -1) * 0.0 + (k * 2 * Math.PI) / (n + 1);
-    const gx = cx + Math.cos(-a / 2 + (k * 2 * Math.PI) / (n + 1)) * rr;
-    const gy = cy + Math.sin(-a / 2 + (k * 2 * Math.PI) / (n + 1)) * rr;
-    ctx.save(); ctx.globalAlpha = 0.5;
+  ctx.save();
+  ctx.strokeStyle = 'rgba(120,130,150,.35)'; ctx.setLineDash([3, 5]);
+  ctx.beginPath(); ctx.arc(cx, cy, rr, 0, 6.2832); ctx.stroke();
+  ctx.restore();
+  for (const ac of acilar) {
+    const r = (ac * Math.PI) / 180;
+    const gx = cx + Math.cos(r) * rr, gy = cy - Math.sin(r) * rr;
+    ctx.save(); ctx.globalAlpha = 0.55;
     D.noktaCisim(ctx, gx, gy, 6, R.konum);
     ctx.restore();
   }
 
+  const n360 = 360 / Math.max(1, p.ikiAci);
   D.rozet(ctx, n + ' GÖRÜNTÜ', w / 2, 52, 'rgba(47,111,208,.92)', '#FFFFFF',
           '700 12px system-ui, sans-serif', true);
-  D.yaziAydinlik(ctx, 'n = 360/α − 1  (bölme tam ise)', w / 2, h - 12, R.mur,
-                 '600 11px system-ui, sans-serif', 'center');
+  D.yaziAydinlik(ctx, Number.isInteger(n360) ? 'n = 360/α − 1 = ' + (n360 - 1)
+                   : '360/α tam değil ⟹ sayı cismin yerine bağlı (burada açıortayda)',
+                 w / 2, h - 12, R.mur, '600 11px system-ui, sans-serif', 'center');
 }
 
 /* ----------------------------------------- Klasik fizik görünümü */
@@ -232,7 +301,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
                  '700 12px system-ui, sans-serif', 'left');
     const satir = [
       ['Gelme açısı = Yansıma açısı', K.beyaz, '700 13px system-ui, sans-serif'],
-      ['i = ' + D.biçim(p.gelme) + '°  ·  r = ' + D.biçim(p.gelme) + '°', R.ivme, '12px system-ui, sans-serif'],
+      [arkadanMi(p) ? 'ışın aynanın arkasında — yansıma yok'
+         : 'i = ' + D.biçim(Math.abs(gercekGelme(p)), 0) + '°  ·  r = ' + D.biçim(Math.abs(gercekGelme(p)), 0) + '°',
+       R.ivme, '12px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
       ['Açılar YÜZEYDEN değil,', R.kuvvet, '700 12px system-ui, sans-serif'],
       ['NORMALDEN ölçülür', R.kuvvet, '700 12px system-ui, sans-serif'],
@@ -255,8 +326,10 @@ function cizKlasik(ctx, w, h, st, pHam) {
     D.yaziHaleli(ctx, 'Neden boyun yarısı?', 12, 22, K.beyaz,
                  '700 12px system-ui, sans-serif', 'left');
 
-    /* geometri şeması */
-    const ix = w * 0.16, ax = w * 0.40, ust = h * 0.22, alt = h * 0.76;
+    /* geometri şeması — aynanın uzaklığı taranan uzaklıkla değişir; ışınların
+       eğimi değişse de aynanın gereken boyu (yarım boy) DEĞİŞMEZ */
+    const ix = w * 0.12, ust = h * 0.22, alt = h * 0.76;
+    const ax = ix + w * (0.06 + 0.30 * Math.min(1, p.uzaklik / 300));
     const goz = ust + (alt - ust) * 0.08;
     ctx.strokeStyle = K.eksen; ctx.lineWidth = 2;
     ctx.beginPath(); ctx.moveTo(ix, ust); ctx.lineTo(ix, alt); ctx.stroke();
@@ -285,7 +358,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['Toplam = boyun YARISI', R.hiz, '700 13px system-ui, sans-serif'],
       ['= ' + D.biçim(gerekenAynaBoyu(p)) + ' cm', R.hiz, '700 13px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
-      ['UZAKLIK formüle GİRMEZ', R.kuvvet, '700 12px system-ui, sans-serif']
+      ['UZAKLIK formüle GİRMEZ', R.kuvvet, '700 12px system-ui, sans-serif'],
+      ['Ayna DOĞRU yüksekliğe asılmalı:', K.metin2, '11px system-ui, sans-serif'],
+      ['üst ucu baş–göz ortasında', K.metin2, '11px system-ui, sans-serif']
     ];
     let sy = 46;
     satir.forEach(([t, c, f]) => {
@@ -305,8 +380,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['α = ' + D.biçim(p.ikiAci) + '°', K.metin2, '11px system-ui, sans-serif'],
     ['360/α = ' + D.biçim(n360, 3), K.metin2, '11px system-ui, sans-serif'],
     [tam ? 'bölme TAM ⟹ n = ' + goruntuSayisi(p)
-         : 'bölme tam değil ⟹ n = ' + goruntuSayisi(p) + ' (tam kısmı)',
+         : 'bölme tam değil ⟹ cisim açıortayda: n = ' + goruntuSayisi(p),
      R.normal, '700 13px system-ui, sans-serif'],
+    [tam ? '' : '(formül yalnız TAM bölmede geçerlidir)', K.metin2, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['α = 90° ⟹ 3 görüntü', K.metin2, '11px system-ui, sans-serif'],
     ['α = 60° ⟹ 5 görüntü', K.metin2, '11px system-ui, sans-serif'],
@@ -327,8 +403,8 @@ function okumalar(st, pHam) {
   const p = etkin(st, pHam);
   if (p.mod < 1.5) {
     return [
-      { et: 'Gelme açısı',   dg: D.biçim(p.gelme),        birim: '°' },
-      { et: 'Yansıma açısı', dg: D.biçim(p.gelme),        birim: '°' },
+      { et: 'Gelme açısı',   dg: arkadanMi(p) ? '—' : D.biçim(Math.abs(gercekGelme(p)), 0), birim: '°' },
+      { et: 'Yansıma açısı', dg: arkadanMi(p) ? 'yok' : D.biçim(Math.abs(gercekGelme(p)), 0), birim: '°' },
       { et: 'Ayna dönmesi',  dg: D.biçim(p.aynaAci),      birim: '°' },
       { et: 'Işının dönmesi',dg: D.biçim(isinDonmesi(p)), birim: '°' }
     ];
@@ -339,7 +415,7 @@ function okumalar(st, pHam) {
       { et: 'Aynaya uzaklık', dg: D.biçim(p.uzaklik),            birim: 'cm' },
       { et: 'Gereken ayna',   dg: D.biçim(gerekenAynaBoyu(p)),   birim: 'cm' },
       { et: 'Seçilen ayna',   dg: D.biçim(p.aynaBoy),            birim: 'cm' },
-      { et: 'Sonuç',          dg: p.aynaBoy >= gerekenAynaBoyu(p) - 0.5 ? 'Tamamını görür' : 'Yetersiz', birim: '' },
+      { et: 'Sonuç',          dg: gorulenAlt(p) <= 0.5 ? 'Tamamını görür' : 'Alttan ' + D.biçim(gorulenAlt(p), 0) + ' cm görünmez', birim: '' },
       { et: 'Görüntü',        dg: 'Sanal · düz · eşit boy',      birim: '' }
     ];
   }
@@ -363,7 +439,7 @@ D.simler['duzlem-ayna'] = {
       { d: 2, e: 'Boydan boya görmek' },
       { d: 3, e: 'İki ayna · görüntü sayısı' }
     ]},
-    { anahtar: 'gelme',   etiket: 'Gelme açısı', min: 0, max: 80, adim: 5, deger: 40, birim: '°' },
+    { anahtar: 'gelme',   etiket: 'Gelme açısı (ayna dönmeden)', min: 0, max: 80, adim: 5, deger: 40, birim: '°' },
     { anahtar: 'aynaAci', etiket: 'Aynayı döndür', min: -30, max: 30, adim: 5, deger: 0, birim: '°' },
     { anahtar: 'boy',     etiket: 'İnsan boyu', min: 120, max: 200, adim: 5, deger: 170, birim: 'cm' },
     { anahtar: 'uzaklik', etiket: 'Aynaya uzaklık', min: 30, max: 300, adim: 10, deger: 100, birim: 'cm' },
