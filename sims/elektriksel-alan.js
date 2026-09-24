@@ -72,9 +72,71 @@ function yukRengi(q) { return q > 0 ? '#E2483F' : q < 0 ? '#2F6FD0' : '#8A949F';
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
-  /* st.r: canlı test yükü uzaklığı (1. ve 2. düzenekte taranır) */
-  return { t: 0, x: 0, y: 0, vy: 0, cikti: false, iz: [] };
+  /* st.r: canlı test yükü uzaklığı (1. düzenekte taranır) */
+  return { t: 0, x: 0, y: 0, vy: 0, cikti: false, iz: [], kayit: [] };
 }
+
+/* ---------------------------------------------- 2. düzenek: iki yük
+   Yükler SABİTTİR. Bir alan sensörü yüklerin çevresinde dolaşır; bulunduğu
+   her noktada E₁ ve E₂ uç uca eklenir, bileşke E_net çizilir (Physics
+   Classroom’daki vektör toplamı çizimi, PhET "Charges and Fields" sensörü).
+   E_net her noktada alan çizgisine TEĞETTİR — çizgilerin doğruluğu bu
+   sayede gözle sınanır. Konumlar metre, y ekran gibi aşağı pozitif. */
+const SENSOR_PERIYOT = 14;   // s — sensörün bir turu
+
+function ikiliYukler(p) {
+  const a = Math.max(0.05, p.r / 200);            // yarı uzaklık (m)
+  return [{ x: -a, y: 0, q: p.q }, { x: a, y: 0, q: p.zit ? -p.q : p.q }];
+}
+
+/** Tek nokta yükün (x, y) noktasındaki alan vektörü (N/C): + yükten dışa. */
+function alanVektor(y0, x, y) {
+  const dx = x - y0.x, dy = y - y0.y;
+  const r = Math.max(0.01, Math.hypot(dx, dy));
+  const E = KC * y0.q * 1e-6 / (r * r);
+  return { x: E * dx / r, y: E * dy / r, b: Math.abs(E) };
+}
+
+/** Sensörün yeri: yüklerin çevresinde elips; t = 0’da orta noktanın üstünde. */
+function sensorKonum(t, p) {
+  const a = Math.max(0.05, p.r / 200);
+  const th = (2 * Math.PI * t) / SENSOR_PERIYOT - Math.PI / 2;
+  return { x: 1.9 * a * Math.cos(th), y: 1.1 * a * Math.sin(th) };
+}
+
+/** Sensördeki E₁, E₂ ve bileşke. */
+function sensorAlani(t, p) {
+  const [y1, y2] = ikiliYukler(p);
+  const s = sensorKonum(t, p);
+  const e1 = alanVektor(y1, s.x, s.y), e2 = alanVektor(y2, s.x, s.y);
+  const net = { x: e1.x + e2.x, y: e1.y + e2.y };
+  net.b = Math.hypot(net.x, net.y);
+  return { s, e1, e2, net };
+}
+
+/** Ok ölçeği (px / (N/C)): orta noktanın tam üstündeki sensör konumunda
+    E₁ = px piksel olacak şekilde. Yük yakınında oklar çok uzarsa üçü birden
+    AYNI oranda kısaltılır (sensorOklari) — uç uca toplama geometrisi bozulmaz. */
+function sensorOlcegi(p, px) {
+  const r = sensorAlani(0, p);
+  return px / Math.max(1e-9, r.e1.b);
+}
+
+/** Orta noktadaki bileşke alan (N/C): zıt yüklerde 2kq/a², aynıda 0. */
+function ortaAlan(p) {
+  const a = Math.max(0.05, p.r / 200);
+  return p.zit ? 2 * KC * Math.abs(qKaynakC(p)) / (a * a) : 0;
+}
+
+/** Dik açıortay üzerindeki alan büyüklüğü (N/C), y metre. */
+function aciortayAlani(p, y) {
+  const a = Math.max(0.05, p.r / 200);
+  const k = 2 * KC * Math.abs(qKaynakC(p)) / Math.pow(a * a + y * y, 1.5);
+  return p.zit ? k * a : k * Math.abs(y);
+}
+
+/** Alan çizgisi sayısı yükle ORANTILI (Physics Classroom kuralı). */
+function cizgiSayisi(q) { return q === 0 ? 0 : Math.round(4 + 1.2 * Math.abs(q)); }
 
 /** Taranan test yükü uzaklığıyla güncellenmiş parametreler. */
 function etkin(st, p) {
@@ -83,10 +145,17 @@ function etkin(st, p) {
 
 function adim(st, dt, p) {
   st.t += dt;
-  if (p.mod < 2.5) {
-    /* Alan haritası duruyordu; artık test yükü kaynaktan uzaklaşıp yaklaşır,
-       böylece E'nin uzaklığın karesiyle azalışı canlı görünür. */
+  if (p.mod < 1.5) {
+    /* Test yükü kaynaktan uzaklaşıp yaklaşır; E'nin uzaklığın karesiyle
+       azalışı canlı görünür. */
     st.r = D.tarama(st.t, p.r, p.r < 55 ? 100 : 10, 12);
+    return;
+  }
+  if (p.mod < 2.5) {
+    /* Yükler sabit; yalnız sensör dolaşır. |E_net| kaydı grafik için. */
+    if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.05)
+      st.kayit.push({ t: st.t, v: sensorAlani(st.t, p).net.b / 1000 });
+    if (st.kayit.length > 400) st.kayit.shift();
     return;
   }
 
@@ -247,7 +316,7 @@ function cizTekYuk(ctx, w, h, st, p) {
 
   /* Yüksüz cismin alanı yoktur: çizgi de yok. */
   if (p.q !== 0)
-    alanCizgileri(ctx, cx, cy, p.q, 'rgba(120,150,200,.75)', 16, 20, Math.min(w, h) * 0.46);
+    alanCizgileri(ctx, cx, cy, p.q, 'rgba(120,150,200,.75)', cizgiSayisi(p.q), 20, Math.min(w, h) * 0.46);
   yukKuresi(ctx, cx, cy, p.q, 15);
   D.yaziAydinlik(ctx, 'q = ' + D.biçim(p.q) + ' μC', cx, cy - 30, R.mur,
                  '700 12px system-ui, sans-serif', 'center');
@@ -281,47 +350,75 @@ function cizTekYuk(ctx, w, h, st, p) {
                  '700 12px system-ui, sans-serif', 'right');
 }
 
-function cizIkiYuk(ctx, w, h, st, p) {
-  /* Oynat'a basılınca iki yük birbirinden uzaklaşıp yaklaşır; orta noktadaki
-     bileşke alanın uzaklıkla nasıl zayıfladığı canlı görünür. */
-  const acilma = Math.max(0.3, Math.min(1, (p.r || 60) / 90));
-  const cy = h / 2;
-  const ax = w * (0.5 - 0.22 * acilma), bx = w * (0.5 + 0.22 * acilma);
-  const q2 = p.zit ? -p.q : p.q;
+/** 2. düzenek yerleşimi: metre → piksel, tarama boyunca sabit. */
+function ikiliYerlesim(w, h, p, cxOran, cyOran, dolum) {
+  const a = Math.max(0.05, p.r / 200);
+  const s = Math.min((w * dolum) / (4.2 * a), (h * dolum) / (2.6 * a));
+  const cx = w * cxOran, cy = h * cyOran;
+  return { s, cx, cy, X: m => cx + m * s, Y: m => cy + m * s };
+}
 
-  alanCizgileriIkili(ctx, [{ x: ax, y: cy, q: p.q, r: 14 }, { x: bx, y: cy, q: q2, r: 14 }],
-                     w, h, 'rgba(120,150,200,.62)', 14);
-  yukKuresi(ctx, ax, cy, p.q, 14);
-  yukKuresi(ctx, bx, cy, q2, 14);
+/** Sensör noktasında E₁, E₂ uç uca ve E_net. kappa: px / (N/C). */
+function sensorOklari(ctx, px, py, r, kappa0, etiketli) {
+  const kappa = Math.min(kappa0, 72 / Math.max(1e-9, r.e1.b, r.e2.b, r.net.b));
+  const e1x = r.e1.x * kappa, e1y = r.e1.y * kappa;
+  const e2x = r.e2.x * kappa, e2y = r.e2.y * kappa;
+  ctx.save(); ctx.globalAlpha = 0.85;
+  if (r.e1.b > 0) D.vektor(ctx, px, py, px + e1x, py + e1y, R.normal, etiketli ? 'E₁' : '', { kalinlik: 2 });
+  if (r.e2.b > 0) D.vektor(ctx, px + e1x, py + e1y, px + e1x + e2x, py + e1y + e2y, R.konum,
+                           etiketli ? 'E₂' : '', { kalinlik: 2 });
+  ctx.restore();
+  if (r.net.b * kappa > 3)
+    D.vektor(ctx, px, py, px + r.net.x * kappa, py + r.net.y * kappa, R.kuvvet,
+             etiketli ? 'E_net' : '', { kalinlik: 3.2 });
+}
+
+function cizIkiYuk(ctx, w, h, st, p) {
+  const L = ikiliYerlesim(w, h, p, 0.5, 0.56, 0.74);
+  const [y1, y2] = ikiliYukler(p);
+  const ax = L.X(y1.x), bx = L.X(y2.x), cy = L.cy;
+
+  /* alan çizgileri — sayısı yükle orantılı, bileşke alandan izlenir */
+  alanCizgileriIkili(ctx, [{ x: ax, y: cy, q: y1.q, r: 14 }, { x: bx, y: cy, q: y2.q, r: 14 }],
+                     w, h, 'rgba(120,150,200,.55)', cizgiSayisi(p.q));
+  yukKuresi(ctx, ax, cy, y1.q, 14);
+  yukKuresi(ctx, bx, cy, y2.q, 14);
 
   const ad = q => (q > 0 ? '+' : q < 0 ? '−' : '') + D.biçim(Math.abs(q)) + ' μC';
-  D.yaziAydinlik(ctx, ad(p.q), ax, cy - 28, R.mur, '700 12px system-ui, sans-serif', 'center');
-  D.yaziAydinlik(ctx, ad(q2), bx, cy - 28, R.mur, '700 12px system-ui, sans-serif', 'center');
+  D.yaziAydinlik(ctx, 'q₁ ' + ad(y1.q), ax, cy + 30, R.mur, '700 12px system-ui, sans-serif', 'center');
+  D.yaziAydinlik(ctx, 'q₂ ' + ad(y2.q), bx, cy + 30, R.mur, '700 12px system-ui, sans-serif', 'center');
 
-  /* Orta noktadaki bileşke. Yarı uzaklık, yüklerin GERÇEK ayrıklığından
-     hesaplanır; yükler açıldıkça E düşer. */
-  const yari = Math.max(0.05, (p.r || 60) / 200);
-  const E1 = alanNokta(p, yari), E2 = E1;
-  const ortaX = (ax + bx) / 2;
-  const net = p.zit ? (E1 + E2) : 0;
+  /* orta nokta */
+  D.noktaCisim(ctx, L.cx, cy, 4, R.ivme);
 
-  D.noktaCisim(ctx, ortaX, cy, 5, R.ivme);
   if (p.q === 0) {
-    D.yaziAydinlik(ctx, 'yükler sıfır: alan yok',
-                   w / 2, h - 16, R.mur, '600 11px system-ui, sans-serif', 'center');
-  } else if (p.zit) {
-    /* Ok boyu gerçek alanla ölçeklenir: yükler uzaklaştıkça kısalır. Yön
-       + yükten − yüke doğrudur: soldaki yük + ise sağa, − ise sola. */
-    const okBoy = Math.max(16, Math.min(64, net / 9000));
-    D.vektor(ctx, ortaX, cy, ortaX + okBoy * isaret(p.q), cy, R.normal, 'E_net', { kalinlik: 2.8 });
-    D.yaziAydinlik(ctx, 'zıt yükler: alanlar AYNI yönde ⟹ toplanır',
-                   w / 2, h - 16, R.mur, '600 11px system-ui, sans-serif', 'center');
-  } else {
-    D.yaziAydinlik(ctx, 'aynı yükler: orta noktada alanlar ZIT ⟹ E = 0',
-                   w / 2, h - 16, R.mur, '600 11px system-ui, sans-serif', 'center');
+    D.yaziAydinlik(ctx, 'yükler sıfır ⟹ alan yok', w / 2, h - 14, R.mur,
+                   '600 11px system-ui, sans-serif', 'center');
+    return;
   }
-  D.yaziAydinlik(ctx, 'orta nokta: E = ' + D.biçim(net) + ' N/C', w - 10, 18,
-                 R.normal, '700 12px system-ui, sans-serif', 'right');
+
+  /* sensörün yolu ve kendisi */
+  const a = Math.max(0.05, p.r / 200);
+  ctx.save();
+  ctx.strokeStyle = 'rgba(90,100,120,.35)'; ctx.setLineDash([3, 5]); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.ellipse(L.cx, cy, 1.9 * a * L.s, 1.1 * a * L.s, 0, 0, 6.2832); ctx.stroke();
+  ctx.restore();
+
+  const r = sensorAlani(st.t, p);
+  const px = L.X(r.s.x), py = L.Y(r.s.y);
+  sensorOklari(ctx, px, py, r, sensorOlcegi(p, 40), true);
+  ctx.save();
+  ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = '#2C3850'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(px, py, 6, 0, 6.2832); ctx.fill(); ctx.stroke();
+  ctx.restore();
+
+  D.yaziAydinlik(ctx, 'sensörde E_net = ' + D.biçim(r.net.b / 1000) + ' kN/C', w - 10, 18,
+                 R.kuvvet, '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, 'orta nokta: E = ' + D.biçim(ortaAlan(p) / 1000) + ' kN/C', w - 10, 36,
+                 R.ivme, '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, p.zit ? 'zıt yükler: ortada alanlar AYNI yönde ⟹ toplanır'
+                            : 'aynı yükler: ortada alanlar ZIT ⟹ E = 0 (nötr nokta)',
+                 w / 2, h - 14, R.mur, '600 11px system-ui, sans-serif', 'center');
 }
 
 function cizLevhalar(ctx, w, h, st, p, gercek) {
@@ -435,53 +532,43 @@ function cizKlasik(ctx, w, h, st, pHam) {
                  R.ivme, '600 11px system-ui, sans-serif', 'left');
 
   } else if (p.mod < 2.5) {
-    /* --- İki yük: süperpozisyon ---
-       Oynat'a basılınca iki yük birbirinden uzaklaşıp yaklaşır; orta noktadaki
-       bileşke alanın nasıl zayıflayıp güçlendiği canlı görünür. */
-    const acilma = Math.max(0.25, Math.min(1, (p.r || 60) / 90));
-    const cy = h * 0.40;
-    const ax = w * (0.47 - 0.23 * acilma), bx = w * (0.47 + 0.23 * acilma);
-    ctx.strokeStyle = K.eksen; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.moveTo(24, cy); ctx.lineTo(w - 16, cy); ctx.stroke();
+    /* --- İki yük: sensör noktasında vektör toplamı (uç uca) --- */
+    const L = ikiliYerlesim(w * 0.5, h, p, 0.5, 0.46, 0.84);
+    const [y1, y2] = ikiliYukler(p);
+    ctx.strokeStyle = K.eksen; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(12, L.cy); ctx.lineTo(w * 0.5 - 6, L.cy); ctx.stroke();
+    D.noktaCisim(ctx, L.X(y1.x), L.cy, 7, yukRengi(y1.q));
+    D.noktaCisim(ctx, L.X(y2.x), L.cy, 7, yukRengi(y2.q));
+    D.yaziHaleli(ctx, 'q₁', L.X(y1.x), L.cy + 18, K.beyaz, '600 11px system-ui, sans-serif', 'center');
+    D.yaziHaleli(ctx, 'q₂', L.X(y2.x), L.cy + 18, K.beyaz, '600 11px system-ui, sans-serif', 'center');
 
-    const q2 = p.zit ? -p.q : p.q;
-    D.noktaCisim(ctx, ax, cy, 8, yukRengi(p.q));
-    D.noktaCisim(ctx, bx, cy, 8, yukRengi(q2));
-    const ortaX = (ax + bx) / 2;
-    D.noktaCisim(ctx, ortaX, cy, 5, R.ivme);
+    const r = sensorAlani(st.t, p);
+    const px = L.X(r.s.x), py = L.Y(r.s.y);
+    /* sensörden yüklere uzaklık çizgileri */
+    D.kesikliCizgi(ctx, L.X(y1.x), L.cy, px, py, 'rgba(160,170,190,.45)', 1, [3, 4]);
+    D.kesikliCizgi(ctx, L.X(y2.x), L.cy, px, py, 'rgba(160,170,190,.45)', 1, [3, 4]);
+    if (p.q !== 0) sensorOklari(ctx, px, py, r, sensorOlcegi(p, 38), true);
+    D.noktaCisim(ctx, px, py, 5, K.beyaz);
 
-    /* Orta noktadaki iki alan vektörü. Boyları GERÇEK alanla ölçeklenir:
-       yükler uzaklaştıkça E = kq/(d/2)² küçülür, oklar kısalır.
-       Yön: + yükün alanı ondan UZAĞA, − yükün alanı ona DOĞRU bakar.
-       Soldaki yükün (q₁) alanı orta noktada +q₁ için sağa; sağdaki yükün
-       (q₂) alanı +q₂ için sola bakar. */
-    const yariM = Math.max(0.05, (p.r || 60) / 200);          // yarı uzaklık (m)
-    const Eorta = alanNokta({ q: p.q }, yariM);
-    const okBoy = Math.max(12, Math.min(52, Eorta / 30000));
-    if (p.q !== 0) {
-      D.vektor(ctx, ortaX, cy - 26, ortaX + okBoy * isaret(p.q), cy - 26, R.normal, 'E₁', { kalinlik: 2.2 });
-      D.vektor(ctx, ortaX, cy - 46, ortaX - okBoy * isaret(q2), cy - 46,
-               R.konum, 'E₂', { kalinlik: 2.2 });
-    }
-
-    /* Yarı uzaklık, yüklerin canlı ayrıklığından gelir. */
-    const yari = Math.max(0.05, (p.r || 60) / 200);
-    const Etek = KC * Math.abs(qKaynakC(p)) / (yari * yari);
-    const satir = p.zit
-      ? [['Zıt yükler (dipol)', K.beyaz],
-         ['E₁ ve E₂ AYNI yönde', K.metin2],
-         ['E_net = E₁ + E₂ = ' + D.biçim(2 * Etek) + ' N/C', R.normal]]
-      : [['Aynı yükler', K.beyaz],
-         ['E₁ ve E₂ ZIT yönde, eşit büyüklükte', K.metin2],
-         ['E_net = 0  (nötr nokta)', R.hiz]];
-    /* Sağ sütun, alttaki notun ÜSTÜNDE biter; aksi hâlde ikisi çakışıyordu. */
-    let sy = h - 40 - (satir.length - 1) * 18;
-    satir.forEach(([t, c]) => {
-      D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
+    const r1 = Math.hypot(r.s.x - y1.x, r.s.y), r2 = Math.hypot(r.s.x - y2.x, r.s.y);
+    const satir = [
+      ['Süperpozisyon: E_net = E₁ + E₂ (vektörel)', K.beyaz, '700 12px'],
+      ['E₁ = k|q₁|/r₁² = ' + D.biçim(r.e1.b / 1000) + ' kN/C', R.normal, '12px'],
+      ['   r₁ = ' + D.biçim(r1 * 100) + ' cm', K.metin2, '11px'],
+      ['E₂ = k|q₂|/r₂² = ' + D.biçim(r.e2.b / 1000) + ' kN/C', R.konum, '12px'],
+      ['   r₂ = ' + D.biçim(r2 * 100) + ' cm', K.metin2, '11px'],
+      ['|E_net| = ' + D.biçim(r.net.b / 1000) + ' kN/C', R.kuvvet, '700 13px'],
+      ['', K.metin2, '11px'],
+      ['Orta noktada: ' + (p.zit ? 'E = 2kq/a² = ' + D.biçim(ortaAlan(p) / 1000) + ' kN/C'
+                                 : 'E₁ ile E₂ zıt ⟹ E = 0'), R.ivme, '600 11px']
+    ];
+    let sy = 30;
+    satir.forEach(([t, c, f]) => {
+      if (t) D.yaziHaleli(ctx, t, w - 12, sy, c, f + ' system-ui, sans-serif', 'right');
+      sy += 18;
     });
-
-    D.yaziHaleli(ctx, 'Süperpozisyon: alanlar VEKTÖREL toplanır',
-                 12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
+    D.yaziHaleli(ctx, 'E_net daima alan çizgisine TEĞETTİR', 12, h - 16, R.ivme,
+                 '600 11px system-ui, sans-serif', 'left');
 
   } else {
     /* --- Levhalar: yatay atışla birebir aynı --- */
@@ -586,6 +673,32 @@ function cizGrafik(ctx, w, h, st, pHam) {
     return;
   }
 
+  if (p.mod > 1.5) {
+    /* İki yük: sensörde |E_net| − t ve dik açıortay boyunca E − y */
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: '|E_net| − t   (sensör yolu boyunca)', birim: 'kN/C',
+      veri: st.kayit, tMin: st.kayit.length ? st.kayit[0].t : 0, tMax: Math.max(1, st.t), vMin: 0,
+      vMax: Math.max(1e-6, ...st.kayit.map(d => d.v), sensorAlani(st.t, p).net.b / 1000) * 1.1,
+      renk: R.kuvvet
+    });
+    const a = Math.max(0.05, p.r / 200);
+    const v2 = [];
+    for (let k = -60; k <= 60; k++) {
+      const y = (k / 60) * 3 * a;
+      v2.push({ t: y * 100, v: aciortayAlani(p, y) / 1000 });
+    }
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: p.zit ? 'E − y   (dik açıortay · ortada EN BÜYÜK)' : 'E − y   (dik açıortay · ortada SIFIR)',
+      birim: 'kN/C', tEtiket: 'y (cm)',
+      imlec: { t: 0, v: ortaAlan(p) / 1000 },
+      veri: v2, tMin: -300 * a, tMax: 300 * a, vMin: 0,
+      vMax: Math.max(1e-6, ...v2.map(d => d.v)) * 1.1, renk: R.ivme
+    });
+    return;
+  }
+
   /* E − d: ters kare */
   const veri = [];
   /* Değerler 10⁶ mertebesinde; N/C ile eksen etiketi (6000000) sol paya
@@ -628,14 +741,14 @@ function okumalar(st, pHam) {
     ];
   }
   if (p.mod > 1.5) {
-    const yariM = Math.max(0.05, (p.r || 60) / 200);
-    const Etek = KC * Math.abs(qKaynakC(p)) / (yariM * yariM);
+    const r = sensorAlani(st.t, p);
     return [
-      { et: 'Düzenek',       dg: p.zit ? 'Zıt yükler' : 'Aynı yükler', birim: '' },
-      { et: 'Yarı uzaklık',  dg: D.biçim(yariM * 100),                 birim: 'cm' },
-      { et: 'Tek yükün alanı', dg: D.biçim(Etek),                      birim: 'N/C' },
-      { et: 'Orta noktada E', dg: p.zit ? D.biçim(2 * Etek) : '0',     birim: 'N/C' },
-      { et: 'Yorum',         dg: p.zit ? 'Toplanır' : 'Götürür',       birim: '' }
+      { et: 'Düzenek',         dg: p.zit ? 'Zıt yükler (dipol)' : 'Aynı yükler', birim: '' },
+      { et: 'Yükler arası',    dg: D.biçim(p.r),                     birim: 'cm' },
+      { et: 'Sensörde E₁',     dg: D.biçim(r.e1.b / 1000),           birim: 'kN/C' },
+      { et: 'Sensörde E₂',     dg: D.biçim(r.e2.b / 1000),           birim: 'kN/C' },
+      { et: 'Sensörde E_net',  dg: D.biçim(r.net.b / 1000),          birim: 'kN/C' },
+      { et: 'Orta noktada E',  dg: D.biçim(ortaAlan(p) / 1000),      birim: 'kN/C' }
     ];
   }
   const E = alanNokta(p, p.r / 100);
@@ -664,7 +777,7 @@ D.simler['elektriksel-alan'] = {
       { d: 3, e: 'Paralel levhalar (düzgün alan)' }
     ]},
     { anahtar: 'q',  etiket: 'Kaynak yük q', min: -10, max: 10, adim: 1, deger: 4, birim: 'μC' },
-    { anahtar: 'r',  etiket: 'Test yükü uzaklığı', min: 10, max: 100, adim: 5, deger: 40, birim: 'cm' },
+    { anahtar: 'r',  etiket: 'Uzaklık (1: test yükü · 2: yükler arası)', min: 10, max: 100, adim: 5, deger: 40, birim: 'cm' },
     { anahtar: 'qt', etiket: 'Test/zerre yükü q₀', min: -50, max: 50, adim: 5, deger: 20, birim: 'nC' },
     { anahtar: 'zit', etiket: 'İkinci yük', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Zıt işaretli (dipol)' },
