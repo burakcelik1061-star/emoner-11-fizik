@@ -473,7 +473,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'B = 2·10⁻⁷ · 500 / 10 = 1·10⁻⁴ / 10 = <strong>1·10⁻⁵ T = 10 μT</strong>' },
       { bas: 'Dünya ile karşılaştır',
-        metin: '10 μT, Dünya’nın alanının (50 μT) yaklaşık <strong>beşte biridir</strong>. Yani pusulanı bozacak kadar bile güçlü değil.' },
+        metin: '10 μT, Dünya’nın alanının (≈ 48 μT) yaklaşık <strong>beşte biridir</strong>. Ama pusula yalnız yatay bileşeni (≈ 25 μT) izler: hat doğu–batı uzanıyorsa iğne tan θ = 10/25 ⟹ yaklaşık <strong>20°</strong> sapar. Küçük ama ölçülebilir bir etki.' },
       { bas: 'Mıknatısla karşılaştır',
         metin: '5 mT = 5000 μT. Buzdolabı mıknatısı hattın altındaki alandan <strong>500 kat</strong> güçlüdür. Elini buzdolabına her dayadığında bundan çok daha büyük bir alana giriyorsun.' },
       { bas: 'Yüksekliği iki katına çıkar',
