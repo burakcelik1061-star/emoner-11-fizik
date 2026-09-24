@@ -104,21 +104,29 @@ function gerekenAynaBoyu(p) { return p.boy / 2; }
    canlı görünür. */
 const TARAMA_PERIYOT = 12;
 
-function durum(p) { return { t: 0, gelme: p.gelme, uzaklik: p.uzaklik, ikiAci: p.ikiAci, gozX: p.gozX }; }
+function durum(p) { return { t: 0, gelme: p.gelme, uzaklik: p.uzaklik, ikiAci: p.ikiAci, gozX: p.gozX,
+                              aynaAci: p.aynaAci, aynaBoy: p.aynaBoy }; }
 
 function adim(st, dt, p) {
   st.t += dt;
   if (p.mod < 1.5 || p.mod > 4.5) st.gelme = D.tarama(st.t, p.gelme, p.gelme < 40 ? 80 : 5, TARAMA_PERIYOT);
-  else if (p.mod < 2.5) st.uzaklik = D.tarama(st.t, p.uzaklik, p.uzaklik < 160 ? 300 : 30, TARAMA_PERIYOT);
-  else if (p.mod < 3.5) st.ikiAci  = Math.round(D.tarama(st.t, p.ikiAci, p.ikiAci < 100 ? 180 : 40, TARAMA_PERIYOT) / 10) * 10;
-  else                  st.gozX    = D.tarama(st.t, p.gozX, p.gozX < 0 ? 4 : -4, TARAMA_PERIYOT);   // göz sağa-sola yürür
+  /* Yansımada ayna da farklı hızda döndürülür: 2θ grafiğindeki işaret de oynasın. */
+  if (p.mod < 1.5) st.aynaAci = D.tarama(st.t, p.aynaAci, p.aynaAci > 0 ? -20 : 20, TARAMA_PERIYOT * 0.75);
+  if (p.mod > 1.5 && p.mod < 2.5) {
+    st.uzaklik = D.tarama(st.t, p.uzaklik, p.uzaklik < 160 ? 300 : 30, TARAMA_PERIYOT);
+    /* Ayna boyu da değiştirilir: boyun yarısından kısalınca ayaklar kaybolur. */
+    st.aynaBoy = D.tarama(st.t, p.aynaBoy, p.aynaBoy >= p.boy / 2 ? 40 : 120, TARAMA_PERIYOT * 0.8);
+  }
+  if (p.mod > 2.5 && p.mod < 3.5) st.ikiAci = Math.round(D.tarama(st.t, p.ikiAci, p.ikiAci < 100 ? 180 : 40, TARAMA_PERIYOT) / 10) * 10;
+  if (p.mod > 3.5 && p.mod < 4.5) st.gozX   = D.tarama(st.t, p.gozX, p.gozX < 0 ? 4 : -4, TARAMA_PERIYOT);   // göz sağa-sola yürür
 }
 
 function bitti() { return false; }
 
 function etkin(st, p) {
   return Object.assign({}, p, { gelme: st.gelme ?? p.gelme, uzaklik: st.uzaklik ?? p.uzaklik,
-                                ikiAci: st.ikiAci ?? p.ikiAci, gozX: st.gozX ?? p.gozX });
+                                ikiAci: st.ikiAci ?? p.ikiAci, gozX: st.gozX ?? p.gozX,
+                                aynaAci: st.aynaAci ?? p.aynaAci, aynaBoy: st.aynaBoy ?? p.aynaBoy });
 }
 
 /* ------------------------------------------------ Görüş alanı (mod 4) */
@@ -322,9 +330,10 @@ function cizYansima(ctx, w, h, st, p) {
 }
 
 function cizGoruntu(ctx, w, h, st, p) {
-  const ax = w * 0.52;
+  const ax = w * 0.50;
   const zemin = h - 40;
-  const olcek = Math.min((h - 90) / 190, (w * 0.34) / 200);
+  /* SABİT ölçek: en uzak konumda (300 cm) hem insan hem görüntüsü panele sığar. */
+  const olcek = Math.min((h - 90) / 200, (w * 0.5 - 45) / 300);
 
   /* zemin */
   ctx.fillStyle = '#C9A06A'; ctx.fillRect(0, zemin, w, h - zemin);
@@ -355,7 +364,7 @@ function cizGoruntu(ctx, w, h, st, p) {
   const gx = ax + p.uzaklik * olcek;
   D.insan(ctx, gx, zemin, olcekInsan);
   ctx.restore();
-  D.yaziAydinlik(ctx, 'görüntü (sanal)', gx, zemin + 22, R.mur,
+  D.yaziAydinlik(ctx, 'görüntü (sanal)', gx, zemin + 12, R.mur,
                  '600 11px system-ui, sans-serif', 'center');
 
   /* baş ve ayak ışınları */
@@ -377,20 +386,21 @@ function cizGoruntu(ctx, w, h, st, p) {
     const gAlt = zemin - gorulenAlt(p) * olcek;
     D.isin(ctx, ix, gAlt, ax, aynaAlt, 'rgba(255,176,32,.85)', 1.8, false);
     D.isin(ctx, ax, aynaAlt, ix, goz, 'rgba(226,75,74,.85)', 1.8, false);
-    D.olcu(ctx, ix - 22, gAlt, ix - 22, ayak, 'görünmeyen ' + D.biçim(gorulenAlt(p), 0) + ' cm', '#B03030');
+    D.olcu(ctx, ix + 26, gAlt, ix + 26, ayak, 'görünmeyen ' + D.biçim(gorulenAlt(p), 0) + ' cm', '#B03030');
   }
 
   /* gereken ayna aralığı işaretle */
   const ust = (bas + goz) / 2, alt = (ayak + goz) / 2;
   D.olcu(ctx, ax + 30, ust, ax + 30, alt, D.biçim(gerekenAynaBoyu(p)) + ' cm', R.hiz);
   D.rozet(ctx, yeterli ? 'BOYDAN BOYA GÖRÜYOR' : 'AYNA KISA — tamamı görünmüyor',
-          w / 2, 52, yeterli ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
+          w / 2, 50, yeterli ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
           yeterli ? '#0A2A1E' : '#FFFFFF', '700 11px system-ui, sans-serif', true);
 
-  D.yaziAydinlik(ctx, 'boy ' + D.biçim(p.boy) + ' cm · ayna ' + D.biçim(p.aynaBoy) + ' cm',
-                 10, 42, R.mur, '700 12px system-ui, sans-serif', 'left');
+  /* İki satır alt alta: dar panelde yan yana yazılınca birbirine biniyordu. */
+  D.yaziAydinlik(ctx, 'boy ' + D.biçim(p.boy) + ' cm · ayna ' + D.biçim(p.aynaBoy, 0) + ' cm',
+                 w - 10, 20, R.mur, '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'gereken: boyun YARISI = ' + D.biçim(gerekenAynaBoyu(p)) + ' cm',
-                 w - 10, 42, R.hiz, '700 12px system-ui, sans-serif', 'right');
+                 w - 10, 38, R.hiz, '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'uzaklığı değiştir — gereken ayna boyu DEĞİŞMEZ',
                  w / 2, h - 12, R.mur, '600 11px system-ui, sans-serif', 'center');
 }
