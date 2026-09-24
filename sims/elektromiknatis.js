@@ -116,6 +116,11 @@ function kaldirilanKutle(p) { return kaldirmaKuvveti(p) / G; }
    ağırlığından azsa (ya da akım azalırsa) yük kopar ve SERBEST DÜŞER. */
 const KALDIRMA_H = 1.5;          // m — vincin kaldırma yüksekliği
 const VINC_PERIYOT = 7;          // s
+const KESME_ANI = 5.6;           // s — döngüde akımın kesildiği an (yük bırakılır)
+
+/** Operatör akımı döngünün sonunda keser: elektromıknatısın asıl üstünlüğü
+    mıknatıslığın AÇILIP KAPANABİLMESİDİR. Akım kesilince yük düşer. */
+function akimAcik(t) { return (t % VINC_PERIYOT) < KESME_ANI; }
 
 /** Mıknatısın alt yüzünün, yerdeki yükün üst yüzünden yüksekliği (m). */
 function vincYuksekligi(t) {
@@ -127,9 +132,59 @@ function vincYuksekligi(t) {
 }
 
 function durum(p) {
-  /* st.i: canlı (taranan) akım · yukH: yükün yerden yüksekliği (m) */
-  return { t: 0, cekildi: false, vurus: 0, zilFaz: 0,
-           yukH: 0, yukV: 0, bagli: false, koptu: false, kayit: [], vKayit: [] };
+  /* st.i: canlı (taranan) akım · yukH: yükün yerden yüksekliği (m)
+     zil: x dilin konumu (m), v hızı, kontakAcik, vurus sayısı */
+  return { t: 0, tz: 0, x: 0, v: 0, kontakAcik: false, cekildi: false, vurus: 0, vurusT: [],
+           yukH: 0, yukV: 0, bagli: false, koptu: false, birakildi: false, kayit: [], vKayit: [] };
+}
+
+/* ELEKTRİKLİ ZİL — gerçek mekanik model
+   Demir dil (armatür) bir yayla kontağa bastırılır (ön yük F₀). Kontak
+   kapalıyken bobinden akım geçer ve mıknatıs dili F = C·i²/g² kuvvetiyle çeker
+   (g: dil ile kutup arası boşluk; kuvvet akımın YÖNÜNDEN bağımsızdır).
+   Dil 2 mm yol alınca kontak açılır, akım kesilir; dil momentumla tokmağı
+   çana vurdurur (2,5 mm), yay geri çeker, kontak 0,3 mm’de yeniden kapanır.
+   Akım yetersizse (C·i²/g₀² ≤ F₀) dil hiç kıpırdamaz. Zilin küçük çekirdeği
+   DOYAR: etkin akım i_s·tanh(i/i_s), yani akımı artırmak çekimi bir yerden sonra
+   büyütmez. Gerçek zil onlarca Hz çalar; ×10 ağır çekimle gösterilir. */
+const ZIL = { m: 0.004, k: 30, F0: 0.02, C: 1.6e-6, g0: 0.004, acil: 0.002, kapan: 0.0003,
+              vur: 0.0025, sekme: 0.3, sonum: 0.02, AGIR: 10, iDoyma: 1.5 };
+function zilEtkinAkim(i) { return ZIL.iDoyma * Math.tanh(Math.abs(i) / ZIL.iDoyma); }
+function zilKuvveti(i, x) { const g = ZIL.g0 - x, ie = zilEtkinAkim(i); return ZIL.C * ie * ie / (g * g); }
+/** Zilin çalışma eşiği: dilin kontağı AÇABİLMESİ için mıknatıs kuvveti yol
+    boyunca (0 → 2 mm) her yerde yay kuvvetini (F₀ + kx) aşmalı. Daha küçük
+    akımda dil biraz çekilir ama takılı kalır; zil çalmaz. */
+function zilEsikAkim() {
+  let ie = 0;
+  for (let x = 0; x <= ZIL.acil; x += ZIL.acil / 40)
+    ie = Math.max(ie, (ZIL.g0 - x) * Math.sqrt((ZIL.F0 + ZIL.k * x) / ZIL.C));
+  return ZIL.iDoyma * Math.atanh(Math.min(0.999, ie / ZIL.iDoyma));
+}
+
+function zilAdim(st, dt, i) {
+  const h = dt / ZIL.AGIR;
+  st.tz += h;
+  const akim = !st.kontakAcik && i !== 0 ? Math.abs(i) : 0;
+  const Fm = akim ? zilKuvveti(akim, st.x) : 0;
+  let a = (Fm - ZIL.F0 - ZIL.k * st.x - ZIL.sonum * st.v) / ZIL.m;
+  if (st.x <= 0 && a < 0 && st.v <= 0) { st.x = 0; st.v = 0; a = 0; }   // kontağa dayalı
+  st.v += a * h; st.x += st.v * h;
+  if (st.x < 0) { st.x = 0; st.v = 0; }
+  if (st.x >= ZIL.vur) {                                                  // tokmak çana vurdu
+    st.x = ZIL.vur; st.v = -Math.abs(st.v) * ZIL.sekme;
+    st.vurus++; st.vurusT.push(st.tz); if (st.vurusT.length > 6) st.vurusT.shift();
+  }
+  if (!st.kontakAcik && st.x > ZIL.acil) st.kontakAcik = true;
+  else if (st.kontakAcik && st.x < ZIL.kapan) st.kontakAcik = false;
+  st.cekildi = st.x > ZIL.kapan;
+  return akim;
+}
+
+/** Son vuruşlardan zil frekansı (Hz, gerçek zaman). */
+function zilFrekansi(st) {
+  const v = st.vurusT;
+  if (!v || v.length < 3) return 0;
+  return (v.length - 1) / (v[v.length - 1] - v[0]);
 }
 
 function adim(st, dt, p) {
@@ -145,28 +200,24 @@ function adim(st, dt, p) {
   const pe = etkin(st, p);
 
   if (p.mod > 1.5) {
-    /* Zil: elektromıknatıs çeker → kontak açılır → yay geri çeker → kapanır.
-       Akım yoksa mıknatıslık da yoktur: dil kıpırdamaz, zil çalmaz. */
-    if (pe.i !== 0) {
-      const hiz = 8 + Math.abs(pe.i) * 1.2;
-      st.zilFaz = (st.zilFaz + dt * hiz) % 2;
-      const yeni = st.zilFaz < 1;
-      if (yeni !== st.cekildi) { st.cekildi = yeni; if (yeni) st.vurus++; }
-    } else st.cekildi = false;
-    /* Bobin akımı: kontak KAPALIYKEN akar, dil çekilip kontak açılınca kesilir.
-       Kaydı kesintili (aç-kapa) bir akım verir. */
-    if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.004) {
-      st.kayit.push({ t: st.t, v: st.cekildi || pe.i === 0 ? 0 : Math.abs(pe.i) });
-      st.vKayit.push({ t: st.t, v: st.vurus });
+    /* Zil: mekanik model (yukarıda). Kayıtlar GERÇEK zamanda, ms cinsinden. */
+    const akim = zilAdim(st, dt, pe.i);
+    const tms = st.tz * 1000;
+    if (st.kayit.length === 0 || tms - st.kayit[st.kayit.length - 1].t > 0.4) {
+      st.kayit.push({ t: tms, v: akim });
+      st.vKayit.push({ t: tms, v: st.x * 1000 });
     }
-    if (st.kayit.length > 500) { st.kayit.shift(); st.vKayit.shift(); }
+    if (st.kayit.length > 400) { st.kayit.shift(); st.vKayit.shift(); }
     return;
   }
 
   const hm = vincYuksekligi(st.t);
   const yeter = kaldirilanKutle(pe) >= p.yuk;
-  if (st.bagli && !yeter) { st.bagli = false; st.koptu = true; }   // kuvvet yetmedi
-  if (!st.bagli && yeter && st.yukH <= 1e-6 && hm <= 1e-6) { st.bagli = true; st.koptu = false; }
+  if (st.bagli && !yeter) {                                           // yük düşer
+    st.bagli = false;
+    if (akimAcik(st.t)) st.koptu = true; else st.birakildi = true;    // kuvvet yetmedi / akım kesildi
+  }
+  if (!st.bagli && yeter && st.yukH <= 1e-6 && hm <= 1e-6) { st.bagli = true; st.koptu = false; st.birakildi = false; }
 
   if (st.bagli) { st.yukH = hm; st.yukV = 0; }
   else if (st.yukH > 0) {
@@ -176,9 +227,11 @@ function adim(st, dt, p) {
   }
 }
 
-/** Taranan akımla güncellenmiş parametreler. */
+/** Taranan akımla güncellenmiş parametreler. Vinçte akım kesikken i = 0. */
 function etkin(st, p) {
-  return Object.assign({}, p, { i: (st && st.i != null) ? st.i : p.i });
+  let i = (st && st.i != null) ? st.i : p.i;
+  if (p.mod < 1.5 && st && !akimAcik(st.t)) i = 0;
+  return Object.assign({}, p, { i });
 }
 
 function bitti() { return false; }
@@ -254,11 +307,13 @@ function cizVinc(ctx, w, h, st, p) {
                  '700 13px system-ui, sans-serif', 'center');
 
   /* bilgi */
-  const rozetYazi = st.bagli ? 'YÜKÜ TUTUYOR' : st.koptu ? 'YÜK KOPTU · SERBEST DÜŞME'
+  const kesik = !akimAcik(st.t);
+  const rozetYazi = kesik ? 'AKIM KESİLDİ · mıknatıslık yok' + (st.yukH > 0 ? ' · yük düşüyor' : '')
+                  : st.bagli ? 'YÜKÜ TUTUYOR' : st.koptu ? 'KUVVET YETMEDİ · YÜK KOPTU'
                   : yeter ? 'YETERLİ · temas bekleniyor' : 'KUVVET YETERSİZ';
   D.rozet(ctx, rozetYazi, w / 2, 52,
-          yeter ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
-          yeter ? '#0A2A1E' : '#FFFFFF', '700 12px system-ui, sans-serif', true);
+          kesik ? 'rgba(110,118,132,.92)' : yeter ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
+          kesik ? '#FFFFFF' : yeter ? '#0A2A1E' : '#FFFFFF', '700 12px system-ui, sans-serif', true);
 
   /* Panel etiketi sol üstte, rozet üst ortada; bu yazılar onların altına konur. */
   D.yaziAydinlik(ctx, c.ad, 10, 44, R.mur, '700 12px system-ui, sans-serif', 'left');
@@ -299,8 +354,8 @@ function cizZil(ctx, w, h, st, p) {
   }
   ctx.restore();
 
-  /* çekirdek akım varken renklenir */
-  if (st.cekildi) {
+  /* çekirdek akım geçerken (kontak kapalı) renklenir */
+  if (akimVar && !st.kontakAcik && Math.abs(p.i) > zilEsikAkim()) {
     ctx.save(); ctx.globalAlpha = .5; ctx.fillStyle = '#E2483F';
     ctx.fillRect(mx, my, 26, 52); ctx.fillRect(mx + 54, my, 26, 52);
     ctx.restore();
@@ -308,7 +363,7 @@ function cizZil(ctx, w, h, st, p) {
 
   /* hareketli demir dil (armatür) — çekilince sağa/aşağı gider */
   const dilX = mx + 100;
-  const sapma = st.cekildi ? 14 : 0;
+  const sapma = 14 * (st.x || 0) / ZIL.vur;           // gerçek konum (2,5 mm → 14 px)
   ctx.save();
   ctx.strokeStyle = '#9AA5B1'; ctx.lineWidth = 6; ctx.lineCap = 'round';
   ctx.beginPath();
@@ -333,7 +388,7 @@ function cizZil(ctx, w, h, st, p) {
   ctx.fillStyle = '#8A6B25';
   ctx.beginPath(); ctx.arc(canX, tokY, 8, 0, 6.2832); ctx.fill();
 
-  if (st.cekildi) {
+  if ((st.x || 0) > ZIL.vur * 0.9) {
     /* vuruş anı: çandan ses dalgaları yayılır */
     ctx.save();
     ctx.strokeStyle = '#E0A000'; ctx.lineWidth = 2.4;
@@ -345,17 +400,22 @@ function cizZil(ctx, w, h, st, p) {
 
   /* kontak — çekilince AÇILIR, devre kesilir */
   const kx = dilX + 6, ky = cy - 46;
-  ctx.strokeStyle = st.cekildi ? '#B03030' : '#35C08A';
+  const acik = !!st.kontakAcik;
+  ctx.strokeStyle = acik ? '#B03030' : '#35C08A';
   ctx.lineWidth = 3;
-  ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(kx + 26, ky - (st.cekildi ? 12 : 0));
+  ctx.beginPath(); ctx.moveTo(kx, ky); ctx.lineTo(kx + 26, ky - (acik ? 12 : 0));
   ctx.stroke();
-  D.yaziAydinlik(ctx, st.cekildi ? 'kontak AÇIK' : 'kontak KAPALI', kx + 40, ky - 6,
-                 st.cekildi ? '#B03030' : '#1A7A55', '700 11px system-ui, sans-serif', 'left');
+  D.yaziAydinlik(ctx, acik ? 'kontak AÇIK' : 'kontak KAPALI', kx + 40, ky - 6,
+                 acik ? '#B03030' : '#1A7A55', '700 11px system-ui, sans-serif', 'left');
 
-  D.rozet(ctx, akimVar ? 'ELEKTRİKLİ ZİL · kendi kendini kesen devre' : 'AKIM YOK · zil çalmaz', w / 2, 52,
-          akimVar ? 'rgba(47,111,208,.92)' : 'rgba(110,118,132,.92)', '#FFFFFF',
+  const yetersiz = akimVar && Math.abs(p.i) <= zilEsikAkim();
+  D.rozet(ctx, !akimVar ? 'AKIM YOK · zil çalmaz'
+               : yetersiz ? 'AKIM YETERSİZ · çekim yayı yenemiyor'
+               : 'ELEKTRİKLİ ZİL · ağır çekim ×' + ZIL.AGIR, w / 2, 52,
+          akimVar && !yetersiz ? 'rgba(47,111,208,.92)' : 'rgba(110,118,132,.92)', '#FFFFFF',
           '700 11px system-ui, sans-serif', true);
-  D.yaziAydinlik(ctx, 'vuruş: ' + st.vurus, w - 10, h - 12, R.mur,
+  const f = zilFrekansi(st);
+  D.yaziAydinlik(ctx, 'vuruş: ' + st.vurus + (f > 0 ? ' · ' + D.biçim(f, 0) + ' Hz (gerçek)' : ''), w - 10, h - 12, R.mur,
                  '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'akım → çeker → kontak açılır → akım kesilir → yay geri çeker → tekrar',
                  10, h - 12, R.mur, '600 10px system-ui, sans-serif', 'left');
@@ -382,8 +442,10 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ];
     /* Döngünün o anki adımı vurgulanır: dil çekiliyken 2–3–4, bırakılmışken
        5–1. Akım yoksa hiçbir adım işlemez. */
-    const z = st.zilFaz || 0;
-    const etkinAdim = p.i === 0 ? -1 : z < 1 ? (z < 0.33 ? 1 : z < 0.66 ? 2 : 3) : (z < 1.5 ? 4 : 0);
+    const x = st.x || 0, v = st.v || 0;
+    const etkinAdim = p.i === 0 || Math.abs(p.i) <= zilEsikAkim() ? -1
+                    : !st.kontakAcik ? (x < 1e-5 && Math.abs(v) < 1e-4 ? 0 : 1)
+                    : v > 0 ? 2 : x > ZIL.acil * 0.75 ? 3 : 4;
     let sy = 52;
     adim.forEach(([n, t, c2], i) => {
       if (i === etkinAdim) {
@@ -398,6 +460,14 @@ function cizKlasik(ctx, w, h, st, pHam) {
     if (p.i === 0)
       D.yaziHaleli(ctx, 'Akım yok ⟹ döngü başlamaz', w - 12, 52, R.kuvvet,
                    '700 12px system-ui, sans-serif', 'right');
+    const esik = zilEsikAkim();
+    const zs = [
+      ['F_m = C·i² / g²  (i’nin YÖNÜ önemsiz; çekirdek doyar)', K.beyaz],
+      ['yay ön yükü F₀ = ' + D.biçim(ZIL.F0 * 1000, 0) + ' mN', K.metin2],
+      ['çalışma eşiği: i > ' + D.biçim(esik, 2) + ' A', Math.abs(p.i) > esik ? R.hiz : R.kuvvet],
+      ['F_m(başta) = ' + D.biçim(zilKuvveti(Math.abs(p.i), 0) * 1000, 1) + ' mN', R.normal]
+    ];
+    zs.forEach(([t, c2], k) => D.yaziHaleli(ctx, t, w - 12, h - 92 + k * 17, c2, '700 11px system-ui, sans-serif', 'right'));
     D.yaziHaleli(ctx, 'Anahtar fikir: mıknatıslık AÇILIP KAPANABİLİYOR',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
     return;
@@ -481,19 +551,21 @@ function cizGrafik(ctx, w, h, st, pHam) {
 
   if (p.mod > 1.5) {
     /* Zil: bobin akımı aç-kapa (kare dalga) ve vuruş sayısı */
+    /* Zil: gerçek zamanda son ~160 ms. Akım aç-kapa (KESİNTİLİ); dil 2,5 mm’de çana vurur. */
     const kay = st.kayit || [], vk = st.vKayit || [];
-    const t0 = kay.length ? kay[0].t : 0;
+    const tSon = kay.length ? kay[kay.length - 1].t : 0;
+    const t0 = Math.max(0, tSon - 160);
     D.miniGrafik(ctx, {
       x: pay, y: 3, w: gw, h: gh,
-      baslik: 'Bobin akımı − t   (kontak aç-kapa · KESİNTİLİ)', birim: 'A',
-      veri: kay, tMin: t0, tMax: Math.max(t0 + 0.5, st.t), vMin: 0,
+      baslik: 'Bobin akımı − t   (kontak aç-kapa · KESİNTİLİ)', birim: 'A', tEtiket: 't (ms)',
+      veri: kay.filter(q => q.t >= t0), tMin: t0, tMax: Math.max(t0 + 160, tSon), vMin: 0,
       vMax: Math.max(1, Math.abs(p.i) * 1.2), renk: R.ivme
     });
     D.miniGrafik(ctx, {
       x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'Vuruş sayısı − t   (akım büyükse daha hızlı)', birim: 'kez',
-      veri: vk, tMin: t0, tMax: Math.max(t0 + 0.5, st.t), vMin: 0,
-      vMax: Math.max(5, st.vurus * 1.2), renk: R.kuvvet
+      baslik: 'Dilin konumu − t   (2,5 mm: çana vuruş)', birim: 'mm', tEtiket: 't (ms)',
+      veri: vk.filter(q => q.t >= t0), tMin: t0, tMax: Math.max(t0 + 160, tSon), vMin: 0,
+      vMax: 3, renk: R.kuvvet
     });
     return;
   }
@@ -535,10 +607,11 @@ function okumalar(st, pHam) {
   if (p.mod > 1.5) {
     return [
       { et: 'Düzenek',   dg: 'Elektrikli zil',                   birim: '' },
-      { et: 'Kontak',    dg: p.i === 0 ? 'KAPALI (akım yok)' : st.cekildi ? 'AÇIK' : 'KAPALI', birim: '' },
+      { et: 'Kontak',    dg: p.i === 0 ? 'KAPALI (akım yok)' : st.kontakAcik ? 'AÇIK' : 'KAPALI', birim: '' },
       { et: 'Vuruş',     dg: String(st.vurus),                   birim: 'kez' },
+      { et: 'Frekans',   dg: D.biçim(zilFrekansi(st), 0),        birim: 'Hz' },
       { et: 'Akım  i',   dg: D.biçim(Math.abs(p.i)),             birim: 'A' },
-      { et: 'Çalışma',   dg: 'Kendi kendini keser',              birim: '' }
+      { et: 'Çalışma eşiği', dg: D.biçim(zilEsikAkim(), 2),      birim: 'A' }
     ];
   }
   return [
@@ -548,7 +621,8 @@ function okumalar(st, pHam) {
     { et: 'Gerçek  B',     dg: D.biçim(alan(p), 3) + (doymusMu(p) ? ' ⚠' : ''), birim: 'T' },
     { et: 'Kaldırma  F',   dg: D.biçim(kaldirmaKuvveti(p)), birim: 'N' },
     { et: 'Kaldırdığı',    dg: D.biçim(kaldirilanKutle(p)), birim: 'kg' },
-    { et: 'Yük',           dg: st.bagli ? 'Tutuluyor' : st.koptu ? 'Koptu' : 'Yerde', birim: '' }
+    { et: 'Akım',          dg: akimAcik(st.t) ? 'Açık' : 'Kesildi', birim: '' },
+    { et: 'Yük',           dg: st.bagli ? 'Tutuluyor' : st.yukH > 0 ? (st.birakildi ? 'Bırakıldı, düşüyor' : 'Koptu, düşüyor') : 'Yerde', birim: '' }
   ];
 }
 
