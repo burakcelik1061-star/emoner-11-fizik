@@ -38,7 +38,18 @@ window.F11 = window.F11 || {};
        Yansıma oranı = (r_s² + r_p²) / 2      (polarizasyonsuz ışık)
 
    Dik gelişte (θ₁ = 0) bu oran ((n₁−n₂)/(n₁+n₂))² olur: hava–cam sınırı
-   için %4, hava–elmas için %17. Elmasın parlaklığının bir sebebi budur.
+   için %4,3, hava–elmas için %17. Elmasın parlaklığının bir sebebi budur.
+
+   SAPMA AÇISI (kitap Şekil 3.18)
+   ------------------------------
+       α = |θ₁ − θ₂|        gelme doğrultusu ile kırılan ışın arasındaki açı
+
+   BEYAZ IŞIK (kitap Şekil 3.22 ve 3.23)
+   -------------------------------------
+   Suyun kırılma indisi dalga boyuna bağlıdır (Cauchy bağıntısı, 20 °C):
+       n(λ) = 1,3252 + 2985 / λ²        (λ nm; 404 nm’de 1,3435, 706 nm’de 1,3312)
+   Mor ışığın n’si en büyük ⟹ en çok kırılır, sınır açısı en KÜÇÜKTÜR.
+   Su→hava sınır açısı: kırmızı (680 nm) 48,67° · mor (410 nm) 48,12°.
    ========================================================================== */
 
 const D = window.F11;
@@ -46,17 +57,19 @@ const { R, K } = D;
 
 const C_ISIK = 3e8;             // m/s
 
-/* Yaygın ortamlar — indise en yakın olanın adı yazılır. */
+/* Kitap Tablo 3.5 (s.346) ve s.348 örneğindeki indisler — kaydırıcı değeri
+   bunlardan birine denk gelirse ortamın adı yazılır. */
 const ORTAMLAR = [
-  { n: 1.00, ad: 'hava' },
-  { n: 1.31, ad: 'buz' },
-  { n: 1.33, ad: 'su' },
-  { n: 1.36, ad: 'etil alkol' },
-  { n: 1.47, ad: 'gliserin' },
-  { n: 1.50, ad: 'cam' },
-  { n: 1.58, ad: 'polikarbonat' },
-  { n: 1.66, ad: 'ağır cam' },
-  { n: 2.42, ad: 'elmas' }
+  { n: 1.000, ad: 'hava' },
+  { n: 1.309, ad: 'buz' },
+  { n: 1.333, ad: 'su' },
+  { n: 1.361, ad: 'etil alkol' },
+  { n: 1.473, ad: 'gliserin' },
+  { n: 1.501, ad: 'benzen' },
+  { n: 1.51,  ad: 'pleksiglas' },
+  { n: 1.52,  ad: 'cam' },
+  { n: 1.544, ad: 'kuartz' },
+  { n: 2.41,  ad: 'elmas' }
 ];
 
 function ortamAdi(n) {
@@ -65,8 +78,29 @@ function ortamAdi(n) {
     const d = Math.abs(o.n - n);
     if (d < fark) { fark = d; en = o; }
   }
-  return fark < 0.03 ? en.ad : 'ortam';
+  return fark < 0.006 ? en.ad : 'ortam';
 }
+
+/* Beyaz ışığın renkleri (kitap Şekil 3.23’teki sıra) ve suyun indisi. */
+const RENKLER = [
+  { ad: 'kırmızı',  l: 680, c: '#E53935' },
+  { ad: 'turuncu',  l: 610, c: '#FB8C00' },
+  { ad: 'sarı',     l: 580, c: '#E8B800' },
+  { ad: 'yeşil',    l: 530, c: '#2E9E4F' },
+  { ad: 'mavi',     l: 470, c: '#1E88E5' },
+  { ad: 'lacivert', l: 440, c: '#3F3FB0' },
+  { ad: 'mor',      l: 410, c: '#8E24AA' }
+];
+function nSu(l) { return 1.3252 + 2985 / (l * l); }
+const ABARTMA = 25;              // 4. düzenekte renkler arası açı farkının çizim büyütmesi
+const B5_ALT = 47.4, B5_UST = 49.4;   // 5. düzenekte gelme açısının tarandığı dar aralık
+
+/** Beyaz ışık düzeneklerinde renk için parametreler (4: hava→su, 5: su→hava). */
+function renkP(p, l) {
+  return p.mod < 4.5 ? { n1: 1.000, n2: nSu(l), gelme: p.gelme }
+                     : { n1: nSu(l), n2: 1.000, gelme: p.gelme };
+}
+function derece(rad) { return rad * 180 / Math.PI; }
 
 /* ------------------------------------------------------------- Fizik */
 
@@ -109,10 +143,13 @@ function dalga(n, lam0) { return lam0 / n; }
    görünür. Kaydırıcı, taramanın BAŞLADIĞI açıyı belirler. */
 const TARAMA_PERIYOT = 14;      // s — bir gidiş-geliş
 
-function durum(p) { return { t: 0, gelme: p.gelme }; }
+function durum(p) { return { t: 0, gelme: p.mod > 4.5 ? B5_ALT : p.gelme }; }
 
 function adim(st, dt, p) {
   st.t += dt;
+  /* 5. düzenek: renklerin sınır açıları 48,1°–48,7° arasında olduğundan
+     tarama bu dar aralıkta, yavaş yapılır; renkler TEK TEK tam yansımaya geçer. */
+  if (p.mod > 4.5) { st.gelme = D.tarama(st.t, B5_ALT, B5_UST, 16); return; }
   /* Kaydırıcı değerinden başlayıp 0–89° arasında gidip gelir. */
   st.gelme = D.tarama(st.t, p.gelme, p.gelme < 45 ? 89 : 2, TARAMA_PERIYOT);
 }
@@ -133,11 +170,17 @@ function cizGercek(ctx, w, h, st, pHam) {
 
   /* iki ortam — üstteki ortamın etiketi panel köşesindeki rozetin altında
      kalmasın diye SAĞA yazılır, alttaki solda kalabilir. */
-  D.ortam(ctx, 0, 0, w, oy, '', renkOrtam(p.n1, 0.55));
-  D.ortam(ctx, 0, oy, w, h - oy,
-          ortamAdi(p.n2) + '  ·  n₂ = ' + D.biçim(p.n2, 3), renkOrtam(p.n2, 0.95));
-  D.yaziAydinlik(ctx, ortamAdi(p.n1) + '  ·  n₁ = ' + D.biçim(p.n1, 3),
-                 w - 10, 18, '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+  /* 2. düzenekte optik daire, derece yazıları ve lazer panele sığsın diye küçük */
+  const L = Math.min(w * 0.42, h * 0.44) * (p.mod > 1.5 && p.mod < 2.5 ? 0.8 : 1);
+  if (p.mod > 3.5) { cizBeyaz(ctx, w, h, st, p, ox, oy, L); return; }
+  if (p.mod > 1.5 && p.mod < 2.5) optikDaire(ctx, w, h, p, ox, oy, L);
+  else {
+    D.ortam(ctx, 0, 0, w, oy, '', renkOrtam(p.n1, 0.55));
+    D.ortam(ctx, 0, oy, w, h - oy,
+            ortamAdi(p.n2) + '  ·  n₂ = ' + D.biçim(p.n2, 3), renkOrtam(p.n2, 0.95));
+    D.yaziAydinlik(ctx, ortamAdi(p.n1) + '  ·  n₁ = ' + D.biçim(p.n1, 3),
+                   w - 10, 18, '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+  }
 
   /* normal */
   D.kesikliCizgi(ctx, ox, oy - h * 0.44, ox, oy + h * 0.44, '#4A5F86', 1.5, [6, 5]);
@@ -148,10 +191,11 @@ function cizGercek(ctx, w, h, st, pHam) {
 
   const t1 = gelmeRad(p);
   const t2 = kirilmaAcisi(p);
-  const L = Math.min(w * 0.42, h * 0.44);
 
-  /* gelen ışın — sol üstten O'ya */
-  const gx = ox - Math.sin(t1) * L, gy = oy - Math.cos(t1) * L;
+  /* gelen ışın — sol üstten O'ya (2. düzenekte optik dairenin dışındaki
+     lazerden; yarım dairenin eğri yüzüne dik girdiği için orada kırılmaz) */
+  const Lg = p.mod > 1.5 && p.mod < 2.5 ? L * 1.02 + 22 : L;
+  const gx = ox - Math.sin(t1) * Lg, gy = oy - Math.cos(t1) * Lg;
   D.isin(ctx, gx, gy, ox, oy, R.ivme, 2.6, true);
   D.aciYayi(ctx, ox, oy, 42, -Math.PI / 2, -Math.PI / 2 - t1,
             R.ivme, D.biçim(p.gelme) + '°');
@@ -185,6 +229,18 @@ function cizGercek(ctx, w, h, st, pHam) {
                    ox + Math.sin(t2) * L * 0.72 + 8,
                    oy + Math.cos(t2) * L * 0.72, R.kuvvet,
                    '600 11px system-ui, sans-serif', 'left');
+
+    /* sapma açısı α: gelme doğrultusunun uzantısı ile kırılan ışın arası */
+    const alfa = Math.abs(p.gelme - derece(t2));
+    if (p.mod < 1.5 && alfa > 1.5) {
+      D.kesikliCizgi(ctx, ox, oy, ox + Math.sin(t1) * L * 0.85, oy + Math.cos(t1) * L * 0.85,
+                     'rgba(90,100,130,.75)', 1.4, [5, 4]);
+      /* yay ile yazısı: yazı DIŞTAKİ ışının sağına, kırılan-% yazısından uzakta */
+      const Ra = L * 0.45, tDis = Math.max(t1, t2);
+      D.aciYayi(ctx, ox, oy, Ra, Math.PI / 2 - t1, Math.PI / 2 - t2, R.surtunme, '');
+      D.yaziAydinlik(ctx, 'sapma α = ' + D.biçim(alfa, 3) + '°', ox + Math.sin(tDis) * Ra + 8,
+                     oy + Math.cos(tDis) * Ra + 4, R.surtunme, '700 11px system-ui, sans-serif', 'left');
+    }
   }
 
   /* sınır açısı göstergesi */
@@ -193,9 +249,12 @@ function cizGercek(ctx, w, h, st, pHam) {
     const ts = (sa * Math.PI) / 180;
     D.kesikliCizgi(ctx, ox, oy, ox - Math.sin(ts) * L * 1.02, oy - Math.cos(ts) * L * 1.02,
                    R.surtunme, 2, [5, 4]);
-    D.yaziAydinlik(ctx, 'sınır açısı ' + D.biçim(sa, 3) + '°',
-                   ox - Math.sin(ts) * L - 6, oy - Math.cos(ts) * L - 6,
-                   R.surtunme, '700 11px system-ui, sans-serif', 'right');
+    /* çizginin ucunda yalnız θs; değeri (lazer ve derece
+       yazılarıyla çakışmasın) */
+    D.yaziAydinlik(ctx, 'θs', ox - Math.sin(ts) * L * 1.02 + 4, oy - Math.cos(ts) * L * 1.02 + 14,
+                   R.surtunme, '700 11px system-ui, sans-serif', 'left');
+    D.yaziAydinlik(ctx, 'sınır açısı θs = ' + D.biçim(sa, 3) + '°', 10, h - 28,
+                   R.surtunme, '700 12px system-ui, sans-serif', 'left');
     /* sınır açısında kırılan ışın yüzey boyunca gider */
     D.kesikliCizgi(ctx, ox, oy, ox + L * 0.9, oy, R.surtunme, 1.6, [4, 4]);
   } else if (p.mod > 1.5) {
@@ -217,6 +276,204 @@ function renkOrtam(n, k) {
   const y = Math.min(1, Math.max(0, (n - 1) / 1.5));
   const a = (0.06 + y * 0.30) * k;
   return 'rgba(60,140,205,' + a.toFixed(3) + ')';
+}
+
+/* ---- Mod 2 · Optik daire (kitap 5. Etkinlik, Şekil I–III) ----
+   Yarım daire cam (n₁) optik dairenin merkezine oturur; lazer dairenin
+   kenarından merkeze (O) doğru gönderilir. Işın camın EĞRİ yüzüne dik girdiği
+   için orada kırılmaz; kırılma yalnızca düz yüzde, O noktasında olur. */
+function optikDaire(ctx, w, h, p, ox, oy, L) {
+  const Rd = L * 1.02;
+  D.ortam(ctx, 0, 0, w, h, '', renkOrtam(p.n2, 0.95));
+  ctx.save();
+  ctx.fillStyle = 'rgba(255,255,255,.55)';                       // optik dairenin yüzü
+  ctx.beginPath(); ctx.arc(ox, oy, Rd, 0, 6.2832); ctx.fill();
+  ctx.fillStyle = renkOrtam(Math.max(p.n1, 1.3), 1.7);            // yarım daire kesitli cam
+  ctx.strokeStyle = 'rgba(40,110,170,.9)'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(ox + Rd * 0.94, oy);
+  ctx.arc(ox, oy, Rd * 0.94, 0, Math.PI, true); ctx.closePath(); ctx.fill(); ctx.stroke();
+  /* derece bölmeleri — 5°’de bir, 10°’de uzun */
+  ctx.strokeStyle = 'rgba(40,60,90,.7)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(ox, oy, Rd, 0, 6.2832);
+  for (let d = 0; d < 360; d += 5) {
+    const a = d * Math.PI / 180, uz = d % 10 === 0 ? 8 : 4;
+    ctx.moveTo(ox + Math.cos(a) * Rd, oy + Math.sin(a) * Rd);
+    ctx.lineTo(ox + Math.cos(a) * (Rd + uz), oy + Math.sin(a) * (Rd + uz));
+  }
+  ctx.stroke();
+  ctx.restore();
+  /* açı yazıları NORMALDEN ölçülür (kitaptaki optik daire gibi) */
+  for (let d = 30; d <= 90; d += 30) for (const sx of [-1, 1]) for (const sy of [-1, 1]) {
+    if (d === 90 && sy > 0) continue;
+    const a = d * Math.PI / 180;
+    D.yaziAydinlik(ctx, d + '°', ox + sx * Math.sin(a) * (Rd + 17), oy + sy * Math.cos(a) * (Rd + 17) + 4,
+                   'rgba(40,60,90,.85)', '600 10px system-ui, sans-serif', 'center');
+  }
+  /* lazer — ışını merkeze doğrultulmuş */
+  const t1 = gelmeRad(p), Lg = Rd + 22;
+  ctx.save();
+  ctx.translate(ox - Math.sin(t1) * Lg, oy - Math.cos(t1) * Lg);
+  ctx.rotate(Math.atan2(Math.cos(t1), Math.sin(t1)));
+  ctx.fillStyle = '#2A3242'; ctx.fillRect(-24, -6, 26, 12);
+  ctx.fillStyle = '#E53935'; ctx.fillRect(0, -3, 3, 6);
+  ctx.restore();
+  D.yaziAydinlik(ctx, 'yarım daire: ' + ortamAdi(p.n1) + ' · n₁ = ' + D.biçim(p.n1, 3),
+                 w - 10, 20, '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, 'dışı: ' + ortamAdi(p.n2) + ' · n₂ = ' + D.biçim(p.n2, 3),
+                 w - 10, 38, '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+}
+
+/* ---- Mod 4–5 · Beyaz ışık ---- */
+
+/** Beyaz ışık: yedi rengin yan yana şeridi (yönü u, dik doğrultu v). */
+function serit(ctx, x1, y1, x2, y2, alfalar) {
+  const dx = x2 - x1, dy = y2 - y1, uz = Math.hypot(dx, dy) || 1;
+  const vx = -dy / uz, vy = dx / uz;
+  ctx.save(); ctx.lineWidth = 1.7;
+  RENKLER.forEach((c, i) => {
+    const o = (i - 3) * 1.6, a = alfalar ? alfalar[i] : 1;
+    if (a <= 0.01) return;
+    ctx.globalAlpha = a; ctx.strokeStyle = c.c;
+    ctx.beginPath(); ctx.moveTo(x1 + vx * o, y1 + vy * o); ctx.lineTo(x2 + vx * o, y2 + vy * o); ctx.stroke();
+  });
+  ctx.restore();
+}
+
+function cizBeyaz(ctx, w, h, st, p, ox, oy, L) {
+  const havaSu = p.mod < 4.5;
+  D.ortam(ctx, 0, 0, w, oy, '', havaSu ? renkOrtam(1, 0.55) : renkOrtam(1.333, 0.55));
+  D.ortam(ctx, 0, oy, w, h - oy, '', havaSu ? renkOrtam(1.333, 0.95) : renkOrtam(1, 0.95));
+  D.yaziAydinlik(ctx, havaSu ? 'hava · n = 1' : 'su · n ≈ 1,33 (renge göre değişir)', w - 10, 20,
+                 '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, havaSu ? 'su · n ≈ 1,33 (renge göre değişir)' : 'hava · n = 1', w - 10, oy + 46,
+                 '#1B3A52', '700 12px system-ui, sans-serif', 'right');
+  D.kesikliCizgi(ctx, ox, oy - h * 0.44, ox, oy + h * 0.44, '#4A5F86', 1.5, [6, 5]);
+
+  const t1 = gelmeRad(p);
+  const gx = ox - Math.sin(t1) * L, gy = oy - Math.cos(t1) * L;
+  serit(ctx, gx, gy, ox, oy);
+  D.yaziAydinlik(ctx, 'beyaz ışık', gx + 6, gy - 6, '#3A4660', '700 11px system-ui, sans-serif', 'left');
+  D.aciYayi(ctx, ox, oy, 42, -Math.PI / 2, -Math.PI / 2 - t1, R.ivme,
+            D.biçim(p.gelme, havaSu ? 0 : 2) + '°');
+  const rx = ox + Math.sin(t1) * L, ry = oy - Math.cos(t1) * L;       // yansıyan yön
+
+  if (havaSu) {
+    /* hava → su: hepsi kırılır; mor en çok. Renkler arası fark çok küçük
+       (en fazla ~0,5°) olduğu için ABARTMA kat büyütülerek çizilir. */
+    const ty = kirilmaAcisi(renkP(p, 580));
+    const fr = yansimaOrani(renkP(p, 580));
+    serit(ctx, ox, oy, rx, ry, RENKLER.map(() => Math.min(1, 0.1 + fr * 2)));
+    RENKLER.forEach(c => {
+      const t2 = kirilmaAcisi(renkP(p, c.l));
+      const td = ty + ABARTMA * (t2 - ty);
+      D.isin(ctx, ox, oy, ox + Math.sin(td) * L, oy + Math.cos(td) * L, c.c, 2, true);
+    });
+    const tk = kirilmaAcisi(renkP(p, 680)), tm = kirilmaAcisi(renkP(p, 410));
+    const tdk = ty + ABARTMA * (tk - ty), tdm = ty + ABARTMA * (tm - ty);
+    if (p.gelme > 8) {
+      D.yaziAydinlik(ctx, 'kırmızı', ox + Math.sin(tdk) * L + 6, oy + Math.cos(tdk) * L + 4, '#C62828',
+                     '700 11px system-ui, sans-serif', 'left');
+      D.yaziAydinlik(ctx, 'mor', ox + Math.sin(tdm) * L - 6, oy + Math.cos(tdm) * L + 4, '#7B1FA2',
+                     '700 11px system-ui, sans-serif', 'right');
+    }
+    D.yaziAydinlik(ctx, 'Beyaz ışık havadan suya: MOR en çok kırılır (normale en çok yaklaşır)', 10, h - 26,
+                   R.surtunme, '700 12px system-ui, sans-serif', 'left');
+    D.yaziAydinlik(ctx, 'Renkler arası açı ×' + ABARTMA + ' büyütülerek çizildi · gerçek fark ' +
+                   D.biçim(derece(tk - tm), 3) + '°', 10, h - 9, R.mur, '600 11px system-ui, sans-serif', 'left');
+    return;
+  }
+
+  /* su → hava: her rengin sınır açısı farklı; kırılan ışınlar GERÇEK açıyla */
+  const alfalar = [];
+  const yansiyan = [], gecen = [];
+  RENKLER.forEach(c => {
+    const cp = renkP(p, c.l), t2 = kirilmaAcisi(cp), fr = yansimaOrani(cp);
+    alfalar.push(t2 === null ? 1 : Math.max(0.08, fr));
+    if (t2 === null) { yansiyan.push(c.ad); return; }
+    gecen.push(c.ad);
+    ctx.save(); ctx.globalAlpha = Math.max(0.3, 1 - fr);
+    D.isin(ctx, ox, oy, ox + Math.sin(t2) * L, oy + Math.cos(t2) * L, c.c, 2, true);
+    ctx.restore();
+  });
+  serit(ctx, ox, oy, rx, ry, alfalar);
+  D.yaziAydinlik(ctx, 'Havaya geçen: ' + (gecen.length ? gecen.join(', ') : '—'), 10, h - 26,
+                 R.kuvvet, '700 12px system-ui, sans-serif', 'left');
+  D.yaziAydinlik(ctx, 'Tam yansıyan: ' + (yansiyan.length ? yansiyan.join(', ') : '—'), 10, h - 9,
+                 '#5B3FA0', '700 12px system-ui, sans-serif', 'left');
+}
+
+function klasikBeyaz(ctx, w, h, p) {
+  const havaSu = p.mod < 4.5;
+  D.yaziHaleli(ctx, havaSu ? 'Beyaz ışık · hava → su' : 'Beyaz ışık · su → hava · θ₁ = ' + D.biçim(p.gelme, 2) + '°',
+               12, 44, K.beyaz, '700 12px system-ui, sans-serif', 'left');
+  const kx = [12, w * 0.24, w * 0.40, w * 0.58, w * 0.76];
+  const bas = ['renk', 'λ (nm)', 'n (su)', havaSu ? 'θ₂ (°)' : 'θ_s (°)', havaSu ? '' : 'durum'];
+  bas.forEach((t, i) => t && D.yaziHaleli(ctx, t, kx[i], 68, K.metin2, '700 11px system-ui, sans-serif', 'left'));
+  RENKLER.forEach((c, i) => {
+    const y = 88 + i * 19, cp = renkP(p, c.l);
+    let dg, durum = '';
+    if (havaSu) dg = D.biçim(derece(kirilmaAcisi(cp)), 3);
+    else {
+      const sa = sinirAcisi(cp);
+      dg = D.biçim(sa, 2);
+      durum = Math.abs(p.gelme - sa) < 0.02 ? 'sınırda' : (p.gelme > sa ? 'tam yansıma' : 'geçer');
+    }
+    const satir = [c.ad, String(c.l), D.biçim(nSu(c.l), 4), dg, durum];
+    satir.forEach((t, j) => t && D.yaziHaleli(ctx, t, kx[j], y, c.c, '700 12px system-ui, sans-serif', 'left'));
+  });
+  const alt = havaSu
+    ? ['n(λ) = 1,3252 + 2985/λ²   (su, 20 °C)',
+       'λ küçüldükçe n büyür ⟹ mor en çok kırılır',
+       'θ₂(kırmızı) − θ₂(mor) = ' + D.biçim(derece(kirilmaAcisi(renkP(p, 680)) - kirilmaAcisi(renkP(p, 410))), 3) + '°']
+    : ['sin θ_s = 1 / n(λ)',
+       'Kırmızının sınır açısı en büyük, morunki en küçük',
+       'θ₁ > θ_s olan renkler tam yansır (kitap Şekil 3.23)'];
+  alt.forEach((t, i) => D.yaziHaleli(ctx, t, 12, 238 + i * 18, i ? K.metin2 : K.beyaz,
+                                     (i ? '' : '700 ') + '12px system-ui, sans-serif', 'left'));
+}
+
+function grafikBeyaz(ctx, pay, gw, gh, p) {
+  const k = RENKLER[0], m = RENKLER[6];
+  if (p.mod < 4.5) {
+    const v1 = [], v2 = [];
+    for (let d = 0; d <= 89; d += 1) {
+      const q = Object.assign({}, p, { gelme: d });
+      v1.push({ t: d, v: derece(kirilmaAcisi(renkP(q, 580))) });
+      v2.push({ t: d, v: derece(kirilmaAcisi(renkP(q, k.l)) - kirilmaAcisi(renkP(q, m.l))) });
+    }
+    D.miniGrafik(ctx, { x: pay, y: 3, w: gw, h: gh, baslik: 'θ₂ − θ₁   (sarı ışık, hava → su)',
+      birim: '°', tEtiket: 'θ₁ (°)', veri: v1, tMax: 90, vMin: 0, vMax: 50, renk: '#C99A00',
+      imlec: { t: p.gelme, v: derece(kirilmaAcisi(renkP(p, 580))) } });
+    D.miniGrafik(ctx, { x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'Renk ayrışması θ₂(kırmızı) − θ₂(mor) − θ₁', birim: '°', tEtiket: 'θ₁ (°)', veri: v2,
+      tMax: 90, vMin: 0, vMax: 0.6, renk: m.c,
+      imlec: { t: p.gelme, v: derece(kirilmaAcisi(renkP(p, k.l)) - kirilmaAcisi(renkP(p, m.l))) } });
+    return;
+  }
+  /* su → hava: dar aralıkta, kırmızı ve mor için iki eğri üst üste */
+  const seri = (c, f) => {
+    const v = [];
+    for (let i = 0; i <= 200; i++) {
+      const d = B5_ALT + (B5_UST - B5_ALT) * i / 200;
+      const y = f(renkP(Object.assign({}, p, { gelme: d }), c.l));
+      if (y !== null) v.push({ t: d, v: y });
+    }
+    return v;
+  };
+  const gecis = cp => (1 - yansimaOrani(cp)) * 100;
+  const kirA = cp => { const t2 = kirilmaAcisi(cp); return t2 === null ? null : derece(t2); };
+  [k, m].forEach((c, i) => {
+    const cp = renkP(p, c.l);
+    D.miniGrafik(ctx, { x: pay, y: 3, w: gw, h: gh,
+      baslik: i ? '' : 'Havaya geçen ışık % − θ₁   (kırmızı · mor)', birim: '%', tEtiket: 'θ₁ (°)',
+      veri: seri(c, gecis), tMin: B5_ALT, tMax: B5_UST, vMin: 0, vMax: 100, renk: c.c,
+      imlec: { t: p.gelme, v: gecis(cp) } });
+    const t2 = kirA(cp);
+    D.miniGrafik(ctx, { x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: i ? '' : 'Kırılma açısı θ₂ − θ₁   (90°’de sınır açısı)', birim: '°', tEtiket: 'θ₁ (°)',
+      veri: seri(c, kirA), tMin: B5_ALT, tMax: B5_UST, vMin: 60, vMax: 90, sifirdanBasla: false, renk: c.c,
+      imlec: t2 === null ? null : { t: p.gelme, v: t2 } });
+  });
 }
 
 /* ---- Mod 3 · Dalga cepheleri ---- */
@@ -305,12 +562,11 @@ function cizgiDik(ctx, xk, oy, dx, dy, taraf, w, h, sinir) {
 function cizKlasik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   D.izgara(ctx, w, h, 26);
+  if (p.mod > 3.5) { klasikBeyaz(ctx, w, h, p); return; }
   const t2 = kirilmaAcisi(p);
   const sa = sinirAcisi(p);
   const oran = yansimaOrani(p);
 
-  D.yaziHaleli(ctx, 'Snell yasası', 12, 22, K.beyaz,
-               '700 12px system-ui, sans-serif', 'left');
 
   const sol = [
     ['n₁·sin θ₁ = n₂·sin θ₂', K.beyaz, '700 14px system-ui, sans-serif'],
@@ -322,7 +578,11 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['sin θ₂ = (n₁/n₂)·sin θ₁ = ' +
       D.biçim((p.n1 / p.n2) * Math.sin(gelmeRad(p)), 4), K.metin2, '11px system-ui, sans-serif'],
     ['θ₂ = ' + (t2 === null ? 'YOK (tam yansıma)' : D.biçim((t2 * 180) / Math.PI, 4) + '°'),
-      R.kuvvet, '700 13px system-ui, sans-serif']
+      R.kuvvet, '700 13px system-ui, sans-serif'],
+    ['', K.metin2, '11px'],
+    ['Sapma açısı α = |θ₁ − θ₂|', K.beyaz, '700 12px system-ui, sans-serif'],
+    ['α = ' + (t2 === null ? '—' : D.biçim(Math.abs(p.gelme - derece(t2)), 3) + '°'),
+      R.surtunme, '700 13px system-ui, sans-serif']
   ];
   let sy = 46;
   sol.forEach(([t, c, f]) => { if (t) D.yaziHaleli(ctx, t, 12, sy, c, f, 'left'); sy += 17; });
@@ -352,6 +612,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
 function cizGrafik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
+  if (p.mod > 3.5) { grafikBeyaz(ctx, pay, gw, gh, p); return; }
 
   /* θ₂ − θ₁ */
   const v1 = [];
@@ -387,6 +648,27 @@ function cizGrafik(ctx, w, h, st, pHam) {
 
 function okumalar(st, pHam) {
   const p = etkin(st, pHam);
+  if (p.mod > 3.5) {
+    const kr = renkP(p, RENKLER[0].l), mr = renkP(p, RENKLER[6].l);
+    if (p.mod < 4.5) {
+      const a = derece(kirilmaAcisi(kr)), b = derece(kirilmaAcisi(mr));
+      return [
+        { et: 'Geçiş',               dg: 'hava → su · beyaz ışık', birim: '' },
+        { et: 'Gelme açısı θ₁',      dg: D.biçim(p.gelme),  birim: '°' },
+        { et: 'θ₂ kırmızı (680 nm)', dg: D.biçim(a, 3),     birim: '°' },
+        { et: 'θ₂ mor (410 nm)',     dg: D.biçim(b, 3),     birim: '°' },
+        { et: 'Renk ayrışması',      dg: D.biçim(a - b, 3), birim: '°' }
+      ];
+    }
+    const yansiyan = RENKLER.filter(c => tamYansimaMi(renkP(p, c.l))).map(c => c.ad);
+    return [
+      { et: 'Geçiş',               dg: 'su → hava · beyaz ışık', birim: '' },
+      { et: 'Gelme açısı θ₁',      dg: D.biçim(p.gelme, 2), birim: '°' },
+      { et: 'Sınır açısı kırmızı', dg: D.biçim(sinirAcisi(kr), 2), birim: '°' },
+      { et: 'Sınır açısı mor',     dg: D.biçim(sinirAcisi(mr), 2), birim: '°' },
+      { et: 'Tam yansıyan',        dg: yansiyan.length ? yansiyan.join(', ') : 'yok', birim: '' }
+    ];
+  }
   const t2 = kirilmaAcisi(p);
   const sa = sinirAcisi(p);
   const oran = yansimaOrani(p);
@@ -430,7 +712,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['kirilma'] = {
   id: 'kirilma',
-  baslik: '3.4 · Işığın kırılması · Snell yasası, sınır açısı, dalga boyu',
+  baslik: '3.4 · Işığın kırılması · Snell yasası, sınır açısı, beyaz ışık',
   yukseklik: 340,
   grafikPanel: true,
   grafikYukseklik: 150,
@@ -438,7 +720,9 @@ D.simler['kirilma'] = {
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Snell yasası' },
       { d: 2, e: 'Sınır açısı · tam yansıma' },
-      { d: 3, e: 'Hız ve dalga boyu' }
+      { d: 3, e: 'Hız ve dalga boyu' },
+      { d: 4, e: 'Beyaz ışık · hava → su (renklere ayrılma)' },
+      { d: 5, e: 'Beyaz ışık · su → hava (renklerin sınır açısı)' }
     ]},
     { anahtar: 'n1',    etiket: '1. ortamın indisi n₁', min: 1.00, max: 2.50, adim: 0.01, deger: 1.00, birim: '' },
     { anahtar: 'n2',    etiket: '2. ortamın indisi n₂', min: 1.00, max: 2.50, adim: 0.01, deger: 1.33, birim: '' },

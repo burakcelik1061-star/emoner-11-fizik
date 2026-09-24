@@ -24,15 +24,20 @@ daha yavaştır. Bu yavaşlamanın ölçüsüne <strong>kırılma indisi</strong
   <div class="fm-ad">n her zaman 1 veya daha büyüktür</div>
 </div>
 <table class="degisken-tablo">
-  <thead><tr><th>Ortam</th><th>n</th><th>Işık hızı (×10⁸ m/s)</th></tr></thead>
+  <thead><tr><th>Ortam (kitap Tablo 3.5)</th><th>n</th><th>Işık hızı (×10⁸ m/s)</th></tr></thead>
   <tbody>
     <tr><td>Boşluk / hava</td><td class="sembol">1,00</td><td>3,00</td></tr>
     <tr><td>Buz</td><td class="sembol">1,31</td><td>2,29</td></tr>
     <tr><td>Su</td><td class="sembol">1,33</td><td>2,26</td></tr>
-    <tr><td>Cam</td><td class="sembol">1,50</td><td>2,00</td></tr>
-    <tr><td>Elmas</td><td class="sembol">2,42</td><td>1,24</td></tr>
+    <tr><td>Etil alkol</td><td class="sembol">1,36</td><td>2,20</td></tr>
+    <tr><td>Cam</td><td class="sembol">1,52</td><td>1,97</td></tr>
+    <tr><td>Kuartz kristali</td><td class="sembol">1,54</td><td>1,94</td></tr>
+    <tr><td>Elmas</td><td class="sembol">2,41</td><td>1,24</td></tr>
   </tbody>
 </table>
+<p style="margin-top:8px;color:var(--text-2)">Havanın indisi aslında 1,000293&rsquo;tür;
+boşluğa çok yakın olduğu için 1 alınır. Simülasyonda kaydırıcı bu değerlerden birine
+gelince ortamın adı yazılır.</p>
 
 <h3 style="margin-top:22px">Snell yasası</h3>
 <div class="formul" style="max-width:300px;margin:14px 0;border-top-color:var(--accent)">
@@ -47,6 +52,16 @@ daha yavaştır. Bu yavaşlamanın ölçüsüne <strong>kırılma indisi</strong
     <tr><td>Dik geliş (θ₁ = 0)</td><td>değişir</td><td><strong>sapmaz</strong></td></tr>
   </tbody>
 </table>
+
+<h3 style="margin-top:22px">Sapma açısı</h3>
+<p>Gelen ışının doğrultusunu sınırın ötesine uzatalım. Bu uzantı ile kırılan ışın
+arasındaki açıya <strong>sapma açısı (α)</strong> denir (kitap Şekil 3.18):</p>
+<div class="formul" style="max-width:240px;margin:14px 0;border-top-color:var(--accent)">
+  <div class="fm" style="color:var(--accent)">α = |θ₁ − θ₂|</div>
+</div>
+<p>Kitabın vurguladığı iki kural: indisler arasındaki fark büyüdükçe ve gelme açısı
+büyüdükçe <strong>sapma açısı artar</strong>. Simülasyonun 1. düzeneğinde α yay ile
+gösterilir; tarama sırasında büyüdüğü görülür.</p>
 
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Ne değişir, ne değişmez?</span></div>
@@ -76,25 +91,52 @@ O gelme açısına <strong>sınır açısı</strong> denir:</p>
 <table class="degisken-tablo">
   <thead><tr><th>Geçiş</th><th>Sınır açısı</th></tr></thead>
   <tbody>
-    <tr><td>Su → hava</td><td class="sembol">48,8°</td></tr>
-    <tr><td>Cam → hava</td><td class="sembol">41,8°</td></tr>
-    <tr><td>Elmas → hava</td><td class="sembol">24,4°</td></tr>
+    <tr><td>Su → hava (1,33)</td><td class="sembol">48,8°</td></tr>
+    <tr><td>Cam → hava (1,52)</td><td class="sembol">41,1°</td></tr>
+    <tr><td>Elmas → hava (2,41)</td><td class="sembol">24,5°</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Elmasın sınır açısı çok küçük olduğu için
 içine giren ışık kolay kolay dışarı çıkamaz, defalarca tam yansımaya uğrar ve sonunda
 belli yönlerden güçlü biçimde çıkar. Elmasın “parlaklığı” budur.</p>
+<p style="color:var(--text-2)">Kitaptaki 5. Etkinlik bu olayı <strong>optik daire</strong> ve
+<strong>yarım daire kesitli cam</strong> ile gösterir: lazer camın eğri yüzüne dik girdiği için
+orada kırılmaz, yalnızca düz yüzde (merkezde) kırılır. Simülasyonun 2. düzeneği bu
+deneyin aynısıdır.</p>
+
+<h3 style="margin-top:22px">Beyaz ışık renklerine ayrılır</h3>
+<p>Kırılma indisi ışığın rengine (dalga boyuna) bağlıdır: dalga boyu küçüldükçe n
+<strong>büyür</strong>. Su için (20 °C):</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Renk</th><th>λ (nm)</th><th>n (su)</th><th>Su → hava sınır açısı</th></tr></thead>
+  <tbody>
+    <tr><td>Kırmızı</td><td>680</td><td class="sembol">1,3317</td><td>48,67°</td></tr>
+    <tr><td>Sarı</td><td>580</td><td class="sembol">1,3341</td><td>48,55°</td></tr>
+    <tr><td>Mavi</td><td>470</td><td class="sembol">1,3387</td><td>48,33°</td></tr>
+    <tr><td>Mor</td><td>410</td><td class="sembol">1,3430</td><td>48,13°</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Bu yüzden (kitap Şekil 3.22 ve 3.23):</p>
+<ul>
+  <li>Beyaz ışık suya girerken renklerine ayrılır; <strong>mor en çok</strong>, kırmızı en az kırılır.</li>
+  <li>Sudan havaya çıkarken her rengin sınır açısı farklıdır: <strong>kırmızınınki en büyük,
+  morunki en küçük</strong>. Gelme açısı büyütülünce önce mor, en son kırmızı tam yansımaya uğrar.</li>
+</ul>
+<p style="color:var(--text-2)">Renkler arasındaki açı farkı çok küçüktür (hava → su geçişinde
+en fazla ~0,5°). Simülasyonun 4. düzeneğinde bu fark görünsün diye büyütülerek çizilir,
+gerçek değerler klasik panelde yazar. 5. düzenekte ise gelme açısı 47,4°–49,4° arasında
+yavaşça taranır ve renkler <strong>tek tek</strong> tam yansımaya geçer.</p>
 
 <h3 style="margin-top:22px">Kırılırken bir kısmı da yansır</h3>
-<p>Ders kitaplarında genellikle söylenmez ama gerçekte ışık bir sınıra geldiğinde
+<p>Kitabın da belirttiği gibi (s.346) ışık bir sınıra geldiğinde
 <strong>hem kırılır hem yansır</strong>. Yansıyan oran <strong>Fresnel bağıntılarıyla</strong>
 hesaplanır ve simülasyonda gerçek değeriyle gösterilir:</p>
 <table class="degisken-tablo">
   <thead><tr><th>Sınır (dik geliş)</th><th>Yansıyan</th></tr></thead>
   <tbody>
     <tr><td>Hava → su</td><td class="sembol">%2,0</td></tr>
-    <tr><td>Hava → cam</td><td class="sembol">%4,0</td></tr>
-    <tr><td>Hava → elmas</td><td class="sembol">%17,2</td></tr>
+    <tr><td>Hava → cam</td><td class="sembol">%4,3</td></tr>
+    <tr><td>Hava → elmas</td><td class="sembol">%17,1</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Camdan kendi yansımanı görebilmenin sebebi
@@ -109,7 +151,8 @@ formuller: {
     { fm: 'λ = λ₀ / n',                 aciklama: 'Ortamdaki dalga boyu' },
     { fm: 'f = sabit',                  aciklama: 'Frekans kırılmada değişmez' },
     { fm: 'sin θ<sub>s</sub> = n₂ / n₁', aciklama: 'Sınır açısı (n₁ > n₂ iken)' },
-    { fm: 'v₁/v₂ = n₂/n₁ = sin θ₁/sin θ₂', aciklama: 'Hız, indis ve açı üçlüsü' }
+    { fm: 'v₁/v₂ = n₂/n₁ = sin θ₁/sin θ₂', aciklama: 'Hız, indis ve açı üçlüsü' },
+    { fm: 'α = |θ₁ − θ₂|',               aciklama: 'Sapma açısı' }
   ],
   degiskenler: [
     { sembol: 'n',  ad: 'Kırılma indisi',   birim: '—' },
@@ -376,9 +419,9 @@ osym: [
         <p style="margin:0"><strong>III. yargının mantığı:</strong> İki ortamın indisleri
         birbirine ne kadar <em>yakınsa</em> sınır açısı o kadar <strong>büyüktür</strong>
         (90°&rsquo;ye yaklaşır). Aradaki fark açıldıkça sınır açısı küçülür. Elmas–hava
-        çiftinde fark en büyük olduğu için sınır açısı en küçüktür: 24,4°.
+        çiftinde fark en büyük olduğu için sınır açısı en küçüktür: 24,5°.
         <br><strong>Pratik sonuç:</strong> Elmas suyun içine batırılırsa sınır açısı
-        24,4°&rsquo;den 33,3°&rsquo;ye çıkar ve taş gözle görülür biçimde <em>sönükleşir</em>.
+        24,5°&rsquo;den 33,5°&rsquo;ye çıkar ve taş gözle görülür biçimde <em>sönükleşir</em>.
         Kuyumcular sahte taş ayırt etmek için bu yöntemi kullanır.
         <br><strong>Simülasyonda:</strong> 2. düzenekte n₁ = 1,50, n₂ = 1,33 yap;
         okumalarda 62,46° göreceksin. Sonra n₂&rsquo;yi 1,00 yap; 41,81°&rsquo;ye düşecek.</p>
@@ -434,10 +477,10 @@ baglam: [
     ],
     secenekler: [
       '48,8°; bu açıdan eğik bakışlarda tam yansıma olur ve tüm dış dünya 97,5°’lik bir koniye sıkışır',
-      '41,8°; koninin açıklığı 83,6°’dir',
+      '41,1°; koninin açıklığı 82,3°’dir',
       'Sınır açısı yoktur çünkü su havadan daha kırıcıdır',
       '48,8°; ama koninin çapı derinlikten bağımsızdır',
-      '24,4°; su elmasla aynı davranır'
+      '24,5°; su elmasla aynı davranır'
     ],
     dogru: 0,
     cozum: `
@@ -445,7 +488,7 @@ baglam: [
         <div class="fm" style="color:var(--accent)">sin θ_s = 1,00/1,33 = 0,752 ⟹ 48,8°</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> cam–hava sınır açısını (41,8°) su için
+        <p style="margin:0"><strong>B şıkkı</strong> cam–hava sınır açısını (41,1°) su için
         kullanıyor.
         <br><strong>C şıkkı</strong> koşulu tersten okuyor: sınır açısı tam da
         <em>kırıcıdan az kırıcıya</em> geçişte vardır.
