@@ -73,7 +73,7 @@ gerilim sarım sayısıyla orantılıdır — bu yüzden oran doğrudan sarım o
   <p style="margin:0">Yani ikincil bobinde <strong>hiçbir gerilim doğmaz</strong>.
   Transformatör pile bağlanırsa çıkışta sıfır volt ölçülür — üstelik birincil sargı
   düşük dirençli olduğu için <strong>yanabilir</strong>.</p>
-  <p style="margin:8px 0 0">Simülasyonda kaynağı DC yap ve bütün okumaların sıfırlandığını gör.</p>
+  <p style="margin:8px 0 0">Simülasyonda düzenek olarak “DC kaynak” seç: anahtar kapanırken çok kısa bir darbe görülür, sonra ikincil gerilim sıfır kalır.</p>
 </div>
 
 <h3 style="margin-top:22px">Gerçek transformatörde kayıplar</h3>
@@ -296,8 +296,8 @@ osym: [
         ikincilde <strong>anlık bir gerilim darbesi</strong> görünür. Sonra akı sabitlenir
         ve gerilim sıfırlanır. Üstelik birincil sargının direnci çok düşük olduğu için
         pilden büyük akım çeker ve <strong>sargı ısınıp yanabilir</strong>.
-        <br><strong>Simülasyonda dene:</strong> Kaynağı DC yap, bütün okumalar sıfırlanır
-        ve ekranda sebebi yazar.</p>
+        <br><strong>Simülasyonda dene:</strong> “DC kaynak” düzeneğinde V_s − t grafiği bu darbeyi
+        ve ardından sıfıra inişi gösterir; ekranda sebebi yazar.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
