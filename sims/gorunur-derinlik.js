@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/gorunur-derinlik.js
    --------------------------------------------------------------------------
-   Konu 3.6 · Görünür derinlik
+   Konu 3.5 · Görünür derinlik  (MEB 11, s.354-360)
 
    TEMEL BAĞINTI (eksene yakın bakış · paraksiyel)
    -----------------------------------------------
@@ -441,7 +441,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['gorunur-derinlik'] = {
   id: 'gorunur-derinlik',
-  baslik: '3.6 · Görünür derinlik · h′ = h·n_göz/n_cisim',
+  baslik: '3.5 · Görünür derinlik · h′ = h·n_göz/n_cisim',
   yukseklik: 340,
   grafikPanel: true,
   grafikYukseklik: 150,

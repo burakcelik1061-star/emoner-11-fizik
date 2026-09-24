@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-kuresel-ayna.js
-   Konu 3.3 · Küresel aynaların özellikleri
+   Konu 3.3.1 · Küresel aynaların özellikleri  (MEB 11, s.323-332)
    ========================================================================== */
 
 F.konuKaydet('u3-kuresel-ayna', {

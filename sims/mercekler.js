@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/mercekler.js
    --------------------------------------------------------------------------
-   Konu 3.9 · Merceklerin özellikleri
+   Konu 3.8.1 · Merceklerin özellikleri  (MEB 11, s.373-380)
 
    İKİ TÜR
    -------
@@ -496,7 +496,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['mercekler'] = {
   id: 'mercekler',
-  baslik: '3.9 · Mercekler · odak, yapıcı denklem, özel ışınlar',
+  baslik: '3.8.1 · Mercekler · odak, yapıcı denklem, özel ışınlar',
   yukseklik: 340,
   grafikPanel: true,
   grafikYukseklik: 150,

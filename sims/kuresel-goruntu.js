@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/kuresel-goruntu.js
    --------------------------------------------------------------------------
-   Konu 3.4 · Küresel aynalarda görüntü
+   Konu 3.3.2 · Küresel aynalarda görüntü  (MEB 11, s.333-342)
 
    AYNA DENKLEMİ
    -------------
@@ -411,7 +411,7 @@ function okumalar(st, p) {
 D.simler = D.simler || {};
 D.simler['kuresel-goruntu'] = {
   id: 'kuresel-goruntu',
-  baslik: '3.4 · Küresel aynalarda görüntü · 1/f = 1/a + 1/b',
+  baslik: '3.3.2 · Küresel aynalarda görüntü · 1/f = 1/a + 1/b',
   yukseklik: 350,
   grafikPanel: true,
   grafikYukseklik: 150,

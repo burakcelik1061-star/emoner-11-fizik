@@ -67,7 +67,7 @@ const MUFREDAT = [
       { id: 'manyetik-aki', kitap: '2.3.1', sayfa: 236,        ad: 'Manyetik akı',                 kod: 'FİZ.11.2.10', modul: 'u2-manyetik-aki' },
       { id: 'induksiyon-gerilimi', kitap: '2.3.2', sayfa: 242, ad: 'İndüksiyon gerilimi',          kod: 'FİZ.11.2.11', modul: 'u2-induksiyon-gerilimi' },
       { id: 'alternatif-akim', kitap: '2.3.3', sayfa: 253,     ad: 'Alternatif akım',              kod: 'FİZ.11.2.12', modul: 'u2-alternatif-akim' },
-      { id: 'transformator', kitap: '2.3.4', sayfa: 263,       ad: 'Transformatör',                kod: 'FİZ.11.2.13', modul: 'u2-transformator' }
+      { id: 'transformator', kitap: '2.4',   sayfa: 263,       ad: 'Transformatör',                kod: 'FİZ.11.2.13', modul: 'u2-transformator' }
     ]
   },
   {
@@ -76,16 +76,16 @@ const MUFREDAT = [
     ad: 'Optik',
     saat: 36,
     konular: [
-      { id: 'aydinlanma',        ad: 'Işık şiddeti, ışık akısı, aydınlanma', kod: 'FİZ.11.3.1',  modul: 'u3-aydinlanma' },
-      { id: 'duzlem-ayna',       ad: 'Düzlem aynalar',                 kod: 'FİZ.11.3.2',  modul: 'u3-duzlem-ayna' },
-      { id: 'kuresel-ayna',      ad: 'Küresel aynaların özellikleri',  kod: 'FİZ.11.3.3',  modul: 'u3-kuresel-ayna' },
-      { id: 'kuresel-goruntu',   ad: 'Küresel aynalarda görüntü',      kod: 'FİZ.11.3.4',  modul: 'u3-kuresel-goruntu' },
-      { id: 'kirilma',           ad: 'Işığın kırılması',               kod: 'FİZ.11.3.5',  modul: 'u3-kirilma' },
-      { id: 'gorunur-derinlik',  ad: 'Görünür derinlik',               kod: 'FİZ.11.3.6',  modul: 'u3-gorunur-derinlik' },
-      { id: 'fiber-optik',       ad: 'Fiber optik',                    kod: 'FİZ.11.3.7',  modul: 'u3-fiber-optik' },
-      { id: 'prizmalar',         ad: 'Prizmalar',                      kod: 'FİZ.11.3.8',  modul: 'u3-prizmalar' },
-      { id: 'mercekler',         ad: 'Merceklerin özellikleri',        kod: 'FİZ.11.3.9',  modul: 'u3-mercekler' },
-      { id: 'mercek-goruntu',    ad: 'Merceklerde görüntü',            kod: 'FİZ.11.3.10', modul: 'u3-mercek-goruntu' }
+      { id: 'aydinlanma', kitap: '3.1', sayfa: 302,        ad: 'Işık şiddeti, ışık akısı, aydınlanma', kod: 'FİZ.11.3.1',  modul: 'u3-aydinlanma' },
+      { id: 'duzlem-ayna', kitap: '3.2', sayfa: 312,       ad: 'Düzlem aynalar',                 kod: 'FİZ.11.3.2',  modul: 'u3-duzlem-ayna' },
+      { id: 'kuresel-ayna', kitap: '3.3.1', sayfa: 323,      ad: 'Küresel aynaların özellikleri',  kod: 'FİZ.11.3.3',  modul: 'u3-kuresel-ayna' },
+      { id: 'kuresel-goruntu', kitap: '3.3.2', sayfa: 333,   ad: 'Küresel aynalarda görüntü',      kod: 'FİZ.11.3.4',  modul: 'u3-kuresel-goruntu' },
+      { id: 'kirilma', kitap: '3.4', sayfa: 343,           ad: 'Işığın kırılması',               kod: 'FİZ.11.3.5',  modul: 'u3-kirilma' },
+      { id: 'gorunur-derinlik', kitap: '3.5', sayfa: 354,  ad: 'Görünür derinlik',               kod: 'FİZ.11.3.6',  modul: 'u3-gorunur-derinlik' },
+      { id: 'fiber-optik', kitap: '3.6', sayfa: 361,       ad: 'Fiber optik',                    kod: 'FİZ.11.3.7',  modul: 'u3-fiber-optik' },
+      { id: 'prizmalar', kitap: '3.7', sayfa: 367,         ad: 'Prizmalar',                      kod: 'FİZ.11.3.8',  modul: 'u3-prizmalar' },
+      { id: 'mercekler', kitap: '3.8.1', sayfa: 373,         ad: 'Merceklerin özellikleri',        kod: 'FİZ.11.3.9',  modul: 'u3-mercekler' },
+      { id: 'mercek-goruntu', kitap: '3.8.2', sayfa: 381,    ad: 'Merceklerde görüntü',            kod: 'FİZ.11.3.10', modul: 'u3-mercek-goruntu' }
     ]
   }
 ];

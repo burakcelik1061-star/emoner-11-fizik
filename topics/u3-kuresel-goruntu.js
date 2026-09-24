@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-kuresel-goruntu.js
-   Konu 3.4 · Küresel aynalarda görüntü
+   Konu 3.3.2 · Küresel aynalarda görüntü  (MEB 11, s.333-342)
    ========================================================================== */
 
 F.konuKaydet('u3-kuresel-goruntu', {

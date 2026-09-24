@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/aydinlanma.js
    --------------------------------------------------------------------------
-   Konu 3.1 · Işık şiddeti, ışık akısı ve aydınlanma  (MEB 11, s.302-314)
+   Konu 3.1 · Işık şiddeti, ışık akısı ve aydınlanma  (MEB 11, s.302-311)
 
    Matematiksel model (kitaptaki notasyonla):
        I : ışık şiddeti      — kandela (cd)

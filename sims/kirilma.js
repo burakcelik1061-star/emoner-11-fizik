@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/kirilma.js
    --------------------------------------------------------------------------
-   Konu 3.5 · Işığın kırılması
+   Konu 3.4 · Işığın kırılması  (MEB 11, s.343-353)
 
    SNELL YASASI
    ------------
@@ -430,7 +430,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['kirilma'] = {
   id: 'kirilma',
-  baslik: '3.5 · Işığın kırılması · Snell yasası, sınır açısı, dalga boyu',
+  baslik: '3.4 · Işığın kırılması · Snell yasası, sınır açısı, dalga boyu',
   yukseklik: 340,
   grafikPanel: true,
   grafikYukseklik: 150,

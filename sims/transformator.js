@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/transformator.js
    --------------------------------------------------------------------------
-   Konu 2.3.4 · Transformatör  (MEB 11, s.263-272)
+   Konu 2.4 · Transformatörler  (MEB 11, s.263-269)
 
    İDEAL TRANSFORMATÖR (kitap s.268)
    ---------------------------------
@@ -365,7 +365,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['transformator'] = {
   id: 'transformator',
-  baslik: '2.3.4 · Transformatör · sarım oranı, güç, enerji iletimi',
+  baslik: '2.4 · Transformatör · sarım oranı, güç, enerji iletimi',
   yukseklik: 330,
   grafikPanel: true,
   grafikYukseklik: 170,

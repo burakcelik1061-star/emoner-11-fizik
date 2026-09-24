@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/kuresel-ayna.js
    --------------------------------------------------------------------------
-   Konu 3.3 · Küresel aynaların özellikleri
+   Konu 3.3.1 · Küresel aynaların özellikleri  (MEB 11, s.323-332)
 
    TEMEL BÜYÜKLÜKLER
    -----------------
@@ -541,7 +541,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['kuresel-ayna'] = {
   id: 'kuresel-ayna',
-  baslik: '3.3 · Küresel ayna · odak, özel ışınlar, küresel sapma',
+  baslik: '3.3.1 · Küresel ayna · odak, özel ışınlar, küresel sapma',
   yukseklik: 360,
   parametreler: [
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [

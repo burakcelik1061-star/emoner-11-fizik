@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-mercek-goruntu.js
-   Konu 3.10 · Merceklerde görüntü
+   Konu 3.8.2 · Merceklerde görüntü  (MEB 11, s.381-390)
    ========================================================================== */
 
 F.konuKaydet('u3-mercek-goruntu', {
@@ -507,7 +507,7 @@ baglam: [
       { bas: 'Ne kadar değişti?',
         metin: 'Odak uzaklığı 2,20&rsquo;den 2,02 cm&rsquo;ye indi — yalnızca <strong>1,8 mm</strong>. Ama dioptri olarak <code>45,5 D</code>&rsquo;den <code>49,5 D</code>&rsquo;ye çıktı: <strong>4 dioptrilik</strong> bir güç artışı.' },
       { bas: 'Bu gücü ne sağlıyor?',
-        metin: 'Kirpiksi kas mercek etrafındaki bağları gevşetir; mercek kendi esnekliğiyle <strong>şişer</strong>, yüzeylerin R&rsquo;si küçülür ve mercek yapıcı denklemi gereği f küçülür (3.9).' },
+        metin: 'Kirpiksi kas mercek etrafındaki bağları gevşetir; mercek kendi esnekliğiyle <strong>şişer</strong>, yüzeylerin R&rsquo;si küçülür ve mercek yapıcı denklemi gereği f küçülür (3.8.1).' },
       { bas: 'Yaşla ne oluyor?',
         metin: 'Mercek yaşla birlikte <strong>sertleşir</strong> ve şişemez hâle gelir. Uyum gücü 10 yaşında ~14 D iken 50 yaşında ~2 D&rsquo;ye düşer. Buna <strong>presbiyopi</strong> (yaşa bağlı yakını görememe) denir.' },
       { bas: 'Nasıl düzeltilir?',
@@ -542,7 +542,7 @@ baglam: [
         noktan”dır. Yaş ilerledikçe bu nokta uzaklaşır; 45 yaş civarında kitap kol
         mesafesine gitmeye başlar.
         <br><strong>Ünite bağlantısı:</strong> Bu soru 3.9&rsquo;daki yapıcı denklemi
-        (merceğin şekli f&rsquo;yi belirler), 3.10&rsquo;daki mercek denklemini ve dioptri
+        (merceğin şekli f&rsquo;yi belirler), 3.8.2&rsquo;deki mercek denklemini ve dioptri
         toplamını bir arada kullanıyor.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

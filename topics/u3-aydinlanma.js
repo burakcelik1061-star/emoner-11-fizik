@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-aydinlanma.js
-   Konu 3.1 · Işık şiddeti, ışık akısı ve aydınlanma  (MEB 11, s.302-314)
+   Konu 3.1 · Işık şiddeti, ışık akısı ve aydınlanma  (MEB 11, s.302-311)
    ========================================================================== */
 
 F.konuKaydet('u3-aydinlanma', {

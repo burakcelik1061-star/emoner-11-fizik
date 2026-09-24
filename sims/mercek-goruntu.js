@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/mercek-goruntu.js
    --------------------------------------------------------------------------
-   Konu 3.10 · Merceklerde görüntü
+   Konu 3.8.2 · Merceklerde görüntü  (MEB 11, s.381-390)
 
    MERCEK DENKLEMİ  (aynadakiyle AYNI)
    -----------------------------------
@@ -425,7 +425,7 @@ function okumalar(st, p) {
 D.simler = D.simler || {};
 D.simler['mercek-goruntu'] = {
   id: 'mercek-goruntu',
-  baslik: '3.10 · Merceklerde görüntü · 1/f = 1/a + 1/b',
+  baslik: '3.8.2 · Merceklerde görüntü · 1/f = 1/a + 1/b',
   yukseklik: 350,
   grafikPanel: true,
   grafikYukseklik: 150,

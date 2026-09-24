@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u2-transformator.js
-   Konu 2.3.4 · Transformatör  (MEB 11, s.263-272)
+   Konu 2.4 · Transformatörler  (MEB 11, s.263-269)
    ========================================================================== */
 
 F.konuKaydet('u2-transformator', {
@@ -246,7 +246,7 @@ puf: {
       <div class="kutu-bas"><span class="ikon">🔗</span><span>Ünitenin özeti tek zincirde</span></div>
       <p style="margin:0">Akım manyetik alan üretir (2.2.2) → bobin alanı güçlendirir (2.2.3)
       → değişen akı gerilim doğurur (2.3.2) → jeneratör alternatif akım üretir (2.3.3)
-      → transformatör onu taşınabilir hâle getirir (2.3.4).
+      → transformatör onu taşınabilir hâle getirir (2.4).
       <strong>Elektrik şebekesinin tamamı bu beş adımdır.</strong></p>
     </div>`
 },

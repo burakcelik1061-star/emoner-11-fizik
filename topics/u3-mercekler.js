@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-mercekler.js
-   Konu 3.9 · Merceklerin özellikleri
+   Konu 3.8.1 · Merceklerin özellikleri  (MEB 11, s.373-380)
    ========================================================================== */
 
 F.konuKaydet('u3-mercekler', {
@@ -356,7 +356,7 @@ osym: [
         <code>D = 5 + 5 = 10 D ⟹ f = 100/10 = <strong>10 cm</strong></code>.
         Sistem tek merceğin <em>iki katı güçlü</em> olur, yarısı değil.</li>
         <li><strong>Doğru.</strong> Merkezde yüzeyler paralel olduğu için orası ince bir
-        levha gibidir; levhadan geçen ışın sapmaz (3.6).</li>
+        levha gibidir; levhadan geçen ışın sapmaz (3.5).</li>
         <li><strong>Doğru.</strong> Yapıcı denklemdeki çarpan <code>(n_cam/n_ortam − 1)</code>
         olur. Havada <code>1,5 − 1 = 0,5</code>, suda <code>1,5/1,33 − 1 = 0,128</code>.
         Çarpan küçüldüğü için <strong>f büyür</strong> — mercek zayıflar.</li>

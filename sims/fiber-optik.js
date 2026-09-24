@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/fiber-optik.js
    --------------------------------------------------------------------------
-   Konu 3.7 · Fiber optik
+   Konu 3.6 · Fiber optik  (MEB 11, s.361-366)
 
    YAPI
    ----
@@ -517,7 +517,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['fiber-optik'] = {
   id: 'fiber-optik',
-  baslik: '3.7 · Fiber optik · tam yansıma, sayısal açıklık, mod dağılımı',
+  baslik: '3.6 · Fiber optik · tam yansıma, sayısal açıklık, mod dağılımı',
   yukseklik: 330,
   grafikPanel: true,
   grafikYukseklik: 150,

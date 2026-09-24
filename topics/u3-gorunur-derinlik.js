@@ -4,7 +4,7 @@ const F = window.F11;
 
 /* ==========================================================================
    topics/u3-gorunur-derinlik.js
-   Konu 3.6 · Görünür derinlik
+   Konu 3.5 · Görünür derinlik  (MEB 11, s.354-360)
    ========================================================================== */
 
 F.konuKaydet('u3-gorunur-derinlik', {

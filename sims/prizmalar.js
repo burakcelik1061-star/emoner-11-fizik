@@ -5,7 +5,7 @@ window.F11 = window.F11 || {};
 /* ==========================================================================
    sims/prizmalar.js
    --------------------------------------------------------------------------
-   Konu 3.8 · Prizmalar
+   Konu 3.7 · Prizmalar  (MEB 11, s.367-372)
 
    SAPMA AÇISI
    -----------
@@ -601,7 +601,7 @@ function okumalar(st, pHam) {
 D.simler = D.simler || {};
 D.simler['prizmalar'] = {
   id: 'prizmalar',
-  baslik: '3.8 · Prizmalar · sapma, en küçük sapma, dispersiyon, tam yansıma',
+  baslik: '3.7 · Prizmalar · sapma, en küçük sapma, dispersiyon, tam yansıma',
   yukseklik: 340,
   grafikPanel: true,
   grafikYukseklik: 150,
