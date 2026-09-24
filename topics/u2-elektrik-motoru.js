@@ -51,10 +51,10 @@ yönlerdedir ama artık çerçeveyi <strong>geri döndürmeye</strong> çalış�
 
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Bunu kendin gör</span></div>
-  <p style="margin:0">Simülasyonda <strong>“Komütatör: Kapalı”</strong> seç ve oynat.
-  Çerçeve hızlanır, 90°&rsquo;ye gelir, geçer, yavaşlar, geri döner ve sonunda
-  <strong>90°&rsquo;de durur</strong>. Beş saniye sonra okumalar
-  <code>ω = 0</code>, <code>tam tur = 0</code> gösterir. Motor olmadı.</p>
+  <p style="margin:0">Simülasyonda düzenek olarak <strong>“Komütatörsüz çerçeve”</strong> seç
+  ve oynat. Çerçeve hızlanır, 90°&rsquo;ye gelir, geçer, yavaşlar, geri döner ve birkaç
+  salınımdan sonra <strong>90°&rsquo;de durur</strong>. Okumalar <code>ω = 0</code>,
+  <code>tam tur = 0</code> gösterir. Motor olmadı.</p>
 </div>
 
 <h3 style="margin-top:22px">Çözüm: komütatör</h3>
@@ -68,8 +68,9 @@ ters döner ve döndürme etkisi <strong>yine aynı yönde</strong> olur.</p>
   θ = 90° ve 270°&rsquo;de. O anda zaten döndürme etkisi yoktur; çerçeve
   <strong>eylemsizliğiyle</strong> o noktayı geçer ve akım ters dönmüş olarak yeniden
   ivmelenmeye başlar.</p>
-  <p style="margin:8px 0 0">Komütatörü açıp aynı simülasyonu çalıştır:
-  5 saniyede <strong>25 tam tur</strong>, yaklaşık <strong>315 dev/dk</strong>.</p>
+  <p style="margin:8px 0 0">“Motor (komütatörlü)” düzeneğinde aynı çerçeve sürekli döner:
+  hızı artar ve ortalama tork yük frenine eşit olunca yaklaşık <strong>300 dev/dk</strong>
+  ortalama hızda dalgalanarak döner (tek çerçevede tork sürekli değiştiği için).</p>
 </div>
 
 <h3 style="margin-top:22px">Gerçek motorlar neden çok çerçeveli?</h3>
