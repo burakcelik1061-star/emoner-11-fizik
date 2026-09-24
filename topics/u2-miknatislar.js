@@ -114,7 +114,7 @@ formuller: {
     { fm: 'B — manyetik alan',      aciklama: 'Birimi tesla (T)' },
     { fm: '1 T = 10⁴ gauss',        aciklama: 'Eski birimle çevrim' },
     { fm: '1 μT = 10⁻⁶ T',          aciklama: 'Dünya’nın alanı bu mertebededir' },
-    { fm: 'B<sub>Dünya</sub> ≈ 50 μT', aciklama: 'Yatay bileşeni ülkemizde ≈ 24 μT' },
+    { fm: 'B<sub>Dünya</sub> ≈ 50 μT', aciklama: 'Ülkemizde ≈ 48 μT, yatay bileşeni ≈ 25 μT' },
     { fm: 'B<sub>top</sub>² = B<sub>yatay</sub>² + B<sub>düşey</sub>²', aciklama: 'Bileşenler dik — Pisagor' }
   ],
   degiskenler: [
@@ -356,9 +356,9 @@ osym: [
         <em>eğim (inklinasyon) pusulası</em> gerekir.</li>
       </ol>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>Sayıyla:</strong> Türkiye enlemlerinde toplam alan
-        ≈ 50 μT, yatay bileşeni ≈ 24 μT&rsquo;dir. Pisagor&rsquo;dan düşey bileşen:
-        √(50² − 24²) ≈ <strong>44 μT</strong>. Yani alan aslında oldukça <em>dik</em> iner —
+        <p style="margin:0"><strong>Sayıyla:</strong> Ankara&rsquo;da toplam alan
+        ≈ 48 μT, yatay bileşeni ≈ 25 μT&rsquo;dir (IGRF 2026). Pisagor&rsquo;dan düşey bileşen:
+        √(48² − 25²) ≈ <strong>41 μT</strong>. Yani alan aslında oldukça <em>dik</em> iner —
         pusula bunun yalnızca küçük bir kısmını kullanır.
         <br><strong>E şıkkı</strong> III’ü de doğru sayanlar için konmuştur; sapma açısı
         olmasaydı haritacılıkta düzeltme yapmaya gerek kalmazdı.</p>
