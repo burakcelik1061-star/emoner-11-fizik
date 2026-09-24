@@ -1011,8 +1011,10 @@ function miniGrafik(ctx, cfg) {
     ctx.restore();
   }
 
-  /* eğri */
+  /* eğri — çerçeveye KIRPILIR: ekseni aşan veri (ör. kayan pencerenin
+     solunda kalan eski kayıtlar) komşu grafiğin üstüne taşmasın. */
   ctx.save();
+  ctx.beginPath(); ctx.rect(gx - 1, gy - 5, gw + 6, gh + 10); ctx.clip();
   ctx.strokeStyle = renk; ctx.lineWidth = 2.2; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   ctx.beginPath();
   veri.forEach((d, i) => {

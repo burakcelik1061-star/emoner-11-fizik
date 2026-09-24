@@ -74,11 +74,20 @@ function kayipOrani(p) { return hatKaybi(p) / (p.Psan * 1e6); }
 
 /* -------------------------------------------------------------- Durum */
 
-function durum(p) { return { t: 0, kayit: [] }; }
+function durum(p) { return { t: 0, kayit: [], Vhat: p.Vhat }; }
+
+/* Enerji iletiminde Oynat’a basılınca K transformatörünün çıkış gerilimi
+   (kademe değiştirici) taranır: gerilim yükseldikçe hat akımı ve kayıp
+   canlı olarak düşer, imleç eğriler üzerinde kayar. */
+const ILETIM_TARAMA = 12;          // s
 
 function adim(st, dt, p) {
   st.t += dt;
-  if (iletimMi(p)) return;
+  if (iletimMi(p)) {
+    /* düşük gerilime doğru taranır: kaybın hızla büyüdüğü dik bölge görünsün */
+    st.Vhat = D.tarama(st.t, p.Vhat, p.Vhat < 40 ? 400 : 10, ILETIM_TARAMA);
+    return;
+  }
   /* ts: sahne zamanı (kayıt aralığı için) · t: gerçek zaman (ms, grafik ekseni) */
   if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].ts > 0.01)
     st.kayit.push({ ts: st.t, t: gercekT(st) * 1000, v: v2An(st, p) });
@@ -87,9 +96,15 @@ function adim(st, dt, p) {
 
 function bitti() { return false; }
 
+/** Taranan iletim gerilimiyle güncellenmiş parametreler. */
+function etkin(st, p) {
+  return iletimMi(p) && st && st.Vhat != null ? Object.assign({}, p, { Vhat: st.Vhat }) : p;
+}
+
 /* --------------------------------------------- Gerçekçi görünüm */
 
-function cizGercek(ctx, w, h, st, p) {
+function cizGercek(ctx, w, h, st, pHam) {
+  const p = etkin(st, pHam);
   if (iletimMi(p)) { cizIletim(ctx, w, h, st, p); return; }
   const cy = h * 0.48, cx = w * 0.50, cw = 120, ch = 150;
 
@@ -208,7 +223,8 @@ function cizIletim(ctx, w, h, st, p) {
 
 /* ----------------------------------------- Klasik fizik görünümü */
 
-function cizKlasik(ctx, w, h, st, p) {
+function cizKlasik(ctx, w, h, st, pHam) {
+  const p = etkin(st, pHam);
   D.izgara(ctx, w, h, 26);
 
   if (iletimMi(p)) {
@@ -271,7 +287,8 @@ function cizKlasik(ctx, w, h, st, p) {
 
 /* ------------------------------------------------------- Grafikler */
 
-function cizGrafik(ctx, w, h, st, p) {
+function cizGrafik(ctx, w, h, st, pHam) {
+  const p = etkin(st, pHam);
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
 
   if (iletimMi(p)) {
@@ -314,14 +331,15 @@ function cizGrafik(ctx, w, h, st, p) {
   D.miniGrafik(ctx, {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: dcMi(p) ? 'V_s − t   (DC: yalnız anahtar kapanırken darbe)' : 'V_s − t   (V_p ile aynı biçim · 50 Hz)', birim: 'V', tEtiket: 't (ms)',
-    veri: st.kayit, tMin: Math.max(t0, tS - 60), tMax: tS,
+    veri: st.kayit.filter(q => q.t >= tS - 60), tMin: Math.max(t0, tS - 60), tMax: tS,
     vMin: dcMi(p) ? 0 : -tepe * 1.1, vMax: tepe * 1.1, renk: R.normal
   });
 }
 
 /* ----------------------------------------------------------- Okumalar */
 
-function okumalar(st, p) {
+function okumalar(st, pHam) {
+  const p = etkin(st, pHam);
   if (iletimMi(p)) {
     return [
       { et: 'Santral gücü',   dg: D.biçim(p.Psan),                birim: 'MW' },
