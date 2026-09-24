@@ -17,12 +17,17 @@ window.F11 = window.F11 || {};
 
    ÜÇ DÜZENEK  (kitaptaki örneklerle birebir)
    ------------------------------------------
-   1) Düzgün dış alan : Yükler ayrışırken içerideki alanın sıfıra inişi
-      animasyonla izlenir. Gerçekte bu süre ~10⁻¹⁹ s’dir; sınıfta görülebilsin
-      diye yavaşlatılmıştır ve ekranda bu açıkça yazar.
+   1) Düzgün dış alanda nötr iletken küre (MEB s.181, Şekil 2.12): alan soldan
+      sağa; elektronlar alana ters kayar, sol yüzey −, sağ yüzey + olur.
+      Yükler ayrışırken içerideki alanın sıfıra inişi animasyonla izlenir.
+      Gerçekte bu süre ~10⁻¹⁹ s’dir; sınıfta görülebilsin diye yavaşlatılmıştır.
+      Alan çizgileri TAM çözümden izlenir: çizgiler − yüklerde biter, + yüklerden
+      yeniden başlar, yüzeye DİK girer; kutuplarda sıklaşır (E = 3E₀), yanlarda
+      seyrelir (E = 0).
 
    2) Yıldırım        : Araca/uçağa çarpan yük, gövdenin DIŞ yüzeyinden akar.
-      İçerideki yolcu güvendedir (MEB s.179).
+      İçerideki yolcu güvendedir (MEB s.179). Koruyan metal gövdedir, lastik
+      değil. Yıldırımların çoğu buluttan NEGATİF yük indirir.
 
    3) Asansörde telefon: Kafes gözü, dalga boyundan çok küçükse dalga giremez.
       Telefon sinyali için λ ≈ 33 cm; birkaç cm’lik göz bile yeterlidir.
@@ -69,13 +74,100 @@ function gecerMi(p) { return gozOran(p) > 0.5; }
     SE ≈ 20·log(λ / 2·göz) dB). Göz ≥ λ/2 ise dalga olduğu gibi geçer. */
 function gecenGenlik(p) { return Math.min(1, 2 * gozOran(p)); }
 
+/* 'Giremez' eşiği: ekranlama ≥ 15 dB, yani geçen genlik ≤ %18 (geçen güç
+   ≤ %3). Bunun altında telefon sinyali kullanılamayacak kadar zayıflar.
+   Kitaptaki örnek (göz 2 cm, λ 33 cm): genlik %12 ⟹ giremez. */
+const GIREMEZ_ESIK = 0.18;
+
 function sinyalMetni(p) {
   const T = gecenGenlik(p);
-  return T >= 1 ? 'Tam geçer' : T > 0.3 ? 'Zayıflar' : 'Giremez';
+  return T >= 1 ? 'Tam geçer' : T > GIREMEZ_ESIK ? 'Zayıflar' : 'Giremez';
 }
+
+/** Ekranlama etkinliği (dB): SE = 20·log(λ / 2·göz); göz ≥ λ/2 ise 0. */
+function ekranlamaDb(p) { return Math.max(0, -20 * Math.log10(gecenGenlik(p))); }
 
 /** Sahnede λ ve göz AYNI ölçekle çizilir (piksel / cm). */
 const PX_CM = 2;
+
+/* ---- 1. düzenek: düzgün alanda nötr iletken küre (tam çözüm) ----
+   Uzunluklar küre yarıçapı R birimiyle, merkez (0,0), dış alan +y yönünde.
+   Yüzey yükleri (σ = 3ε₀E₀·cosθ) dışarıda, merkezdeki p = 4πε₀R³E₀ dipolünün
+   alanını; içeride düzgün −E₀ alanını üretir (süperpozisyon):
+       dışarıda  E = E₀ŷ + E₀·(3(ŷ·r̂)r̂ − ŷ)/r³
+       içeride   E = 0
+   Ayrışma sürerken yüzeydeki yük dengedekinin 'oran' katıdır; ürettiği alan da.
+   Sonuçlar: kutuplarda E = 3E₀ (yüzeye dik), yanlarda E = 0. */
+function toplamAlan(x, y, oran) {
+  const r2 = x * x + y * y;
+  if (r2 < 1) return { x: 0, y: 1 - oran };
+  const r5 = r2 * r2 * Math.sqrt(r2);
+  return { x: oran * 3 * x * y / r5, y: 1 + oran * (3 * y * y - r2) / r5 };
+}
+
+/** Sol levhadan (y = −H) çıkan alan çizgisini küreye ya da simetri düzlemine
+    (y = 0) varana dek izler (RK2, orta nokta). Öbür yarı bunun aynadaki
+    görüntüsüdür: y → −y yansımasında çizgiler aynı kalır. */
+function cizgiIzle(x0, H, oran) {
+  const yol = [[x0, -H]];
+  let x = x0, y = -H;
+  const ds = 0.03;
+  for (let i = 0; i < 700; i++) {
+    const a = toplamAlan(x, y, oran), m = Math.hypot(a.x, a.y);
+    if (m < 1e-9) break;
+    /* Orta nokta kürenin içine düşerse (dengede orada E = 0) son adım
+       Euler ile atılır; aksi hâlde çizgi yüzeye değmeden kesilir. */
+    const mx = x + a.x / m * ds / 2, my = y + a.y / m * ds / 2;
+    const b = mx * mx + my * my < 1 ? a : toplamAlan(mx, my, oran);
+    const nb = Math.hypot(b.x, b.y);
+    if (nb < 1e-9) break;
+    const nx = x + b.x / nb * ds, ny = y + b.y / nb * ds;
+    if (nx * nx + ny * ny < 1) {                         // yüzeye ulaştı
+      const s = cemberKesisim(x, y, nx, ny);
+      const g = [x + (nx - x) * s, y + (ny - y) * s];
+      yol.push(g);
+      return { yol, giris: g };
+    }
+    if (ny >= 0) {                                       // simetri düzlemi
+      const s = -y / (ny - y);
+      yol.push([x + (nx - x) * s, 0]);
+      return { yol, giris: null };
+    }
+    x = nx; y = ny; yol.push([x, y]);
+  }
+  return { yol, giris: null };
+}
+
+/** (x,y) dışarıda, (nx,ny) içeride: parçanın birim çemberi kestiği oran. */
+function cemberKesisim(x, y, nx, ny) {
+  const dx = nx - x, dy = ny - y;
+  const a = dx * dx + dy * dy, b = 2 * (x * dx + y * dy), c = x * x + y * y - 1;
+  const s = (-b - Math.sqrt(Math.max(0, b * b - 4 * a * c))) / (2 * a);
+  return Math.max(0, Math.min(1, s));
+}
+
+/** Çizgi sayısı dış alanla orantılı (E₀ = 2000 N/C → 8 çizgi). */
+function cizgiSayisi(p) { return Math.max(3, Math.min(20, Math.round(p.E0 / 250))); }
+
+/** Merkezden geçen alan çizgisi boyunca E (N/C); u = uzaklık / R. */
+function eksenAlani(p, oran, u) {
+  const a = Math.abs(u);
+  return a < 1 ? p.E0 * (1 - oran) : p.E0 * (1 + 2 * oran / (a * a * a));
+}
+
+function kureYerlesim(w, h) {
+  const ust = 34, alt = h - 22, sol = 22, sag = w - 22;
+  const cx = w / 2, cy = (ust + alt) / 2;
+  const R = Math.min(72, (alt - ust) * 0.26, w * 0.13);
+  return { cx, cy, R, ust, alt, sol, sag, H: (cx - sol) / R };
+}
+
+/* ---- 2. düzenek: yıldırım akımı ----
+   Çarpma anında tepe ~30 kA (ortalama bir yıldırım), sonra hızla söner.
+   Gerçekte birkaç yüz mikrosaniye sürer — burada ağır çekim. */
+function yildirimAkimi(st) {
+  return st.aktif ? 30 * Math.exp(-(st.yildirimY - 1) / 0.5) : 0;
+}
 
 /* -------------------------------------------------------------- Durum */
 
@@ -97,9 +189,7 @@ function adim(st, dt, p) {
     /* yıldırım: yukarıdan iner, gövdeye ulaşınca yüzeyden yere akar */
     st.yildirimY = Math.min(YILDIRIM_SON, st.yildirimY + dt * 1.6);
     st.aktif = st.yildirimY >= 1;
-    /* Dış yüzeyden akan akım: çarpma anında tepe (~30 kA), sonra hızla söner.
-       Gerçekte bu birkaç yüz mikrosaniyedir — burada ağır çekim. */
-    const akim = st.aktif ? 30 * Math.exp(-(st.yildirimY - 1) / 0.5) : 0;
+    const akim = yildirimAkimi(st);
     if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.01)
       st.kayit.push({ t: st.t, v: akim });
   }
@@ -109,7 +199,7 @@ function adim(st, dt, p) {
 const YILDIRIM_SON = 4.4;
 
 function bitti(st, p) {
-  if (p.mod < 1.5) return st.t > AYRISMA_SURESI * 1.8;
+  if (p.mod < 1.5) return st.t > AYRISMA_SURESI * 2.4;
   if (p.mod < 2.5) return st.yildirimY >= YILDIRIM_SON;
   return false;
 }
@@ -125,30 +215,6 @@ function kafes(ctx, x, y, w, h, kenarRenk, dolgu) {
   ctx.restore();
 }
 
-/**
- * Yüzeydeki indüklenen yükler.
- * Dış alan DÜŞEYDİR (üstte + levha, altta − levha ⟹ alan aşağı doğru).
- * Elektronlar alana ZIT yönde, yani YUKARI kayar:
- *     üst yüzey → negatif,  alt yüzey → pozitif
- * Yükleri sağ-sol yüzeylere koymak, yatay alan varmış gibi görünür ve
- * yanlış olur; bu yüzden dağılım üst ve alt kenarlar boyuncadır.
- */
-function yuzeyYukleri(ctx, x, y, w, h, oran) {
-  if (oran <= 0.02) return;
-  const adet = 6;
-  ctx.save();
-  ctx.font = '700 15px system-ui, sans-serif';
-  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-  ctx.globalAlpha = Math.min(1, oran * 1.3);
-  for (let i = 0; i < adet; i++) {
-    const xx = x + 18 + (i / (adet - 1)) * (w - 36);
-    /* Kenarın biraz içine çizilir; üstteki E_iç etiketiyle çakışmasın. */
-    ctx.fillStyle = '#2F6FD0'; ctx.fillText('−', xx, y + 12);
-    ctx.fillStyle = '#E2483F'; ctx.fillText('+', xx, y + h - 12);
-  }
-  ctx.restore();
-}
-
 /* --------------------------------------------- Gerçekçi görünüm */
 
 function cizGercek(ctx, w, h, st, pHam) {
@@ -160,63 +226,136 @@ function cizGercek(ctx, w, h, st, pHam) {
 
 function cizDuzgunAlan(ctx, w, h, st, p) {
   const oran = ayrismaOrani(st, p);
-  const kx = w * 0.30, kw = w * 0.40;
-  const ky = h * 0.24, kh = h * 0.50;
+  const L = kureYerlesim(w, h);
+  /* matematik (x: alana dik, y: alan yönü) → ekran: alan SAĞA doğru.
+     Sol yarı doğrudan izlenir, sağ yarı onun aynadaki görüntüsüdür. */
+  const S = (x, y) => [L.cx + y * L.R, L.cy + x * L.R];
+  const A = (x, y) => [L.cx - y * L.R, L.cy + x * L.R];
 
-  /* levhalar */
-  ctx.fillStyle = '#E2483F'; ctx.fillRect(14, ky - 34, w - 28, 8);
-  ctx.fillStyle = '#2F6FD0'; ctx.fillRect(14, ky + kh + 26, w - 28, 8);
-
-  /* dış alan çizgileri — kafesin içine GİRMEZ */
+  /* levhalar: solda +, sağda − ⟹ dış alan soldan sağa */
+  ctx.fillStyle = '#E2483F'; ctx.fillRect(L.sol - 8, L.ust - 6, 8, L.alt - L.ust + 12);
+  ctx.fillStyle = '#2F6FD0'; ctx.fillRect(L.sag, L.ust - 6, 8, L.alt - L.ust + 12);
   ctx.save();
-  ctx.strokeStyle = 'rgba(120,150,200,.85)'; ctx.lineWidth = 1.4;
-  const adet = 11;
-  for (let i = 0; i < adet; i++) {
-    const x = 26 + (i + 0.5) * ((w - 52) / adet);
-    const icerde = x > kx && x < kx + kw;
-    ctx.globalAlpha = 1;
-    ctx.beginPath();
-    if (!icerde) {
-      ctx.moveTo(x, ky - 26); ctx.lineTo(x, ky + kh + 26);
-      ctx.stroke();
-    } else {
-      /* Dış çizgiler yüzeyde biter (orada yüzey yüküne bağlanır); içerideki
-         kısım iç alanla orantılı olarak SOLAR — denge kurulunca hiç kalmaz. */
-      ctx.moveTo(x, ky - 26); ctx.lineTo(x, ky);
-      ctx.moveTo(x, ky + kh); ctx.lineTo(x, ky + kh + 26);
-      ctx.stroke();
-      ctx.globalAlpha = 1 - oran;
-      ctx.beginPath(); ctx.moveTo(x, ky); ctx.lineTo(x, ky + kh); ctx.stroke();
-    }
+  ctx.font = '700 11px system-ui, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#FFFFFF';
+  for (let y = L.ust + 10; y < L.alt; y += 28) {
+    ctx.fillText('+', L.sol - 4, y); ctx.fillText('−', L.sag + 4, y);
   }
   ctx.restore();
 
-  kafes(ctx, kx, ky, kw, kh, '#7D8A99', 'rgba(255,255,255,.55)');
-  yuzeyYukleri(ctx, kx, ky, kw, kh, oran);
+  /* küre gövdesi: önce dolgu, çizgiler üstüne, kenar en son */
+  ctx.beginPath(); ctx.arc(L.cx, L.cy, L.R, 0, 6.2832);
+  ctx.fillStyle = 'rgba(255,255,255,.55)'; ctx.fill();
 
-  /* içerideki test yükü ve ona etkiyen kuvvet */
-  const cx = kx + kw / 2, cy = ky + kh / 2;
-  D.noktaCisim(ctx, cx, cy, 7, R.ivme);
-  const Eic = icAlan(st, p);
-  if (Eic > p.E0 * 0.04) {
-    const boy = 18 + (Eic / Math.max(p.E0, 1)) * 34;
-    D.vektor(ctx, cx, cy, cx, cy + boy, R.kuvvet, '', { kalinlik: 2.4 });
-  } else {
-    D.yaziAydinlik(ctx, 'F = 0', cx, cy + 24, R.hiz, '700 12px system-ui, sans-serif', 'center');
+  /* alan çizgileri — tam çözümden izlenir */
+  const n = cizgiSayisi(p);
+  const ustX = (L.ust - L.cy) / L.R, altX = (L.alt - L.cy) / L.R;
+  const cizgiler = [];
+  for (let i = 0; i < n; i++) {
+    const x0 = ustX + (i + 0.5) * (altX - ustX) / n;
+    const c = cizgiIzle(x0, L.H, oran);
+    c.denge = oran > 0.999 ? c.giris : cizgiIzle(x0, L.H, 1).giris;
+    cizgiler.push(c);
+  }
+  ctx.save();
+  ctx.strokeStyle = 'rgba(96,130,190,.9)'; ctx.fillStyle = 'rgba(96,130,190,.95)';
+  ctx.lineWidth = 1.4;
+  cizgiler.forEach(c => {
+    [S, A].forEach(don => {
+      ctx.beginPath();
+      c.yol.forEach(([x, y], k) => {
+        const [px, py] = don(x, y);
+        if (k) ctx.lineTo(px, py); else ctx.moveTo(px, py);
+      });
+      ctx.stroke();
+    });
+    /* yön okları: alan iki yarıda da SAĞA doğru */
+    const k = Math.floor(c.yol.length * 0.4);
+    if (k + 1 < c.yol.length) {
+      cizgiOku(ctx, S(...c.yol[k]), S(...c.yol[k + 1]));
+      cizgiOku(ctx, A(...c.yol[k + 1]), A(...c.yol[k]));
+    }
+    /* ayrışma sürerken içeriden geçen kısım: iç alan düzgündür (yatay çizgi)
+       ve iç alanla birlikte SÖNER — denge kurulunca hiç kalmaz. */
+    if (c.giris && oran < 0.995) {
+      const [x1, y1] = S(...c.giris), [x2] = A(...c.giris);
+      ctx.globalAlpha = 1 - oran;
+      ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y1); ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  });
+  ctx.restore();
+
+  ctx.save();
+  ctx.beginPath(); ctx.arc(L.cx, L.cy, L.R, 0, 6.2832);
+  ctx.strokeStyle = '#7D8A99'; ctx.lineWidth = 5; ctx.stroke();
+  ctx.restore();
+
+  /* Yüzey yükleri, çizgilerin dengede BİTTİĞİ (−) ve yeniden BAŞLADIĞI (+)
+     noktalara konur. Yük yoğunluğu σ = 3ε₀E₀·cosθ kendiliğinden görünür:
+     alana bakan kutuplarda sık, yanlarda hiç yok. */
+  if (oran > 0.02) {
+    const ic = 1 - 11 / L.R;
+    ctx.save();
+    ctx.font = '700 15px system-ui, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.globalAlpha = Math.min(1, oran * 1.3);
+    cizgiler.forEach(c => {
+      if (!c.denge) return;
+      const [x, y] = c.denge;
+      ctx.fillStyle = '#2F6FD0'; ctx.fillText('−', ...S(x * ic, y * ic));
+      ctx.fillStyle = '#E2483F'; ctx.fillText('+', ...A(x * ic, y * ic));
+    });
+    ctx.restore();
   }
 
-  D.yaziAydinlik(ctx, 'E_iç = ' + D.biçim(Eic) + ' N/C', cx, ky - 10,
-                 Eic > p.E0 * 0.04 ? R.kuvvet : R.hiz,
-                 '700 13px system-ui, sans-serif', 'center');
-  D.yaziAydinlik(ctx, 'E_dış = ' + D.biçim(p.E0) + ' N/C', w - 10, 18, R.normal,
-                 '700 12px system-ui, sans-serif', 'right');
+  /* içerideki test yükü ve ona etkiyen kuvvet */
+  const Eic = icAlan(st, p);
+  D.noktaCisim(ctx, L.cx, L.cy, 7, R.ivme);
+  if (Eic > p.E0 * 0.04) {
+    const boy = 16 + (Eic / Math.max(p.E0, 1)) * (L.R - 30);
+    D.vektor(ctx, L.cx, L.cy, L.cx + boy, L.cy, R.kuvvet, '', { kalinlik: 2.4 });
+  } else {
+    D.yaziAydinlik(ctx, 'F = 0', L.cx, L.cy + 20, R.hiz, '700 12px system-ui, sans-serif', 'center');
+  }
 
-  D.rozet(ctx, oran >= 0.99 ? 'DENGE KURULDU' : 'YÜKLER AYRIŞIYOR…', w / 2, 52,
+  /* Yüzeyin hemen dışındaki alan (Physics Classroom: dengede yüzeye DİK).
+     Sol kutupta dik bileşen E₀ → 3E₀ büyür; üst noktada yüzeye paralel
+     bileşen E₀ → 0 söner. Paralel bileşen kaldıkça yükler kaymayı sürdürür. */
+  const MOR = '#7B4FD6', kE = 15;
+  const dik = 1 + 2 * oran, paralel = 1 - oran;
+  const kx = L.cx - L.R - 5;
+  D.vektor(ctx, kx - dik * kE, L.cy, kx, L.cy, MOR, '', { kalinlik: 2.6, ucBoy: 8 });
+  D.yaziAydinlik(ctx, 'E⊥ = ' + D.biçim(dik, 2) + '·E₀', kx - 4, L.cy - 14, MOR,
+                 '700 11px system-ui, sans-serif', 'right');
+  const uy = L.cy - L.R - 9;
+  if (paralel * kE > 3)
+    D.vektor(ctx, L.cx - paralel * kE / 2, uy, L.cx + paralel * kE / 2, uy, MOR, '', { kalinlik: 2.6, ucBoy: 7 });
+  D.yaziAydinlik(ctx, paralel < 0.01 ? 'E∥ = 0 · yükler durdu' : 'E∥ = ' + D.biçim(paralel, 2) + '·E₀',
+                 L.cx, uy - 13, MOR, '700 11px system-ui, sans-serif', 'center');
+
+  /* Sol üst köşe panel başlığına ayrılmıştır. */
+  D.yaziAydinlik(ctx, 'E_iç = ' + D.biçim(Eic) + ' N/C', w - 12, 17,
+                 Eic > p.E0 * 0.04 ? R.kuvvet : R.hiz, '700 13px system-ui, sans-serif', 'right');
+  D.rozet(ctx, oran >= 0.99 ? 'DENGE KURULDU' : 'YÜKLER AYRIŞIYOR…', L.cx, L.cy + L.R + 12,
           oran >= 0.99 ? 'rgba(53,192,138,.92)' : 'rgba(255,176,32,.92)',
           oran >= 0.99 ? '#0A2A1E' : '#2A1E05', '700 11px system-ui, sans-serif', true);
 
-  D.yaziAydinlik(ctx, 'gerçekte ≈ 10⁻¹⁹ s — burada yavaşlatıldı', 10, h - 10,
+  D.yaziAydinlik(ctx, 'gerçekte ≈ 10⁻¹⁹ s — burada yavaşlatıldı', 12, h - 7,
                  R.mur, '600 10px system-ui, sans-serif', 'left');
+  D.yaziAydinlik(ctx, 'E_dış = ' + D.biçim(p.E0) + ' N/C  →', w - 12, h - 7, '#2A7FA0',
+                 '700 12px system-ui, sans-serif', 'right');
+}
+
+/** Alan çizgisinin ortasına küçük yön oku (a → b yönünde). */
+function cizgiOku(ctx, a, b) {
+  const dx = b[0] - a[0], dy = b[1] - a[1], m = Math.hypot(dx, dy) || 1;
+  const ux = dx / m, uy = dy / m, s = 7;
+  ctx.beginPath();
+  ctx.moveTo(a[0] + ux * s / 2, a[1] + uy * s / 2);
+  ctx.lineTo(a[0] - ux * s / 2 - uy * s / 2, a[1] - uy * s / 2 + ux * s / 2);
+  ctx.lineTo(a[0] - ux * s / 2 + uy * s / 2, a[1] - uy * s / 2 - ux * s / 2);
+  ctx.closePath(); ctx.fill();
 }
 
 function cizYildirim(ctx, w, h, st, p) {
@@ -260,10 +399,12 @@ function cizYildirim(ctx, w, h, st, p) {
   ctx.stroke(); ctx.restore();
 
   /* gövdede akan yük — yalnızca DIŞ yüzeyde, çatıdan yanlara ve tekerlek
-     hizasından yere */
-  if (st.aktif) {
+     hizasından yere. Akım söndükçe akış da söner: yük toprağa geçmiştir. */
+  const I = yildirimAkimi(st);
+  if (st.aktif && I > 0.3) {
     ctx.save();
-    ctx.strokeStyle = '#FFD24A'; ctx.lineWidth = 3.4; ctx.globalAlpha = .9;
+    ctx.strokeStyle = '#FFD24A'; ctx.lineWidth = 3.4;
+    ctx.globalAlpha = Math.min(0.9, 0.2 + I / 30);
     D.yuvarlakDik(ctx, ax, ay, aw, ah, 12); ctx.stroke();
     ctx.restore();
     const ts = st.yildirimY / 1.6;
@@ -271,14 +412,18 @@ function cizYildirim(ctx, w, h, st, p) {
     D.akimAkisi(ctx, ax + aw / 2, ay, ax + aw - 6, ay, ts, '#FFB020', 1.2, 4);
     D.akimAkisi(ctx, ax, ay + 6, ax, yolY, ts, '#FFB020', 1.2, 3);
     D.akimAkisi(ctx, ax + aw, ay + 6, ax + aw, yolY, ts, '#FFB020', 1.2, 3);
-    D.yaziAydinlik(ctx, 'yük DIŞ yüzeyden akıyor', ax + aw / 2, ay - 14,
-                   '#B07800', '700 12px system-ui, sans-serif', 'center');
+  }
+  if (st.aktif) {
+    D.yaziAydinlik(ctx, I > 0.3 ? 'yük DIŞ yüzeyden yere akıyor' : 'yük toprağa geçti',
+                   ax + aw / 2, ay - 14, '#B07800', '700 12px system-ui, sans-serif', 'center');
     D.yaziAydinlik(ctx, 'içeride E = 0 · yolcu güvende', ax + aw / 2, ay + ah + 22,
                    R.hiz, '700 12px system-ui, sans-serif', 'center');
   }
 
   D.rozet(ctx, 'MEB s.179 · araca ve uçağa yıldırım', w / 2, 52,
           'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
+  D.yaziAydinlik(ctx, 'koruyan METAL GÖVDE — lastikler değil', w - 12, 18, R.mur,
+                 '700 11px system-ui, sans-serif', 'right');
 }
 
 function cizSinyal(ctx, w, h, st, p) {
@@ -327,7 +472,7 @@ function cizSinyal(ctx, w, h, st, p) {
   const tx = kx + kw / 2, ty = ky + kh / 2;
   ctx.fillStyle = '#23272E';
   D.yuvarlakDik(ctx, tx - 12, ty - 20, 24, 40, 4); ctx.fill();
-  ctx.fillStyle = T > 0.3 ? '#2E5A48' : '#5A3030';
+  ctx.fillStyle = T > GIREMEZ_ESIK ? '#2E5A48' : '#5A3030';
   D.yuvarlakDik(ctx, tx - 9, ty - 17, 18, 30, 2); ctx.fill();
   /* çekim çubukları: geçen genlikle orantılı */
   const cubuk = Math.round(4 * T);
@@ -336,9 +481,9 @@ function cizSinyal(ctx, w, h, st, p) {
     ctx.fillRect(tx - 7 + i * 4, ty + 8 - (i + 1) * 4, 3, (i + 1) * 4);
   }
 
-  const durumYazi = T >= 1 ? 'sinyal TAM' : T > 0.3 ? 'sinyal ZAYIF' : 'sinyal YOK';
+  const durumYazi = T >= 1 ? 'sinyal TAM' : T > GIREMEZ_ESIK ? 'sinyal ZAYIF' : 'sinyal YOK';
   D.yaziAydinlik(ctx, durumYazi + '  (geçen genlik %' + D.biçim(T * 100, 0) + ')', tx, ky + kh + 20,
-                 T >= 1 ? '#1A7A55' : T > 0.3 ? '#9A6A00' : '#B03030',
+                 T >= 1 ? '#1A7A55' : T > GIREMEZ_ESIK ? '#9A6A00' : '#B03030',
                  '700 13px system-ui, sans-serif', 'center');
   D.yaziAydinlik(ctx, 'λ = ' + D.biçim(dalgaBoyu(p) * 100) + ' cm  ·  göz = ' + D.biçim(p.goz) + ' cm',
                  w - 10, 18, R.mur, '700 12px system-ui, sans-serif', 'right');
@@ -353,7 +498,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
   if (p.mod < 1.5) {
     /* --- Süperpozisyon: dış alan + indüklenen alan = 0 --- */
     const oran = ayrismaOrani(st, p);
-    const cx = w * 0.26, cy = h * 0.34;
+    /* Oklar cx’ten başlar; E_ind sola baktığı için adlar okun ulaşamayacağı
+       kadar solda (cx − 100) durur. */
+    const cx = Math.max(w * 0.26, 140), cy = h * 0.34;
 
     D.yaziHaleli(ctx, 'İletkenin içinde ne oluyor?', 12, 22, K.beyaz,
                  '700 12px system-ui, sans-serif', 'left');
@@ -371,13 +518,13 @@ function cizKlasik(ctx, w, h, st, pHam) {
       } else {
         D.noktaCisim(ctx, cx, y, 5, R.hiz);
       }
-      D.yaziHaleli(ctx, ad, cx - 10, y, renk, '700 12px system-ui, sans-serif', 'right');
+      D.yaziHaleli(ctx, ad, cx - 100, y, renk, '700 12px system-ui, sans-serif', 'right');
       D.yaziHaleli(ctx, D.biçim(deger) + ' N/C', cx + 104, y, K.metin2,
                    '11px system-ui, sans-serif', 'left');
     });
 
     ctx.strokeStyle = K.eksen; ctx.lineWidth = 1.2;
-    ctx.beginPath(); ctx.moveTo(cx - 60, cy + 72); ctx.lineTo(cx + 150, cy + 72); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx - 130, cy + 72); ctx.lineTo(cx + 150, cy + 72); ctx.stroke();
 
     const satir = [
       ['E_iç = E_dış + E_ind', K.beyaz],
@@ -394,6 +541,21 @@ function cizKlasik(ctx, w, h, st, pHam) {
     D.yaziHaleli(ctx, 'Dış alan YOK OLMAZ — yüzey yükleri onu tam olarak götürür',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 
+    /* yüzeyin hemen dışı: dengede alan yüzeye DİK, paralel bileşen yok */
+    const ust = [
+      ['Yüzeyin hemen dışında (küre):', K.metin2],
+      ['kutupta E⊥ = ' + D.biçim(1 + 2 * oran, 2) + '·E₀  (dengede 3E₀)', R.normal],
+      ['yanda E∥ = ' + D.biçim(1 - oran, 2) + '·E₀  (dengede 0)', R.surtunme]
+    ];
+    /* Dar panelde soldaki başlıkla çakışmasın diye bir satır aşağı iner. */
+    ctx.save(); ctx.font = '700 12px system-ui, sans-serif';
+    const genis = ctx.measureText('İletkenin içinde ne oluyor?').width
+                + Math.max(...ust.map(([t]) => ctx.measureText(t).width)) + 40;
+    ctx.restore();
+    const y0 = genis > w ? 44 : 22;
+    ust.forEach(([t, c], i) =>
+      D.yaziHaleli(ctx, t, w - 12, y0 + i * 18, c, '700 12px system-ui, sans-serif', 'right'));
+
   } else if (p.mod < 2.5) {
     /* --- Yıldırım: kesit ve yük dağılımı --- */
     const kx = w * 0.16, kw = w * 0.46, ky = h * 0.26, kh = h * 0.40;
@@ -405,21 +567,22 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ctx.strokeStyle = R.ivme; ctx.lineWidth = 4; ctx.stroke();
     ctx.restore();
 
-    /* yükler yalnız dış yüzeyde — yıldırım çarpınca belirir */
+    /* Yıldırımın getirdiği (çoğunlukla negatif) yük yalnız DIŞ yüzeyde
+       görünür ve akım söndükçe toprağa geçip kaybolur. */
     ctx.save();
-    ctx.font = '700 13px system-ui, sans-serif';
+    ctx.font = '700 15px system-ui, sans-serif';
     ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-    ctx.fillStyle = R.ivme;
-    ctx.globalAlpha = st.aktif ? Math.min(1, (st.yildirimY - 1) * 3) : 0;
+    ctx.fillStyle = R.konum;
+    ctx.globalAlpha = Math.min(1, yildirimAkimi(st) / 10);
     for (let i = 0; i < 7; i++) {
       const t = i / 6;
-      ctx.fillText('+', kx + t * kw, ky - 8);
-      ctx.fillText('+', kx + t * kw, ky + kh + 8);
+      ctx.fillText('−', kx + t * kw, ky - 9);
+      ctx.fillText('−', kx + t * kw, ky + kh + 9);
     }
     for (let i = 0; i < 3; i++) {
       const t = (i + 1) / 4;
-      ctx.fillText('+', kx - 8, ky + t * kh);
-      ctx.fillText('+', kx + kw + 8, ky + t * kh);
+      ctx.fillText('−', kx - 9, ky + t * kh);
+      ctx.fillText('−', kx + kw + 9, ky + t * kh);
     }
     ctx.restore();
 
@@ -428,10 +591,10 @@ function cizKlasik(ctx, w, h, st, pHam) {
                  '700 12px system-ui, sans-serif', 'center');
 
     const satir = [
-      ['Yükler birbirini iter', K.metin2],
-      ['⟹ en uzağa, DIŞ yüzeye kaçar', K.beyaz],
-      ['⟹ iç boşlukta yük yok', K.metin2],
-      ['⟹ E_iç = 0', R.hiz]
+      ['Yıldırım çoğunlukla NEGATİF yük getirir', K.metin2],
+      ['Yükler birbirini iter ⟹ DIŞ yüzeye yayılır', K.beyaz],
+      ['dış yüzeyden yere akar, içeri girmez', K.metin2],
+      ['⟹ iç boşlukta E = 0', R.hiz]
     ];
     let sy = h - 16 - (satir.length - 1) * 18;
     satir.forEach(([t, c]) => {
@@ -461,11 +624,12 @@ function cizKlasik(ctx, w, h, st, pHam) {
     const satir = [
       ['göz / λ = ' + D.biçim(oran, 3), K.beyaz],
       ['geçen genlik ≈ 2·göz/λ = %' + D.biçim(T * 100, 0), K.metin2],
+      ['ekranlama = 20·log(λ / 2·göz) = ' + D.biçim(ekranlamaDb(p), 1) + ' dB', K.metin2],
       [gecerMi(p) ? 'göz > λ/2 ⟹ dalga GEÇER'
-         : T > 0.3 ? 'göz < λ/2 ⟹ dalga ZAYIFLAR' : 'göz ≪ λ ⟹ dalga GİREMEZ',
-       gecerMi(p) ? R.kuvvet : T > 0.3 ? R.ivme : R.hiz]
+         : T > GIREMEZ_ESIK ? 'göz < λ/2 ⟹ dalga ZAYIFLAR' : 'göz ≪ λ ⟹ dalga GİREMEZ',
+       gecerMi(p) ? R.kuvvet : T > GIREMEZ_ESIK ? R.ivme : R.hiz]
     ];
-    let sy = h - 76;
+    let sy = h - 40 - (satir.length - 1) * 18;
     satir.forEach(([t, c]) => {
       D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
     });
@@ -480,43 +644,66 @@ function cizKlasik(ctx, w, h, st, pHam) {
 function cizGrafik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
+  const sol = { x: pay, y: 3, w: gw, h: gh };
+  const sag = { x: pay * 2 + gw, y: 3, w: gw, h: gh };
 
-  if (p.mod > 1.5 && p.mod < 2.5) {
-    const tSon = YILDIRIM_SON / 1.6 + 0.2;
-    D.miniGrafik(ctx, {
-      x: pay, y: 3, w: gw, h: gh,
-      baslik: 'Dış yüzeyden akan akım − t   (ağır çekim)', birim: 'kA',
-      veri: st.kayit, tMax: tSon, vMin: 0, vMax: 32, renk: R.ivme
-    });
-    D.miniGrafik(ctx, {
-      x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'İç boşlukta E − t   (akım ne olursa olsun SIFIR)', birim: 'N/C',
-      veri: st.kayit.map(d => ({ t: d.t, v: 0 })), tMax: tSon, vMin: 0, vMax: 1, renk: R.hiz
-    });
+  if (p.mod < 1.5) {
+    const oran = ayrismaOrani(st, p);
+    D.miniGrafik(ctx, Object.assign({}, sol, {
+      baslik: 'E_iç − t   (yükler ayrıştıkça sıfıra iner)', birim: 'N/C',
+      veri: st.kayit, tMax: AYRISMA_SURESI * 2.4, vMin: 0, vMax: Math.max(1, p.E0 * 1.05),
+      renk: R.kuvvet
+    }));
+    /* Merkezden geçen alan çizgisi boyunca E: dışarıda kutba yaklaştıkça 3E₀’a
+       çıkar, yüzeyde SIÇRAR ve içeride sıfırdır (ayrışma sürerken E₀(1−oran)). */
+    const veri = [];
+    for (let u = -3; u < -1; u += 0.05) veri.push({ t: u, v: eksenAlani(p, oran, u) });
+    veri.push({ t: -1, v: eksenAlani(p, oran, -1.0001) }, { t: -1, v: icAlan(st, p) },
+              { t: 1, v: icAlan(st, p) }, { t: 1, v: eksenAlani(p, oran, 1.0001) });
+    for (let u = 1.05; u <= 3.0001; u += 0.05) veri.push({ t: u, v: eksenAlani(p, oran, u) });
+    D.miniGrafik(ctx, Object.assign({}, sag, {
+      baslik: 'E − x   (merkezden geçen çizgi · |x| < R küre içi)', birim: 'N/C',
+      tEtiket: 'x / R', veri, tMin: -3, tMax: 3, vMin: 0, vMax: p.E0 * 3,
+      renk: R.normal
+    }));
     return;
   }
 
-  D.miniGrafik(ctx, {
-    x: pay, y: 3, w: gw, h: gh,
-    baslik: 'E_iç − t   (yükler ayrıştıkça sıfıra iner)', birim: 'N/C',
-    veri: p.mod < 1.5 ? st.kayit : [{ t: 0, v: 0 }, { t: 1, v: 0 }],
-    tMax: AYRISMA_SURESI * 1.8, vMin: 0, vMax: Math.max(1, p.E0 * 1.05),
-    renk: R.kuvvet
-  });
+  if (p.mod < 2.5) {
+    const tSon = YILDIRIM_SON / 1.6 + 0.2;
+    D.miniGrafik(ctx, Object.assign({}, sol, {
+      baslik: 'Dış yüzeyden akan akım − t   (ağır çekim)', birim: 'kA',
+      veri: st.kayit, tMax: tSon, vMin: 0, vMax: 32, renk: R.ivme
+    }));
+    D.miniGrafik(ctx, Object.assign({}, sag, {
+      baslik: 'İç boşlukta E − t   (akım ne olursa olsun SIFIR)', birim: 'N/C',
+      veri: st.kayit.map(d => ({ t: d.t, v: 0 })), tMax: tSon, vMin: 0, vMax: 1, renk: R.hiz
+    }));
+    return;
+  }
 
-  /* ekranlama etkinliği: göz küçüldükçe artar */
+  /* Geçen genlik − frekans: frekans büyüdükçe λ küçülür, aynı göz dalgaya
+     görece büyük gelir ve daha çok sinyal sızar. */
+  const fVeri = [];
+  for (let f = 100; f <= 2600; f += 20)
+    fVeri.push({ t: f, v: 100 * gecenGenlik(Object.assign({}, p, { f })) });
+  D.miniGrafik(ctx, Object.assign({}, sol, {
+    baslik: 'Geçen genlik − frekans   (göz = ' + D.biçim(p.goz) + ' cm)', birim: '%',
+    tEtiket: 'f (MHz)', veri: fVeri, tMin: 100, tMax: 2600, vMin: 0, vMax: 100,
+    imlec: { t: p.f, v: 100 * gecenGenlik(p) }, renk: R.ivme
+  }));
+
   /* Ekranlama = 1 − geçen genlik = 1 − 2·göz/λ (göz ≥ λ/2 ise 0). */
   const veri = [];
   for (let g = 0.2; g <= 40; g += 0.4)
     veri.push({ t: g, v: 100 * (1 - gecenGenlik(Object.assign({}, p, { goz: g }))) });
-  D.miniGrafik(ctx, {
-    x: pay * 2 + gw, y: 3, w: gw, h: gh,
+  D.miniGrafik(ctx, Object.assign({}, sag, {
     baslik: 'Ekranlama − göz aralığı  (λ/2’de sıfır)', birim: '%', tEtiket: 'göz (cm)',
     /* Çalışma noktası: taranan göz aralığında ekranlamanın nereye düştüğü. */
     imlec: { t: p.goz, v: 100 * (1 - gecenGenlik(p)) },
     veri, tMax: 40, vMin: 0, vMax: 100,
     renk: R.hiz
-  });
+  }));
 }
 
 /* ----------------------------------------------------------- Okumalar */
@@ -528,15 +715,17 @@ function okumalar(st, pHam) {
     return [
       { et: 'Dış alan  E_dış', dg: D.biçim(p.E0),          birim: 'N/C' },
       { et: 'Ayrışma',         dg: D.biçim(oran * 100),    birim: '%' },
-      { et: 'İndüklenen alan', dg: '−' + D.biçim(p.E0 * oran), birim: 'N/C' },
       { et: 'İç alan  E_iç',   dg: D.biçim(icAlan(st, p)), birim: 'N/C' },
+      { et: 'Kutupta E (yüzeye dik)',    dg: D.biçim(p.E0 * (1 + 2 * oran)), birim: 'N/C' },
+      { et: 'Yanda E (yüzeye paralel)',  dg: D.biçim(p.E0 * (1 - oran)),     birim: 'N/C' },
       { et: 'Durum',           dg: oran >= 0.99 ? 'Denge · kalkan etkin' : 'Ayrışıyor', birim: '' }
     ];
   }
   if (p.mod < 2.5) {
     return [
       { et: 'Yıldırım',     dg: st.aktif ? 'Çarptı' : 'İniyor', birim: '' },
-      { et: 'Yük nerede?',  dg: 'Dış yüzeyde',                  birim: '' },
+      { et: 'Dış yüzeyde akım', dg: D.biçim(yildirimAkimi(st), 1), birim: 'kA' },
+      { et: 'Yük nerede?',  dg: !st.aktif ? '—' : yildirimAkimi(st) > 0.3 ? 'Dış yüzeyden yere akıyor' : 'Toprağa geçti', birim: '' },
       { et: 'İç boşlukta E',dg: '0',                            birim: 'N/C' },
       { et: 'Yolcu',        dg: 'Güvende',                      birim: '' }
     ];
@@ -546,6 +735,8 @@ function okumalar(st, pHam) {
     { et: 'Dalga boyu λ',  dg: D.biçim(dalgaBoyu(p) * 100),  birim: 'cm' },
     { et: 'Kafes gözü',    dg: D.biçim(p.goz),               birim: 'cm' },
     { et: 'göz / λ',       dg: D.biçim(gozOran(p), 3),       birim: '' },
+    { et: 'Geçen genlik',  dg: D.biçim(gecenGenlik(p) * 100, 0), birim: '%' },
+    { et: 'Ekranlama',     dg: D.biçim(ekranlamaDb(p), 1),   birim: 'dB' },
     { et: 'Sinyal',        dg: sinyalMetni(p),               birim: '' }
   ];
 }
@@ -561,13 +752,13 @@ D.simler['faraday-kafesi'] = {
   grafikYukseklik: 170,
   parametreler: [
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
-      { d: 1, e: 'Düzgün dış alandaki kafes' },
+      { d: 1, e: 'Düzgün dış alanda iletken küre' },
       { d: 2, e: 'Araca yıldırım çarpması' },
       { d: 3, e: 'Asansörde telefon sinyali' }
     ]},
-    { anahtar: 'E0',  etiket: 'Dış alan E₀', min: 200, max: 5000, adim: 100, deger: 2000, birim: 'N/C' },
-    { anahtar: 'f',   etiket: 'Sinyal frekansı', min: 100, max: 2600, adim: 100, deger: 900, birim: 'MHz' },
-    { anahtar: 'goz', etiket: 'Kafes göz aralığı', min: 0.5, max: 40, adim: 0.5, deger: 2, birim: 'cm' }
+    { anahtar: 'E0',  etiket: 'Dış alan E₀ (1. düzenek)', min: 200, max: 5000, adim: 100, deger: 2000, birim: 'N/C' },
+    { anahtar: 'f',   etiket: 'Sinyal frekansı (3. düzenek)', min: 100, max: 2600, adim: 100, deger: 900, birim: 'MHz' },
+    { anahtar: 'goz', etiket: 'Kafes göz aralığı (3. düzenek)', min: 0.5, max: 40, adim: 0.5, deger: 2, birim: 'cm' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
 };
