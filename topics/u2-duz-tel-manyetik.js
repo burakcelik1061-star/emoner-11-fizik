@@ -152,7 +152,7 @@ turetim: {
       ad: 'Sağ el kuralı nasıl uygulanır?',
       adimlar: [
         { baslik: 'Eli doğru tut',
-          html: `<p><strong>Sağ</strong> elini kullan (sol el başka bir kural içindir).
+          html: `<p><strong>Sağ</strong> elini kullan (kuvvetin yönü için sağ elin başka bir kullanımı vardır).
                  Başparmağını <strong>akımın aktığı yöne</strong> çevir.</p>` },
 
         { baslik: 'Teli kavra',

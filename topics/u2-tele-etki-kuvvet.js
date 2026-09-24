@@ -44,22 +44,24 @@ küçük kuvvetlerin toplamı <strong>telin tamamına etkiyen bir kuvvet</strong
   0&rsquo;a indirerek kuvvetin nasıl eridiğini izle.</p>
 </div>
 
-<h3 style="margin-top:22px">Kuvvetin yönü: sol el kuralı</h3>
-<p><strong>Sol elini</strong> aç. Parmakların <strong>manyetik alanı</strong>, başparmağın
-<strong>akımı</strong> gösterecek şekilde tut. <strong>Avuç içinin baktığı yön kuvvetin
-yönüdür.</strong></p>
+<h3 style="margin-top:22px">Kuvvetin yönü: sağ el kuralı</h3>
+<p>Kitaptaki kural (s.220): <strong>sağ elinin</strong> dört parmağı <strong>akım</strong>
+yönünü göstersin; elini, avuç içinden <strong>manyetik alan</strong> çıkacak biçimde tut.
+Dört parmağını alana doğru kıvır. <strong>Dört parmağa dik duran başparmak kuvvetin
+yönüdür.</strong> Bu kural, F = i·L × B vektör çarpımının elle yapılışıdır.</p>
 
 <div class="kutu puf" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">✋</span><span>Sağ el mi, sol el mi?</span></div>
   <table class="degisken-tablo" style="margin:8px 0 0">
-    <thead><tr><th>Ne arıyorsun?</th><th>El</th></tr></thead>
+    <thead><tr><th>Ne arıyorsun?</th><th>Sağ elde ne neyi gösterir?</th></tr></thead>
     <tbody>
-      <tr><td>Akımın <strong>ürettiği</strong> alanın yönü</td><td class="sembol">SAĞ el</td></tr>
-      <tr><td>Alanın tele <strong>uyguladığı</strong> kuvvetin yönü</td><td class="sembol">SOL el</td></tr>
+      <tr><td>Akımın <strong>ürettiği</strong> alanın yönü</td><td>Başparmak akım · kıvrılan parmaklar alan</td></tr>
+      <tr><td>Alanın tele <strong>uyguladığı</strong> kuvvet</td><td>Dört parmak akım, alana kıvrılır · başparmak kuvvet</td></tr>
     </tbody>
   </table>
-  <p style="margin:8px 0 0">Ayırt etmenin kolay yolu: <em>üretiyorsan sağ, kuvvet
-  arıyorsan sol.</em></p>
+  <p style="margin:8px 0 0">İkisi de <strong>sağ el</strong>; fark, başparmağın neyi
+  gösterdiğindedir. Dikkat: parmaklar alanı, başparmak akımı gösterecek biçimde
+  <em>sol</em> el kullanılırsa avuç kuvvetin <strong>tersini</strong> gösterir.</p>
 </div>
 
 <h3 style="margin-top:22px">Kuvvet her zaman DİKTİR</h3>
@@ -139,7 +141,7 @@ turetim: {
         { baslik: 'Kuvveti bul',
           html: `<p>Tel alana dik olduğu için α = 90°:</p>
                  <div class="formul" style="max-width:220px"><div class="fm">F = B·i·L</div></div>
-                 <p>Yönünü sol el kuralıyla belirle — raylar boyuncadır.</p>` },
+                 <p>Yönünü sağ el kuralıyla belirle — raylar boyuncadır.</p>` },
 
         { baslik: 'Newton II’yi uygula',
           html: `<p>Tel serbest olduğuna göre hızlanır:</p>
@@ -200,9 +202,9 @@ puf: {
     <p><strong>2 · Sınav açıları:</strong> sin30° = 0,5 · sin37° = 0,6 · sin45° = √2/2 ·
     sin53° = 0,8 · sin60° = √3/2 · sin90° = 1. Bu tablo 1. üniteden tanıdık.</p>
 
-    <p><strong>3 · İki eli karıştırma.</strong> Alanı <em>üreten</em> akımsa sağ el,
-    alanın <em>ittiği</em> telse sol el. Soruda “kuvvetin yönü” geçiyorsa <strong>sol
-    el</strong>.</p>
+    <p><strong>3 · İki sağ el kuralını karıştırma.</strong> Akımın <em>ürettiği</em>
+    alanı arıyorsan başparmak akımı gösterir. Soruda “kuvvetin yönü” geçiyorsa dört
+    parmak akımı gösterir, alana kıvrılır ve <strong>başparmak kuvveti</strong> verir.</p>
 
     <p><strong>4 · L, telin alan İÇİNDEKİ uzunluğudur.</strong> Tel 1 m olsa bile alan
     bölgesinin genişliği 20 cm ise <code>L = 0,2 m</code> alınır. Bu ayrıntı çok atlanır.</p>

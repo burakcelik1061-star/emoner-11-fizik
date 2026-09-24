@@ -14,18 +14,21 @@ window.F11 = window.F11 || {};
        α = 90°  → F en büyük (F = BiL)
        α = 0°   → F = 0        (tel alana PARALEL ise kuvvet yoktur)
 
-   YÖN — SOL EL KURALI (MEB gösterimi)
+   YÖN — SAĞ EL KURALI (MEB 11, s.220)
    -----------------------------------
-   Sol elin parmakları alanı, başparmak akımı gösterecek şekilde tutulur;
-   avuç içinin baktığı yön kuvvetin yönüdür. Bu kural, önceki konudaki
-   SAĞ el kuralıyla karıştırılmamalıdır:
-       sağ el  → akımın ÜRETTİĞİ alanın yönü
-       sol el  → alanın tele UYGULADIĞI kuvvetin yönü
+   Sağ elin dört parmağı AKIM yönünü gösterir; el, avuç içinden manyetik
+   alan çıkacak biçimde tutulur ve dört parmak ALANA doğru kıvrılır. Dört
+   parmağa dik duran başparmak KUVVETİN yönüdür. Bu, F = i·L × B vektör
+   çarpımının ta kendisidir; kod yönü doğrudan bu çarpımdan hesaplar.
+   (Parmaklar alanı, başparmak akımı gösterecek biçimde SOL el kullanmak
+   kuvvetin TERSİNİ verir — o yüzden bu gösterim kullanılmaz.)
 
    ÜÇ DÜZENEK
    ----------
    1) Açı : α değiştirilir, sinüs bağımlılığı doğrudan görülür.
    2) Raylı tel : Tel serbesttir, kuvvet altında hızlanır (ivme = F/m).
+      Akım kaynağı akımı sabit tutar; sürtünme yok sayılır. Gerçek hareket
+      çoğu zaman saniyenin onda birinde biter, bu yüzden ağır çekimle gösterilir.
    3) Hoparlör : Akım yön değiştirdikçe bobin ileri-geri gider; ses böyle üretilir.
    ========================================================================== */
 
@@ -80,8 +83,18 @@ function aciDerece(p, st) { return (etkinAci(p, st) * 180) / Math.PI; }
 
 /* -------------------------------------------------------------- Durum */
 
+/** Raylı telde ağır çekim katsayısı: tel rayın sonuna ~2 s’de varsın.
+    Gerçek süre T = √(2·0,5 m / a); ekranda T·AGIR. */
+function rayAgir(p) {
+  const a = ivme(p);
+  if (!(a > 0)) return 1;
+  const T = Math.sqrt(2 * 0.5 / a);
+  return Math.max(1, Math.min(400, Math.round(2 / T)));
+}
+
 function durum(p) {
-  return { t: 0, x: 0, v: 0, cikti: false, kayit: [], hopFaz: 0, hopX: 0, aci: p.aci };
+  return { t: 0, x: 0, v: 0, cikti: false, kayit: [], kayit2: [], hopFaz: 0, hopX: 0, aci: p.aci,
+           agir: p.mod > 1.5 && p.mod < 2.5 ? rayAgir(p) : 1 };
 }
 
 function adim(st, dt, p) {
@@ -98,26 +111,38 @@ function adim(st, dt, p) {
     /* Hoparlör: akım sinüs biçiminde salınır, bobin de onunla gider gelir */
     st.hopFaz += dt * p.f * 2 * Math.PI;
     st.hopX = Math.sin(st.hopFaz);
+    const iAn = p.i * st.hopX;
+    if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.01) {
+      st.kayit.push({ t: st.t, v: iAn });
+      st.kayit2.push({ t: st.t, v: p.B * iAn * (p.L / 100) * (p.Byon >= 0 ? 1 : -1) });
+    }
+    if (st.kayit.length > 500) { st.kayit.shift(); st.kayit2.shift(); }
     return;
   }
 
   if (st.cikti) return;
 
-  /* Raylı tel: sabit kuvvet ⟹ sabit ivme (1. üniteyle aynı) */
+  /* Raylı tel: sabit kuvvet ⟹ sabit ivme (1. üniteyle aynı). Zaman GERÇEK
+     zamandır; sahne st.agir kat yavaş oynatılır. */
+  const h = dt / (st.agir || 1);
+  st.t += h - dt;
   const a = ivme(p, st) * kuvvetYonu(p);
-  st.v += a * dt;
-  st.x += st.v * dt;
+  st.v += a * h;
+  st.x += st.v * h;
 
-  /* Akım ya da sin α sıfırsa tel hiç hareket etmez, 'cikti' tetiklenmez;
-     kayıt sınırsız büyümesin. */
-  if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.01)
+  if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.004 * Math.max(0.05, Math.sqrt(1 / Math.max(1e-6, ivme(p)))) ) {
     st.kayit.push({ t: st.t, v: Math.abs(st.v) });
-  if (st.kayit.length > 400) st.kayit.shift();
+    st.kayit2.push({ t: st.t, v: Math.abs(st.x) * 100 });
+  }
+  if (st.kayit.length > 500) { st.kayit.shift(); st.kayit2.shift(); }
 
   if (Math.abs(st.x) >= 0.5) { st.x = Math.sign(st.x) * 0.5; st.cikti = true; }
 }
 
-function bitti(st, p) { return p.mod > 1.5 && p.mod < 2.5 && st.cikti; }
+/* Kuvvet yoksa tel kıpırdamaz: sahne 1,5 s (ekran) gösterilip durur. */
+function bitti(st, p) {
+  return p.mod > 1.5 && p.mod < 2.5 && (st.cikti || (kuvvet(p, st) < 1e-12 && st.t * (st.agir || 1) > 1.5));
+}
 
 /* --------------------------------------------- Gerçekçi görünüm */
 
@@ -257,7 +282,7 @@ function cizRay(ctx, w, h, st, p) {
                  w - 10, 40, R.hiz, '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'B = ' + D.biçim(p.B, 2) + ' T ' + (p.Byon > 0 ? '⊙' : '⊗'),
                  10, 44, R.normal, '700 12px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, 'sabit kuvvet ⟹ sabit ivme — 1. ünitedeki gibi',
+  D.yaziAydinlik(ctx, 'sabit kuvvet ⟹ sabit ivme · ağır çekim ×' + (st.agir || 1) + ' · t = ' + D.biçim(st.t, 3) + ' s (gerçek)',
                  10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -321,12 +346,18 @@ function cizHoparlor(ctx, w, h, st, p) {
 
 /* ----------------------------------------- Klasik fizik görünümü */
 
-function cizKlasik(ctx, w, h, st, p) {
+/** Hoparlörde akım salınır: şema, hesap ve okumalar ANLIK akımla çalışır. */
+function anlik(p, st) {
+  return p.mod > 2.5 && st ? Object.assign({}, p, { i: p.i * (st.hopX || 0) }) : p;
+}
+
+function cizKlasik(ctx, w, h, st, pHam) {
+  const p = anlik(pHam, st);
   D.izgara(ctx, w, h, 26);
   const F = kuvvet(p, st);
 
-  /* sol: sol el kuralı şeması */
-  D.yaziHaleli(ctx, 'Sol el kuralı', 12, 22, K.beyaz, '700 12px system-ui, sans-serif', 'left');
+  /* sol: sağ el kuralı şeması (kitap s.220) */
+  D.yaziHaleli(ctx, 'Sağ el kuralı · F = i·L × B', 12, 22, K.beyaz, '700 12px system-ui, sans-serif', 'left');
 
   const cx = w * 0.22, cy = h * 0.44;
   const a = etkinAci(p, st);
@@ -381,7 +412,8 @@ function cizKlasik(ctx, w, h, st, p) {
         ? (disari ? 'sayfadan DIŞARI ⊙' : 'sayfanın İÇİNE ⊗')
         : (disari ? 'SAĞA →' : 'SOLA ←')),
       R.normal, '700 12px system-ui, sans-serif'],
-    ['F ⊥ i  ve  F ⊥ B', K.metin2, '11px system-ui, sans-serif']
+    ['F ⊥ i  ve  F ⊥ B', K.metin2, '11px system-ui, sans-serif'],
+    ['Sağ el: 4 parmak i → B’ye kıvrıl → başparmak F', R.ivme, '11px system-ui, sans-serif']
   ];
   if (p.mod > 1.5 && p.mod < 2.5) {
     /* raylı tel: hareketin canlı değerleri */
@@ -391,11 +423,11 @@ function cizKlasik(ctx, w, h, st, p) {
     satir.push(['x = ½·a·t² = ' + D.biçim(Math.abs(st.x) * 100, 3) + ' cm', R.konum, '12px system-ui, sans-serif']);
   } else if (p.mod > 2.5) {
     /* hoparlör: akım sinüs gibi salınır, kuvvet de onunla */
-    const iAn = p.i * st.hopX;
+    const iAn = p.i;                                   // p zaten anlık akımla
     satir.push(['', K.metin2, '11px']);
     satir.push(['anlık i = ' + D.biçim(iAn, 2) + ' A', R.ivme, '700 12px system-ui, sans-serif']);
     satir.push(['anlık F = ' + D.biçim(p.B * Math.abs(iAn) * (p.L / 100), 3) + ' N ' +
-                (iAn > 0.01 ? '→' : iAn < -0.01 ? '←' : ''), R.kuvvet, '700 12px system-ui, sans-serif']);
+                (Math.abs(iAn) < 0.01 ? '' : kuvvetYonu(p) > 0 ? '→' : '←'), R.kuvvet, '700 12px system-ui, sans-serif']);
   }
   let sy = 46;
   satir.forEach(([t, c, f]) => {
@@ -405,7 +437,7 @@ function cizKlasik(ctx, w, h, st, p) {
 
   const paralel = p.mod < 1.5 && Math.abs(Math.sin(etkinAci(p, st))) < 0.02;
   D.yaziHaleli(ctx, paralel ? 'α ≈ 0° / 180° ⟹ sinα ≈ 0 ⟹ KUVVET YOK'
-                            : 'SAĞ el alan üretir · SOL el kuvvet verir',
+                            : 'Alan: başparmak i, parmaklar sarılır · Kuvvet: parmaklar i→B, başparmak F',
                12, h - 16, paralel ? R.hiz : R.ivme,
                '600 11px system-ui, sans-serif', 'left');
 }
@@ -414,6 +446,41 @@ function cizKlasik(ctx, w, h, st, p) {
 
 function cizGrafik(ctx, w, h, st, p) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
+
+  if (p.mod > 1.5 && p.mod < 2.5) {
+    /* Raylı tel: α = 90° sabit; sabit ivmeli hareketin iki grafiği */
+    const t0 = st.kayit.length ? st.kayit[0].t : 0, tS = Math.max(1e-3, st.t);
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: 'x − t   (sabit ivme ⟹ PARABOL)', birim: 'cm', tEtiket: 't (s)',
+      veri: st.kayit2, tMin: t0, tMax: tS, vMin: 0, vMax: 50, renk: R.konum
+    });
+    const vSon = Math.sqrt(2 * ivme(p) * 0.5);
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'ϑ − t   (sabit kuvvet ⟹ DOĞRU · eğim = a)', birim: 'm/s', tEtiket: 't (s)',
+      veri: st.kayit, tMin: t0, tMax: tS, vMin: 0, vMax: Math.max(0.1, vSon * 1.05), renk: R.hiz
+    });
+    return;
+  }
+  if (p.mod > 2.5) {
+    /* Hoparlör: akım ve kuvvet aynı fazda salınır (F = B·i·L) */
+    const tS = st.t, t0 = Math.max(0, tS - 2 / Math.max(1, p.f) * 2);
+    const Fm = Math.max(1e-4, p.B * Math.abs(p.i) * (p.L / 100));
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: 'Bobin akımı i − t   (ses sinyali)', birim: 'A',
+      veri: st.kayit.filter(q => q.t >= t0), tMin: t0, tMax: Math.max(t0 + 0.1, tS),
+      vMin: -Math.max(1, Math.abs(p.i)), vMax: Math.max(1, Math.abs(p.i)), renk: R.ivme
+    });
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'F − t   (+ sağa · akımla AYNI anda yön değiştirir)', birim: 'N',
+      veri: st.kayit2.filter(q => q.t >= t0), tMin: t0, tMax: Math.max(t0 + 0.1, tS),
+      vMin: -Fm, vMax: Fm, renk: R.kuvvet
+    });
+    return;
+  }
 
   /* F − α : sinüs */
   const v1 = [];
@@ -428,16 +495,7 @@ function cizGrafik(ctx, w, h, st, p) {
     renk: R.kuvvet
   });
 
-  if (p.mod > 1.5 && p.mod < 2.5) {
-    D.miniGrafik(ctx, {
-      x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'ϑ − t   (sabit kuvvet ⟹ DOĞRU)', birim: 'm/s',
-      veri: st.kayit, tMin: st.kayit.length ? st.kayit[0].t : 0,
-      tMax: Math.max(0.2, st.t), vMin: 0,
-      vMax: Math.max(0.1, Math.abs(st.v) * 1.2),
-      renk: R.hiz
-    });
-  } else {
+  {
     const v2 = [];
     for (let ii = 0; ii <= 20; ii += 0.5)
       v2.push({ t: ii, v: p.B * ii * (p.L / 100) * Math.sin(etkinAci(p, st)) });
@@ -456,7 +514,8 @@ function cizGrafik(ctx, w, h, st, p) {
 
 /* ----------------------------------------------------------- Okumalar */
 
-function okumalar(st, p) {
+function okumalar(st, pHam) {
+  const p = anlik(pHam, st);
   const F = kuvvet(p, st);
   const o = [
     { et: 'Alan  B',   dg: D.biçim(p.B, 2) + (p.mod < 1.5 ? ' (düzlemde)' : (p.Byon > 0 ? ' ⊙' : ' ⊗')), birim: 'T' },
@@ -491,15 +550,15 @@ D.simler['tele-etki-kuvvet'] = {
       { d: 3, e: 'Hoparlör' }
     ]},
     { anahtar: 'B',   etiket: 'Manyetik alan B', min: 0.05, max: 2, adim: 0.05, deger: 0.5, birim: 'T' },
-    { anahtar: 'Byon',etiket: 'Alan yönü', tur: 'secim', deger: -1, secenekler: [
+    { anahtar: 'Byon',etiket: 'Alan yönü (2–3. düzenek)', tur: 'secim', deger: -1, secenekler: [
       { d: -1, e: 'Sayfanın içine ⊗' },
       { d: 1,  e: 'Sayfadan dışarı ⊙' }
     ]},
     { anahtar: 'i',   etiket: 'Akım i', min: -20, max: 20, adim: 1, deger: 6, birim: 'A' },
     { anahtar: 'L',   etiket: 'Tel uzunluğu L', min: 5, max: 100, adim: 5, deger: 40, birim: 'cm' },
-    { anahtar: 'aci', etiket: 'Açı α', min: 0, max: 180, adim: 5, deger: 90, birim: '°' },
-    { anahtar: 'm',   etiket: 'Tel kütlesi', min: 5, max: 200, adim: 5, deger: 40, birim: 'g' },
-    { anahtar: 'f',   etiket: 'Titreşim frekansı (yavaş)', min: 1, max: 12, adim: 1, deger: 3, birim: 'Hz' }
+    { anahtar: 'aci', etiket: 'Açı α (1. düzenek)', min: 0, max: 180, adim: 5, deger: 90, birim: '°' },
+    { anahtar: 'm',   etiket: 'Tel kütlesi (2. düzenek)', min: 5, max: 200, adim: 5, deger: 40, birim: 'g' },
+    { anahtar: 'f',   etiket: 'Titreşim frekansı (3. düzenek, ağır çekim)', min: 1, max: 12, adim: 1, deger: 3, birim: 'Hz' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
 };

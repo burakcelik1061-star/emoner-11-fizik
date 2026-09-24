@@ -20,7 +20,7 @@ kavram: `
 <h3>Neden dönüyor da kaymıyor?</h3>
 <p>Dikdörtgen çerçevenin karşılıklı iki kenarını düşün. Akım çerçeve boyunca dolandığı
 için bu iki kenarda <strong>zıt yönlerde</strong> akar. Aynı manyetik alanın içindeler,
-dolayısıyla sol el kuralı ikisi için de <strong>zıt yönlü kuvvet</strong> verir.</p>
+dolayısıyla sağ el kuralı ikisi için de <strong>zıt yönlü kuvvet</strong> verir.</p>
 
 <ul>
   <li>Kuvvetlerin <strong>toplamı sıfırdır</strong> ⟹ çerçeve bir yere <em>ötelenmez</em></li>
