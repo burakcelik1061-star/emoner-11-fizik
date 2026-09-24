@@ -55,6 +55,13 @@ const TUR_SURESI = 20;          // otomatik tur (mod 2) uzunluğu, s
 /* Kitap örneği (mod 4): Toprak aynaya adım adım yaklaşır. */
 const KITAP_A = [600, 400, 300, 200, 100];     // cm
 const KITAP_ADIM = 3.5;                         // s — her konumda bekleme
+/* Sonsuz düzeneği (mod 3): sahnede ışınlar paralel; grafiklerde cisim 2f’den
+   20f’ye uzaklaşıp geri gelir — a büyüdükçe b’nin f’ye, büyütmenin 0’a
+   yaklaştığı imleçlerle görülür. */
+const SONSUZ_PERIYOT = 16;                      // s
+function sonsuzA(st, p) { return D.tarama(st.t || 0, 2 * p.f, 20 * p.f, SONSUZ_PERIYOT); }
+const ISIK_HIZI_PX = 150;                       // sahnedeki ışık atmalarının hızı, px/s
+
 /** Mod 4’te parametreler kitaptaki değerlerle değiştirilir. */
 function P(p) { return p.mod > 3.5 ? Object.assign({}, p, { f: 200, cisimBoyu: 180, tur: 1 }) : p; }
 function kitapIdx(st) { return Math.min(KITAP_A.length - 1, Math.floor((st.t || 0) / KITAP_ADIM)); }
@@ -75,7 +82,7 @@ function turUzakligi(st, p) {
 /** O anda geçerli cisim uzaklığı (cm). */
 function cisimA(st, p) {
   if (p.mod > 3.5) return KITAP_A[kitapIdx(st)];
-  if (p.mod > 2.5) return 4 * p.f;                 // sonsuz: ölçek için
+  if (p.mod > 2.5) return sonsuzA(st, p);          // sonsuz: grafikteki yaklaşım
   return p.mod < 1.5 ? (st.a ?? p.a) : turUzakligi(st, p);
 }
 
@@ -133,7 +140,7 @@ function adim(st, dt, p) {
 }
 function bitti(st, p) {
   if (p.mod > 3.5) return st.t >= KITAP_A.length * KITAP_ADIM;
-  if (p.mod > 2.5) return st.t >= 6;
+  if (p.mod > 2.5) return false;
   return p.mod > 1.5 && st.t >= TUR_SURESI;
 }
 
@@ -155,6 +162,13 @@ function yerlesim(w, h, st, p) {
   const sanalVar = !cukur || aMinS < p.f;
   const solCm = Math.max(aEnBuyuk(p) * 1.10, cukur ? p.f * 2.4 : p.f * 0.5, 1);
   const sagCm = cukur ? (sanalVar ? p.f * 2.2 : solCm * 0.28) : p.f * 2.3;
+  const sonsuz = p.mod > 2.5 && p.mod < 3.5;
+  if (sonsuz) {
+    const sol = cukur ? p.f * 2.6 : p.f * 1.4, sag = cukur ? p.f * 0.5 : p.f * 1.6;
+    const sk = w * 0.06, gk = w * 0.96;
+    return { cukur, cy, ax: sk + (gk - sk) * sol / (sol + sag), olcek: Math.min((gk - sk) / (sol + sag), 6.5),
+             f, a, b, boyPx: 0 };
+  }
   const solKenar = w * 0.06, sagKenar = w * 0.96;
   const ax = solKenar + (sagKenar - solKenar) * solCm / (solCm + sagCm);
   const olcek = Math.min((sagKenar - solKenar) / (solCm + sagCm), 6.5);
@@ -294,29 +308,76 @@ function cizGercek(ctx, w, h, st, pHam) {
   }
 }
 
-/** Cisim sonsuzda: paralel ışınlar; görüntü odakta NOKTA. Işın yolları ince
-    ayna yaklaşımıyla (paraksiyel) çizilir — kitaptaki çizimler gibi. */
+/** Cisim sonsuzda: paralel ışınlar; görüntü odakta NOKTA.
+    Yansıma çizilen küresel yüzeyde TAM hesaplanır (n normal, r = d − 2(d·n)n).
+    Işınlar eksene yakın tutulur (yükseklik ≤ 0,2·R): eksene yakın ışınlar F’de
+    toplanır. Oynatınca ışık atmaları gelen ve yansıyan yol boyunca akar. */
 function cizSonsuz(ctx, w, h, st, y, p) {
   const solKenar = w * 0.03, fx = xKonum(y, y.f);
+  const Rpx = Math.abs(2 * y.f) * y.olcek;
+  const cx = y.cukur ? y.ax - Rpx : y.ax + Rpx;              // eğrilik merkezi (M)
+  const hMax = 0.2 * Rpx;
+  const t = st.t || 0;
+  const yollar = [];
+
   for (let k = -3; k <= 3; k++) {
     if (k === 0) continue;
-    const yy = y.cy + k * Math.min(h * 0.07, 22);
-    /* ışın aynanın EĞRİ yüzeyine çarpar (çizimdeki yarıçap Rpx = 2|f|) */
-    const Rpx = Math.abs(2 * y.f) * y.olcek, dy = yy - y.cy;
-    const sehim = Rpx - Math.sqrt(Math.max(0, Rpx * Rpx - dy * dy));
-    const hx = y.f > 0 ? y.ax - sehim : y.ax + sehim;
-    D.isin(ctx, solKenar, yy, hx, yy, R.ivme, 1.8, true);
-    cikanIsin(ctx, hx, yy, fx, y.cy, solKenar, R.kuvvet);
+    const dy = hMax * k / 3, yy = y.cy + dy;
+    const kok = Math.sqrt(Rpx * Rpx - dy * dy);
+    const px = y.cukur ? cx + kok : cx - kok;                  // çarpma noktası yüzeyde
+    const nx = (px - cx) / Rpx, ny = dy / Rpx;
+    const rx = 1 - 2 * nx * nx, ry = -2 * nx * ny;             // yansıyan doğrultu
+    /* yansıyan ışın panel kenarına kadar */
+    let s = Infinity;
+    if (rx < 0) s = Math.min(s, (solKenar - px) / rx);
+    if (ry > 0) s = Math.min(s, (h - 2 - yy) / ry);
+    if (ry < 0) s = Math.min(s, (2 - yy) / ry);
+    const qx = px + rx * s, qy = yy + ry * s;
+    D.isin(ctx, solKenar, yy, px, yy, R.ivme, 1.8, true);
+    D.isin(ctx, px, yy, qx, qy, R.kuvvet, 2, true);
+    if (!y.cukur) {
+      /* tümsek: yansıyanların geri uzantıları eksende (F’de) kesişir */
+      const sg = (y.cy - yy) / -ry;
+      D.sanalIsin(ctx, px, yy, px - rx * sg, y.cy, 'rgba(150,175,210,.8)');
+    }
+    yollar.push({ x0: solKenar, y0: yy, px, py: yy, qx, qy, L1: px - solKenar, L2: s });
   }
-  ctx.save(); ctx.fillStyle = y.f > 0 ? R.kuvvet : '#8FA8C8';
-  ctx.beginPath(); ctx.arc(fx, y.cy, 6, 0, 6.2832); ctx.fill(); ctx.restore();
-  const gy = y.cy + 3 * Math.min(h * 0.07, 22) + 16;
-  D.kesikliCizgi(ctx, fx, y.cy + 8, fx, gy, y.f > 0 ? R.kuvvet : '#5F7FA8', 1.2, [3, 3]);
-  D.rozet(ctx, 'görüntü: F’de NOKTA · ' + (y.f > 0 ? 'gerçek' : 'sanal'), fx, gy, y.f > 0 ? R.kuvvet : '#5F7FA8', '#fff',
+
+  /* ışık atmaları: her ışın boyunca eşit aralıklı, aynı hızda akan noktalar */
+  const ara = 70;
+  ctx.save();
+  yollar.forEach(yl => {
+    const top = yl.L1 + yl.L2;
+    for (let d = (t * ISIK_HIZI_PX) % ara; d < top; d += ara) {
+      let x, yy2;
+      if (d < yl.L1) { x = yl.x0 + d; yy2 = yl.y0; }
+      else { const u = (d - yl.L1) / yl.L2; x = yl.px + (yl.qx - yl.px) * u; yy2 = yl.py + (yl.qy - yl.py) * u; }
+      ctx.fillStyle = d < yl.L1 ? '#FFB020' : '#FF5A4E';
+      ctx.beginPath(); ctx.arc(x, yy2, 3.2, 0, 6.2832); ctx.fill();
+    }
+  });
+  ctx.restore();
+
+  /* odak noktası: çukurda ışık gerçekten burada toplanır — parlar */
+  ctx.save();
+  if (y.cukur) {
+    const par = 0.75 + 0.25 * Math.sin(t * 6);
+    const g = ctx.createRadialGradient(fx, y.cy, 0, fx, y.cy, 18);
+    g.addColorStop(0, 'rgba(255,220,120,' + (0.9 * par) + ')');
+    g.addColorStop(1, 'rgba(255,120,60,0)');
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(fx, y.cy, 18, 0, 6.2832); ctx.fill();
+  }
+  ctx.fillStyle = y.cukur ? R.kuvvet : '#8FA8C8';
+  ctx.beginPath(); ctx.arc(fx, y.cy, 5, 0, 6.2832); ctx.fill();
+  ctx.restore();
+
+  const gy = y.cy + hMax + 34;
+  D.kesikliCizgi(ctx, fx, y.cy + 8, fx, gy, y.cukur ? R.kuvvet : '#5F7FA8', 1.2, [3, 3]);
+  D.rozet(ctx, 'görüntü: F’de NOKTA · ' + (y.cukur ? 'gerçek' : 'sanal'), fx, gy, y.cukur ? R.kuvvet : '#5F7FA8', '#fff',
           '700 12px system-ui, sans-serif', true);
-  D.yaziAydinlik(ctx, 'Cisim sonsuzda (ör. Güneş) ⟹ ışınlar paralel gelir', 10, 18, R.surtunme,
+  D.yaziAydinlik(ctx, 'Cisim sonsuzda (ör. Güneş) ⟹ ışınlar paralel gelir', 10, 44, R.surtunme,
                  '700 12px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, y.f > 0 ? 'güneş ocağı bu yüzden çukur aynadır: ışık F’de toplanır'
+  D.yaziAydinlik(ctx, y.cukur ? 'güneş ocağı bu yüzden çukur aynadır: ışık F’de toplanır'
                               : 'tümsek aynada ışınlar ıraksar; uzantıları F’de kesişir',
                  w / 2, h - 10, R.mur, '600 11px system-ui, sans-serif', 'center');
 }
@@ -348,7 +409,8 @@ function cizKlasik(ctx, w, h, st, pHam) {
   const o = goruntuOzellik(a, f);
 
   if (p.mod > 2.5 && p.mod < 3.5) {
-    D.yaziHaleli(ctx, 'Cisim sonsuzda', 12, 22, K.beyaz, '700 12px system-ui, sans-serif', 'left');
+    const ga = cisimA(st, p), gb = goruntuB(ga, f);
+    D.yaziHaleli(ctx, 'Cisim sonsuzda · ' + (f > 0 ? 'çukur' : 'tümsek') + ' ayna', 12, 44, K.beyaz, '700 12px system-ui, sans-serif', 'left');
     const satir = [
       ['1/f = 1/a + 1/b', K.beyaz, '700 14px system-ui, sans-serif'],
       ['a → ∞ ⟹ 1/a → 0 ⟹ b = f', R.ivme, '700 13px system-ui, sans-serif'],
@@ -356,9 +418,14 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['Görüntünün yeri: odak noktası', K.metin2, '12px system-ui, sans-serif'],
       ['Özelliği: nokta şeklinde, ' + (f > 0 ? 'gerçek' : 'sanal'), R.kuvvet, '700 12px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
-      ['Kitap Tablo 3.3 ve 3.4 — ilk satır', K.metin2, '11px system-ui, sans-serif']
+      ['Kitap Tablo 3.3 ve 3.4 — ilk satır', K.metin2, '11px system-ui, sans-serif'],
+      ['', K.metin2, '11px'],
+      ['Grafikte cisim uzaklaşıyor:', K.beyaz, '700 12px system-ui, sans-serif'],
+      ['a = ' + D.biçim(ga, 0) + ' cm  ⟹  b = ' + D.biçim(gb, 1) + ' cm', R.hiz, '700 13px system-ui, sans-serif'],
+      ['b − f = ' + D.biçim(gb - f, 2) + ' cm  (a büyüdükçe → 0)', R.kuvvet, '700 12px system-ui, sans-serif'],
+      ['büyütme = ' + D.biçim(Math.abs(gb / ga), 3) + '  (→ 0: görüntü NOKTA)', R.normal, '700 12px system-ui, sans-serif']
     ];
-    let sy = 46;
+    let sy = 68;
     satir.forEach(([t, c, fo]) => { if (t) D.yaziHaleli(ctx, t, 16, sy, c, fo, 'left'); sy += 18; });
     return;
   }
@@ -442,13 +509,14 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const f = odak(p);
   const cukur = p.tur < 1.5;
-  const aMax = Math.max(p.f * 5, aEnBuyuk(p));
+  const sonsuz = p.mod > 2.5 && p.mod < 3.5;
+  const aMax = sonsuz ? 20 * p.f : Math.max(p.f * 5, aEnBuyuk(p));
   /* Canlı çalışma noktası — tarama oynatılınca eğri üzerinde kayar. */
   const aCanli = cisimA(st, p);
-  const bCanli = p.mod > 2.5 && p.mod < 3.5 ? null : goruntuB(aCanli, f);
+  const bCanli = goruntuB(aCanli, f);
   /* Çukurda b hem + hem − olur; tümsekte daima −f ile 0 arasındadır. */
   const bUst = cukur ? Math.abs(f) * 4 : 0;
-  const bAlt = cukur ? -Math.abs(f) * 4 : -Math.abs(f) * 1.15;
+  const bAlt = sonsuz && cukur ? 0 : cukur ? -Math.abs(f) * 4 : -Math.abs(f) * 1.15;
   const sinir = Math.abs(f) * 4;
   /* a = f’nin iki yanı ayrı eğridir; tek dizide çizilirse −4f’den +4f’ye
      dikey bir çizgiyle birleşirdi. İmleç, cismin bulunduğu kolda çizilir. */
@@ -468,13 +536,15 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const v1 = [];
   for (let a = aMax / 160; a <= aMax; a += aMax / 160) {
     if (Math.abs(a - f) < Math.abs(f) * 0.06) continue;      // asimptot çevresi
+    if (sonsuz && a < f) continue;                           // sonsuzda yalnız uzak kol
     const b = goruntuB(a, f);
     if (b > sinir || b < -sinir) continue;
     v1.push({ t: a, v: b });
   }
   ikiKol({
     x: pay, y: 3, w: gw, h: gh,
-    baslik: cukur ? 'b − a   (a = f’de ışınlar paralel: b → ∞)'
+    baslik: sonsuz ? 'b − a   (a → ∞ iken b → f = ' + D.biçim(f) + ' cm)'
+          : cukur ? 'b − a   (a = f’de ışınlar paralel: b → ∞)'
                         : 'b − a   (tümsekte b daima negatif)',
     birim: 'cm', tEtiket: 'a (cm)',
     tMax: aMax, vMin: bAlt, vMax: bUst, renk: R.kuvvet
@@ -491,7 +561,8 @@ function cizGrafik(ctx, w, h, st, pHam) {
   }
   ikiKol({
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
-    baslik: cukur ? 'Büyütme − a   (a = 2f’de tam 1)'
+    baslik: sonsuz ? 'Büyütme − a   (a → ∞ iken → 0: nokta)'
+          : cukur ? 'Büyütme − a   (a = 2f’de tam 1)'
                         : 'Büyütme − a   (tümsekte daima < 1)',
     birim: '', tEtiket: 'a (cm)',
     tMax: aMax, vMin: 0, vMax: 4, renk: R.normal
@@ -554,8 +625,8 @@ D.simler['kuresel-goruntu'] = {
       { d: 1, e: 'Çukur (konkav)' },
       { d: 2, e: 'Tümsek (konveks)' }
     ]},
-    { anahtar: 'f',          etiket: 'Odak uzaklığı f (kitap örneğinde 2 m)', min: 10, max: 50,  adim: 2, deger: 20, birim: 'cm' },
-    { anahtar: 'a',          etiket: 'Cisim uzaklığı a (1. düzenek)', min: 4,  max: 200, adim: 2, deger: 60, birim: 'cm' },
+    { anahtar: 'f',          etiket: 'Odak uzaklığı f', min: 10, max: 50,  adim: 2, deger: 20, birim: 'cm' },
+    { anahtar: 'a',          etiket: 'Cisim uzaklığı a', min: 4,  max: 200, adim: 2, deger: 60, birim: 'cm' },
     { anahtar: 'cisimBoyu',  etiket: 'Cisim boyu',      min: 2,  max: 20,  adim: 1, deger: 8,  birim: 'cm' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
