@@ -155,8 +155,9 @@ turetim: {
                  </div>` },
 
         { baslik: 'Gerçek hayatta',
-          html: `<p>50 Hz şebekede ampul saniyede <strong>100 kez</strong> parlayıp söner.
-                 Gözümüz yaklaşık 25 Hz üstünü ayırt edemediği için sabit görünür.</p>
+          html: `<p>50 Hz şebekede lambaya giden güç saniyede <strong>100 kez</strong> sıfıra iner.
+                 Akkor ampulün teli bu kısa sürede soğuyamadığı için ışığı yalnızca birkaç yüzde
+                 titrer; zaten gözümüz yaklaşık 25 Hz üstünü ayırt edemez.</p>
                  <p>Ama kamerayla çekersen bu titreşimi görürsün — eski floresan lambaların
                  videolarda titremesinin sebebi budur.</p>` }
       ]
@@ -367,7 +368,7 @@ baglam: [
       { bas: 'Gücün frekansı',
         metin: 'Güç <code>P = i²R</code> ile kare alındığı için negatif yarım da pozitife döner. Bir gerilim çevriminde güç <strong>iki kez</strong> tepe yapar ⟹ <strong>100 Hz</strong>.' },
       { bas: 'Parlama sayısı',
-        metin: 'Ampul saniyede <strong>100 kez</strong> parlayıp söner. (Akkor ampullerde tel ısısını koruduğu için bu titreşim çok zayıftır; floresan ve bazı LED’lerde belirgindir.)' },
+        metin: 'Lambaya giden güç saniyede <strong>100 kez</strong> sıfıra iner. (Akkor ampullerde tel ısısını koruduğu için ışıktaki titreşim çok zayıftır; floresan ve bazı LED’lerde belirgindir.)' },
       { bas: 'Göz neden görmüyor?',
         metin: 'İnsan gözü yaklaşık <strong>25 Hz</strong>’in üstündeki değişimleri ayrı ayrı algılayamaz; gördüğünü <strong>ortalar</strong>. 100 Hz bu sınırın çok üstünde olduğu için lamba sabit görünür.' },
       { bas: 'Kamera neden görüyor?',
