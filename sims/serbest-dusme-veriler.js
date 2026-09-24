@@ -88,13 +88,15 @@ function adim(st, dt, p) {
     st.y = -p.h0;
     st.v = hizAn(st.t, p);
     st.indi = true;
+    /* iniş anı grafikte eksik kalmasın */
+    st.kayit.push({ t: st.t, y: st.y, v: st.v });
   }
 
   if (st.t - st.sonStrobe >= STROBE && st.strobe.length < 80) {
     st.sonStrobe += STROBE;
     st.strobe.push({ t: st.t, y: st.y });
   }
-  if (st.t - st.sonKayit >= KAYIT && st.kayit.length < 2000) {
+  if (!st.indi && st.t - st.sonKayit >= KAYIT && st.kayit.length < 5000) {
     st.sonKayit += KAYIT;
     st.kayit.push({ t: st.t, y: st.y, v: st.v });
   }
@@ -284,7 +286,8 @@ function cizGrafik(ctx, w, h, st, p) {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: 'ϑ − t   (hız)', birim: 'm/s',
     veri: st.kayit.map(d => ({ t: d.t, v: d.v })),
-    tMax: T, vMin: -(p.v0 + p.g * T), vMax: Math.max(p.v0, 5),
+    /* En küçük hız iniş anındaki hızdır: ϑ = ϑ₀ − g·T (aşağı atışta da doğru) */
+    tMax: T, vMin: Math.min(0, p.v0 - p.g * T) * 1.05, vMax: Math.max(p.v0, 5),
     renk: R.hiz, dolgu: true
   });
 

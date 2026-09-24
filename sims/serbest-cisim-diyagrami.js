@@ -102,7 +102,7 @@ const SENARYOLAR = {
     ozet: p => [
       'N − G = m·a',
       'N = m(g + a) = ' + D.biçim(p.m * (G_SABIT + p.a)) + ' N',
-      'G = ' + D.biçim(p.m * G_SABIT) + ' N  ⟹  N > G'
+      'G = ' + D.biçim(p.m * G_SABIT) + ' N  ⟹  ' + (p.a > 0 ? 'N > G' : 'N = G (a = 0)')
     ]
   },
 
@@ -112,11 +112,13 @@ const SENARYOLAR = {
     kullanilan: 'm ve α',
     hareketli: true,
     ivme: p => G_SABIT * Math.sin(p.aci * Math.PI / 180),
+    /* Sahnede eğim SAĞA doğru yükselir, cisim SOLA-aşağı kayar. Yüzeye dik
+       normal kuvvet bu yüzden sol-yukarı bakar: (−sin α, −cos α). */
     kuvvetler: p => {
       const r = p.aci * Math.PI / 180;
       return [
         { sembol: 'N', ad: 'normal kuvvet',
-          yon: [Math.sin(r), -Math.cos(r)],
+          yon: [-Math.sin(r), -Math.cos(r)],
           buyukluk: p.m * G_SABIT * Math.cos(r), renk: R.normal },
         { sembol: 'G', ad: 'ağırlık',
           yon: [0, 1], buyukluk: p.m * G_SABIT, renk: R.agirlik }
@@ -154,19 +156,25 @@ function senaryo(p) { return SENARYOLAR[Math.round(p.sen)] || SENARYOLAR[1]; }
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
-  return { t: 0, ilerleme: 0 };
+  return { t: 0, ilerleme: 0, hiz: 0 };
 }
 
+/* Sahnedeki nesne ivmesiyle GERÇEKTEN ivmelenir: ϑ = a·t, x = ½·a·t².
+   (Önceki sürümde her adımda ½·a·dt² ekleniyordu; bu, ivmeli hareketi sabit
+   ve çok küçük bir hızla sürünmeye çeviriyordu.) ilerleme metre cinsindendir. */
 function adim(st, dt, p) {
   const s = senaryo(p);
   st.t += dt;
-  /* Sahnedeki nesne ivmesine göre ilerler; sadece görsel geri bildirim için.
-     Sayısal doğruluk diyagramda ve özet satırlarındadır. */
-  if (s.hareketli) st.ilerleme += 0.5 * s.ivme(p) * dt * dt + 0.02 * dt;
+  if (s.hareketli) {
+    st.hiz += s.ivme(p) * dt;
+    st.ilerleme += st.hiz * dt;
+  }
 }
 
 function bitti(st, p) {
-  return senaryo(p).hareketli ? st.ilerleme > 26 : st.t > 3;
+  const s = senaryo(p);
+  /* ivmesi sıfır olan (dengedeki) düzenekler 3 s gösterilip durur */
+  return s.hareketli && Math.abs(s.ivme(p)) > 1e-9 ? st.ilerleme > 26 : st.t > 3;
 }
 
 /* ------------------------------------------------- Gerçekçi görünüm */
@@ -319,20 +327,36 @@ function cizKlasik(ctx, w, h, st, p) {
                '600 11px system-ui, sans-serif', 'left');
   D.yaziHaleli(ctx, 'kullanılan: ' + s.kullanilan, w - 12, 16, K.metin2,
                '10px system-ui, sans-serif', 'right');
+  /* hareketli senaryolarda anlık hız: kuvvetler sabit ama hız artıyor */
+  if (s.hareketli && Math.abs(s.ivme(p)) > 1e-9)
+    D.yaziHaleli(ctx, 't = ' + D.biçim(st.t, 2) + ' s · ϑ = a·t = ' + D.biçim(st.hiz || 0) + ' m/s',
+                 w - 12, 32, R.hiz, '600 11px system-ui, sans-serif', 'right');
+  else
+    D.yaziHaleli(ctx, 'F_net = 0 · denge (a = 0)', w - 12, 32, R.hiz,
+                 '600 11px system-ui, sans-serif', 'right');
 
-  /* Eğik düzlemde eksenler eğime göre döndürülür — problem böyle çözülür. */
+  /* Eğik düzlemde eksenler eğime göre döndürülür — problem böyle çözülür.
+     Eğim sahnedeki gibi SAĞA doğru yükselir. G’nin bileşenleri kesikli
+     çizilir: G∥ eğim boyunca aşağı (hareketin yönü), G⊥ yüzeye doğru. */
   if (Math.round(p.sen) === 5) {
     const r = p.aci * Math.PI / 180;
     ctx.save();
     ctx.setLineDash([4, 4]);
     ctx.strokeStyle = 'rgba(74,95,134,.7)'; ctx.lineWidth = 1.2;
     ctx.beginPath();
-    ctx.moveTo(cx - Math.cos(r) * 92, cy - Math.sin(r) * 92);
-    ctx.lineTo(cx + Math.cos(r) * 92, cy + Math.sin(r) * 92);
+    ctx.moveTo(cx - Math.cos(r) * 92, cy + Math.sin(r) * 92);
+    ctx.lineTo(cx + Math.cos(r) * 92, cy - Math.sin(r) * 92);
     ctx.stroke();
     ctx.restore();
-    D.yaziHaleli(ctx, 'eğim doğrultusu', cx + Math.cos(r) * 100, cy + Math.sin(r) * 100 + 12,
+    D.yaziHaleli(ctx, 'eğim doğrultusu', cx + Math.cos(r) * 100, cy - Math.sin(r) * 100 - 12,
                  K.metin2, '10px system-ui, sans-serif', 'center');
+    const G = p.m * G_SABIT;
+    const olc = 66 / Math.max(G, 1);
+    const gPar = G * Math.sin(r) * olc, gDik = G * Math.cos(r) * olc;
+    ctx.save(); ctx.globalAlpha = 0.6;
+    D.vektor(ctx, cx, cy, cx - Math.cos(r) * gPar, cy + Math.sin(r) * gPar, R.agirlik, 'G∥', { kalinlik: 1.6 });
+    D.vektor(ctx, cx, cy, cx + Math.sin(r) * gDik, cy + Math.cos(r) * gDik, R.agirlik, 'G⊥', { kalinlik: 1.6 });
+    ctx.restore();
   }
 
   /* Cisim daima kutu — parçacık indirgemesi (kitap s.53) */

@@ -33,10 +33,18 @@ const { R, K } = D;
 const G_SABIT = 10;
 const KAYIT = 0.02;
 
-/* Kinetik sürtünme fiziksel olarak maksimum statik sürtünmeyi AŞAMAZ.
-   Kaydıraçlar bağımsız olduğu için kullanıcı tersini seçebilir; burada kırpılır.
+/* Sürtünme kuvvetleri NORMAL KUVVETLE orantılıdır (f = μ·N, N = m·g).
+   Önceki sürümde f_s ve f_k doğrudan newton olarak giriliyordu; kütle
+   değiştirilince sürtünme hiç değişmiyordu — fiziksel olarak yanlış.
+   Varsayılanlar (m = 10 kg, μs = 0,41, μk = 0,35) kitaptaki Elif deneyinin
+   41 N ve 35 N değerlerini birebir verir. */
+function normalKuvvet(p) { return p.m * G_SABIT; }
+function statikMaks(p)   { return p.mus * normalKuvvet(p); }
+
+/* Kinetik katsayı fiziksel olarak statik katsayıyı AŞAMAZ. Kaydıraçlar
+   bağımsız olduğu için kullanıcı tersini seçebilir; burada kırpılır.
    Böylece "kopma" anında sürtünme hep düşer, hiç artmaz. */
-function kinetik(p) { return Math.min(p.fk, p.fs); }
+function kinetik(p) { return Math.min(p.muk, p.mus) * normalKuvvet(p); }
 
 /* -------------------------------------------------------------- Durum */
 
@@ -60,9 +68,9 @@ function adim(st, dt, p) {
 
   if (!st.hareketli) {
     /* Statik sürtünme uygulanan kuvvete eşit büyür — ta ki sınıra dayanana dek. */
-    if (st.F > p.fs) {
+    if (st.F > statikMaks(p)) {
       st.hareketli = true;
-      st.koptuF = p.fs;
+      st.koptuF = statikMaks(p);
       st.f = kinetik(p);
     } else {
       st.f = st.F;
@@ -78,13 +86,16 @@ function adim(st, dt, p) {
     st.x += st.v * dt;
   }
 
-  if (st.t - st.sonKayit >= KAYIT && st.kayit.length < 3000) {
-    st.sonKayit += KAYIT;
+  /* Kayıt aralığı deneyin süresine göre: μ ve m büyük, F yavaş artıyorsa
+     deney uzar; sabit aralıkla grafik yarıda kesiliyordu. */
+  const aralik = Math.max(KAYIT, (statikMaks(p) * 2.2 / Math.max(p.hiz, 0.1)) / 2500);
+  if (st.t - st.sonKayit >= aralik && st.kayit.length < 3000) {
+    st.sonKayit += aralik;
     st.kayit.push({ F: st.F, f: st.f, t: st.t, v: st.v });
   }
 }
 
-function bitti(st, p) { return st.F > p.fs * 2.2 || st.x > 18; }
+function bitti(st, p) { return st.F > statikMaks(p) * 2.2 || st.x > 18; }
 
 /* ------------------------------------------------- Gerçekçi görünüm */
 
@@ -142,7 +153,7 @@ function cizGercek(ctx, w, h, st, p) {
      Ölçek deneyin EN BÜYÜK kuvvetine göre sabitlenir (F en çok f_s·2,2 olur).
      Böylece ok hiçbir zaman panelden taşmaz ve boylar baştan sona
      karşılaştırılabilir kalır. */
-  const ol = 68 / Math.max(p.fs * 2.2, 1);
+  const ol = 68 / Math.max(statikMaks(p) * 2.2, 1);
   D.vektor(ctx, bx + gen / 2, ufuk - boy - 14, bx + gen / 2 + st.F * ol, ufuk - boy - 14,
            R.kuvvet, 'F = ' + D.biçim(st.F) + ' N', { kalinlik: 2.8 });
   if (st.f > 0.2)
@@ -181,7 +192,7 @@ function cizKlasik(ctx, w, h, st, p) {
   D.yaziHaleli(ctx, D.biçim(p.m) + ' kg', cx, cy, K.beyaz,
                '600 11px system-ui, sans-serif', 'center');
 
-  const enB = Math.max(p.fs * 2.2, N, 1);
+  const enB = Math.max(statikMaks(p) * 2.2, N, 1);
   const ol = 72 / enB;
 
   if (st.F > 0.2)
@@ -196,12 +207,12 @@ function cizKlasik(ctx, w, h, st, p) {
   /* --- durum açıklaması --- */
   const satirlar = st.hareketli
     ? ['Blok HAREKETTE',
-       'f = f_k = ' + D.biçim(kinetik(p)) + ' N  (sabit)',
+       'f_k = μk·N = ' + D.biçim(Math.min(p.muk, p.mus)) + '·' + D.biçim(normalKuvvet(p)) + ' = ' + D.biçim(kinetik(p)) + ' N',
        'F_net = F − f_k = ' + D.biçim(st.F - kinetik(p)) + ' N',
        'a = ' + D.biçim((st.F - kinetik(p)) / p.m) + ' m/s²']
     : ['Blok DURUYOR',
        'f = f_s = F = ' + D.biçim(st.f) + ' N',
-       'f_s en çok ' + D.biçim(p.fs) + ' N olabilir',
+       'f_s,maks = μs·N = ' + D.biçim(p.mus) + '·' + D.biçim(normalKuvvet(p)) + ' = ' + D.biçim(statikMaks(p)) + ' N',
        'F_net = 0 ⟹ a = 0'];
 
   let sy = h - 26 - (satirlar.length - 1) * 17;
@@ -220,7 +231,7 @@ function cizGrafik(ctx, w, h, st, p) {
   const pay = 8;
   const gw = (w - pay * 4) / 3;
   const gh = h - 6;
-  const Fmax = p.fs * 2.2;
+  const Fmax = statikMaks(p) * 2.2;
 
   /* 1) Konunun YILDIZ grafiği: f − F
      Önce 45°'lik doğru (f_s = F), sonra kopma, sonra yatay doğru (f_k sabit). */
@@ -228,7 +239,7 @@ function cizGrafik(ctx, w, h, st, p) {
     x: pay, y: 3, w: gw, h: gh,
     baslik: 'f − F   (sürtünme–uygulanan)', birim: 'N',
     veri: st.kayit.map(d => ({ t: d.F, v: d.f })),
-    tMax: Fmax, vMin: 0, vMax: p.fs * 1.3,
+    tMax: Fmax, vMin: 0, vMax: statikMaks(p) * 1.3,
     renk: R.surtunme
   });
 
@@ -273,8 +284,8 @@ D.simler['statik-kinetik-surtunme'] = {
   grafikPanel: true,
   grafikYukseklik: 180,
   parametreler: [
-    { anahtar: 'fs',  etiket: 'f_s maks',  min: 10, max: 80, adim: 1, deger: 41, birim: 'N' },
-    { anahtar: 'fk',  etiket: 'f_k',       min: 5,  max: 70, adim: 1, deger: 35, birim: 'N' },
+    { anahtar: 'mus', etiket: 'μs (statik)',  min: 0.05, max: 1.0, adim: 0.01, deger: 0.41, birim: '' },
+    { anahtar: 'muk', etiket: 'μk (kinetik)', min: 0.02, max: 0.9, adim: 0.01, deger: 0.35, birim: '' },
     { anahtar: 'm',   etiket: 'Kütle m',   min: 2,  max: 30, adim: 1, deger: 10, birim: 'kg' },
     { anahtar: 'hiz', etiket: 'F artış hızı', min: 2, max: 30, adim: 1, deger: 10, birim: 'N/s' }
   ],

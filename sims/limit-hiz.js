@@ -44,8 +44,19 @@ const D_PARASUT = 26;                       /* ~5,5 m/s (güvenli iniş)        
 
 function durus(p) { return DURUS[Math.round(p.durus)] || DURUS[1]; }
 
-/** O anki sürüklenme katsayısı — paraşüt açıksa çok daha büyüktür. */
-function suruklenme(st, p) { return st.parasutAcik ? D_PARASUT : durus(p).Dk; }
+/* Paraşüt bir anda değil, gölgelik havayla dolarken açılır (gerçekte
+   2–3 s). Katsayı birden 100 katına çıkarılırsa yaklaşık 100 g’lik — gerçekte
+   ölümcül — bir yavaşlama hesaplanıyordu. Kademeli dolumla tepe yavaşlama
+   gerçek spor paraşütlerindeki 3–6 g aralığına düşer. */
+const DOLMA_SURESI = 2.5;   // s
+
+/** O anki sürüklenme katsayısı — paraşüt dolarken kademeli büyür. */
+function suruklenme(st, p) {
+  const Dk = durus(p).Dk;
+  if (!st.parasutAcik) return Dk;
+  const u = Math.min(1, (st.t - st.acilmaAni) / DOLMA_SURESI);
+  return Dk + (D_PARASUT - Dk) * u * u * u;
+}
 
 /** Limit hız: direnç ağırlığa eşitlendiği andaki hız. Kapalı formülle, tam. */
 function limitHiz(Dk, p) { return Math.sqrt(p.m * G_SABIT / Dk); }
@@ -262,7 +273,8 @@ function cizGrafik(ctx, w, h, st, p) {
     x: pay * 2 + gw, y: 3, w: gw, h: gh,
     baslik: 'a − t   (sıfıra iner)', birim: 'm/s²',
     veri: st.kayit.map(d => ({ t: d.t, v: d.a })),
-    tMax: T, vMin: -G_SABIT * 2, vMax: G_SABIT * 1.2,
+    /* paraşüt dolarken yavaşlama ~4 g’ye çıkar; eksen onu kesmesin */
+    tMax: T, vMin: -G_SABIT * 5, vMax: G_SABIT * 1.2,
     renk: R.ivme
   });
 

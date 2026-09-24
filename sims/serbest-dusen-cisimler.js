@@ -269,11 +269,20 @@ function cizKlasik(ctx, w, h, st, p) {
   if (!st.tuy.indi) D.vektor(ctx, tuyX, tuyY + 11, tuyX, tuyY + 11 + okBoy(st.tuy.v),
                              R.hiz, 'ϑ = ' + D.biçim(st.tuy.v));
 
-  /* ivme vektörü — sabit, her iki cisim için aynı */
-  const ivX = w - 54;
-  D.vektor(ctx, ivX, 60, ivX, 60 + Math.min(58, p.g * 4.4), R.ivme, 'g');
-  D.yaziHaleli(ctx, D.biçim(p.g) + ' m/s²', ivX, 44, R.ivme,
-               '600 11px system-ui, sans-serif', 'center');
+  /* ivme vektörleri — HER CİSİM İÇİN AYRI: a = g − k·ϑ².
+     Havasız ortamda ikisi de g’dir; havada tüyün ivmesi hızla sıfıra iner,
+     top ise neredeyse g ile düşmeyi sürdürür. */
+  const havali = havaVar(p);
+  const ivmeTop = st.top.indi ? 0 : p.g - (havali ? k_TOP : 0) * st.top.v * st.top.v;
+  const ivmeTuy = st.tuy.indi ? 0 : p.g - (havali ? k_TUY : 0) * st.tuy.v * st.tuy.v;
+  const ivOk = a => Math.min(58, Math.max(0, a) * 4.4);
+  [[w - 110, ivmeTop, 'top a'], [w - 42, ivmeTuy, 'tüy a']].forEach(([ix, a, ad]) => {
+    if (ivOk(a) > 2) D.vektor(ctx, ix, 60, ix, 60 + ivOk(a), R.ivme, '');
+    else D.noktaCisim(ctx, ix, 60, 3, R.ivme);
+    D.yaziHaleli(ctx, ad, ix, 30, R.ivme, '600 10px system-ui, sans-serif', 'center');
+    D.yaziHaleli(ctx, D.biçim(a) + ' m/s²', ix, 44, R.ivme,
+                 '600 10px system-ui, sans-serif', 'center');
+  });
 
   /* strobe açıklaması */
   D.yaziHaleli(ctx, `noktalar ${D.biçim(STROBE)} s aralıkla`, ox + 4, h - 16,

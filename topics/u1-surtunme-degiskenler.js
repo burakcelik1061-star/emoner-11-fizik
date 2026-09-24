@@ -56,10 +56,10 @@ daha kuvvetli bastırır ve mikro pürüzler birbirine daha çok geçer.</p>
 <table class="degisken-tablo">
   <thead><tr><th>Yüzey çifti</th><th>μ<sub>s</sub></th><th>μ<sub>k</sub></th></tr></thead>
   <tbody>
-    <tr><td>Buz üzerinde çelik</td><td class="sembol">0,10</td><td class="sembol">0,03</td></tr>
+    <tr><td>Buz üzerinde buz</td><td class="sembol">0,10</td><td class="sembol">0,03</td></tr>
     <tr><td>Ahşap üzerinde ahşap</td><td class="sembol">0,50</td><td class="sembol">0,30</td></tr>
-    <tr><td>Beton üzerinde beton</td><td class="sembol">0,70</td><td class="sembol">0,60</td></tr>
-    <tr><td>Kuru asfalt üzerinde lastik</td><td class="sembol">1,00</td><td class="sembol">0,90</td></tr>
+    <tr><td>Islak beton üzerinde lastik</td><td class="sembol">0,70</td><td class="sembol">0,50</td></tr>
+    <tr><td>Kuru beton üzerinde lastik</td><td class="sembol">1,00</td><td class="sembol">0,70</td></tr>
   </tbody>
 </table>
 <p style="color:var(--text-2);font-size:.94em;margin-top:10px">Her satırda

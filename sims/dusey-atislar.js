@@ -49,6 +49,8 @@ function tepeYukseklik(p) {
   const v0 = ilkHiz(p);
   return p.h0 + (v0 > 0 ? (v0 * v0) / (2 * p.g) : 0);
 }
+/** Platform (balon) yüksekliği: sabit hızla gider, yere inince durur. */
+function platformYuk(t, p) { return Math.max(0, p.h0 + p.vp * t); }
 
 /* -------------------------------------------------------------- Durum */
 
@@ -72,18 +74,20 @@ function adim(st, dt, p) {
   /* Kapalı form — tahtadaki formülle birebir aynı sayı çıksın diye */
   st.y = p.h0 + v0 * st.t - 0.5 * p.g * st.t * st.t;
   st.v = v0 - p.g * st.t;
-  /* Platform sabit hızla yoluna devam eder (ivmesi yok) */
-  st.platformY = p.h0 + p.vp * st.t;
+  /* Platform sabit hızla yoluna devam eder (ivmesi yok); inen balon yere
+     değince durur — toprağın içine giremez. */
+  st.platformY = platformYuk(st.t, p);
 
   if (st.y <= 0) {
     st.t = ucusSuresi(p);
     st.y = 0;
     st.v = v0 - p.g * st.t;
-    st.platformY = p.h0 + p.vp * st.t;
+    st.platformY = platformYuk(st.t, p);
     st.indi = true;
+    st.kayit.push({ t: st.t, y: 0, v: st.v, py: st.platformY });
   }
 
-  if (st.t - st.sonKayit >= KAYIT && st.kayit.length < 3000) {
+  if (!st.indi && st.t - st.sonKayit >= KAYIT && st.kayit.length < 5000) {
     st.sonKayit += KAYIT;
     st.kayit.push({ t: st.t, y: st.y, v: st.v, py: st.platformY });
   }
@@ -97,8 +101,10 @@ function cizGercek(ctx, w, h, st, p) {
   const ufuk = h - 28;
   const ust = 34;
 
-  /* Ölçek: taşın tepe noktası ile platformun gidebileceği en yüksek nokta */
-  const enYuksek = Math.max(tepeYukseklik(p), st.platformY, p.h0) * 1.08;
+  /* Ölçek: taşın tepe noktası ile platformun UÇUŞ BOYUNCA çıkacağı en yüksek
+     nokta. Anlık platform yüksekliğine göre kurulsaydı ölçek her karede
+     değişir, atış seviyesi çizgisi ekranda kayardı. */
+  const enYuksek = Math.max(tepeYukseklik(p), platformYuk(ucusSuresi(p), p), p.h0) * 1.08;
   const olcek = (ufuk - ust) / Math.max(1, enYuksek);
   const Y = m => ufuk - m * olcek;
 
@@ -328,7 +334,7 @@ function cizGrafik(ctx, w, h, st, p) {
 
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
-    baslik: 'y − t   (taş ve balon)', birim: 'm',
+    baslik: 'y − t   (taşın yerden yüksekliği)', birim: 'm',
     veri: st.kayit.map(d => ({ t: d.t, v: d.y })),
     tMax: T, vMin: 0, vMax: Math.max(tepeYukseklik(p), p.h0) * 1.15,
     renk: R.konum

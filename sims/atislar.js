@@ -146,13 +146,14 @@ function adim(st, dt, p) {
     st.vx = yatayHiz(st.t, p);
     st.vy = vy - p.g * st.t;
     st.indi = true;
+    st.kayit.push({ t: st.t, vx: st.vx, vy: st.vy, y: 0 });
   }
 
   if (st.t - st.sonStrobe >= STROBE && st.strobe.length < 120) {
     st.sonStrobe += STROBE;
     st.strobe.push({ x: st.x, y: st.y });
   }
-  if (st.t - st.sonKayit >= KAYIT && st.kayit.length < 2000) {
+  if (!st.indi && st.t - st.sonKayit >= KAYIT && st.kayit.length < 5000) {
     st.sonKayit += KAYIT;
     st.kayit.push({ t: st.t, vx: st.vx, vy: st.vy, y: st.y });
   }
@@ -393,7 +394,9 @@ function cizGrafik(ctx, w, h, st, p) {
     x: pay, y: 3, w: gw, h: gh,
     baslik: 'ϑx − t   (yatay hız)', birim: 'm/s',
     veri: st.kayit.map(d => ({ t: d.t, v: d.vx })),
-    tMax: T, vMin: 0, vMax: Math.max(vx * 1.3, 5),
+    /* duvardan sekince ϑx NEGATİF olur; eksen o değeri de kapsar */
+    tMax: T, vMin: duvarVar(p) && duvarAni(p) < T ? -vx * SEKME * 1.3 : 0,
+    vMax: Math.max(vx * 1.3, 5),
     renk: '#FF7A45', dolgu: true
   });
 

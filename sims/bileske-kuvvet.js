@@ -72,8 +72,11 @@ function bitti(st) { return st.bittiMi; }
 function cizGercek(ctx, w, h, st, p) {
   const ufuk = h - 46;
   const solPay = 70;
-  const s = (w - solPay - 40) / PIST;         // piksel / metre
-  const X = m => solPay + m * s;
+  /* Cisim sola da gidebilir (F₂ > F₁): −PIST/4 … PIST aralığının tamamı
+     panele sığar; eskiden sola giden sandık panelin dışına çıkıyordu. */
+  const GERI = PIST * 0.25;
+  const s = (w - solPay - 40) / (PIST + GERI);  // piksel / metre
+  const X = m => solPay + (m + GERI) * s;
 
   D.gokyuzu(ctx, w, h, ufuk, { bulutlar: true });
   D.tepeler(ctx, w, ufuk);
@@ -83,7 +86,7 @@ function cizGercek(ctx, w, h, st, p) {
   ctx.fillRect(0, ufuk, w, h - ufuk);
   ctx.strokeStyle = '#8FB0C8'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(0, ufuk + .5); ctx.lineTo(w, ufuk + .5); ctx.stroke();
-  for (let m = 0; m <= PIST; m += 5) {
+  for (let m = -GERI; m <= PIST; m += 5) {
     const px = X(m);
     if (px < 0 || px > w) continue;
     ctx.beginPath(); ctx.moveTo(px, ufuk); ctx.lineTo(px, ufuk + 8); ctx.stroke();
@@ -137,12 +140,14 @@ function cizGercek(ctx, w, h, st, p) {
   D.rozet(ctx, msj, Math.max(8, w - rg - 10), 9, zemin, yazi);
 }
 
-/** Halatı çeken küçük figür. yon: +1 sola çeker, −1 sağa çeker. */
+/** Halatı çeken küçük figür. yon: +1 → figür sandığın SOLUNDA, sola çeker;
+    −1 → figür sandığın SAĞINDA, sağa çeker. Kolu ve halat parçası daima
+    SANDIĞA doğru uzanır (eskiden ters yöne, boşluğa uzanıyordu). */
 function cizAdam(ctx, x, yAyak, s, renk, yon) {
-  const { elX, elY } = D.insan(ctx, x, yAyak, s, renk, yon > 0 ? 2.75 : 0.39);
+  const { elX, elY } = D.insan(ctx, x, yAyak, s, renk, yon > 0 ? 0.39 : 2.75);
   ctx.save();
   ctx.strokeStyle = '#8A6A3A'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.moveTo(elX, elY); ctx.lineTo(x - yon * 22, elY); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(elX, elY); ctx.lineTo(x + yon * 22, elY); ctx.stroke();
   ctx.restore();
 }
 

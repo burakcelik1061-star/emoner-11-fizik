@@ -33,12 +33,15 @@ const { R, K } = D;
 const G_SABIT = 10;
 const KAYIT = 0.05;
 
-/* Yüzey çiftleri — k_s her zaman k_k'den büyüktür. */
+/* Yüzey ÇİFTLERİ — katsayı iki yüzeye birlikte aittir; μs daima μk'dan
+   büyüktür. Değerler OpenStax University Physics Tablo 6.1’deki tipik
+   değerlerdir (önceki sürümde "Beton" çiftin öbür yüzü belirsizdi ve
+   lastik için μk = 0,90 tablodaki 0,7’den yüksekti). */
 const YUZEYLER = {
-  1: { ad: 'Buz',    ks: 0.10, kk: 0.03, renk: '#CFE6F5', doku: '#A9CBE0' },
-  2: { ad: 'Ahşap',  ks: 0.50, kk: 0.30, renk: '#C98B4B', doku: '#8A5A28' },
-  3: { ad: 'Beton',  ks: 0.70, kk: 0.60, renk: '#9AA5B1', doku: '#6E7A86' },
-  4: { ad: 'Lastik', ks: 1.00, kk: 0.90, renk: '#4A4A4A', doku: '#2E2E2E' }
+  1: { ad: 'Buz üstünde buz',       ks: 0.10, kk: 0.03, renk: '#CFE6F5', doku: '#A9CBE0' },
+  2: { ad: 'Ahşap üstünde ahşap',   ks: 0.50, kk: 0.30, renk: '#C98B4B', doku: '#8A5A28' },
+  3: { ad: 'Lastik · ıslak beton',  ks: 0.70, kk: 0.50, renk: '#9AA5B1', doku: '#6E7A86' },
+  4: { ad: 'Lastik · kuru beton',   ks: 1.00, kk: 0.70, renk: '#8E959C', doku: '#5E656C' }
 };
 function yuzey(p) { return YUZEYLER[Math.round(p.yuzey)] || YUZEYLER[2]; }
 
@@ -258,16 +261,16 @@ function okumalar(st, p) {
 D.simler = D.simler || {};
 D.simler['surtunme-degiskenler'] = {
   id: 'surtunme-degiskenler',
-  baslik: 'Ağırlık ekleme deneyi · f = k·N',
+  baslik: 'Ağırlık ekleme deneyi · f = μ·N',
   yukseklik: 320,
   grafikPanel: true,
   grafikYukseklik: 175,
   parametreler: [
     { anahtar: 'yuzey', etiket: 'Yüzey', tur: 'secim', deger: 2, secenekler: [
-      { d: 1, e: 'Buz  (μs=0,10 · μk=0,03)' },
-      { d: 2, e: 'Ahşap  (μs=0,50 · μk=0,30)' },
-      { d: 3, e: 'Beton  (μs=0,70 · μk=0,60)' },
-      { d: 4, e: 'Lastik  (μs=1,00 · μk=0,90)' }
+      { d: 1, e: 'Buz–buz  (μs=0,10 · μk=0,03)' },
+      { d: 2, e: 'Ahşap–ahşap  (μs=0,50 · μk=0,30)' },
+      { d: 3, e: 'Lastik–ıslak beton  (μs=0,70 · μk=0,50)' },
+      { d: 4, e: 'Lastik–kuru beton  (μs=1,00 · μk=0,70)' }
     ]},
     { anahtar: 'm', etiket: 'Blok kütlesi', min: 2, max: 20, adim: 1, deger: 4, birim: 'kg' },
     { anahtar: 'alan', etiket: 'Temas alanı', tur: 'secim', deger: 0, secenekler: [

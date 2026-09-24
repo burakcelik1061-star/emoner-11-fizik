@@ -32,7 +32,7 @@ const { R, K } = D;
 function durum(p) {
   return {
     t: 0,
-    aci: -Math.PI / 2,        // tepe noktadan başla (saat yönünün tersi)
+    aci: -Math.PI / 2,        // tepe noktadan başla; ekranda SAAT YÖNÜNDE döner (y aşağı)
     kopti: false,
     kopmaAci: null,
     kopmaX: 0, kopmaY: 0,     // kopma anındaki konum (metre, merkeze göre)
@@ -63,7 +63,10 @@ function adim(st, dt, p) {
         st.kopmaY = p.r * Math.sin(hedef);
       }
     }
-    if (st.iz.length < 400) st.iz.push({ a: st.aci });
+    /* iz son ~1,7 s’yi tutar ve cisimle birlikte ilerler (önceden ilk 400
+       adımdan sonra büyümeyi bırakıp geride kalıyordu) */
+    st.iz.push({ a: st.aci });
+    if (st.iz.length > 400) st.iz.shift();
   } else {
     st.serbestT += dt;
   }

@@ -51,14 +51,53 @@ function virajMi(p) { return Math.round(p.mod) === 2; }
 
 /* -------------------------------------------------------------- Durum */
 
-function durum(p) { return { t: 0, aci: -Math.PI / 2 }; }
-
-function adim(st, dt, p) {
-  st.t += dt;
-  st.aci += omega(p) * dt;
+function durum(p) {
+  return { t: 0, aci: -Math.PI / 2, kayma: false, x: 0, y: -p.r, vx: 0, vy: 0, cikti: false };
 }
 
-function bitti(st, p) { return st.t > p.T * 2.2; }
+/* SAVRULMA
+   Gereken merkezcil kuvvet sürtünmenin sağlayabileceğinden büyükse araç
+   çemberi İZLEYEMEZ. Sürtünme en fazla μ·g kadar merkezcil ivme verebilir;
+   araç bu yüzden daha büyük yarıçaplı (R = ϑ²/(μ·g)) bir yay çizerek yolun
+   dışına kayar. (Önceki sürümde "SAVRULUYOR" yazılırken araç yine çember
+   üzerinde dönmeye devam ediyordu.) Konum/hız metre cinsinden, merkeze göre. */
+function adim(st, dt, p) {
+  st.t += dt;
+  const savrulur = virajMi(p) && hiz(p) > guvenliHiz(p);
+  if (!savrulur) { st.aci += omega(p) * dt; return; }
+  if (st.cikti) return;
+  if (!st.kayma) {
+    st.kayma = true;
+    const v = hiz(p);
+    st.x = p.r * Math.cos(st.aci); st.y = p.r * Math.sin(st.aci);
+    st.vx = -Math.sin(st.aci) * v;  st.vy = Math.cos(st.aci) * v;
+  }
+  const v = Math.hypot(st.vx, st.vy) || 1;
+  /* hıza dik, merkez tarafına bakan birim vektör */
+  let nx = -st.vy / v, ny = st.vx / v;
+  if (nx * -st.x + ny * -st.y < 0) { nx = -nx; ny = -ny; }
+  const a = p.mu * G_SABIT;
+  st.vx += nx * a * dt; st.vy += ny * a * dt;
+  /* hızın büyüklüğü korunur (sürtünme burada yalnız yön değiştiriyor) */
+  const v2 = Math.hypot(st.vx, st.vy);
+  st.vx *= v / v2; st.vy *= v / v2;
+  st.x += st.vx * dt; st.y += st.vy * dt;
+  st.aci = Math.atan2(st.y, st.x);
+  /* asfaltın dış kenarını geçince (≈ r·1,3) araç yoldan çıkmış sayılır ve orada durur */
+  if (Math.hypot(st.x, st.y) > p.r * 1.3) st.cikti = true;
+}
+
+function bitti(st, p) { return st.cikti || st.t > p.T * 2.2; }
+
+/** Cismin konumu (m) ve hız doğrultusu (birim vektör). */
+function konum(st, p) {
+  if (st.kayma) {
+    const v = Math.hypot(st.vx, st.vy) || 1;
+    return { x: st.x, y: st.y, tx: st.vx / v, ty: st.vy / v };
+  }
+  return { x: p.r * Math.cos(st.aci), y: p.r * Math.sin(st.aci),
+           tx: -Math.sin(st.aci), ty: Math.cos(st.aci) };
+}
 
 /* ------------------------------------------------- Gerçekçi görünüm */
 
@@ -100,7 +139,8 @@ function cizGercek(ctx, w, h, st, p) {
   ctx.fillStyle = viraj ? '#8A8A82' : '#5F6B78';
   ctx.beginPath(); ctx.arc(cx, cy, 5, 0, 6.2832); ctx.fill();
 
-  const px = cx + rp * Math.cos(st.aci), py = cy + rp * Math.sin(st.aci);
+  const kk = konum(st, p);
+  const px = cx + kk.x * s, py = cy + kk.y * s;
 
   /* ip (sadece taş modunda) */
   if (!viraj) {
@@ -112,7 +152,8 @@ function cizGercek(ctx, w, h, st, p) {
   if (viraj) {
     ctx.save();
     ctx.translate(px, py);
-    ctx.rotate(st.aci + Math.PI / 2);
+    /* aracın uzun ekseni (yerel −y = ön) GİDİŞ yönüne bakmalı */
+    ctx.rotate(Math.atan2(kk.ty, kk.tx) + Math.PI / 2);
     ctx.fillStyle = savruluyor ? '#E24B4A' : '#2E5C8A';
     D.yuvarlakDik(ctx, -11, -18, 22, 36, 4); ctx.fill();
     ctx.fillStyle = '#9FC8E8';
@@ -123,7 +164,7 @@ function cizGercek(ctx, w, h, st, p) {
   }
 
   /* --- kuvvet ve hız okları --- */
-  const tx = -Math.sin(st.aci), ty = Math.cos(st.aci);
+  const tx = kk.tx, ty = kk.ty;
   const rx = Math.cos(st.aci), ry = Math.sin(st.aci);
   const v = hiz(p);
 
@@ -132,15 +173,12 @@ function cizGercek(ctx, w, h, st, p) {
   D.vektor(ctx, px, py, px - rx * 48, py - ry * 48, R.merkezcil,
            viraj ? 'sürtünme' : 'ip gerilmesi', { kalinlik: 2.8 });
 
-  /* savrulma uyarısı */
+  /* savrulma: aracın gerçekte izlediği daha geniş yay (R = ϑ²/μg) */
   if (savruluyor) {
-    ctx.save();
-    ctx.setLineDash([6, 6]);
-    ctx.strokeStyle = 'rgba(226,75,74,.85)'; ctx.lineWidth = 2.4;
-    ctx.beginPath();
-    ctx.moveTo(px, py); ctx.lineTo(px + tx * rp * 1.1, py + ty * rp * 1.1);
-    ctx.stroke();
-    ctx.restore();
+    const Rk = v * v / (p.mu * G_SABIT);
+    D.yaziHaleli(ctx, st.cikti ? 'araç yoldan çıktı' : 'kayıyor · yol yarıçapı ϑ²/(μs·g) = ' + D.biçim(Rk) + ' m',
+                 w / 2, h - 34, '#FFB4B4', '700 11px system-ui, sans-serif', 'center',
+                 'rgba(11,18,32,.6)');
   }
 
   /* Rozet kısa: sol üstteki "gerçekçi görünüm" etiketiyle çakışmasın. */
@@ -173,8 +211,9 @@ function cizKlasik(ctx, w, h, st, p) {
   D.yorunge(ctx, cx, cy, rp, K.eksen);
   D.noktaCisim(ctx, cx, cy, 4, K.metin2);
 
-  const px = cx + rp * Math.cos(st.aci), py = cy + rp * Math.sin(st.aci);
-  const tx = -Math.sin(st.aci), ty = Math.cos(st.aci);
+  const kk = konum(st, p);
+  const px = cx + kk.x * s, py = cy + kk.y * s;
+  const tx = kk.tx, ty = kk.ty;
   const rx = Math.cos(st.aci), ry = Math.sin(st.aci);
 
   /* hız teğet, ivme merkeze — ikisi birbirine DİK */
