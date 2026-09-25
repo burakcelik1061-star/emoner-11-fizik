@@ -32,16 +32,22 @@ ortası şişkinse toplar.</p>
 <p>Aynada tek odak vardı; mercekte <strong>iki</strong> vardır ve merkeze
 <strong>eşit uzaklıktadırlar</strong>. Sebebi basit: ışık merceğin iki yüzünden de
 girebilir ve mercek her iki yönde aynı davranır.</p>
-<ul>
-  <li><strong>F</strong> — ışığın çıktığı taraftaki odak (görüntü odağı)</li>
-  <li><strong>F′</strong> — ışığın geldiği taraftaki odak (cisim odağı)</li>
-</ul>
+<p>Kitapta iki odağın ikisi de <strong>F</strong> ile gösterilir (Şekil 3.35). Asal eksene
+paralel gelen ışınların (ya da uzantılarının) kesiştiği nokta odak, odak ile optik merkez O
+arasındaki uzaklık <strong>odak uzaklığı f</strong>&rsquo;dir. Kitapta <strong>F′</strong> harfi ise
+aşağıdaki <em>yardımcı odak</em> için kullanılır.</p>
+<p style="color:var(--text-2)">Merceğin yüzeylerini tamamlayan kürelerin merkezleri
+<strong>M₁, M₂</strong> (eğrilik merkezleri), yarıçapları <strong>R₁, R₂</strong>&rsquo;dir; iki merkezden
+geçen doğru asal eksendir (Şekil 3.34). Simülasyonun 2. düzeneği merceği gerçek R₁ ve R₂
+değerleriyle çizer ve M₁, M₂&rsquo;yi işaretler.</p>
 
 <h3 style="margin-top:22px">Mercek yapıcı denklemi</h3>
-<p>Bir merceğin odak uzaklığı üç şeye bağlıdır: camın <strong>indisi</strong> ve iki
-yüzeyin <strong>eğrilik yarıçapları</strong>.</p>
-<div class="formul" style="max-width:340px;margin:14px 0;border-top-color:var(--accent)">
-  <div class="fm" style="color:var(--accent)">1/f = (n − 1)·(1/R₁ − 1/R₂)</div>
+<p>Kitaba göre (s.376) bir merceğin odak uzaklığı yüzeylerin <strong>eğrilik
+yarıçaplarına</strong>, merceğe gönderilen <strong>ışığın rengine</strong>, <strong>merceğin</strong> ve
+<strong>ortamın</strong> kırıcılık indisine bağlıdır. Hepsi tek bağıntıda:</p>
+<div class="formul" style="max-width:380px;margin:14px 0;border-top-color:var(--accent)">
+  <div class="fm" style="color:var(--accent)">1/f = (n/n₀ − 1)·(1/R₁ − 1/R₂)</div>
+  <div class="fm-ad">n: merceğin, n₀: ortamın indisi · havada n₀ = 1</div>
 </div>
 <table class="degisken-tablo">
   <thead><tr><th>Durum</th><th>İşaret</th></tr></thead>
@@ -79,6 +85,16 @@ bir toplayıcı olur.</p>
   söyler. Büyük numara = kısa odak = güçlü mercek.</p>
 </div>
 
+<h3 style="margin-top:22px">Mercek karakter değiştirebilir</h3>
+<p>Merceğin indisi bulunduğu ortamınkinden <strong>küçükse</strong> (n &lt; n₀) çarpan
+<code>n/n₀ − 1</code> eksi olur: yakınsak mercek ışığı <strong>dağıtır</strong>, ıraksak mercek
+<strong>toplar</strong> (Şekil 3.40). n = n₀ olduğunda mercek ışığı hiç kırmaz, görünmez olur.
+Örnek: n = 1,5 ve R₁ = 20 cm, R₂ = −20 cm&rsquo;lik mercek havada f = +20 cm, suda (1,33)
+f = +78 cm, n₀ = 1,75 olan bir sıvıda f = −70 cm&rsquo;dir. Simülasyonun 2. düzeneğinde oynatınca
+ortamın indisi artar ve bu değişim canlı görülür.</p>
+<p style="color:var(--text-2)">Renk: camın indisi mavi ışıkta kırmızıdakinden biraz büyüktür;
+bu yüzden mavi ışığın odağı merceğe biraz daha yakındır.</p>
+
 <h3 style="margin-top:22px">Mercek sistemleri</h3>
 <p>Birbirine değen ince mercekler için <strong>dioptriler toplanır</strong>:</p>
 <div class="formul" style="max-width:300px;margin:14px 0">
@@ -87,24 +103,55 @@ bir toplayıcı olur.</p>
 <p>Dioptri biriminin icat sebebi tam da budur: odak uzaklıkları toplanmaz ama
 <strong>dioptriler toplanır</strong>. Optikçinin işi böylece basit toplama işlemine iner.</p>
 
-<h3 style="margin-top:22px">Üç özel ışın</h3>
+<h3 style="margin-top:22px">Dört özel ışın (kitap Tablo 3.6 ve 3.7)</h3>
 <table class="degisken-tablo">
-  <thead><tr><th>#</th><th>Nasıl gelir</th><th>Nasıl çıkar</th></tr></thead>
+  <thead><tr><th>#</th><th>Nasıl gelir</th><th>Yakınsakta çıkış</th><th>Iraksakta çıkış</th></tr></thead>
   <tbody>
-    <tr><td class="sembol">1</td><td>eksene <strong>paralel</strong></td><td><strong>odaktan</strong> geçerek</td></tr>
-    <tr><td class="sembol">2</td><td><strong>merkezden</strong> (O)</td><td><strong>sapmadan</strong> devam eder</td></tr>
-    <tr><td class="sembol">3</td><td><strong>ön odaktan</strong> geçerek</td><td>eksene <strong>paralel</strong></td></tr>
+    <tr><td class="sembol">1</td><td>asal eksene <strong>paralel</strong></td><td>odaktan geçer</td><td>uzantısı geldiği taraftaki odaktan geçer</td></tr>
+    <tr><td class="sembol">2</td><td><strong>optik merkeze</strong> (O)</td><td colspan="2"><strong>kırılmadan</strong> devam eder</td></tr>
+    <tr><td class="sembol">3</td><td><strong>odaktan</strong> geçecek şekilde</td><td colspan="2">asal eksene <strong>paralel</strong> çıkar</td></tr>
+    <tr><td class="sembol">4</td><td><strong>2F</strong>&rsquo;den geçecek şekilde</td><td>öbür taraftaki 2F&rsquo;den geçer</td><td>uzantısı geldiği taraftaki 2F&rsquo;den geçer</td></tr>
   </tbody>
 </table>
+<p style="margin-top:10px;color:var(--text-2)">4. ışının sebebi: asal eksendeki 2F noktasının
+görüntüsü öbür taraftaki 2F noktasıdır (a = 2f ⟹ b = 2f). O noktadan çıkan her ışın bu yüzden
+öbür 2F&rsquo;de toplanır.</p>
 <p style="margin-top:10px"><strong>2. ışın neden sapmaz?</strong> Merceğin tam ortasında iki
 yüzey birbirine <strong>paraleldir</strong>. Yani orası ince bir cam levha gibi davranır —
-3.6&rsquo;da gördüğümüz gibi levhadan geçen ışın <strong>sapmaz</strong>, yalnızca kayar.
-Mercek ince kabul edildiği için kayma da ihmal edilir.</p>`,
+3.5&rsquo;in ek bilgisinde gördüğümüz gibi levhadan geçen ışın <strong>sapmaz</strong>, yalnızca kayar.
+Mercek ince kabul edildiği için kayma da ihmal edilir.</p>
+
+<h3 style="margin-top:22px">Herhangi bir ışın · yardımcı eksen</h3>
+<p>Özel olmayan bir ışının nasıl kırılacağı kitapta şöyle bulunur (Şekil 3.41):</p>
+<ol>
+  <li>Optik merkezden gelen ışına <strong>paralel</strong> bir doğru çizilir: <strong>yardımcı eksen</strong>.</li>
+  <li>Odaktan asal eksene dik çizilir (odak düzlemi).</li>
+  <li>Bu dikmenin yardımcı eksenle kesiştiği nokta <strong>yardımcı odak F′</strong>&rsquo;dür.</li>
+  <li>Işın (yakınsakta) ya da uzantısı (ıraksakta) F′&rsquo;den geçecek şekilde kırılır.</li>
+</ol>
+<p style="color:var(--text-2)">Sebebi: birbirine paralel gelen ışınların hepsi aynı noktada
+toplanır; bunlardan biri O&rsquo;dan geçip sapmayan yardımcı eksendir. Simülasyonun 4. düzeneğinde
+gelen ışının açısı taranır; F′ odak düzlemi üzerinde kayar.</p>
+
+<h3 style="margin-top:22px">Mercek sistemleri: teleskop ve gözlük</h3>
+<ul>
+  <li><strong>Galileo teleskobu (Alıştırma 25):</strong> önde yakınsak (A), arkada ıraksak (B)
+  mercek bulunur. Aralarındaki uzaklık f₁ − |f₂| olunca iki odak çakışır; paralel giren ışınlar
+  paralel çıkar ama açıları f₁/|f₂| kat büyür. Görüntü düz çıkar.</li>
+  <li><strong>Miyop (Alıştırma 26):</strong> göz merceği fazla güçlüdür ya da göz küresi uzundur;
+  uzaktaki cismin görüntüsü retinanın <strong>önüne</strong> düşer. <strong>Iraksak</strong> gözlük
+  camı ışığı biraz dağıtarak odağı retinaya taşır.</li>
+  <li><strong>Hipermetrop:</strong> göz merceği yeterince güçlü değildir ya da göz küresi kısadır;
+  yakındaki cismin görüntüsü retinanın <strong>arkasına</strong> düşer. <strong>Yakınsak</strong> gözlük
+  camı ışığı biraz toplar.</li>
+</ul>
+<p style="color:var(--text-2)">Simülasyonun 5. düzeneğinde teleskop ve iki göz kusuru ince
+mercek hesabıyla gösterilir; gözde cismin uzaklığı taranır, gözlük takılıp çıkarılabilir.</p>`,
 
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: '1/f = (n−1)(1/R₁ − 1/R₂)', aciklama: 'Mercek yapıcı denklemi' },
+    { fm: '1/f = (n/n₀ − 1)(1/R₁ − 1/R₂)', aciklama: 'Mercek yapıcı denklemi (havada n₀ = 1)' },
     { fm: 'D = 1/f',                  aciklama: 'Dioptri (f metre cinsinden)' },
     { fm: 'D = D₁ + D₂',              aciklama: 'Değen mercekler' },
     { fm: 'f > 0 · ince kenarlı',     aciklama: 'Toplayıcı, odak gerçek' },
