@@ -789,19 +789,30 @@ function cizGrafik(ctx, w, h, st, pHam) {
       imlec: { t: Math.abs(f), v: dioptri(f) },
       veri: d1, tMin: 8, tMax: 60, vMin: s < 0 ? -13 : 0, vMax: s < 0 ? 0 : 13, renk: R.normal
     });
-    const a0 = p.cisimUzaklik;
-    const d2 = [];
-    for (let aq = 2; aq <= 150; aq += 1) {
-      if (Math.abs(aq - f) < 1.5) continue;
+    /* a = f’de b → ±∞: iki kol AYRI çizilir (tek dizide dikey bir çizgiyle
+       birleşiyor, f taranırken o çizgi titriyordu). Değerler çerçevenin biraz
+       dışında kırpılır, eğri çerçeveden düzgünce çıkar. İmleç de kırpılır:
+       görüntü çok uzaktayken grafiğin kenarında kalır, kaybolmaz. */
+    const a0 = p.cisimUzaklik, SINIR = 200;
+    const kol = [[], []];
+    for (let aq = 1; aq <= 150.001; aq += 0.5) {
+      if (Math.abs(aq - f) < 1e-6) continue;
       const b = (aq * f) / (aq - f);
-      if (Math.abs(b) <= 200) d2.push({ t: aq, v: b });
+      kol[aq < f ? 0 : 1].push({ t: aq, v: Math.max(-1.3 * SINIR, Math.min(1.3 * SINIR, b)) });
     }
-    const b0 = Math.abs(a0 - f) < 1e-6 ? null : (a0 * f) / (a0 - f);
-    D.miniGrafik(ctx, {
-      x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'b − a   (1/f = 1/a + 1/b · bu merceğin görüntü uzaklığı)', birim: 'cm', tEtiket: 'a (cm)',
-      imlec: b0 === null || Math.abs(b0) > 200 ? null : { t: a0, v: b0 },
-      veri: d2, tMax: 150, vMin: -200, vMax: 200, renk: R.kuvvet
+    const b0 = Math.abs(a0 - f) < 1e-6 ? SINIR : (a0 * f) / (a0 - f);
+    const imlec = { t: a0, v: Math.max(-SINIR, Math.min(SINIR, b0)) };
+    const imKol = a0 < f ? 0 : 1;
+    let ilk = true;
+    kol.forEach((k, i) => {
+      if (k.length < 2) return;
+      D.miniGrafik(ctx, {
+        x: pay * 2 + gw, y: 3, w: gw, h: gh,
+        baslik: ilk ? 'b − a   (1/f = 1/a + 1/b · a = f’de b → ∞)' : '', birim: ilk ? 'cm' : '', tEtiket: ilk ? 'a (cm)' : '',
+        imlec: i === imKol ? imlec : null,
+        veri: k, tMax: 150, vMin: -SINIR, vMax: SINIR, renk: R.kuvvet
+      });
+      ilk = false;
     });
     return;
   }
