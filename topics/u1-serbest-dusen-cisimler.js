@@ -42,8 +42,10 @@ olmasıdır</strong>. Cisme başlangıçta hiçbir hız verilmez; eliniz açıl�
 Aralarındaki tek fark <strong>ilk hızdır</strong> — hareketi birbirinden ayıran şey budur.</p>
 
 <p>Dünya yüzeyine yakın yerlerde <code>g ≈ 9,8 m/s²</code>'dir; sorularda işlem kolaylığı için
-genellikle <code>g = 10 m/s²</code> alınır. Ay'da bu değer yaklaşık <code>1,6 m/s²</code>,
-yani Dünya'nın altıda biri kadardır.</p>
+genellikle <code>g = 10 m/s²</code> alınır. Kitaba göre g&rsquo;nin değeri <strong>yüksekliğe,
+enlem ve boylama</strong> bağlı olarak biraz değişir; değişim çok küçük olduğundan sabit kabul
+edilir. Bir gezegenin çekim ivmesi ise o gezegenin <strong>kütlesine ve boyutlarına</strong> bağlıdır:
+Ay&rsquo;da yaklaşık <code>1,62 m/s²</code>, yani Dünya&rsquo;nın altıda biri kadardır.</p>
 
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span>“Serbest düşme”nin iki anlamı</div>
@@ -63,7 +65,38 @@ yani Dünya'nın altıda biri kadardır.</p>
 <p>Havada düşen bir yaprak ile bir taşın farklı hızlarda inmesinin sebebi kütleleri değil,
 <strong>hava direncidir</strong>. Havası alınmış bir ortamda ikisi aynı anda yere iner.
 Bu, 2 Ağustos 1971'de Apollo 15 astronotu David Scott tarafından Ay yüzeyinde
-bir şahin tüyü ve jeolog çekici bırakılarak canlı yayında gösterilmiştir.</p>
+0,03 kg&rsquo;lık bir şahin tüyü ve 1,32 kg&rsquo;lık jeolog çekici bırakılarak canlı yayında
+gösterilmiştir: ikisi aynı anda yere indi.</p>
+
+<h3 style="margin-top:22px">1. Etkinlik: farklı toplar</h3>
+<p>Kitaptaki etkinlikte basketbol, bovling, futbol, tenis, golf topları ve cam bilye düşürülür.
+Simülasyonun 2. düzeneği bunu gerçek kütle ve çaplarla yapar (80 m, g = 9,8 m/s²):</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Top</th><th>Kütle</th><th>Havasız</th><th>Havalı</th></tr></thead>
+  <tbody>
+    <tr><td>Bovling</td><td>6,35 kg</td><td>4,04 s</td><td>4,13 s</td></tr>
+    <tr><td>Golf</td><td>46 g</td><td>4,04 s</td><td>4,53 s</td></tr>
+    <tr><td>Cam bilye</td><td>5,4 g</td><td>4,04 s</td><td>4,62 s</td></tr>
+    <tr><td>Tenis</td><td>58 g</td><td>4,04 s</td><td>5,00 s</td></tr>
+    <tr><td>Basketbol</td><td>620 g</td><td>4,04 s</td><td>5,18 s</td></tr>
+    <tr><td>Futbol</td><td>430 g</td><td>4,04 s</td><td>5,43 s</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Havasız ortamda hepsi aynı anda iner. Havada ise iniş sırası
+<strong>kütle sırası değildir</strong>: 620 g&rsquo;lık basketbol topu, 5,4 g&rsquo;lık cam bilyeden daha geç
+iner. Farkı yaratan, hava direncinin cismin ağırlığına oranıdır; büyük yüzeyli ve hafif
+cisimler daha çok etkilenir. (Simülasyonda küre için C = 0,47, hava için ρ = 1,2 kg/m³.)</p>
+
+<h3 style="margin-top:22px">Kitaptaki örnek: iki hava dalgıcı</h3>
+<p>Aynı düşey çizgide birkaç saniye arayla atlayan iki dalgıç için (hava direnci ihmal):</p>
+<ul>
+  <li><strong>İvmeleri eşittir:</strong> ikisi de g ile hızlanır.</li>
+  <li><strong>Hız farkları sabittir:</strong> ϑ₁ − ϑ₂ = g·Δt; örneğin Δt = 2 s ise her an 19,6 m/s.</li>
+  <li><strong>Aralarındaki mesafe artar:</strong> önde giden hep daha hızlı olduğu için aynı
+  sürede daha çok yol alır.</li>
+</ul>
+<p style="color:var(--text-2)">Simülasyonun 3. düzeneğinde iki dalgıç helikopterden atlar;
+grafiklerde hız doğruları paralel, aradaki mesafe ise artarak çizilir.</p>
 
 <p style="color:var(--text-2);font-size:.94em">Bu konudan sonraki tüm hesaplarda hava
 direnci ihmal edilir. Hava direnci, nicel olarak yalnızca <strong>1.5 Limit hız</strong>
@@ -74,7 +107,7 @@ formuller: {
   liste: [
     { fm: 'a = g', aciklama: 'Serbest düşen her cismin ivmesi g’dir — kütleye bağlı değildir.' },
     { fm: 'G = m · g', aciklama: 'Cisme etki eden tek kuvvet: ağırlık.' },
-    { fm: 'g<sub>Dünya</sub> ≈ 10 m/s²', aciklama: 'Ay’da ≈ 1,6 m/s², yaklaşık altıda biri.' }
+    { fm: 'g<sub>Dünya</sub> ≈ 9,8 m/s²', aciklama: 'Sorularda genellikle 10 alınır. Ay’da ≈ 1,62 m/s², yaklaşık altıda biri.' }
   ],
   degiskenler: [
     { sembol: 'g', ad: 'Yer çekimi ivmesi', birim: 'm/s²' },
