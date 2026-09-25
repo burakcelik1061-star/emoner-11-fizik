@@ -17,25 +17,25 @@ kilometrelerce yol alır.`,
 /* ------------------------------------------------------------- Kavram */
 kavram: `
 <h3>Fiberin yapısı</h3>
-<p>Fiber tek parça cam değildir. İç içe iki katmandan oluşur:</p>
+<p>Fiber optik kablo kitapta (Şekil 3.27) üç kısımdan oluşur:</p>
 <table class="degisken-tablo">
-  <thead><tr><th>Katman</th><th>İndis</th><th>Tipik çap</th><th>Görevi</th></tr></thead>
+  <thead><tr><th>Kısım</th><th>İndis</th><th>Tipik çap</th><th>Görevi</th></tr></thead>
   <tbody>
-    <tr><td><strong>Çekirdek</strong> (core)</td><td class="sembol">n<sub>ç</sub> ≈ 1,48</td><td>8–62 µm</td><td>ışığı taşır</td></tr>
-    <tr><td><strong>Kılıf</strong> (cladding)</td><td class="sembol">n<sub>k</sub> ≈ 1,46</td><td>125 µm</td><td>tam yansımayı sağlar</td></tr>
-    <tr><td>Koruyucu kaplama</td><td>—</td><td>250 µm</td><td>mekanik koruma</td></tr>
+    <tr><td><strong>Çekirdek</strong> (merkez)</td><td class="sembol">n<sub>ç</sub> ≈ 1,48</td><td>8–62 µm</td><td>ışığı yansımalarla taşır</td></tr>
+    <tr><td><strong>Cam örtü</strong></td><td class="sembol">n<sub>ö</sub> ≈ 1,46</td><td>125 µm</td><td>indisi çekirdekten küçük ⟹ tam yansımayı sağlar</td></tr>
+    <tr><td><strong>Kılıf</strong> (plastik)</td><td>—</td><td>250 µm ve üstü</td><td>nem ve darbeye karşı korur</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px">Kritik koşul tek bir eşitsizliktir: <strong>n<sub>ç</sub> &gt;
-n<sub>k</sub></strong>. Çekirdek daha kırıcı olmasaydı tam yansıma olmaz, ışık ilk
+n<sub>ö</sub></strong>. Çekirdek daha kırıcı olmasaydı tam yansıma olmaz, ışık ilk
 santimetrede kaçardı.</p>
 
 <h3 style="margin-top:22px">Işık nasıl hapsoluyor?</h3>
-<p>Çekirdek–kılıf sınırındaki sınır açısı:</p>
+<p>Çekirdek–cam örtü sınırındaki sınır açısı:</p>
 <div class="formul" style="max-width:260px;margin:14px 0;border-top-color:var(--accent)">
-  <div class="fm" style="color:var(--accent)">sin θ<sub>s</sub> = n<sub>k</sub> / n<sub>ç</sub></div>
+  <div class="fm" style="color:var(--accent)">sin θ<sub>s</sub> = n<sub>ö</sub> / n<sub>ç</sub></div>
 </div>
-<p>n<sub>ç</sub> = 1,48 ve n<sub>k</sub> = 1,46 için <code>θ_s = 80,57°</code>. Çok büyük bir
+<p>n<sub>ç</sub> = 1,48 ve n<sub>ö</sub> = 1,46 için <code>θ_s = 80,57°</code>. Çok büyük bir
 açı — yani ışının duvara neredeyse <strong>yalayarak</strong> çarpması gerekir. Işın fiber
 ekseninden fazla sapmamalıdır.</p>
 
@@ -52,7 +52,7 @@ ekseninden fazla sapmamalıdır.</p>
 <p>Fiberin ucuna her açıdan ışık tutamazsın. Yalnızca belli bir <strong>koninin
 içinden</strong> girenler tutunur:</p>
 <div class="formul" style="max-width:340px;margin:14px 0;border-top-color:var(--accent)">
-  <div class="fm" style="color:var(--accent)">NA = sin θ<sub>kabul</sub> = √(n<sub>ç</sub>² − n<sub>k</sub>²)</div>
+  <div class="fm" style="color:var(--accent)">NA = sin θ<sub>kabul</sub> = √(n<sub>ç</sub>² − n<sub>ö</sub>²)</div>
 </div>
 <p>Örnek fiberde <code>NA = √(1,48² − 1,46²) = 0,2425</code> ⟹ kabul açısı
 <strong>14,03°</strong>. Koninin tam açıklığı 28°&rsquo;dir. Bu yüzden fiber uçlarının
@@ -60,17 +60,53 @@ hizalanması hassas bir iştir; birkaç mikronluk kayma sinyali yok edebilir.</p
 
 <h3 style="margin-top:22px">Mod dağılımı — fiberin sınırı</h3>
 <p>Eksen boyunca giden ışın en kısa yolu izler. Sınır açısında zikzak çizen ışın ise
-<code>n<sub>ç</sub>/n<sub>k</sub></code> kat daha uzun yol alır. Aynı anda gönderilen bu iki
+<code>n<sub>ç</sub>/n<sub>ö</sub></code> kat daha uzun yol alır. Aynı anda gönderilen bu iki
 ışın hedefe <strong>farklı zamanlarda</strong> varır:</p>
 <div class="formul" style="max-width:340px;margin:14px 0">
-  <div class="fm">Δt = (L·n<sub>ç</sub>/c)·(n<sub>ç</sub>/n<sub>k</sub> − 1)</div>
+  <div class="fm">Δt = (L·n<sub>ç</sub>/c)·(n<sub>ç</sub>/n<sub>ö</sub> − 1)</div>
 </div>
-<p>Örnek fiberde <strong>67,6 ns/km</strong>. 10 km&rsquo;de 676 ns — keskin bir ışık
+<p>Bu gecikme <strong>çok modlu</strong> fiberin sorunudur. Örnek fiberde <strong>67,6 ns/km</strong>. 10 km&rsquo;de 676 ns — keskin bir ışık
 darbesi bu kadar <strong>yayılır</strong>. Darbeler birbirine karışmadan en fazla
 <strong>0,74 Mb/s</strong> veri gönderilebilir.</p>
 <p style="color:var(--text-2)">Gerçek internet omurgası bunun milyonlarca katı hızda
 çalışır. Çözüm, çekirdeği o kadar inceltmektir ki (≈ 9 µm) tek bir yol kalsın:
 <strong>tek modlu fiber</strong>. Böylece mod dağılımı tamamen ortadan kalkar.</p>
+
+<h3 style="margin-top:22px">Tek modlu ve çok modlu fiber</h3>
+<table class="degisken-tablo">
+  <thead><tr><th></th><th>Tek modlu</th><th>Çok modlu</th></tr></thead>
+  <tbody>
+    <tr><td>Çekirdek</td><td>çok ince (≈ 9 µm)</td><td>daha kalın (50–62 µm)</td></tr>
+    <tr><td>Işığın yolu</td><td>tek yol (mod)</td><td>birden fazla yol, daha çok yansıma</td></tr>
+    <tr><td>Kayıp</td><td>uzun mesafede daha az</td><td>daha fazla</td></tr>
+    <tr><td>Kullanım (kitap)</td><td>şehirler ve kıtalar arası genel ağ</td><td>binalar arası, kampüs içi</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px;color:var(--text-2)">Simülasyonun 3. düzeneğinde iki fiberde de ışık
+darbeleri akar; çok modludaki eğik ışının darbesi geride kalır.</p>
+
+<h3 style="margin-top:22px">Işık fiberden nasıl çıkar?</h3>
+<p>Kitaptaki örnekte (s.365) ışın havadan çekirdeğe girerken normale yaklaşarak kırılır,
+çekirdekte tam yansımalarla ilerler, sonda havaya çıkarken <strong>normalden uzaklaşarak</strong>
+kırılır. İki uç yüzey paralel olduğundan ışık fiberden <strong>girdiği açıyla</strong> çıkar.
+Uca dik giren ışın ise hiç kırılmadan geçer. Simülasyonun 1. düzeneği bunu gösterir.</p>
+
+<h3 style="margin-top:22px">Bükülme kaybı ve su dolu şişe</h3>
+<p>Fiber kıvrılsa da ışık onu izler, ama <strong>keskin</strong> bir kıvrımda dış duvara gelme
+açısı küçülür. Sınır açısının altına inince ışık dışarı kaçar; bu, fiberde veri kaybının
+sebeplerinden biridir. Kitaptaki Alıştırma 22&rsquo;de su dolu şişenin deliğinden akan su, içine
+gönderilen lazer ışığını aynı ilkeyle taşır (su için sınır açısı ≈ 48°).</p>
+<p style="color:var(--text-2)">Simülasyonun 4. düzeneğinde ışınlar bükülen bir su (ya da
+pleksiglas) çubukta tam olarak izlenir. Su çubukta, bükülme yarıçapı çubuğun yarı
+kalınlığının yaklaşık 8 katından küçülünce ışık kaçmaya başlar.</p>
+
+<h3 style="margin-top:22px">Bilgi nasıl taşınır?</h3>
+<ul>
+  <li>Vericide ses, veri ya da görüntü elektrik sinyaline çevrilir.</li>
+  <li>Gigabit arayüz çevirici elektrik sinyalini ışığa çevirir.</li>
+  <li>Işık, fiberde alıcıdaki foto detektöre kadar ilerler.</li>
+  <li>Foto detektör ışığı yeniden elektrik sinyaline, o da bilgiye çevrilir.</li>
+</ul>
 
 <h3 style="margin-top:22px">Neden bakır tel değil?</h3>
 <table class="degisken-tablo">
@@ -98,16 +134,16 @@ indüksiyon, bir cam telde sinyal üretemez.</p>
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'n<sub>ç</sub> > n<sub>k</sub>',           aciklama: 'Fiberin çalışma koşulu' },
-    { fm: 'sin θ<sub>s</sub> = n<sub>k</sub>/n<sub>ç</sub>', aciklama: 'Çekirdek–kılıf sınır açısı' },
-    { fm: 'NA = √(n<sub>ç</sub>² − n<sub>k</sub>²)',  aciklama: 'Sayısal açıklık' },
+    { fm: 'n<sub>ç</sub> > n<sub>ö</sub>',           aciklama: 'Fiberin çalışma koşulu' },
+    { fm: 'sin θ<sub>s</sub> = n<sub>ö</sub>/n<sub>ç</sub>', aciklama: 'Çekirdek–cam örtü sınır açısı' },
+    { fm: 'NA = √(n<sub>ç</sub>² − n<sub>ö</sub>²)',  aciklama: 'Sayısal açıklık' },
     { fm: 'sin θ<sub>kabul</sub> = NA',               aciklama: 'En büyük giriş açısı' },
     { fm: 'sin θ₀ = n<sub>ç</sub>·sin θ<sub>r</sub>', aciklama: 'Uç yüzeyde kırılma' },
-    { fm: 'Δt = (L·n<sub>ç</sub>/c)(n<sub>ç</sub>/n<sub>k</sub> − 1)', aciklama: 'Mod dağılımı gecikmesi' }
+    { fm: 'Δt = (L·n<sub>ç</sub>/c)(n<sub>ç</sub>/n<sub>ö</sub> − 1)', aciklama: 'Mod dağılımı gecikmesi' }
   ],
   degiskenler: [
     { sembol: 'n<sub>ç</sub>', ad: 'Çekirdek indisi', birim: '—' },
-    { sembol: 'n<sub>k</sub>', ad: 'Kılıf indisi',    birim: '—' },
+    { sembol: 'n<sub>ö</sub>', ad: 'Cam örtü indisi',    birim: '—' },
     { sembol: 'NA', ad: 'Sayısal açıklık',            birim: '—' },
     { sembol: 'θ₀', ad: 'Giriş açısı',                birim: '°' },
     { sembol: 'L',  ad: 'Fiber uzunluğu',             birim: 'km' },
@@ -147,14 +183,14 @@ turetim: {
                  </div>` },
 
         { baslik: 'cos θ_s’yi indislerle yaz',
-          html: `<p><code>sin θ_s = n_k/n_ç</code> olduğuna göre:</p>
+          html: `<p><code>sin θ_s = n_ö/n_ç</code> olduğuna göre:</p>
                  <div class="formul" style="max-width:380px">
-                   <div class="fm">cos θ<sub>s</sub> = √(1 − (n<sub>k</sub>/n<sub>ç</sub>)²) = √(n<sub>ç</sub>² − n<sub>k</sub>²) / n<sub>ç</sub></div>
+                   <div class="fm">cos θ<sub>s</sub> = √(1 − (n<sub>ö</sub>/n<sub>ç</sub>)²) = √(n<sub>ç</sub>² − n<sub>ö</sub>²) / n<sub>ç</sub></div>
                  </div>` },
 
         { baslik: 'Sadeleşti',
           html: `<div class="formul" style="max-width:340px;border-top-color:var(--accent)">
-                   <div class="fm" style="color:var(--accent)">NA = sin θ₀(maks) = √(n<sub>ç</sub>² − n<sub>k</sub>²)</div>
+                   <div class="fm" style="color:var(--accent)">NA = sin θ₀(maks) = √(n<sub>ç</sub>² − n<sub>ö</sub>²)</div>
                  </div>
                  <p>n<sub>ç</sub> sadeleşti — <strong>NA yalnızca iki indisin farkına
                  bağlı</strong>, fiberin kalınlığından bağımsız.</p>
@@ -176,21 +212,21 @@ turetim: {
           html: `<p>Sınır açısında zikzak çizen ışının eksenle yaptığı açı
                  <code>90° − θ_s</code>. Bu ışının kat ettiği yol:</p>
                  <div class="formul" style="max-width:320px">
-                   <div class="fm">s = L / cos(90° − θ<sub>s</sub>) = L / sin θ<sub>s</sub> = L·n<sub>ç</sub>/n<sub>k</sub></div>
+                   <div class="fm">s = L / cos(90° − θ<sub>s</sub>) = L / sin θ<sub>s</sub> = L·n<sub>ç</sub>/n<sub>ö</sub></div>
                  </div>` },
 
         { baslik: 'Süresini yaz',
           html: `<div class="formul" style="max-width:300px">
-                   <div class="fm">t<sub>uzun</sub> = s·n<sub>ç</sub>/c = L·n<sub>ç</sub>² / (n<sub>k</sub>·c)</div>
+                   <div class="fm">t<sub>uzun</sub> = s·n<sub>ç</sub>/c = L·n<sub>ç</sub>² / (n<sub>ö</sub>·c)</div>
                  </div>` },
 
         { baslik: 'Farkı al',
           html: `<div class="formul" style="max-width:380px;border-top-color:var(--accent)">
-                   <div class="fm" style="color:var(--accent)">Δt = (L·n<sub>ç</sub>/c)·(n<sub>ç</sub>/n<sub>k</sub> − 1)</div>
+                   <div class="fm" style="color:var(--accent)">Δt = (L·n<sub>ç</sub>/c)·(n<sub>ç</sub>/n<sub>ö</sub> − 1)</div>
                  </div>` },
 
         { baslik: 'Sayısal',
-          html: `<p>L = 10 km, n<sub>ç</sub> = 1,48, n<sub>k</sub> = 1,46:</p>
+          html: `<p>L = 10 km, n<sub>ç</sub> = 1,48, n<sub>ö</sub> = 1,46:</p>
                  <table class="degisken-tablo">
                    <thead><tr><th></th><th>Değer</th></tr></thead>
                    <tbody>
@@ -248,7 +284,7 @@ sim: F.simler['fiber-optik'],
 puf: {
   html: `
     <p><strong>1 · İki farklı açı var, karıştırma.</strong> <em>Sınır açısı</em> (θ_s)
-    çekirdek–kılıf duvarında, <strong>normalden</strong> ölçülür ve büyüktür (~80°).
+    çekirdek–cam örtü duvarında, <strong>normalden</strong> ölçülür ve büyüktür (~80°).
     <em>Kabul açısı</em> fiberin ucunda, <strong>eksenden</strong> ölçülür ve küçüktür
     (~14°). Sorunun hangisini istediğini ilk cümlede belirle.</p>
 
@@ -256,10 +292,10 @@ puf: {
     sadeleşiyor. “Kalın fiberin NA&rsquo;sı büyüktür” diyen şık yanlıştır.</p>
 
     <p><strong>3 · NA formülü fark değil, KARELERİN farkı.</strong>
-    <code>√(n_ç² − n_k²)</code>, <code>n_ç − n_k</code> değil. Bu, en sık yapılan işlem
+    <code>√(n_ç² − n_ö²)</code>, <code>n_ç − n_ö</code> değil. Bu, en sık yapılan işlem
     hatasıdır.</p>
 
-    <p><strong>4 · n_ç ≤ n_k ise fiber çalışmaz.</strong> Sınır açısı yoktur, tam yansıma
+    <p><strong>4 · n_ç ≤ n_ö ise fiber çalışmaz.</strong> Sınır açısı yoktur, tam yansıma
     olmaz. Soruda indisler ters verilmişse cevap “ışık tutunmaz”dır.</p>
 
     <p><strong>5 · Duvara çarpma açısı = 90° − eksenle yapılan açı.</strong> Bu tek
@@ -282,11 +318,11 @@ osym: [
     baslik: 'Sınır açısı mı kabul açısı mı?',
     kaynak: 'Kavram ayrımı',
     govde: `
-      <p>Bir optik fiberin çekirdek indisi <strong>1,50</strong>, kılıf indisi
+      <p>Bir optik fiberin çekirdek indisi <strong>1,50</strong>, cam örtü indisi
       <strong>1,20</strong>&rsquo;dir. Fiber <strong>havada</strong> bulunmaktadır.</p>
       <p>Buna göre:</p>
       <ol style="margin-left:.2em">
-        <li>Çekirdek–kılıf sınır açısı kaç derecedir?</li>
+        <li>Çekirdek–cam örtü sınır açısı kaç derecedir?</li>
         <li>Fiberin sayısal açıklığı (NA) kaçtır?</li>
         <li>En büyük kabul açısı kaç derecedir?</li>
       </ol>`,
@@ -300,7 +336,7 @@ osym: [
         <line x1="200" y1="62"  x2="520" y2="62"  stroke="#7FD4E6" stroke-width="2"/>
         <line x1="200" y1="138" x2="520" y2="138" stroke="#7FD4E6" stroke-width="2"/>
         <text x="330" y="84"  fill="#EAF0FA" font-size="11" font-family="system-ui">çekirdek n = 1,50</text>
-        <text x="330" y="152" fill="#8FB6EC" font-size="11" font-family="system-ui">kılıf n = 1,20</text>
+        <text x="330" y="152" fill="#8FB6EC" font-size="11" font-family="system-ui">cam örtü n = 1,20</text>
         <line x1="60" y1="100" x2="520" y2="100" stroke="#4A5F86" stroke-width="1.2" stroke-dasharray="6 5"/>
         <path d="M200 100 L64 54 L64 146 Z" fill="rgba(53,192,138,.18)"/>
         <path d="M64 54 L200 100 M64 146 L200 100" stroke="#35C08A" stroke-width="1.8" stroke-dasharray="6 4"/>
@@ -319,9 +355,9 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>1. Sınır açısı</strong> — çekirdek–kılıf sınırında:</p>
+      <p><strong>1. Sınır açısı</strong> — çekirdek–cam örtü sınırında:</p>
       <div class="formul" style="max-width:340px;margin:10px 0">
-        <div class="fm">sin θ_s = n_k/n_ç = 1,20/1,50 = 0,80 ⟹ θ_s = <strong>53,13°</strong></div>
+        <div class="fm">sin θ_s = n_ö/n_ç = 1,20/1,50 = 0,80 ⟹ θ_s = <strong>53,13°</strong></div>
       </div>
 
       <p><strong>2. Sayısal açıklık:</strong></p>
@@ -337,14 +373,14 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> NA&rsquo;yı <code>1,50 − 1,20 = 0,30</code>
         diye hesaplıyor — <strong>kareler farkının kökü</strong> alınmalı.
-        <br><strong>C şıkkı</strong> sınır açısını <code>asin(n_ç/n_k)</code> diye ters
+        <br><strong>C şıkkı</strong> sınır açısını <code>asin(n_ç/n_ö)</code> diye ters
         kuruyor (ve 36,87° tümleyeni veriyor).
         <br><strong>Dikkat edilecek nokta:</strong> Bu fiberin indis farkı gerçek
         fiberlerden çok büyük (0,30 yerine 0,02). Bu yüzden kabul açısı 64° gibi devasa
         çıkıyor. Gerçek telekom fiberinde bu açı 14° civarındadır.
         <br><strong>Kontrol:</strong> NA ≤ 1 olmalıdır — yoksa fiber <em>her açıdan</em>
-        ışığı kabul eder demektir ki bu, <code>n_ç² − n_k² ≥ 1</code> gerektirir. 0,90 ≤ 1 ✓
-        <br><strong>Simülasyonda:</strong> n_ç = 1,50, n_k = 1,20 yap; okumalarda tam bu üç
+        ışığı kabul eder demektir ki bu, <code>n_ç² − n_ö² ≥ 1</code> gerektirir. 0,90 ≤ 1 ✓
+        <br><strong>Simülasyonda:</strong> n_ç = 1,50, n_ö = 1,20 yap; okumalarda tam bu üç
         sayıyı göreceksin.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -355,7 +391,7 @@ osym: [
     govde: `
       <p>Optik fiberlerle ilgili aşağıdaki yargıları inceleyiniz:</p>
       <ol style="margin-left:.2em">
-        <li>Çekirdeğin kırılma indisi kılıfınkinden büyük olmak zorundadır.</li>
+        <li>Çekirdeğin kırılma indisi cam örtününkinden büyük olmak zorundadır.</li>
         <li>Fiberdeki ışık kaybının başlıca sebebi, milyonlarca kez yansımada
         oluşan enerji kaybıdır.</li>
         <li>Fiber kıvrıldığında ışık dışarı sızmaz, çünkü tam yansıma koşulu her
@@ -373,7 +409,7 @@ osym: [
     dogru: 0,
     cozum: `
       <ol>
-        <li><strong>Doğru.</strong> n_ç ≤ n_k olsaydı sınır açısı bulunamaz, tam yansıma
+        <li><strong>Doğru.</strong> n_ç ≤ n_ö olsaydı sınır açısı bulunamaz, tam yansıma
         gerçekleşmezdi.</li>
         <li><strong>Yanlış.</strong> Tam yansımada <strong>hiç kayıp yoktur</strong>;
         ışığın %100&rsquo;ü geri döner. Fiberdeki kayıp camın içindeki
@@ -384,7 +420,7 @@ osym: [
         <em>en küçük bükülme yarıçapı</em> vardır (tipik olarak 3 cm). Kablo bu değerin
         altında kıvrılırsa bağlantı zayıflar ya da kopar.</li>
         <li><strong>Yanlış.</strong> Türetimde n_ç sadeleşiyor:
-        <code>NA = √(n_ç² − n_k²)</code>. Çap hiç yok. Çap, NA&rsquo;yı değil taşınabilecek
+        <code>NA = √(n_ç² − n_ö²)</code>. Çap hiç yok. Çap, NA&rsquo;yı değil taşınabilecek
         <strong>mod sayısını</strong> etkiler.</li>
       </ol>
       <div class="kutu puf" style="margin-top:12px">
@@ -548,8 +584,8 @@ baglam: [
         Bir endoskobun fiyatının önemli kısmı bu demettir.
         <br><strong>Fizik bağlantısı:</strong> Her fiberin bağımsız çalışması, tam
         yansımanın <em>yerel</em> bir olay olmasından gelir — ışık yalnızca kendi
-        çekirdeğinin duvarını görür, komşu fiberi değil. Kılıf tam da bunun için vardır:
-        fiberler yan yana dizilse ve kılıf olmasaydı, ışık komşuya sızar ve görüntü
+        çekirdeğinin duvarını görür, komşu fiberi değil. Cam örtü tam da bunun için vardır:
+        fiberler yan yana dizilse ve cam örtü olmasaydı, ışık komşuya sızar ve görüntü
         bulanıklaşırdı.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
