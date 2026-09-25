@@ -46,36 +46,67 @@ kavram: `
   hangi tarafa düşeceğini karıştırmamak için “ışık geçiyor mu, dönüyor mu?” diye sor.</p>
 </div>
 
-<h3 style="margin-top:22px">İnce kenarlı mercekte beş durum</h3>
+<h3 style="margin-top:22px">Yakınsak (ince kenarlı) mercekte görüntüler · kitap Tablo 3.8</h3>
+<p>Görüntünün yeri, cismin bir noktasından çıkan <strong>en az iki</strong> özel ışının (ya da
+uzantılarının) kesiştiği yerdir. Görüntü boyunun cisim boyuna oranı, uzaklıkların oranına
+eşittir: <code>h′/h = |b|/a</code>.</p>
 <table class="degisken-tablo">
   <thead><tr><th>Cismin yeri</th><th>Görüntünün yeri</th><th>Cins</th><th>Yön</th><th>Boy</th><th>Kullanım</th></tr></thead>
   <tbody>
-    <tr><td>Sonsuzda</td><td>F&rsquo;de</td><td>gerçek</td><td>ters</td><td>nokta</td><td>teleskop</td></tr>
+    <tr><td>Sonsuzda</td><td>F&rsquo;de</td><td>gerçek</td><td>—</td><td>nokta</td><td>güneş ışığıyla yakma</td></tr>
     <tr><td>2F&rsquo;nin dışında</td><td>F ile 2F arasında</td><td>gerçek</td><td>ters</td><td>küçük</td><td><strong>fotoğraf makinesi</strong></td></tr>
     <tr><td><strong>2F&rsquo;de</strong></td><td><strong>2F&rsquo;de</strong></td><td>gerçek</td><td>ters</td><td><strong>eşit</strong></td><td>fotokopi (1:1)</td></tr>
-    <tr><td>F ile 2F arasında</td><td>2F&rsquo;nin dışında</td><td>gerçek</td><td>ters</td><td>büyük</td><td><strong>projeksiyon</strong></td></tr>
+    <tr><td>F ile 2F arasında</td><td>2F ile sonsuz arasında</td><td>gerçek</td><td>ters</td><td>büyük</td><td><strong>projeksiyon</strong></td></tr>
     <tr><td><strong>F&rsquo;de</strong></td><td>sonsuzda</td><td colspan="3"><strong>görüntü oluşmaz</strong></td><td>el feneri</td></tr>
     <tr><td>F ile mercek arasında</td><td>cisimle aynı tarafta</td><td>sanal</td><td>düz</td><td>büyük</td><td><strong>büyüteç</strong></td></tr>
   </tbody>
 </table>
 
-<h3 style="margin-top:22px">Kalın kenarlı mercekte tek durum</h3>
+<h3 style="margin-top:22px">Iraksak (kalın kenarlı) mercekte görüntüler · kitap Tablo 3.9</h3>
 <p>f negatif olduğu için <code>a − f = a + |f|</code> daima a&rsquo;dan büyüktür:</p>
 <div class="formul" style="max-width:340px;margin:14px 0">
   <div class="fm">|b| = a·|f| / (a + |f|) &lt; |f| &lt; a</div>
 </div>
 <p>Yani b her zaman negatif ve küçüktür ⟹ görüntü <strong>sanal · düz · küçük</strong>.
 Cisim nerede olursa olsun değişmez. (Tümsek aynanın mercek karşılığıdır.)</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Cismin yeri</th><th>Görüntünün yeri</th><th>Özellikleri</th></tr></thead>
+  <tbody>
+    <tr><td>Sonsuzda</td><td>cisimle aynı taraftaki F&rsquo;de</td><td>nokta · sanal</td></tr>
+    <tr><td>Sonsuzla mercek arasında</td><td>cisim tarafındaki F ile mercek arasında</td><td>düz · sanal · küçük</td></tr>
+    <tr><td><strong>F&rsquo;de</strong></td><td>merceğe <strong>f/2</strong> uzaklıkta</td><td>düz · sanal · boyu <strong>yarısı</strong></td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px;color:var(--text-2)">Son satırın hesabı: <code>b = a·f/(a − f)</code>,
+a = |f| ve f = −|f| ⟹ b = −|f|/2; büyütme |b|/a = ½. Kapı dürbünü (Alıştırma 27) ıraksak
+mercek kullanır: geniş bir alanın düz, küçük ve sanal görüntüsünü verir.</p>
+
+<h3 style="margin-top:22px">Hareket eden cisim (Alıştırma 28)</h3>
+<p>Yaylı sarkacın ucundaki cisim yakınsak merceğin önünde salınırsa görüntüsü de yer ve boy
+değiştirir. Simülasyonun 5. düzeneğinde cisim 3f ile f arasında salınır:</p>
+<ul>
+  <li>a = 3f ⟹ b = 1,5f (gerçek, ters, boyu yarısı) · a = 2f ⟹ b = 2f (boyu eşit):
+  iki görüntü arasındaki uzaklık <strong>0,5f</strong>.</li>
+  <li>a = f&rsquo;ye yaklaştıkça görüntü sonsuza kaçar ve büyür.</li>
+  <li>Aynı salınımda ıraksak mercek kullanılırsa görüntü merceğin önünde, 0,5f ile 0,75f
+  arasında kalır ve daima sanaldır.</li>
+</ul>
 
 <h3 style="margin-top:22px">Optik aletler</h3>
 <table class="degisken-tablo">
   <thead><tr><th>Alet</th><th>f</th><th>a</th><th>b</th><th>Büyütme</th><th>Görüntü</th></tr></thead>
   <tbody>
     <tr><td>Fotoğraf makinesi</td><td>5 cm</td><td>200 cm</td><td>5,13 cm</td><td>0,026</td><td>gerçek · ters · küçük</td></tr>
-    <tr><td>Projeksiyon</td><td>10 cm</td><td>10,5 cm</td><td>210 cm</td><td><strong>20</strong></td><td>gerçek · ters · büyük</td></tr>
+    <tr><td>Projeksiyon</td><td>10 cm</td><td>12,5 cm</td><td>50 cm</td><td><strong>4</strong></td><td>gerçek · ters · büyük</td></tr>
     <tr><td>Büyüteç</td><td>10 cm</td><td>6 cm</td><td>−15 cm</td><td>2,5</td><td>sanal · düz · büyük</td></tr>
+    <tr><td>Kapı dürbünü</td><td>−4 cm</td><td>120 cm</td><td>−3,87 cm</td><td>0,032</td><td>sanal · düz · küçük</td></tr>
   </tbody>
 </table>
+<p style="margin-top:10px"><strong>Mikroskop (Alıştırma 29)</strong> iki yakınsak mercekten oluşur.
+<strong>Objektif</strong>, odağının biraz dışındaki örneğin gerçek, ters ve büyük bir ara görüntüsünü
+oluşturur. Bu görüntü <strong>okülerin</strong> odağının içine düşer ve oküler onu büyüteç gibi
+büyütür. Toplam büyütme iki büyütmenin <strong>çarpımıdır</strong>: 20× objektif ve 10× oküler ⟹
+200×. Simülasyondaki örnekte (fₒ = 1 cm, fₑ = 3 cm) toplam büyütme yaklaşık 20&rsquo;dir.</p>
 <p style="margin-top:10px;color:var(--text-2)">Projeksiyon cihazında görüntü
 <strong>ters</strong> oluştuğu için slayt ya da panel makineye <strong>baş aşağı</strong>
 yerleştirilir. Fotoğraf makinesinde de görüntü sensöre ters düşer; düzeltmeyi
