@@ -93,17 +93,55 @@ yeter. Bu yüzden prizma deneyinde perde yeterince uzağa konur.</p>
   boyu en büyük, indisi en küçüktür.</p>
 </div>
 
-<h3 style="margin-top:22px">Tam yansıma prizmaları</h3>
-<p>45°–45°–90° prizmasında dik kenardan giren ışın hipotenüse <strong>45°</strong> ile
-çarpar. Camın sınır açısı 41,2° olduğuna göre 45° &gt; 41,2° ⟹ <strong>tam
-yansıma</strong>. Işın 90° döner.</p>
+<h3 style="margin-top:22px">Tam yansımalı prizmalar</h3>
+<p>İkizkenar dik üçgen biçimindeki cam prizmalara kitap <strong>tam yansımalı prizma</strong>
+der. Dar açıları 45°&rsquo;dir; kitapta camdan havaya sınır açısı <strong>42°</strong> alınır.
+Işık bu yüzeylere 45° ile geldiği için 45° &gt; 42° ⟹ <strong>tam yansıma</strong>. Prizmaya giren
+ışın en az bir tam yansıma yapar ve prizmayı gelme doğrultusuna <strong>dik ya da paralel</strong>
+olarak terk eder (Şekil 3.33):</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Gelen ışın</th><th>Tam yansıma</th><th>Çıkan ışın</th></tr></thead>
+  <tbody>
+    <tr><td>a) Dik kenara dik</td><td>1 (hipotenüste)</td><td>öbür dik kenardan dik çıkar · <strong>90°</strong> döner</td></tr>
+    <tr><td>b) Hipotenüse dik</td><td>2 (iki dik kenarda)</td><td>hipotenüsten dik çıkar · <strong>180°</strong> geri döner</td></tr>
+    <tr><td>c) Hipotenüse paralel</td><td>1 (hipotenüste)</td><td>hipotenüse <strong>paralel</strong> çıkar</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Kitaptaki iki örnek sınır açısının önemini gösterir:</p>
+<ul>
+  <li><strong>30°–60°–90° prizma:</strong> dik kenara dik giren ışın hipotenüse 30° ile gelir.
+  30° &lt; 42° olduğundan tam yansıma olmaz; ışın normalden uzaklaşarak kırılıp çıkar.</li>
+  <li><strong>K prizması:</strong> kırmızı ışın hipotenüsten yüzeyi sıyırarak çıkıyorsa gelme açısı
+  sınır açısına eşittir, yani kırmızı için θ<sub>s</sub> = 45°. Mavinin indisi daha büyük olduğundan
+  sınır açısı 45°&rsquo;den küçüktür ⟹ mavi tam yansır ve öbür dik kenardan dik çıkar.</li>
+</ul>
+<p style="color:var(--text-2)">Simülasyonun 3. düzeneğinde bu beş durumun hepsi seçilebilir. Işın
+her yüzeyde Snell yasası ya da tam yansımayla tam olarak izlenir. Oynatınca camın indisi
+azaltılır: n &lt; 1,414 olunca 45°&rsquo;lik yüzeyden ışığın kaçtığı görülür.</p>
 <div class="formul" style="max-width:300px;margin:14px 0">
   <div class="fm">Koşul: 45° ≥ θ<sub>s</sub> ⟹ n ≥ 1/sin45° = <strong>1,414</strong></div>
 </div>
 <p>Dürbün, periskop ve SLR fotoğraf makinelerinde <strong>ayna yerine bu prizmalar</strong>
 kullanılır. Sebebi: sırlı aynada her yansımada %5–10 ışık kaybolurken, tam yansımada
 <strong>hiç kayıp yoktur</strong>. Üstelik prizma sırlanmaya gerek duymaz, kararmaz ve
-darbeye dayanıklıdır.</p>`,
+darbeye dayanıklıdır.</p>
+
+<h3 style="margin-top:22px">Bileşik prizma sistemleri</h3>
+<p>Birden fazla prizma birlikte kullanılarak ışının yönü ve doğrultusu istenildiği gibi
+değiştirilebilir (8. Etkinlik):</p>
+<ul>
+  <li><strong>Periskop:</strong> iki tam yansımalı prizma ışını iki kez 90° döndürür; ışık
+  aynı yönde ama daha aşağıdan çıkar.</li>
+  <li><strong>Dürbün (Alıştırma 24):</strong> iki prizmada dört tam yansıma olur; ışın yine aynı
+  yöne gider, yolu katlanır.</li>
+  <li><strong>Renkleri birleştirme (Alıştırma 23 b):</strong> beyaz ışığı ayıran prizmanın arkasına
+  aynı camdan, ters çevrilmiş ikinci bir prizma konursa yüzeyler karşılıklı paralel olur. Her
+  renk ters yönde aynı kadar sapar, renkler yine gelen ışına paralel çıkar ve üst üste binince
+  beyaz ışık oluşur.</li>
+</ul>
+<p style="color:var(--text-2)">Simülasyonun 4. düzeneğinde bu üç sistem ışın izlenerek
+gösterilir. Dürbünde (dört yansıma) göze ulaşan ışık kaplamasız cam prizmayla yaklaşık %84,
+sıradan aynayla %66&rsquo;dır; periskopta (iki yansıma) fark azdır: %84&rsquo;e karşı %81.</p>`,
 
 /* ---------------------------------------------------------- Formüller */
 formuller: {
@@ -498,7 +536,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Görüntü neden ters?',
-        metin: 'Objektif bir çukur ayna ya da yakınsak mercek gibi davranır ve <strong>gerçek</strong> görüntü oluşturur. 3.4&rsquo;te öğrendiğimiz gibi gerçek görüntü <strong>daima terstir</strong>.' },
+        metin: 'Objektif bir çukur ayna ya da yakınsak mercek gibi davranır ve <strong>gerçek</strong> görüntü oluşturur. 3.3.2&rsquo;de öğrendiğimiz gibi gerçek görüntü <strong>daima terstir</strong>.' },
       { bas: 'Prizmalar ne yapıyor?',
         metin: 'İki prizma, ışını dört kez tam yansıtır. Her yansıma görüntüyü bir eksende çevirir; <strong>dört yansıma</strong> hem sağ-solu hem alt-üstü düzeltir.' },
       { bas: 'Ayna kullanılsaydı — kayıp',
