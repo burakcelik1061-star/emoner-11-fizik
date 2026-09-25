@@ -50,13 +50,39 @@ nokta gerçek taştan <strong>daha yukarıdadır</strong>. Gördüğümüz şey 
   (eksene yakın açılarla) bakıldığında geçerlidir. Eğik bakıldığında tam bağıntı:</p>
   <div class="formul" style="max-width:280px;margin:10px 0">
     <div class="fm">h′ = h · tan θ₁ / tan θ₂</div>
+    <div class="fm-ad">θ₁ cismin ortamındaki, θ₂ gözün ortamındaki açı</div>
   </div>
-  <p style="margin:0">Simülasyonda bakış açısını büyüt: 100 cm derinlikteki bir cisim dik
-  bakışta 75,2 cm&rsquo;de, 30° eğik bakışta 64,8 cm&rsquo;de, 45°&rsquo;de yalnızca
-  36,1 cm&rsquo;de görünür. Havuz kenarından bakınca dibin “kalkmasının” sebebi budur.</p>
+  <p style="margin:0">Simülasyonda bakış açısını büyüt: suda 100 cm derinlikteki bir cisim dik
+  bakışta 75,2 cm&rsquo;de, 30° eğik bakışta 70,3 cm&rsquo;de, 45°&rsquo;de 62,8 cm&rsquo;de,
+  60°&rsquo;de 49,5 cm&rsquo;de görünür. Havuz kenarından bakınca dibin “kalkmasının”
+  sebebi budur.</p>
   <p style="margin:8px 0 0">Sınav sorularında daima <strong>dik bakış</strong> varsayılır;
   yani <code>h′ = h/n</code> kullanılır.</p>
 </div>
+
+<h3 style="margin-top:22px">Görünür derinlik neye bağlıdır?</h3>
+<p>Kitap (s.357) üç değişken sayar:</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Değişken</th><th>Etkisi</th></tr></thead>
+  <tbody>
+    <tr><td>Cismin ayırıcı yüzeye uzaklığı (h)</td><td>h büyüdükçe h′ de <strong>doğru orantılı</strong> büyür</td></tr>
+    <tr><td>Ortamların kırıcılık indisi farkı</td><td>fark büyüdükçe görüntü yüzeye daha çok yaklaşır (ya da uzaklaşır)</td></tr>
+    <tr><td>Işığın rengi</td><td>n renge bağlıdır: suda 1 m derindeki cisim kırmızı ışıkla 75,09 cm&rsquo;de, mor ışıkla 74,46 cm&rsquo;de görünür</td></tr>
+    <tr><td>Gözlemcinin yüzeye uzaklığı</td><td><strong>bağlı değildir</strong> (yalnızca bakış doğrultusu önemlidir)</td></tr>
+  </tbody>
+</table>
+
+<h3 style="margin-top:22px">Bardaktaki para (6. Etkinlik)</h3>
+<p>Porselen bardağın dibindeki parayı, bardağın kenarı görüşü kapatacak kadar
+uzaklaştırıp bakarsın: para <strong>görünmez</strong>. Bardağa yavaş yavaş su eklersin; bir
+yükseklikte para <strong>birden görünür</strong>. Paradan çıkan ışın yüzeyde normalden
+uzaklaşarak kırılır, kenarın üstünden aşıp göze ulaşır. Para da gerçek yerinden
+<strong>yukarıda</strong> görünür.</p>
+<p>Simülasyonun 4. düzeneği bu deneyi tam Snell hesabıyla yapar. 8 cm genişliğinde, 10 cm
+yüksekliğindeki bardakta para su ile <strong>5,49 cm</strong>&rsquo;de, sıvı yağ (n = 1,47)
+ile <strong>4,32 cm</strong>&rsquo;de görünmeye başlar. Kırıcılık indisi büyük olan sıvı parayı
+<strong>daha az sıvıyla</strong> gösterir. Bu eşik gözün bardaktan uzaklığına da bağlı
+değildir.</p>
 
 <h3 style="margin-top:22px">Suya batırılan çubuk neden kırık görünür?</h3>
 <p>Çubuğun <strong>sudaki</strong> kısmından gelen ışınlar kırılır, <strong>havadaki</strong>
@@ -65,7 +91,9 @@ bölüm yerinde kalır. İki parça arasında bir <strong>kırık</strong> oluş
 <p style="color:var(--text-2)">Çubuk gerçekte bükülmüyor; yalnızca iki parçasının
 <em>görüntüsü</em> farklı yerlerde oluşuyor.</p>
 
-<h3 style="margin-top:22px">Paralel yüzlü levhada yanal kayma</h3>
+<h3 style="margin-top:22px">Ek bilgi: paralel yüzlü levhada yanal kayma</h3>
+<p style="color:var(--text-2)">Kitabın bu bölümünde yer almaz; kitaptaki Düzenek III&rsquo;te
+(paranın üstüne cam konması) ve 3.7 prizmalar konusunda işe yarar.</p>
 <p>Bir cam levhaya eğik giren ışın, levhanın içinde normale yaklaşır, çıkarken normalden
 uzaklaşır. İki yüzey <strong>paralel</strong> olduğu için çıkan ışın gelen ışına
 <strong>paraleldir</strong> — yalnızca <strong>yana kaymıştır</strong>.</p>
