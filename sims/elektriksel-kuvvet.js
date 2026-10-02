@@ -86,7 +86,9 @@ function turMetni(p) {
 
 /** Kuvveti okunur birimle yazar: nötr cisme etki eden kuvvet mN–μN mertebesindedir. */
 function fYaz(F) {
-  if (F >= 0.1 || F === 0) return D.biçim(F) + ' N';
+  if (F === 0) return '0 N';
+  if (F >= 10) return D.biçim(F, 1) + ' N';
+  if (F >= 0.1) return D.biçim(F, 3) + ' N';
   if (F >= 1e-3) return D.biçim(F * 1e3, 3) + ' mN';
   return D.biçim(F * 1e6, 3) + ' μN';
 }
@@ -117,10 +119,11 @@ function uz(st) { return st.x2 - st.x1; }
 function yaklasmaSuresi(p) {
   if (!cekiyor(p)) return 0;
   const k = p.mod < 1.5 ? 2 : 1;                 // ikisi serbestse bağıl ivme 2 kat
+  /* bağıl hareket, uyarlamalı adım (adım başına uzaklığın en çok binde biri) */
   let d = p.d / 100, v = 0, t = 0;
-  for (let i = 0; i < 20000 && d > EN_YAKIN; i++) {
+  for (let i = 0; i < 200000 && d > EN_YAKIN; i++) {
     const acc = k * kuvvet(p, d) / kutleKg(p);
-    const dt = Math.min(0.01, 0.002 * Math.sqrt(d / Math.max(acc, 1e-9)) + 1e-5);
+    const dt = Math.min(0.001 * d / (v + 1e-12), Math.sqrt(0.002 * d / Math.max(acc, 1e-12)));
     v += acc * dt; d -= v * dt; t += dt;
   }
   return t;
@@ -130,7 +133,7 @@ function yaklasmaSuresi(p) {
    AGIR kat ağır çekim. Nötr cisim çekilirken kuvvet çok zayıftır; hareket
    ekranda yaklaşık 6 s sürecek şekilde gerekirse HIZLANDIRILIR. */
 function oynatmaHizi(p) {
-  if (notrVar(p)) return Math.max(1, yaklasmaSuresi(p) / 6);
+  if (notrVar(p)) return Math.max(1 / AGIR, yaklasmaSuresi(p) / 6);   // ~6 s, en çok ×8 ağır çekim
   return 1 / AGIR;
 }
 
@@ -147,22 +150,46 @@ function durum(p) {
    2. düzenek: q₁ yerine sabitlenmiş, yalnız q₂ hareket eder.
    Kuvvet uzaklığa bağlı olduğu için her adımda yeniden hesaplanır — sabit
    ivmeli hareket DEĞİLDİR. */
+/** q₂’nin ivmesi (+ sağa); q₁’inki eşit ve zıttır (Newton III, eşit kütleler). */
+function ivme(p, d) { return (kuvvet(p, d) / kutleKg(p)) * yon(p); }
+
+/* SAYISAL ÇÖZÜM — hız Verlet’i, UYARLAMALI alt adımlarla.
+   Kuvvet yükler yaklaştıkça 1/d² (nötr kürede 1/d⁵) ile çok hızlı büyür; tek
+   bir kare adımı bunu yakalayamaz ve enerji korunmaz (eski tek adımlı hesapta
+   değme anındaki hız %5–50 yanlış çıkıyordu). Alt adım, cisim bir adımda
+   uzaklığın binde birinden fazla yol almayacak şekilde seçilir; bu sayede
+   ½mϑ² = ΔU enerji korunumu %0,1’in altında sağlanır. */
 function adim(st, dt, pHam) {
-  const p = yukler(st, pHam);
   const dtF = dt * st.hiz;
   st.t += dtF;
   if (st.durdu) return;
 
-  const F = kuvvet(p, uz(st));
-  const a = (F / kutleKg(p)) * yon(p);          // q₂’nin ivmesi (+ sağa)
-  st.v2 += a * dtF;
-  st.x2 += st.v2 * dtF;
-  if (p.mod < 1.5) {                            // q₁ eşit ve zıt kuvvetle
-    st.v1 -= a * dtF;
-    st.x1 += st.v1 * dtF;
+  let kalan = dtF;
+  for (let g = 0; g < 4000 && kalan > 0 && !st.durdu; g++) {
+    const p = yukler(st, pHam);
+    const serbest2 = p.mod < 1.5;
+    const d = uz(st), a0 = ivme(p, d);
+    const vBagil = Math.abs(st.v2 - (serbest2 ? st.v1 : 0)), aBagil = Math.abs(a0) * (serbest2 ? 2 : 1);
+    let h = Math.min(kalan, 0.001 * d / (vBagil + 1e-12), Math.sqrt(0.002 * d / (aBagil + 1e-12)));
+    h = Math.max(h, 1e-9);
+    st.v2 += 0.5 * a0 * h; st.x2 += st.v2 * h;
+    if (serbest2) { st.v1 -= 0.5 * a0 * h; st.x1 += st.v1 * h; }
+    const a1 = ivme(p, uz(st));
+    st.v2 += 0.5 * a1 * h;
+    if (serbest2) st.v1 -= 0.5 * a1 * h;
+    kalan -= h;
+    if (uz(st) <= EN_YAKIN) degme(st, p);
+    if (uz(st) > (st.paylasti ? gorunurUz(pHam) : 2.4)) { st.durdu = true; st.kenar = true; }
   }
 
-  if (uz(st) <= EN_YAKIN) {
+  if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.002)
+    st.kayit.push({ t: st.t, v: Math.abs(st.v2) });
+  if (st.kayit.length > 400) st.kayit.shift();
+}
+
+/** Küreler değdi. */
+function degme(st, p) {
+  {
     /* küreler DEĞDİ: uzaklığı EN_YAKIN’a sabitle (1. düzenekte simetrik).
        Özdeş iletken küreler yükü EŞİT paylaşır: q′ = (q₁ + q₂)/2. Paylaşılan
        yük sıfır değilse ikisi de aynı işaretlidir ⟹ birbirlerini İTERLER. */
@@ -177,13 +204,6 @@ function adim(st, dt, pHam) {
       if (q === 0) st.durdu = true;
     } else st.durdu = true;
   }
-  /* itme: başlangıçta itiyorlarsa 2,4 m’ye kadar; değip yük paylaştıktan sonra
-     itiyorlarsa sahnenin kenarına (ölçek çekmeye göre kurulduğu için) */
-  if (uz(st) > (st.paylasti ? gorunurUz(pHam) : 2.4)) { st.durdu = true; st.kenar = true; }
-
-  if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.002)
-    st.kayit.push({ t: st.t, v: Math.abs(st.v2) });
-  if (st.kayit.length > 400) st.kayit.shift();
 }
 
 /* Kuvvet yoksa hareket de yok: sahne 1 s gösterilip durur. */
@@ -327,7 +347,7 @@ function cizGercek(ctx, w, h, st, pHam) {
             : cekiyor(p) ? 'rgba(47,111,208,.92)' : 'rgba(226,72,63,.92)', '#FFFFFF',
           '700 12px system-ui, sans-serif', true);
 
-  D.yaziAydinlik(ctx, (st.hiz < 1 ? 'ağır çekim ×' + D.biçim(1 / st.hiz, 0)
+  D.yaziAydinlik(ctx, (st.hiz < 0.95 ? 'ağır çekim ×' + D.biçim(1 / st.hiz, 1)
                       : st.hiz > 1.05 ? 'hızlandırılmış ×' + D.biçim(st.hiz, 1) : 'gerçek hız') +
                  ' · t = ' + D.biçim(st.t, 3) + ' s (gerçek)',
                  12, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
@@ -419,7 +439,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['k = 9·10⁹ N·m²/C²', K.metin2, '11px system-ui, sans-serif'],
     ['|q₁·q₂| = ' + D.biçim(Math.abs(p.q1 * p.q2)) + ' · 10⁻¹² C²', K.metin2, '11px system-ui, sans-serif'],
     ['d² = ' + D.biçim(dd * dd, 3) + ' m²', K.metin2, '11px system-ui, sans-serif'],
-    ['F = ' + D.biçim(F) + ' N', R.kuvvet, '700 13px system-ui, sans-serif']
+    ['F = ' + fYaz(F), R.kuvvet, '700 13px system-ui, sans-serif']
   ];
   let sy = h - 14 - (satir.length - 1) * 17;
   satir.forEach(([t, c, f]) => {
