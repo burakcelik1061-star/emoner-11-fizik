@@ -25,6 +25,13 @@ window.F11 = window.F11 || {};
    alanıyla (tam eliptik integraller, AGM yöntemi) izlenir. Solenoid, eşit
    aralıklı halkaların toplamıdır. Böylece içeride düzgün alan, uçlarda
    saçılma ve dışarıda çubuk mıknatıs görüntüsü kendiliğinden çıkar.
+
+   KİTAPTAKİ ÖRNEK (MEB s.211, 3. düzenek)
+   ---------------------------------------
+   Demir çivilere sarılmış dört makara; dirençler eşit, akımı pil sayısı
+   belirler. Kitaptaki model B = 4·K·π·i·N/L (K = 10⁻⁷) = μ₀·n·i olduğundan
+   B ∝ i·N/L: 1. düzenek i·N/2L, ötekiler 2i·N/2L = i·N/L = i·2N/2L.
+   Değerler hava çekirdekli makara içindir; demir çivi alanı hepsinde büyütür.
    ========================================================================== */
 
 const D = window.F11;
@@ -98,6 +105,7 @@ function durum(p) { return { t: 0, i: p.i }; }
 
 function adim(st, dt, p) {
   st.t += dt;
+  if (p.mod > 2.5) return;
   /* Akımın YÖNÜ korunur, yalnız büyüklüğü taranır (en çok 10 A). Akım
      sıfır seçildiyse sıfır kalır: akım yoksa alan da yoktur. */
   const s = p.i < 0 ? -1 : 1;
@@ -106,6 +114,28 @@ function adim(st, dt, p) {
 }
 
 function bitti() { return false; }
+
+/** Taramada ulaşılan en büyük |i|. Grafik eksenleri buna göre SABİT tutulur;
+    böylece akım değiştikçe eğri ve imleç gerçekten yükselip alçalır. */
+function iMaks(p) {
+  const a = Math.abs(p.i);
+  return a === 0 ? 0 : Math.max(a, a < 5 ? 10 : 1);
+}
+
+/* ---- 3. düzenek: kitaptaki dört elektromıknatıs ---- */
+const KO_N = 50, KO_L = 0.03, KO_I = 1, KO_R = 0.0025;   // sarım, m, A, m (çivi yarıçapı)
+const KO_SURE = 2.5;                                      // her düzenek bu kadar vurgulanır
+const KO_DUZ = [
+  { pil: 1, L: 2, N: 1 },     // 1. düzenek: i, 2L, N
+  { pil: 2, L: 2, N: 1 },     // 2. düzenek: 2i, 2L, N
+  { pil: 1, L: 1, N: 1 },     // 3. düzenek: i, L, N
+  { pil: 1, L: 2, N: 2 }      // 4. düzenek: i, 2L, 2N
+];
+function koDeger(k) {
+  const d = KO_DUZ[k], i = KO_I * d.pil, N = KO_N * d.N, L = KO_L * d.L;
+  return { i, N, L, n: N / L, B: alanSolenoid(N, i, L) };
+}
+function koSecili(st) { return Math.floor((st ? st.t : 0) / KO_SURE) % 4; }
 
 function etkin(st, p) {
   return Object.assign({}, p, { i: (st && st.i != null) ? st.i : p.i });
@@ -199,8 +229,9 @@ function cizgileriCiz(ctx, cizgiler, s, renk, okNoktalari) {
 
 function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
-  if (p.mod < 1.5) cizHalka(ctx, w, h, st, p);
-  else             cizSolenoid(ctx, w, h, st, p);
+  if (p.mod < 1.5)      cizHalka(ctx, w, h, st, p);
+  else if (p.mod < 2.5) cizSolenoid(ctx, w, h, st, p);
+  else                  cizKitapOrnegi(ctx, w, h, st, p);
 }
 
 function cizHalka(ctx, w, h, st, p) {
@@ -323,11 +354,100 @@ function cizSolenoid(ctx, w, h, st, p) {
                  10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
 }
 
+function cizKitapOrnegi(ctx, w, h, st, p) {
+  const sec = koSecili(st), Bmaks = koDeger(1).B;
+  const ust = 50, pw = (w - 30) / 2, ph = (h - ust - 14) / 2;
+  /* Sol üst köşe panel başlığına ayrılmıştır; rozet sağa yaslanır. */
+  ctx.save(); ctx.font = '700 11px system-ui, sans-serif';
+  const rzG = ctx.measureText('MEB s.211 · demir çivi + makara · dirençler eşit').width + 22;
+  ctx.restore();
+  D.rozet(ctx, 'MEB s.211 · demir çivi + makara · dirençler eşit', w - 10 - rzG / 2, 14,
+          'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
+  for (let k = 0; k < 4; k++) {
+    const d = KO_DUZ[k], v = koDeger(k);
+    const x0 = 10 + (k % 2) * (pw + 10), y0 = ust + Math.floor(k / 2) * (ph + 4);
+    if (k === sec) {
+      ctx.fillStyle = 'rgba(255,210,74,.22)'; D.yuvarlakDik(ctx, x0, y0, pw, ph - 4, 10); ctx.fill();
+      ctx.strokeStyle = 'rgba(200,150,20,.7)'; ctx.lineWidth = 1.6; ctx.stroke();
+    }
+    D.yaziAydinlik(ctx, (k + 1) + '. düzenek', x0 + 10, y0 + 14, R.mur, '700 12px system-ui, sans-serif', 'left');
+
+    /* çivi (yatay), makara ortada */
+    const cy = y0 + ph * 0.36, civiBoy = pw * 0.70, cx = x0 + pw / 2;
+    const civiSol = cx - civiBoy / 2;
+    ctx.fillStyle = '#8E98A6'; ctx.fillRect(civiSol, cy - 4, civiBoy, 8);
+    ctx.fillRect(civiSol - 3, cy - 9, 4, 18);                                  // başı
+    ctx.beginPath(); ctx.moveTo(civiSol + civiBoy, cy - 4); ctx.lineTo(civiSol + civiBoy + 10, cy);
+    ctx.lineTo(civiSol + civiBoy, cy + 4); ctx.closePath(); ctx.fill();      // ucu
+    const Lpx = pw * 0.24 * d.L, sarim = 7 * d.N;
+    ctx.save(); ctx.strokeStyle = '#B87333'; ctx.lineWidth = 2.4;
+    for (let j = 0; j < sarim; j++) {
+      const x = cx - Lpx / 2 + (j + 0.5) * Lpx / sarim;
+      ctx.beginPath(); ctx.ellipse(x, cy, 2.2, 10, 0, 0, 6.2832); ctx.stroke();
+    }
+    ctx.restore();
+    /* kutuplar: B sağa ⟹ sağ uç N */
+    D.yaziAydinlik(ctx, 'S', civiSol - 12, cy, '#2F6FD0', '700 12px system-ui, sans-serif', 'center');
+    D.yaziAydinlik(ctx, 'N', civiSol + civiBoy + 20, cy, '#E2483F', '700 12px system-ui, sans-serif', 'center');
+    /* B oku: büyüklükle orantılı */
+    const okB = 14 + 40 * v.B / Bmaks;
+    D.vektor(ctx, cx - okB / 2, cy - 18, cx + okB / 2, cy - 18, R.normal, '', { kalinlik: 2.6, ucBoy: 7 });
+
+    /* teller ve pil(ler) */
+    const py = y0 + ph * 0.72, solU = cx - Lpx / 2, sagU = cx + Lpx / 2;
+    ctx.save(); ctx.strokeStyle = '#B87333'; ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.moveTo(solU, cy + 10); ctx.lineTo(solU, py); ctx.lineTo(cx - 8 - 9 * d.pil, py);
+    ctx.moveTo(sagU, cy + 10); ctx.lineTo(sagU, py); ctx.lineTo(cx + 8 + 9 * d.pil, py);
+    ctx.stroke(); ctx.restore();
+    for (let j = 0; j < d.pil; j++) {
+      const bx = cx - 9 * d.pil + j * 18 + 1;
+      ctx.fillStyle = '#3A4250'; ctx.fillRect(bx, py - 7, 16, 14);
+      ctx.fillStyle = '#E2A23F'; ctx.fillRect(bx + 16, py - 3, 2, 6);
+    }
+    D.yaziAydinlik(ctx, d.pil + ' pil · ' + (d.L === 1 ? 'L' : '2L') + ' · ' + (d.N === 1 ? 'N' : '2N'),
+                   x0 + 10, y0 + ph - 16, R.mur, '600 11px system-ui, sans-serif', 'left');
+    D.yaziAydinlik(ctx, 'B = ' + D.biçim(v.B * 1e3, 2) + ' mT', x0 + pw - 10, y0 + ph - 16,
+                   k === sec ? '#1F6FA0' : R.mur, '700 12px system-ui, sans-serif', 'right');
+  }
+}
+
 /* ----------------------------------------- Klasik fizik görünümü */
+
+function klasikKitapOrnegi(ctx, w, h, st) {
+  const sec = koSecili(st);
+  D.yaziHaleli(ctx, 'B = 4·K·π·i·N / L = μ₀·(N/L)·i   (K = 10⁻⁷)', 12, 46, K.beyaz,
+               '700 12px system-ui, sans-serif', 'left');
+  const sut = [12, w * 0.20, w * 0.33, w * 0.46, w * 0.62, w - 12];
+  const bas = ['Düzenek', 'i', 'N', 'L', 'B ∝ i·N/L', 'B (hava)'];
+  let y = 76;
+  bas.forEach((t, j) => D.yaziHaleli(ctx, t, sut[j], y, K.metin2, '700 11px system-ui, sans-serif', j === 5 ? 'right' : 'left'));
+  const oran = ['i·N/2L', '2i·N/2L', 'i·N/L', 'i·2N/2L'];
+  for (let k = 0; k < 4; k++) {
+    const d = KO_DUZ[k], v = koDeger(k);
+    y += 22;
+    if (k === sec) {
+      ctx.fillStyle = 'rgba(255,210,74,.18)'; ctx.fillRect(6, y - 10, w - 12, 20);
+    }
+    const renk = k === sec ? K.beyaz : K.metin2;
+    const satir = [(k + 1) + '.', (d.pil === 1 ? 'i' : '2i'), (d.N === 1 ? 'N' : '2N'), (d.L === 1 ? 'L' : '2L'),
+                   oran[k], D.biçim(v.B * 1e3, 2) + ' mT'];
+    satir.forEach((t, j) => D.yaziHaleli(ctx, t, sut[j], y, j === 4 ? R.ivme : renk,
+                                          '700 12px system-ui, sans-serif', j === 5 ? 'right' : 'left'));
+  }
+  const not = [
+    ['En az alan: 1. düzenek ⟹ en az raptiye', R.kuvvet],
+    ['2, 3 ve 4. düzeneklerde B eşit ⟹ eşit raptiye', R.hiz],
+    ['(i = 1 A/pil, N = 50, L = 3 cm; demir çivi B’yi hepsinde büyütür)', K.metin2]
+  ];
+  let sy = h - 16 - (not.length - 1) * 18;
+  not.forEach(([t, c]) => { D.yaziHaleli(ctx, t, 12, sy, c, '700 12px system-ui, sans-serif', 'left'); sy += 18; });
+}
 
 function cizKlasik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   D.izgara(ctx, w, h, 26);
+  if (p.mod > 2.5) { klasikKitapOrnegi(ctx, w, h, st); return; }
 
   const r = p.r / 100, L = p.L / 100;
   const halka = p.mod < 1.5;
@@ -410,16 +530,41 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const halka = p.mod < 1.5;
+  /* Eksenler taramanın en büyük akımına göre sabit: imleç akımla birlikte kayar. */
+  const pM = Object.assign({}, p, { i: iMaks(pHam) });
+
+  if (p.mod > 2.5) {
+    const sec = koSecili(st), v = koDeger(sec);
+    const veri = [];
+    for (let x = 0; x <= 2000; x += 50) veri.push({ t: x, v: MU0 * x * 1e3 });
+    D.miniGrafik(ctx, {
+      x: pay, y: 3, w: gw, h: gh,
+      baslik: 'B − i·N/L   (doğru orantı)', birim: 'mT', tEtiket: 'i·N/L (A/m)',
+      veri, tMax: 2000, vMin: 0, vMax: MU0 * 2000 * 1e3, renk: R.normal,
+      imlec: { t: v.i * v.n, v: v.B * 1e3 }
+    });
+    const v2 = [];
+    for (let k = 0; k <= 120; k++) {
+      const x = -0.07 + k * 0.14 / 120;
+      v2.push({ t: x * 100, v: solenoidEksen(v.N, v.i, v.L, KO_R, x) * 1e3 });
+    }
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: (sec + 1) + '. düzenek · B − x', birim: 'mT', tEtiket: 'x (cm)',
+      veri: v2, tMin: -7, tMax: 7, vMin: 0, vMax: koDeger(1).B * 1e3 * 1.1, renk: R.ivme
+    });
+    return;
+  }
 
   const v1 = [];
   for (let n = 0; n <= 400; n += 10)
     v1.push({ t: n, v: (halka ? alanHalka(n, p.i, p.r / 100) : alanSolenoid(n, p.i, p.L / 100)) * 1e6 });
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
-    baslik: 'B − N   (sarım sayısıyla DOĞRU orantı)', birim: 'μT', tEtiket: 'N (sarım)',
+    baslik: 'B − N   (doğru orantı)', birim: 'μT', tEtiket: 'N (sarım)',
     imlec: { t: p.N, v: (halka ? alanHalka(p.N, p.i, p.r / 100) : alanSolenoid(p.N, p.i, p.L / 100)) * 1e6 },
     veri: v1, tMax: 400, vMin: 0,
-    vMax: Math.max(1e-3, v1[v1.length - 1].v * 1.05),
+    vMax: Math.max(1e-3, (halka ? alanHalka(400, pM.i, p.r / 100) : alanSolenoid(400, pM.i, p.L / 100)) * 1e6 * 1.05),
     renk: R.normal
   });
 
@@ -429,9 +574,9 @@ function cizGrafik(ctx, w, h, st, pHam) {
       v2.push({ t: rr, v: alanHalka(p.N, p.i, rr / 100) * 1e6 });
     D.miniGrafik(ctx, {
       x: pay * 2 + gw, y: 3, w: gw, h: gh,
-      baslik: 'B − r   (yarıçapla TERS orantı)', birim: 'μT', tEtiket: 'r (cm)',
+      baslik: 'B − r   (ters orantı)', birim: 'μT', tEtiket: 'r (cm)',
       imlec: { t: p.r, v: alanHalka(p.N, p.i, p.r / 100) * 1e6 },
-      veri: v2, tMin: 1, tMax: 30, vMin: 0, vMax: Math.max(1e-3, alanHalka(p.N, p.i, 0.01) * 1e6),
+      veri: v2, tMin: 1, tMax: 30, vMin: 0, vMax: Math.max(1e-3, alanHalka(p.N, pM.i, 0.01) * 1e6),
       renk: R.ivme
     });
     return;
@@ -445,10 +590,10 @@ function cizGrafik(ctx, w, h, st, pHam) {
     v2.push({ t: x * 100, v: solenoidEksen(p.N, p.i, L, r, x) * 1e6 });
   }
   const Bid = alanSolenoid(p.N, p.i, L) * 1e6;
-  const vMax = Math.max(1e-3, Bid * 1.1);
+  const vMax = Math.max(1e-3, alanSolenoid(p.N, pM.i, L) * 1e6 * 1.1);
   const kutu = { x: pay * 2 + gw, y: 3, w: gw, h: gh };
   D.miniGrafik(ctx, Object.assign({}, kutu, {
-    baslik: 'B − x   eksen boyunca   (kesikli: μ₀ni)', birim: 'μT', tEtiket: 'x (cm)',
+    baslik: 'B − x   (kesikli: μ₀ni)', birim: 'μT', tEtiket: 'x (cm)',
     veri: v2, tMin: -p.L, tMax: p.L, vMin: 0, vMax, renk: R.ivme
   }));
   if (Bid > 0) {
@@ -464,6 +609,18 @@ function cizGrafik(ctx, w, h, st, pHam) {
 function okumalar(st, pHam) {
   const p = etkin(st, pHam);
   const r = p.r / 100, L = p.L / 100;
+  if (p.mod > 2.5) {
+    const sec = koSecili(st), v = koDeger(sec);
+    return [
+      { et: 'Vurgulanan düzenek', dg: String(sec + 1),           birim: '' },
+      { et: 'Akım  i',        dg: D.biçim(v.i, 0),               birim: 'A' },
+      { et: 'Sarım  N',       dg: D.biçim(v.N, 0),               birim: '' },
+      { et: 'Uzunluk  L',     dg: D.biçim(v.L * 100, 0),         birim: 'cm' },
+      { et: 'n = N/L',        dg: D.biçim(v.n, 0),               birim: 'sarım/m' },
+      { et: 'B (hava çekirdek)', dg: D.biçim(v.B * 1e3, 2),      birim: 'mT' },
+      { et: 'Karşılaştırma',  dg: '1 < 2 = 3 = 4',               birim: '' }
+    ];
+  }
   if (p.mod < 1.5) {
     const B = alanHalka(p.N, p.i, r);
     return [
@@ -497,7 +654,8 @@ D.simler['akim-makarasi'] = {
   parametreler: [
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Düz halka (merkezdeki alan)' },
-      { d: 2, e: 'Solenoid (içindeki alan)' }
+      { d: 2, e: 'Solenoid (içindeki alan)' },
+      { d: 3, e: 'Kitap örneği: dört elektromıknatıs (s.211)' }
     ]},
     { anahtar: 'N', etiket: 'Sarım sayısı N', min: 1,  max: 400, adim: 1,  deger: 100, birim: '' },
     { anahtar: 'i', etiket: 'Akım i', min: -10, max: 10, adim: 1, deger: 2, birim: 'A' },

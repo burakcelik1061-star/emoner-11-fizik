@@ -61,6 +61,15 @@ Simülasyonda bu oran doğrudan okunuyor.</p>
   <div class="fm-ad">n = N / L · birim uzunluktaki sarım sayısı</div>
 </div>
 
+<p>Kitapta aynı formül <strong>K</strong> sabitiyle yazılır:</p>
+<div class="formul" style="max-width:340px;margin:14px 0">
+  <div class="fm">B = 4 · K · π · i · N / L</div>
+  <div class="fm-ad">K = 10⁻⁷ T·m/A ortamın manyetik alan katsayısı (boşluk/hava) · 4πK = μ₀</div>
+</div>
+<p>Kitaba göre ideal makaranın içindeki alan; akımla (i) ve sarım sayısıyla (N) <strong>doğru</strong>,
+ilk ve son sarım arasındaki uzaklıkla (L) <strong>ters</strong>, ortamın katsayısıyla (K) doğru orantılıdır.
+İdeal makarada <strong>dışarıdaki alan sıfır</strong> kabul edilir.</p>
+
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Solenoidde yarıçap YOKTUR</span></div>
   <p style="margin:0">Formüle iyi bak: <strong>r yok</strong>. Solenoidin kalın ya da ince
@@ -70,6 +79,23 @@ Simülasyonda bu oran doğrudan okunuyor.</p>
   <p style="margin:8px 0 0">Halkada <code>r</code> vardı ve ters orantılıydı; solenoidde yok.
   İkisini karıştırmak bu konudaki en sık hatadır.</p>
 </div>
+
+<h3 style="margin-top:22px">Kitaptaki örnek: dört elektromıknatıs</h3>
+<p>Demir çivilere tel sarılıp özdeş pillere bağlanıyor; dört devrenin direnci aynı. Akımı pil sayısı
+belirler (2 pil ⟹ 2i). B ∝ i·N/L olduğundan:</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Düzenek</th><th>Pil</th><th>L</th><th>N</th><th>B ∝</th><th>Hava çekirdekte</th></tr></thead>
+  <tbody>
+    <tr><td>1.</td><td>1 (i)</td><td>2L</td><td>N</td><td class="sembol">i·N/2L</td><td>1,05 mT</td></tr>
+    <tr><td>2.</td><td>2 (2i)</td><td>2L</td><td>N</td><td class="sembol">2i·N/2L</td><td>2,09 mT</td></tr>
+    <tr><td>3.</td><td>1 (i)</td><td>L</td><td>N</td><td class="sembol">i·N/L</td><td>2,09 mT</td></tr>
+    <tr><td>4.</td><td>1 (i)</td><td>2L</td><td>2N</td><td class="sembol">i·2N/2L</td><td>2,09 mT</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Simülasyonun 3. düzeneğinde i = 1 A, N = 50, L = 3 cm alındı. En az raptiyeyi
+<strong>1. düzenek</strong> çeker; öteki üçü <strong>eşit</strong> alan üretir. Demir çivi alanı hepsinde büyütür.</p>
+<p><strong>Etkinlikteki sorular:</strong> Akım 3 katına çıkarsa alan <strong>3 katına</strong> çıkar. Boy 2, sarım
+sayısı 4 katına çıkarsa N/L 2 katına çıkar ⟹ alan <strong>2 katına</strong> çıkar.</p>
 
 <h3 style="margin-top:22px">Solenoid bir çubuk mıknatıstır</h3>
 <p>Dışarıdan bakınca solenoidin alan çizgileri, bir <strong>çubuk mıknatısınkinin
@@ -91,6 +117,7 @@ formuller: {
   liste: [
     { fm: 'B = μ₀·N·i / (2r)', aciklama: 'N sarımlı düz halkanın merkezinde' },
     { fm: 'B = μ₀ · n · i',    aciklama: 'Uzun solenoidin içinde — düzgün alan' },
+    { fm: 'B = 4·K·π·i·N / L', aciklama: 'Kitaptaki yazılış (K = 10⁻⁷ T·m/A)' },
     { fm: 'n = N / L',         aciklama: 'Birim uzunluktaki sarım sayısı (sarım/m)' },
     { fm: 'B<sub>halka</sub>/B<sub>tel</sub> = N·π', aciklama: 'Bükmenin kazancı' },
     { fm: 'μ₀ = 4π·10⁻⁷ T·m/A', aciklama: 'Her iki formülde de aynı sabit' }
@@ -112,9 +139,10 @@ turetim: {
       ad: 'Bükmek neden alanı güçlendirir?',
       adimlar: [
         { baslik: 'Düz telde ne oluyordu?',
-          html: `<p>Düz telin bir parçası, uzaydaki bir noktada alan üretir. Ama telin
-                 <strong>başka bir parçası</strong>, aynı noktada <em>başka yönde</em> bir alan
-                 üretir. Katkılar birbirini kısmen götürür.</p>` },
+          html: `<p>Düz telin her parçası, yanındaki bir noktada aynı yönde alan üretir.
+                 Ama telin çoğu o noktadan <strong>uzaktadır</strong> ve noktayı
+                 <strong>eğik bir açıyla</strong> görür; uzak parçaların katkısı çok küçüktür.
+                 Toplam alanı asıl olarak noktanın hemen karşısındaki kısa bir bölüm üretir.</p>` },
 
         { baslik: 'Şimdi teli halka yap',
           html: `<p>Halkanın merkezini seç. Halkanın <strong>her parçası</strong> merkezden
@@ -154,9 +182,11 @@ turetim: {
                  <div class="formul" style="max-width:240px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">B = μ₀ · n · i</div>
                  </div>
-                 <p>Yarıçap kayboldu. Sebebi şu: yarıçapı büyütünce her halka merkezden
-                 uzaklaşır (alan azalır) ama halkanın <em>uzunluğu</em> da artar (katkı artar).
-                 İki etki tam olarak birbirini götürür.</p>` },
+                 <p>Yarıçap kayboldu. Sebebi şu: yarıçap büyüyünce her halkanın merkezdeki
+                 katkısı azalır (1/r gibi). Ama merkeze kayda değer katkı veren halkaların
+                 bulunduğu bölge de r ile orantılı uzar; yaklaşık r kadar uzaktaki halkalar
+                 hâlâ katkı verir. İki etki birbirini <strong>tam olarak</strong> götürür: bütün
+                 halkaların toplamı r&rsquo;den bağımsız olarak μ₀·n·i çıkar.</p>` },
 
         { baslik: 'Sınırını söyle',
           html: `<p>Formül <strong>uzun</strong> solenoid içindir (L ≫ r) ve
@@ -447,7 +477,7 @@ baglam: [
       { bas: 'Akımı bul',
         metin: 'i = 5·10⁻⁵ / 5,03·10⁻⁴ ≈ <strong>0,1 A = 100 mA</strong>' },
       { bas: 'Yorumla',
-        metin: 'Yalnızca <strong>yüzde bir amper</strong> mertebesinde bir akım! Bir LED’in çektiği akım kadar. Dünya’nın alanı her yerde olsa da <strong>çok zayıftır</strong>; iptal etmek şaşırtıcı derecede kolaydır.' },
+        metin: 'Yalnızca <strong>onda bir amper</strong> mertebesinde bir akım! Küçük bir el fenerinin çektiği akım kadar. Dünya’nın alanı her yerde olsa da <strong>çok zayıftır</strong>; iptal etmek şaşırtıcı derecede kolaydır.' },
       { bas: 'Zor kısmı söyle',
         metin: 'Asıl zorluk büyüklük değil, <strong>kararlılık ve düzgünlük</strong>: akımın çok kararlı olması, solenoidin çok düzgün sarılması ve odanın yöneliminin sabit kalması gerekir. Ayrıca Dünya’nın alanı zamanla biraz değişir, bu yüzden sistem <strong>sürekli ölçüp düzeltir</strong>.' }
     ],
