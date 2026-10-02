@@ -65,6 +65,17 @@ Sinüsün karesinin ortalaması <strong>tam olarak yarısıdır</strong>. Karek�
 <code>1/√2</code> çıkar. Adı da buradan gelir: <strong>karekök-ortalama-kare</strong>
 (root-mean-square, RMS).</p>
 
+<div class="kutu dikkat" style="margin:16px 0">
+  <div class="kutu-bas"><span class="ikon">⚠</span><span>Frekans artınca akım artar mı?</span></div>
+  <p style="margin:0">Dirençli bir devrede akımın büyüklüğü <code>i<sub>maks</sub> = V<sub>maks</sub>/R</code>&rsquo;dir;
+  frekansa bağlı değildir. Prizin frekansı 60 Hz yerine 120 Hz olsa ve gerilim aynı kalsa akım
+  değişmez, yalnızca periyot kısalır. Akım ancak kaynak bir <strong>jeneratörse</strong> artar: aynı
+  çerçeve iki kat hızlı döndürülürse <code>ε<sub>maks</sub> = N·B·A·ω</code> iki katına çıkar, akım
+  da iki katına çıkar. Kitaptaki örneğin (s.259) ç) şıkkındaki “akım 20√2 A olur” cevabı bu
+  jeneratör durumunu varsayar. Simülasyonda dene: 1. düzenekte f&rsquo;yi değiştir, akım aynı kalır;
+  2. düzenekte f&rsquo;yi değiştir, gerilim ve akım frekansla birlikte artar.</p>
+</div>
+
 <h3 style="margin-top:22px">Güç hep pozitiftir</h3>
 <p>Gerilim ve akım negatif olabilir ama <strong>güç olamaz</strong>:</p>
 <div class="formul" style="max-width:260px;margin:14px 0">
