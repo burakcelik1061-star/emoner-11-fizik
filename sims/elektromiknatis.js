@@ -27,6 +27,19 @@ window.F11 = window.F11 || {};
    Kutup yüzeyi A olan bir elektromıknatısın demire uyguladığı çekme kuvveti.
    Kuvvetin B’nin KARESİYLE artması, alanı iki katına çıkarmanın kaldırma
    gücünü dört katına çıkarması demektir.
+
+   KİTAPTAKİ ÖRNEK (MEB s.215) — HURDAYI d UZAKLIKTAN ÇEKME (3. düzenek)
+   ---------------------------------------------------------------------
+   Mıknatıs ile demir parça arasında d kadar hava varken manyetik devrenin
+   direncine hava aralıkları baskındır (akı aşağı iner, parçadan geçip geri
+   çıkar: iki aralık). Manyetik devre modeli:
+       B = μ₀·N·i / (l/μr + 2d)        l: çekirdekteki yol (0,3 m)
+       F = B²·A / (2μ₀)                 (saçaklanma ihmal)
+   Hurda, kutup yüzeyini tamamen örten bir demir levha sayılır (kitaptaki
+   yığın gibi); değdiğinde bile yüzey pürüzü yüzünden ≈ 0,5 mm hava kalır.
+   Çekirdek yine doyar: B = B_doyma·tanh(B_ham/B_doyma). F > mg ise parça
+   yukarı hızlanır; yaklaştıkça F hızla büyür ve parça mıknatısa yapışır.
+   Akım kesilince mıknatıslık biter, parça düşer (kitabın b şıkkı).
    ========================================================================== */
 
 const D = window.F11;
@@ -107,6 +120,70 @@ function idealKuvvet(p) {
 /** Kaldırabileceği kütle (kg). */
 function kaldirilanKutle(p) { return kaldirmaKuvveti(p) / G; }
 
+/* ---- 3. düzenek: hurdayı d uzaklıktan çekme ---- */
+const DV_L = 0.3;                // m, akının çekirdekte aldığı yol
+/* Parça 1 cm’yi ~40 ms’de alır; görülebilsin diye ×10 ağır çekim. Süreler GERÇEK zamandır. */
+const DV_AGIR = 10;
+const DV_ACIK = 0.05;            // s, akım bu anda açılır
+const DV_KES = 0.45;             // s, akım bu anda kesilir
+const DV_SON = 0.65;
+const PARCA_YUK = 0.03;          // m, levhaya ayrılan yükseklik (çizim)
+const PURUZ = 0.0005;            // m, temas hâlinde bile kalan etkin hava aralığı
+const RO_DEMIR = 7874;           // kg/m³
+
+/** Aralık x (m) iken mıknatısın parçaya uyguladığı kuvvet (N). */
+function dvKuvvet(p, x, iAcik) {
+  if (!iAcik || p.i === 0) return 0;
+  const c = cek(p);
+  const Bham = MU0 * p.N * Math.abs(p.i) / (DV_L / c.mur + 2 * (Math.max(x, 0) + PURUZ));
+  const B = c.doyma > 90 ? Bham : c.doyma * Math.tanh(Bham / c.doyma);
+  return B * B * kutupAlani(p) / (2 * MU0);
+}
+function dvB(p, x) {
+  const c = cek(p);
+  const Bham = MU0 * p.N * Math.abs(p.i) / (DV_L / c.mur + 2 * (Math.max(x, 0) + PURUZ));
+  return c.doyma > 90 ? Bham : c.doyma * Math.tanh(Bham / c.doyma);
+}
+function dvAkimAcik(t) { return t >= DV_ACIK && t < DV_KES; }
+/** F = mg olan en büyük aralık (m): bundan yakındaki parça çekilir. */
+function dvKritikD(p) {
+  const mg = p.parca / 1000 * G;
+  if (dvKuvvet(p, 0, true) <= mg) return 0;
+  let a = 0, b = 1;
+  for (let k = 0; k < 60; k++) { const m = (a + b) / 2; if (dvKuvvet(p, m, true) > mg) a = m; else b = m; }
+  return a;
+}
+
+function dvAdim(st, dtSahne, p) {
+  const dt = dtSahne / DV_AGIR;
+  st.t += dt;
+  const m = p.parca / 1000, acik = dvAkimAcik(st.t);
+  if (st.dvx == null) { st.dvx = p.d / 100; st.dvv = 0; }
+  const n = 20, h = dt / n;
+  for (let k = 0; k < n; k++) {
+    const F = dvKuvvet(p, st.dvx, acik);
+    if (st.dvx <= 0) {                                 // mıknatısa yapışık
+      if (F >= m * G) { st.dvv = 0; continue; }
+      st.dvx = 1e-6; st.dvv = 0;                       // akım kesildi: düşmeye başlar
+    }
+    /* x: mıknatıs ile parça arası; yerçekimi x’i ARTIRIR, mıknatıs AZALTIR.
+       Parça yerdeyken (x = d) zemin, aşağı yönlü net kuvveti dengeler. */
+    let a = (m * G - F) / m;
+    if (st.dvx >= p.d / 100 && a >= 0) { st.dvx = p.d / 100; st.dvv = 0; continue; }
+    st.dvv += a * h; st.dvx += st.dvv * h;
+    if (st.dvx <= 0) { st.dvx = 0; st.dvv = 0; st.dvYapisti = true; }
+    if (st.dvx > p.d / 100) { st.dvx = p.d / 100; st.dvv = 0; }
+  }
+  if (st.kayit.length === 0 || st.t * 1000 - st.kayit[st.kayit.length - 1].t > 2)
+    st.kayit.push({ t: st.t * 1000, v: st.dvx * 100 });
+}
+
+function fYaz(F) {
+  if (F >= 1) return D.biçim(F, 2) + ' N';
+  if (F >= 1e-3) return D.biçim(F * 1e3, 1) + ' mN';
+  return D.biçim(F * 1e6, 0) + ' μN';
+}
+
 /* -------------------------------------------------------------- Durum */
 
 /* VİNÇ DÖNGÜSÜ
@@ -135,7 +212,8 @@ function durum(p) {
   /* st.i: canlı (taranan) akım · yukH: yükün yerden yüksekliği (m)
      zil: x dilin konumu (m), v hızı, kontakAcik, vurus sayısı */
   return { t: 0, tz: 0, x: 0, v: 0, kontakAcik: false, cekildi: false, vurus: 0, vurusT: [],
-           yukH: 0, yukV: 0, bagli: false, koptu: false, birakildi: false, kayit: [], vKayit: [] };
+           yukH: 0, yukV: 0, bagli: false, koptu: false, birakildi: false, kayit: [], vKayit: [],
+           dvx: (p && p.d != null ? p.d : 1) / 100, dvv: 0 };
 }
 
 /* ELEKTRİKLİ ZİL — gerçek mekanik model
@@ -188,6 +266,7 @@ function zilFrekansi(st) {
 }
 
 function adim(st, dt, p) {
+  if (p.mod > 2.5) { dvAdim(st, dt, p); return; }
   st.t += dt;
   /* Akım taranır: B'nin doyuma gidişi hem sahnede hem B−i eğrisi üzerindeki
      çalışma noktasında canlı görünür. Akımın YÖNÜ korunur; kaydırıcı
@@ -221,27 +300,110 @@ function adim(st, dt, p) {
 
   if (st.bagli) { st.yukH = hm; st.yukV = 0; }
   else if (st.yukH > 0) {
-    st.yukV += G * dt;                                  // serbest düşme
-    st.yukH = Math.max(0, st.yukH - st.yukV * dt);
+    st.yukH = Math.max(0, st.yukH - st.yukV * dt - 0.5 * G * dt * dt);   // serbest düşme (kesin)
+    st.yukV += G * dt;
     if (st.yukH === 0) st.yukV = 0;
   }
 }
 
 /** Taranan akımla güncellenmiş parametreler. Vinçte akım kesikken i = 0. */
 function etkin(st, p) {
+  if (p.mod > 2.5) return p;
   let i = (st && st.i != null) ? st.i : p.i;
   if (p.mod < 1.5 && st && !akimAcik(st.t)) i = 0;
   return Object.assign({}, p, { i });
 }
 
-function bitti() { return false; }
+function bitti(st, p) { return p.mod > 2.5 && st.t >= DV_SON; }
 
 /* --------------------------------------------- Gerçekçi görünüm */
 
 function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
+  if (p.mod > 2.5) { cizUzaktan(ctx, w, h, st, p); return; }
   if (p.mod > 1.5) { cizZil(ctx, w, h, st, p); return; }
   cizVinc(ctx, w, h, st, p);
+}
+
+function cizUzaktan(ctx, w, h, st, p) {
+  const zeminY = h - 34;
+  ctx.fillStyle = '#8A7B62'; ctx.fillRect(0, zeminY, w, h - zeminY);
+  /* Düşey ölçek (px/cm) aralığa göre: mıknatısın üstü en uzak d’de bile y = 110’un
+     altında kalır (13s + gövde ≈ 6s). Geniş kutup panele sığmazsa genişlik sınırlanır,
+     gerçek çap mıknatısın üstüne yazılır. */
+  const s = Math.min(12, (zeminY - 110 - 34) / 19);
+  const cx = w * 0.48, gw = Math.min(p.A * s, w * 0.36), gh = Math.max(34, 6 * s);
+  const altYuz = zeminY - (p.d + PARCA_YUK * 100) * s;            // mıknatısın alt yüzü
+  const gy = altYuz - gh;
+  const c = cek(p), acik = dvAkimAcik(st.t);
+
+  /* halat ve disk biçimli mıknatıs (yan görünüş) */
+  ctx.strokeStyle = '#3A4049'; ctx.lineWidth = 3;
+  ctx.beginPath(); ctx.moveTo(cx, 0); ctx.lineTo(cx, gy); ctx.stroke();
+  ctx.fillStyle = c.renk || '#4A5059';
+  D.yuvarlakDik(ctx, cx - gw / 2, gy, gw, gh, 4); ctx.fill();
+  D.yaziAydinlik(ctx, 'Ø ' + D.biçim(p.A, 0) + ' cm', cx + 8, gy - 10, R.mur, '700 11px system-ui, sans-serif', 'left');
+  ctx.save(); ctx.strokeStyle = acik ? '#E08A2B' : '#B87333'; ctx.lineWidth = 3;
+  for (let k = 0; k < 4; k++) {
+    const yy = gy + 6 + k * (gh - 12) / 3;
+    ctx.beginPath(); ctx.moveTo(cx - gw * 0.36, yy); ctx.lineTo(cx + gw * 0.36, yy); ctx.stroke();
+  }
+  ctx.restore();
+  if (acik) {
+    ctx.save(); ctx.globalAlpha = 0.35; ctx.fillStyle = '#E2483F';
+    ctx.fillRect(cx - gw / 2, altYuz - 4, gw, 4); ctx.restore();
+  }
+
+  /* demir levha: kutup yüzeyi kadar geniş, kalınlığı kütlesinden (m = ρ·A·t).
+     Zemindeki yeri, ayrılan PARCA_YUK yüksekliğinin altıdır. */
+  const pw = gw, kalin = p.parca / 1000 / (RO_DEMIR * kutupAlani(p)) * 100;      // cm
+  const ph = Math.max(4, Math.min(2.5, kalin) * s);                              // çizimde en çok 2,5 cm
+  const py = altYuz + st.dvx * 100 * s;
+  ctx.fillStyle = '#7D8A99'; ctx.fillRect(cx - pw / 2, py, pw, ph);
+  ctx.strokeStyle = '#5F6B78'; ctx.lineWidth = 1; ctx.strokeRect(cx - pw / 2, py, pw, ph);
+  /* levha yerdeyken altındaki boşluğu takoz doldurur */
+  if (st.dvx >= p.d / 100 - 1e-9) {
+    ctx.fillStyle = '#A08C6A';
+    ctx.fillRect(cx - pw * 0.3, py + ph, pw * 0.6, zeminY - py - ph);
+  }
+
+  /* d ölçüsü (başlangıç aralığı) */
+  const ox = cx + gw / 2 + 16;
+  ctx.save(); ctx.strokeStyle = R.mur; ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.moveTo(ox, altYuz); ctx.lineTo(ox, altYuz + p.d * s);
+  ctx.moveTo(ox - 4, altYuz); ctx.lineTo(ox + 4, altYuz);
+  ctx.moveTo(ox - 4, altYuz + p.d * s); ctx.lineTo(ox + 4, altYuz + p.d * s); ctx.stroke();
+  ctx.restore();
+  D.yaziAydinlik(ctx, 'd = ' + D.biçim(p.d, 1) + ' cm', ox + 8, altYuz + p.d * s / 2, R.mur,
+                 '700 12px system-ui, sans-serif', 'left');
+
+  /* kuvvetler: F yukarı, mg aşağı (aynı ölçek değil; değerler yazılı) */
+  const F = dvKuvvet(p, st.dvx, acik), mg = p.parca / 1000 * G;
+  const lx = cx - pw / 2 - 14, ly = py + ph / 2;
+  D.vektor(ctx, lx, ly, lx, ly + 24, R.agirlik, '', { kalinlik: 2.4, ucBoy: 7 });
+  if (F > 0) {
+    const boy = Math.max(8, Math.min(60, 24 * F / mg));
+    D.vektor(ctx, lx - 10, ly, lx - 10, ly - boy, R.kuvvet, '', { kalinlik: 2.4, ucBoy: 7 });
+  }
+  D.yaziAydinlik(ctx, 'F = ' + fYaz(F), lx - 18, ly - 10, R.kuvvet, '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, 'mg = ' + fYaz(mg), lx - 18, ly + 14, '#B94C63', '700 12px system-ui, sans-serif', 'right');
+
+  const yap = st.dvx <= 1e-9;
+  const rz = !acik ? (st.t < DV_ACIK ? 'AKIM KAPALI' : 'AKIM KESİLDİ · mıknatıslık yok')
+           : yap ? 'PARÇA ÇEKİLDİ · yapıştı'
+           : F > mg ? 'F > mg · parça yükseliyor' : 'F < mg · çekemiyor';
+  D.rozet(ctx, 'MEB s.215 · ' + rz, w / 2, 40,
+          !acik ? 'rgba(110,118,132,.92)' : (yap || F > mg) ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
+          (acik && (yap || F > mg)) ? '#0A2A1E' : '#FFFFFF', '700 11px system-ui, sans-serif', true);
+  D.yaziAydinlik(ctx, 'levha ' + D.biçim(p.parca, 0) + ' g · ' + D.biçim(kalin * 10, 2) + ' mm',
+                 cx + pw / 2 + 8, py + ph / 2 + 16, R.mur, '700 11px system-ui, sans-serif', 'left');
+  D.yaziAydinlik(ctx, c.ad + ' · B(aralıkta) = ' + D.biçim(acik ? dvB(p, st.dvx) * 1000 : 0, 1) + ' mT',
+                 w - 10, 82, R.normal, '700 12px system-ui, sans-serif', 'right');
+  const dk = dvKritikD(p);
+  D.yaziAydinlik(ctx, 'en çok ' + D.biçim(dk * 100, 2) + ' cm uzaktan çekebilir', w - 10, 100,
+                 R.mur, '700 12px system-ui, sans-serif', 'right');
+  D.yaziHaleli(ctx, 'ağır çekim ×' + DV_AGIR + ' · t = ' + D.biçim(st.t * 1000, 0) + ' ms', 10, h - 14,
+               '#FFFFFF', '600 11px system-ui, sans-serif', 'left', 'rgba(0,0,0,.55)');
 }
 
 function cizVinc(ctx, w, h, st, p) {
@@ -415,7 +577,7 @@ function cizZil(ctx, w, h, st, p) {
           akimVar && !yetersiz ? 'rgba(47,111,208,.92)' : 'rgba(110,118,132,.92)', '#FFFFFF',
           '700 11px system-ui, sans-serif', true);
   const f = zilFrekansi(st);
-  D.yaziAydinlik(ctx, 'vuruş: ' + st.vurus + (f > 0 ? ' · ' + D.biçim(f, 0) + ' Hz (gerçek)' : ''), w - 10, h - 12, R.mur,
+  D.yaziAydinlik(ctx, 'vuruş: ' + st.vurus + (f > 0 ? ' · ' + D.biçim(f, 0) + ' Hz (gerçek)' : ''), w - 10, 86, R.mur,
                  '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'akım → çeker → kontak açılır → akım kesilir → yay geri çeker → tekrar',
                  10, h - 12, R.mur, '600 10px system-ui, sans-serif', 'left');
@@ -423,9 +585,34 @@ function cizZil(ctx, w, h, st, p) {
 
 /* ----------------------------------------- Klasik fizik görünümü */
 
+function klasikUzaktan(ctx, w, h, st, p) {
+  const acik = dvAkimAcik(st.t), F = dvKuvvet(p, st.dvx, acik), mg = p.parca / 1000 * G;
+  const B = acik ? dvB(p, st.dvx) : 0, c = cek(p);
+  const satir = [
+    ['Manyetik devre: hava aralığı baskın', K.beyaz, '700 12px system-ui, sans-serif'],
+    ['B = μ₀·N·i / (l/μr + 2x)', K.beyaz, '700 12px system-ui, sans-serif'],
+    ['N·i = ' + D.biçim(p.N * Math.abs(p.i), 0) + ' A·sarım · l/μr = ' + D.biçim(DV_L / c.mur * 1000, 2) + ' mm', K.metin2, '11px system-ui, sans-serif'],
+    ['x = ' + D.biçim(st.dvx * 100, 2) + ' cm ⟹ B = ' + D.biçim(B * 1000, 1) + ' mT', R.normal, '700 12px system-ui, sans-serif'],
+    ['F = B²·A / (2μ₀) = ' + fYaz(F), R.kuvvet, '700 12px system-ui, sans-serif'],
+    ['mg = ' + fYaz(mg) + (F > mg ? '  ⟹  F > mg: çeker' : '  ⟹  F ≤ mg: çekemez'), F > mg ? R.hiz : R.agirlik, '700 12px system-ui, sans-serif'],
+    ['d iki katına çıkınca F yaklaşık 4’te 1’ine iner', K.metin2, '11px system-ui, sans-serif'],
+    ['(temasta bile ≈ 0,5 mm pürüz aralığı kalır)', K.metin2, '11px system-ui, sans-serif']
+  ];
+  let sy = 46;
+  satir.forEach(([t, c2, f]) => { D.yaziHaleli(ctx, t, 12, sy, c2, f, 'left'); sy += 19; });
+  const kitap = [
+    ['Kitabın cevabı (s.215) · daha çok hurda için:', K.metin2],
+    ['i ↑ · n ↑ · A ↑ · d ↓', R.ivme],
+    ['Hepsini bırakmak için: akımı sıfırla', R.kuvvet]
+  ];
+  let ky = h - 16 - (kitap.length - 1) * 18;
+  kitap.forEach(([t, c2]) => { D.yaziHaleli(ctx, t, 12, ky, c2, '700 12px system-ui, sans-serif', 'left'); ky += 18; });
+}
+
 function cizKlasik(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   D.izgara(ctx, w, h, 26);
+  if (p.mod > 2.5) { klasikUzaktan(ctx, w, h, st, p); return; }
   const c = cek(p);
   const B = alan(p), Bham = alanHam(p);
 
@@ -549,6 +736,29 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const pay = 8, gw = (w - pay * 3) / 2, gh = h - 6;
   const c = cek(p);
 
+  if (p.mod > 2.5) {
+    /* F − aralık: kesikli çizgi mg. Eğri çizginin üstündeyse parça çekilir. */
+    const mg = p.parca / 1000 * G, veri = [];
+    for (let x = 0.2; x <= 10.0001; x += 0.1) veri.push({ t: x, v: dvKuvvet(p, x / 100, true) });
+    const vMax = Math.max(mg * 3, 1e-3);
+    const kutu = { x: pay, y: 3, w: gw, h: gh };
+    D.miniGrafik(ctx, Object.assign({}, kutu, {
+      baslik: 'F − aralık   (kesikli: mg)', birim: 'N', tEtiket: 'x (cm)',
+      veri: veri.map(q => ({ t: q.t, v: Math.min(q.v, vMax * 1.5) })), tMin: 0.2, tMax: 10, vMin: 0, vMax,
+      renk: R.kuvvet,
+      imlec: { t: Math.max(0.2, st.dvx * 100), v: Math.min(vMax * 1.5, dvKuvvet(p, st.dvx, true)) }
+    }));
+    const gx = kutu.x + 34, gwi = Math.max(10, kutu.w - 42), gy = kutu.y + 18, ghi = Math.max(10, kutu.h - 36);
+    const yUst = D.guzelUst(vMax, 3);
+    D.kesikliCizgi(ctx, gx, gy + ghi - (mg / yUst) * ghi, gx + gwi, gy + ghi - (mg / yUst) * ghi, R.agirlik, 1.4, [5, 4]);
+    D.miniGrafik(ctx, {
+      x: pay * 2 + gw, y: 3, w: gw, h: gh,
+      baslik: 'Aralık x − t   (gerçek zaman)', birim: 'cm', tEtiket: 't (ms)',
+      veri: st.kayit, tMax: DV_SON * 1000, vMin: 0, vMax: Math.max(1, p.d * 1.1), renk: R.konum
+    });
+    return;
+  }
+
   if (p.mod > 1.5) {
     /* Zil: bobin akımı aç-kapa (kare dalga) ve vuruş sayısı */
     /* Zil: gerçek zamanda son ~160 ms. Akım aç-kapa (KESİNTİLİ); dil 2,5 mm’de çana vurur. */
@@ -604,6 +814,17 @@ function cizGrafik(ctx, w, h, st, pHam) {
 function okumalar(st, pHam) {
   const p = etkin(st, pHam);
   const c = cek(p);
+  if (p.mod > 2.5) {
+    const acik = dvAkimAcik(st.t), F = dvKuvvet(p, st.dvx, acik);
+    return [
+      { et: 'Akım',              dg: acik ? 'Açık' : 'Kapalı',            birim: '' },
+      { et: 'Aralık  x',         dg: D.biçim(st.dvx * 100, 2),            birim: 'cm' },
+      { et: 'B (aralıkta)',      dg: D.biçim(acik ? dvB(p, st.dvx) * 1000 : 0, 1), birim: 'mT' },
+      { et: 'Çekme kuvveti  F',  dg: fYaz(F),                             birim: '' },
+      { et: 'Ağırlık  mg',       dg: fYaz(p.parca / 1000 * G),            birim: '' },
+      { et: 'En büyük çekme uzaklığı', dg: D.biçim(dvKritikD(p) * 100, 2), birim: 'cm' }
+    ];
+  }
   if (p.mod > 1.5) {
     return [
       { et: 'Düzenek',   dg: 'Elektrikli zil',                   birim: '' },
@@ -638,7 +859,8 @@ D.simler['elektromiknatis'] = {
   parametreler: [
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Hurda vinci (kaldırma)' },
-      { d: 2, e: 'Elektrikli zil' }
+      { d: 2, e: 'Elektrikli zil' },
+      { d: 3, e: 'Kitap örneği: hurdayı d uzaklıktan çekme' }
     ]},
     { anahtar: 'cekirdek', etiket: 'Çekirdek', tur: 'secim', deger: 4, secenekler: [
       { d: 1, e: 'Hava (çekirdeksiz) · μr = 1' },
@@ -650,7 +872,9 @@ D.simler['elektromiknatis'] = {
     { anahtar: 'L', etiket: 'Bobin uzunluğu L', min: 5, max: 60, adim: 5, deger: 20, birim: 'cm' },
     { anahtar: 'i', etiket: 'Akım i', min: -10, max: 10, adim: 0.5, deger: 1.5, birim: 'A' },
     { anahtar: 'A', etiket: 'Kutup çapı', min: 2, max: 40, adim: 2, deger: 14, birim: 'cm' },
-    { anahtar: 'yuk', etiket: 'Kaldırılacak yük', min: 10, max: 2000, adim: 10, deger: 300, birim: 'kg' }
+    { anahtar: 'yuk', etiket: 'Kaldırılacak yük', min: 10, max: 2000, adim: 10, deger: 300, birim: 'kg' },
+    { anahtar: 'd', etiket: 'Hurdaya uzaklık d (3. düzenek)', min: 0.5, max: 10, adim: 0.5, deger: 1, birim: 'cm' },
+    { anahtar: 'parca', etiket: 'Demir levhanın kütlesi (3. düzenek)', min: 10, max: 2000, adim: 10, deger: 100, birim: 'g' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
 };

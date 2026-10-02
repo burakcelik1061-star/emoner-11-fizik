@@ -86,6 +86,29 @@ ve bu yüzden doymadan sonra akımı artırmanın hiçbir faydası yoktur.</p>
   “ideal” ile “gerçek” değerleri yan yana gösteriyor.</p>
 </div>
 
+<h3 style="margin-top:22px">Kitaptaki örnek: hurdayı d uzaklıktan çekmek</h3>
+<p>Vincin mıknatısı demir parçaya henüz değmiyorsa aradaki <strong>hava aralığı</strong> manyetik devreye
+baskın gelir. Akı mıknatıstan parçaya iner ve geri döner, yani iki kez havadan geçer:</p>
+<div class="formul" style="max-width:360px;margin:14px 0">
+  <div class="fm">B ≈ μ₀·N·i / (2d) &nbsp;·&nbsp; F = B²·A / (2μ₀)</div>
+  <div class="fm-ad">d büyüdükçe kuvvet yaklaşık 1/d² ile hızla düşer</div>
+</div>
+<p>Simülasyonun 3. düzeneğinde 14 cm&rsquo;lik yumuşak demir çekirdekli mıknatıs (N = 200, i = 1,5 A),
+kutup yüzeyini örten 100 g&rsquo;lık bir demir levhayı en çok <strong>1,41 cm</strong> uzaktan çekebiliyor
+(değdiğinde bile yüzey pürüzü yüzünden ≈ 0,5 mm hava kaldığı hesaba katıldı). Kitabın cevabındaki her
+değişiklik bu uzaklığı artırır:</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Değişiklik</th><th>En büyük çekme uzaklığı</th></tr></thead>
+  <tbody>
+    <tr><td>Başlangıç</td><td class="sembol">1,41 cm</td></tr>
+    <tr><td>Akım 2 katı</td><td class="sembol">2,89 cm</td></tr>
+    <tr><td>Sarım sayısı (dolayısıyla n) 2 katı</td><td class="sembol">2,89 cm</td></tr>
+    <tr><td>Kutup çapı 2 katı (A 4 katı)</td><td class="sembol">2,89 cm</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Hurdanın tamamını bırakmak için <strong>akım sıfırlanır</strong>; mıknatıslık kaybolur
+ve parçalar düşer. Simülasyonda akım 450. ms&rsquo;de kesiliyor.</p>
+
 <h3 style="margin-top:22px">Nerede kullanılıyor?</h3>
 <table class="degisken-tablo">
   <thead><tr><th>Uygulama</th><th>Kullanılan özellik</th></tr></thead>
@@ -97,6 +120,8 @@ ve bu yüzden doymadan sonra akımı artırmanın hiçbir faydası yoktur.</p>
     <tr><td>MR cihazı</td><td>çok güçlü ve düzgün alan</td></tr>
     <tr><td>Maglev treni</td><td>itme/çekme ile havada tutma</td></tr>
     <tr><td>Manyetik kilit</td><td>elektrik kesilince açılma</td></tr>
+    <tr><td>Selenoid vana</td><td>akımla açılıp kapanan su/gaz vanası</td></tr>
+    <tr><td>Mikrofon, radyo, jeneratör, su arıtma</td><td>kitapta sayılan diğer alanlar</td></tr>
   </tbody>
 </table>`,
 
@@ -292,7 +317,7 @@ osym: [
       <p>Aşağıdaki üç iş için çekirdek malzemesi seçilecektir:</p>
       <ol style="margin-left:.2em">
         <li><strong>Hurda vincinin</strong> elektromıknatısı</li>
-        <li><strong>Buzdolabı magnetinin</strong> mıknatısı</li>
+        <li><strong>Pusula iğnesi</strong></li>
         <li><strong>Kapı zilinin</strong> elektromıknatısı</li>
       </ol>
       <p>Hangi eşleştirme <strong>doğrudur</strong>?</p>`,
@@ -310,7 +335,7 @@ osym: [
         <thead><tr><th>İş</th><th>İstenen</th><th>Malzeme</th></tr></thead>
         <tbody>
           <tr><td>Hurda vinci</td><td>akım kesilince <strong>bırakmalı</strong></td><td class="sembol">yumuşak demir</td></tr>
-          <tr><td>Buzdolabı magneti</td><td>sürekli <strong>korumalı</strong></td><td class="sembol">sert çelik</td></tr>
+          <tr><td>Pusula iğnesi</td><td>sürekli <strong>korumalı</strong></td><td class="sembol">sert çelik</td></tr>
           <tr><td>Kapı zili</td><td>saniyede onlarca kez <strong>bırakmalı</strong></td><td class="sembol">yumuşak demir</td></tr>
         </tbody>
       </table>
