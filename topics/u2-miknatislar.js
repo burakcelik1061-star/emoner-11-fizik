@@ -29,6 +29,11 @@ yerleştirerek iğnelerin belirli iki noktaya yöneldiğini gördü ve bu noktal
   <em>magnet</em> sözcüğü de aynı kökten gelir.</p>
 </div>
 
+<p>Doğal mıknatısların yanında yapay mıknatıslar da üretilir. 1930&rsquo;larda <strong>AlNiCo</strong>
+(alüminyum-nikel-kobalt), sonra <strong>ferrit</strong>, 1960&rsquo;larda <strong>SmCo</strong>
+(samaryum-kobalt) ve günümüzde en güçlüsü <strong>NdFeB</strong> (neodimyum-demir-bor) mıknatıslar.
+Yapay mıknatıslar istenen şekilde üretilir: çubuk, at nalı (U), disk, halka, silindir, iğne.</p>
+
 <h3 style="margin-top:22px">Kutuplar ayrılamaz</h3>
 <p>Bir çubuk mıknatısı tam ortasından ikiye bölersen elinde <strong>bir N ve bir S
 parçası</strong> olmaz. İki parçanın <strong>her biri</strong> yeniden N ve S kutbuna
@@ -62,6 +67,10 @@ ama <strong>bir tanesi farklıdır</strong>:</p>
   <li><strong>Sıklıkları</strong> alanın şiddetini gösterir</li>
 </ul>
 
+<p>Zıt kutuplar birbirini <strong>çeker</strong>, aynı kutuplar <strong>iter</strong>. Kitaba göre
+manyetik kuvvet, kutup şiddetleriyle <strong>doğru</strong>, kutuplar arasındaki uzaklığın
+<strong>karesiyle ters</strong> orantılıdır; mıknatısların bulunduğu <strong>ortam</strong> da kuvveti etkiler.</p>
+
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Elektrikle en kritik fark</span></div>
   <p style="margin:0">Elektriksel alan çizgileri <strong>açıktır</strong>: artı yükte
@@ -83,10 +92,33 @@ ama <strong>bir tanesi farklıdır</strong>:</p>
   sorulan ayrıntısıdır.</p>
 </div>
 
-<p>İki kuzey tam olarak aynı yerde değildir. Aralarındaki açıya <strong>sapma
-(deklinasyon) açısı</strong> denir ve Türkiye için yaklaşık <strong>5–6° doğu</strong>dur.
+<p>Dünya&rsquo;nın içindeki hayalî çubuk mıknatısın ekseni, dönme ekseniyle çakışmaz. Kitaba göre
+aralarında yaklaşık <strong>11,5°</strong> açı vardır. Bu açı yıllar içinde değişir; güncel ölçümlerde
+(IGRF) 9–10° civarındadır. Pusulanın gösterdiği kuzey ile coğrafi kuzey arasındaki açıya <strong>sapma
+(deklinasyon) açısı</strong> denir; Türkiye için yaklaşık <strong>5–7° doğu</strong>dur.
 Ayrıca Dünya&rsquo;nın alanı yere paralel değildir; <strong>yatay</strong> ve
 <strong>düşey</strong> bileşenleri vardır ve pusula yalnızca yatay bileşeni izler.</p>
+
+<h3 style="margin-top:22px">Kitaptaki örnek: terazideki mıknatıs</h3>
+<p>Terazinin üzerinde dik duran çubuk mıknatısın üstüne, d uzaklığa özdeş bir mıknatıs getirilip sabitleniyor.
+Terazi, alttaki mıknatısa yerden gelen tepki kuvvetini (N) ölçer:</p>
+<div class="formul" style="max-width:380px;margin:14px 0">
+  <div class="fm">itme: N = mg + F &nbsp;·&nbsp; çekme: N = mg − F</div>
+  <div class="fm-ad">Terazinin gösterdiği kütle m₂ = N / g</div>
+</div>
+<p>Simülasyonun 4. düzeneği bunu gerçek kuvvetle hesaplar (50 g&rsquo;lık 10 cm mıknatıslar, m₁ = 50,0 g):</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Durum</th><th>d = 4 cm</th><th>2d = 8 cm</th><th>Kitabın cevabı</th></tr></thead>
+  <tbody>
+    <tr><td>a) Aynı kutuplar yakın</td><td class="sembol">59,8 g</td><td class="sembol">52,3 g</td><td>itme ⟹ m₂ &gt; m₁</td></tr>
+    <tr><td>b) Zıt kutuplar yakın</td><td class="sembol">40,2 g</td><td class="sembol">47,7 g</td><td>çekme ⟹ m₂ &lt; m₁</td></tr>
+    <tr><td>ç) Zıt, üstteki 2 kat güçlü</td><td class="sembol">30,5 g</td><td class="sembol">45,3 g</td><td>m₂ daha da azalır</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">c) Uzaklık artınca kuvvet azalır, m₂ değeri m₁&rsquo;e yaklaşır. Uzaklık 2 katına çıkınca
+fark yaklaşık <strong>4 kattan biraz fazla</strong> azalır: yakın kutuplar 1/r² ile zayıflar ama uzak
+kutupların etkisi de değişir. d) Araya başka bir madde konursa ortam değiştiği için kuvvet, dolayısıyla
+m₂ de değişir.</p>
 
 <h3 style="margin-top:22px">Hangi maddeler mıknatıslanır?</h3>
 <table class="degisken-tablo">
@@ -112,7 +144,8 @@ oluşturur.</p>`,
 formuller: {
   liste: [
     { fm: 'B — manyetik alan',      aciklama: 'Birimi tesla (T)' },
-    { fm: '1 T = 10⁴ gauss',        aciklama: 'Eski birimle çevrim' },
+    { fm: '1 G = 10⁻⁴ T',           aciklama: 'Gauss da kullanılır (1 T = 10⁴ G)' },
+    { fm: 'F ∝ (kutup şiddetleri) / d²', aciklama: 'Kutuplar arası kuvvet; ortam da etkiler' },
     { fm: '1 μT = 10⁻⁶ T',          aciklama: 'Dünya’nın alanı bu mertebededir' },
     { fm: 'B<sub>Dünya</sub> ≈ 50 μT', aciklama: 'Ülkemizde ≈ 48 μT, yatay bileşeni ≈ 25 μT' },
     { fm: 'B<sub>top</sub>² = B<sub>yatay</sub>² + B<sub>düşey</sub>²', aciklama: 'Bileşenler dik — Pisagor' }
@@ -350,7 +383,7 @@ osym: [
         <li><strong>Doğru.</strong> Serbest bir mıknatıs, bulunduğu noktadaki alan
         doğrultusuna yerleşir.</li>
         <li><strong>Yanlış.</strong> İkisi çakışmaz; aradaki açı <strong>sapma
-        (deklinasyon) açısıdır</strong> ve yere göre değişir. Türkiye&rsquo;de yaklaşık 5–6° doğudur.</li>
+        (deklinasyon) açısıdır</strong> ve yere göre değişir. Türkiye&rsquo;de yaklaşık 5–7° doğudur.</li>
         <li><strong>Doğru.</strong> İğne yatay düzlemde döndüğü için yalnızca
         <strong>yatay bileşeni</strong> görür. Düşey bileşeni ölçmek için
         <em>eğim (inklinasyon) pusulası</em> gerekir.</li>
@@ -488,7 +521,7 @@ baglam: [
       { bas: 'Kutuplarda ne değişiyor?',
         metin: 'Çizgiler kutuplara yaklaştıkça <strong>dikleşir ve atmosfere dalar</strong>. Parçacıklar da onları izleyerek üst atmosfere girer.' },
       { bas: 'Işık nereden geliyor?',
-        metin: 'Giren parçacıklar atmosferdeki oksijen ve azot atomlarına çarpar, onları uyarır. Atomlar eski hâline dönerken <strong>ışık yayar</strong>. Yeşil renk oksijenden, kırmızı-mor azottan gelir.' },
+        metin: 'Giren parçacıklar atmosferdeki oksijen ve azot atomlarına çarpar, onları uyarır. Atomlar eski hâline dönerken <strong>ışık yayar</strong>. Yeşil ve kırmızı renk oksijenden, mavi-mor renk azottan gelir.' },
       { bas: 'Alan olmasaydı',
         metin: 'Güneş rüzgârı doğrudan atmosfere çarpar, zamanla atmosferi aşındırırdı. <strong>Mars</strong>’ın küresel manyetik alanı yoktur ve atmosferini büyük ölçüde bu şekilde kaybettiği düşünülmektedir.' }
     ],

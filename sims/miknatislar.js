@@ -27,11 +27,15 @@ window.F11 = window.F11 || {};
       durur. Aynı kutuplar arasında NÖTR NOKTA oluşur.
    2) Tek mıknatıs + pusula: Gezici pusula çizgiye TEĞET durur; alan şiddeti
       (mT) okunur (PhET "Magnet and Compass").
-   3) Dünya: Dünya, eksenine ≈ 11° eğik bir çubuk mıknatıs gibidir ve bu
+   3) Dünya: Dünya, eksenine ≈ 11,5° eğik bir çubuk mıknatıs gibidir ve bu
       mıknatısın S kutbu coğrafi kuzeydedir (HyperPhysics). Gözlemci enlem
       boyunca gezer: eğim açısı tan I = 2·tan λ ile ekvatorda 0°, kutupta 90°.
       Sapma (deklinasyon) açısı ise yere göre değişen, pusulayla coğrafi kuzey
       arasındaki açıdır (Türkiye ≈ 6° doğu, IGRF 2026).
+   4) Kitaptaki örnek (MEB s.192): terazideki dik çubuk mıknatısın üstüne özdeş
+      bir mıknatıs d uzaklığında sabitlenir. Terazi, alttaki mıknatısa etkiyen
+      tepki kuvvetini okur: N = mg ± F. Aynı kutuplarda m₂ > m₁, zıt kutuplarda
+      m₂ < m₁; uzaklık artınca fark azalır, kutup şiddeti artınca büyür.
    ========================================================================== */
 
 const D = window.F11;
@@ -50,7 +54,7 @@ const EN_UZAK_CM = 16;        // panelden çıkmasınlar
 const AGIR = 12;              // ağır çekim: gerçek hareket 0,1–0,3 s sürer
 
 /* --- Dünya (dipol modeli + gerçek ölçüm) --- */
-const EKSEN_EGIK = 11;        // °, manyetik eksenin dönme ekseniyle açısı (HyperPhysics)
+const EKSEN_EGIK = 11.5;      // °, manyetik eksenin dönme ekseniyle açısı (MEB s.195, HyperPhysics)
 const B0_EKVATOR = 30;        // μT, dipolün ekvatordaki alanı
 /* Ankara, IGRF 2026: F ≈ 48 μT, H ≈ 25 μT, Z ≈ 41 μT, I ≈ 58°, δ ≈ 6° D */
 
@@ -161,6 +165,30 @@ function dunyaB(lamDer) {
 }
 function enlem(p, st) { return (st && st.enlem != null) ? st.enlem : p.enlem; }
 
+/* --- 4. düzenek: terazideki mıknatıs (MEB s.192) ---
+   Alttaki mıknatıs teraziye dik durur, üstteki özdeş mıknatıs d uzaklıkta
+   sabitlenir. Alttakine etkiyen kuvvetler: ağırlık mg (aşağı), manyetik F
+   ve terazinin tepkisi N. Terazi N’yi okur ve kütle olarak gösterir:
+       itme  (aynı kutuplar) : N = mg + F  ⟹  m₂ = m₁ + F/g  (artar)
+       çekme (zıt kutuplar)  : N = mg − F  ⟹  m₂ = m₁ − F/g  (azalır)
+   F, 1. düzenekteki dört kutuplu tam kuvvettir; üstteki mıknatısın kutup
+   şiddeti k katına çıkarsa her kutup çifti, dolayısıyla F de k katına çıkar.
+   d en az 3 cm: daha yakında 2× şiddetli mıknatıs alttakini teraziden kaldırır. */
+const TERAZI_YAKLASMA = 2.5;  // s, üstteki mıknatıs 15 cm yukarıdan indirilir
+const TERAZI_SON = 4;
+
+function teraziD(st, p) {
+  const s = Math.min(1, st.t / TERAZI_YAKLASMA), e = s * s * (3 - 2 * s);
+  return p.dTer + 15 * (1 - e);                                   // cm
+}
+/** Alttakine etkiyen manyetik kuvvet (N): + aşağı (itme), − yukarı (çekme). */
+function teraziKuvvet(dCm, p) {
+  const ayni = p.yakin === 1;
+  /* alttaki = 1. mıknatıs, üst ucu: aynıda N, zıtta S; üstteki = 2., alt ucu N */
+  return p.guc * kuvvet(dCm / 100, { ters1: ayni ? 1 : 0, ters2: 0 });
+}
+function teraziOkuma(dCm, p) { return (KUTLE * G + teraziKuvvet(dCm, p)) / G * 1000; }   // g
+
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
@@ -180,6 +208,11 @@ function kaydet(st, v, ara) {
      kayıyorsa  : kinetik sürtünme f_k hıza ters yönde
    Kuvvet uzaklığa bağlı olduğu için her adımda yeniden hesaplanır. */
 function adim(st, dt, p) {
+  if (p.mod > 3.5) {
+    st.t += dt;
+    kaydet(st, teraziOkuma(teraziD(st, p), p), 0.02);
+    return;
+  }
   if (p.mod > 2.5) {
     st.t += dt;
     st.enlem = D.tarama(st.t, p.enlem, p.enlem < 45 ? 90 : 0, 12);
@@ -215,6 +248,7 @@ function adim(st, dt, p) {
 
 /* Kuvvet sürtünmeyi yenemiyorsa sahne 1,5 s gösterilip durur. */
 function bitti(st, p) {
+  if (p.mod > 3.5) return st.t >= TERAZI_SON;
   return p.mod < 1.5 && (st.durdu || (!st.kipirdadi && st.t * AGIR > 1.5));
 }
 
@@ -283,7 +317,82 @@ function cizgiOku(ctx, yol, oran) {
   ctx.closePath(); ctx.fill();
 }
 
+function teraziYerlesim(w, h) {
+  const s = Math.min(9, (h - 90) / 34);                 // px / cm
+  return { s, cx: w * 0.30, taban: h - 64 };
+}
+
+function cizTerazi(ctx, w, h, st, p) {
+  const L = teraziYerlesim(w, h), s = L.s, cx = L.cx;
+  const d = teraziD(st, p), Fm = teraziKuvvet(d, p), oku = teraziOkuma(d, p);
+  const mw = 2.4 * s, mh = BOY_CM * s;
+
+  /* masa */
+  ctx.fillStyle = '#C9B79C'; ctx.fillRect(0, h - 22, w, 22);
+
+  /* dijital terazi */
+  const tw = Math.max(130, mw * 5), ty = L.taban;
+  ctx.fillStyle = '#3A4250'; D.yuvarlakDik(ctx, cx - tw / 2, ty, tw, h - 22 - ty, 8); ctx.fill();
+  ctx.fillStyle = '#B8C2CE'; ctx.fillRect(cx - tw * 0.42, ty - 6, tw * 0.84, 7);
+  ctx.fillStyle = '#16301F'; D.yuvarlakDik(ctx, cx - 46, ty + 10, 92, 24, 4); ctx.fill();
+  ctx.save();
+  ctx.font = '700 16px ui-monospace, monospace'; ctx.fillStyle = '#5CF08A';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(D.biçim(oku, 1) + ' g', cx, ty + 22.5);
+  ctx.restore();
+
+  /* alttaki mıknatıs: aynı kutuplarda üst ucu N, zıtta S */
+  const altUst = ty - 6 - mh;
+  D.miknatis(ctx, cx - mw / 2, altUst, mw, mh, p.yakin !== 1, true);
+
+  /* üstteki mıknatıs ve tutacağı: alt ucu N (S üstte) */
+  const ustAlt = altUst - d * s, ustUst = ustAlt - mh;
+  const sx = w * 0.56;
+  ctx.fillStyle = '#6E7684'; ctx.fillRect(sx - 4, 0, 8, h - 22);
+  ctx.fillRect(cx + mw / 2, ustUst + mh * 0.25 - 4, sx - cx - mw / 2, 8);
+  D.miknatis(ctx, cx - mw / 2, ustUst, mw, mh, true, true);
+  if (p.guc > 1)
+    D.yaziAydinlik(ctx, '2× kutup şiddeti', cx - mw / 2 - 8, ustUst + mh * 0.5, '#B03030',
+                   '700 11px system-ui, sans-serif', 'right');
+
+  /* aradaki uzaklık */
+  const ox = cx - mw / 2 - 18;
+  if (ustAlt - altUst < -6) {
+    ctx.save();
+    ctx.strokeStyle = R.mur; ctx.lineWidth = 1.2;
+    ctx.beginPath(); ctx.moveTo(ox, ustAlt); ctx.lineTo(ox, altUst);
+    ctx.moveTo(ox - 4, ustAlt); ctx.lineTo(ox + 4, ustAlt);
+    ctx.moveTo(ox - 4, altUst); ctx.lineTo(ox + 4, altUst); ctx.stroke();
+    ctx.restore();
+    D.yaziAydinlik(ctx, 'd = ' + D.biçim(d, 1) + ' cm', ox - 6, (ustAlt + altUst) / 2, R.mur,
+                   '700 12px system-ui, sans-serif', 'right');
+  }
+
+  /* alttakine etkiyen manyetik kuvvet: itmede aşağı, çekmede yukarı */
+  const okBoy = Math.min(70, 220 * Math.abs(Fm));
+  if (okBoy > 8) {
+    const y0 = altUst + mh * 0.5, yon = Fm > 0 ? 1 : -1;
+    D.vektor(ctx, cx + mw / 2 + 14, y0, cx + mw / 2 + 14, y0 + yon * okBoy, R.kuvvet, '', { kalinlik: 2.8 });
+  }
+  D.yaziAydinlik(ctx, 'F = ' + D.biçim(Math.abs(Fm), 3) + ' N', cx + mw / 2 + 24, altUst + mh * 0.5,
+                 R.kuvvet, '700 12px system-ui, sans-serif', 'left');
+
+  const ayni = p.yakin === 1;
+  D.rozet(ctx, 'MEB s.192 · ' + (ayni ? 'aynı kutuplar yakın · itme' : 'zıt kutuplar yakın · çekme'),
+          w / 2, 36, ayni ? 'rgba(226,72,63,.92)' : 'rgba(47,111,208,.92)', '#FFFFFF',
+          '700 11px system-ui, sans-serif', true);
+  /* sağ sütun: önce / şimdi */
+  const fark = oku - KUTLE * 1000, sag = w - 12, y0 = h * 0.36;
+  D.yaziAydinlik(ctx, 'tek başına  m₁ = ' + D.biçim(KUTLE * 1000, 1) + ' g', sag, y0, R.mur,
+                 '700 12px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, 'şimdi  m₂ = ' + D.biçim(oku, 1) + ' g', sag, y0 + 20, '#9A6A00',
+                 '700 13px system-ui, sans-serif', 'right');
+  D.yaziAydinlik(ctx, (fark >= 0 ? 'm₂ > m₁  (+' : 'm₂ < m₁  (−') + D.biçim(Math.abs(fark), 1) + ' g)',
+                 sag, y0 + 40, fark >= 0 ? R.kuvvet : '#1F6FD0', '700 12px system-ui, sans-serif', 'right');
+}
+
 function cizGercek(ctx, w, h, st, p) {
+  if (p.mod > 3.5) { cizTerazi(ctx, w, h, st, p); return; }
   if (p.mod > 2.5) { cizDunya(ctx, w, h, st, p); return; }
 
   /* masa yüzeyi — üstten bakış */
@@ -441,11 +550,11 @@ function cizDunya(ctx, w, h, st, p) {
   uzayYazi(ctx, 'coğrafi kuzey', cx, cy - r - 36, '#EAF0FA',
                '600 11px system-ui, sans-serif', 'center');
 
-  /* manyetik eksen — ≈ 11° eğik */
+  /* manyetik eksen — ≈ 11,5° eğik */
   const ux = Math.sin(e), uy = -Math.cos(e);
   D.kesikliCizgi(ctx, cx - ux * (r + 26), cy - uy * (r + 26),
                  cx + ux * (r + 26), cy + uy * (r + 26), '#FF6B6B', 1.8, [7, 4]);
-  uzayYazi(ctx, 'manyetik eksen (' + EKSEN_EGIK + '°)', cx + ux * (r + 30) + 8, cy + uy * (r + 30) + 12, '#FF8A8A',
+  uzayYazi(ctx, 'manyetik eksen (' + D.biçim(EKSEN_EGIK, 1) + '°)', cx + ux * (r + 30) + 8, cy + uy * (r + 30) + 12, '#FF8A8A',
                '600 11px system-ui, sans-serif', 'left');
 
   /* Gözlemci: manyetik enlem λ’da. Eğim pusulası yerel alanı gösterir:
@@ -476,8 +585,40 @@ function cizDunya(ctx, w, h, st, p) {
 
 /* ----------------------------------------- Klasik fizik görünümü */
 
+function klasikTerazi(ctx, w, h, st, p) {
+  const d = teraziD(st, p), Fm = teraziKuvvet(d, p), mg = KUTLE * G, N = mg + Fm;
+  D.yaziHaleli(ctx, 'Alttaki mıknatısın serbest cisim diyagramı', 12, 46, K.beyaz,
+               '700 12px system-ui, sans-serif', 'left');
+  /* kuvvetler aynı ölçekle: mg = 60 px */
+  const k = 60 / mg, cx = Math.min(w * 0.22, 130), cy = h * 0.47, bw = 26, bh = 56;
+  ctx.save();
+  ctx.fillStyle = 'rgba(160,170,190,.25)'; ctx.strokeStyle = K.beyaz; ctx.lineWidth = 1.6;
+  ctx.fillRect(cx - bw / 2, cy - bh / 2, bw, bh); ctx.strokeRect(cx - bw / 2, cy - bh / 2, bw, bh);
+  ctx.restore();
+  /* mg alttan aşağı, N üstten yukarı (terazinin tepkisi), F yan yüzden */
+  D.vektor(ctx, cx, cy + bh / 2, cx, cy + bh / 2 + mg * k, R.agirlik, 'mg', { kalinlik: 2.4 });
+  D.vektor(ctx, cx, cy - bh / 2, cx, cy - bh / 2 - N * k, R.normal, 'N', { kalinlik: 2.4 });
+  if (Math.abs(Fm) * k > 4)
+    D.vektor(ctx, cx + bw / 2 + 12, cy, cx + bw / 2 + 12, cy + Fm * k, R.kuvvet, 'F', { kalinlik: 2.4 });
+
+  const ayni = p.yakin === 1, oku = teraziOkuma(d, p), oku2 = teraziOkuma(2 * p.dTer, p);
+  const satir = [
+    [ayni ? 'Aynı kutuplar ⟹ itme ⟹ F aşağı' : 'Zıt kutuplar ⟹ çekme ⟹ F yukarı', ayni ? R.kuvvet : R.normal],
+    ['Terazi N’yi okur:  N = mg ' + (ayni ? '+' : '−') + ' F', K.beyaz],
+    ['N = ' + D.biçim(mg, 3) + (ayni ? ' + ' : ' − ') + D.biçim(Math.abs(Fm), 3) + ' = ' + D.biçim(N, 3) + ' N', K.metin2],
+    ['m₂ = N / g = ' + D.biçim(oku, 1) + ' g  ' + (ayni ? '> m₁' : '< m₁'), R.ivme],
+    ['d yerine 2d = ' + D.biçim(2 * p.dTer, 1) + ' cm olsaydı: m₂ = ' + D.biçim(oku2, 1) + ' g', K.metin2]
+  ];
+  let sy = h - 16 - (satir.length - 1) * 18;
+  satir.forEach(([t, c]) => {
+    D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
+  });
+}
+
 function cizKlasik(ctx, w, h, st, p) {
   D.izgara(ctx, w, h, 26);
+
+  if (p.mod > 3.5) { klasikTerazi(ctx, w, h, st, p); return; }
 
   if (p.mod > 2.5) { klasikDunya(ctx, w, h, p, st); return; }
 
@@ -644,6 +785,24 @@ function cizGrafik(ctx, w, h, st, p) {
     return;
   }
 
+  if (p.mod > 3.5) {
+    D.miniGrafik(ctx, Object.assign({}, sol, {
+      baslik: 'Terazideki değer − t', birim: 'g',
+      veri: st.kayit, tMax: TERAZI_SON, vMin: 0, vMax: 100, renk: R.ivme
+    }));
+    /* m₂ − d: d ve 2d karşılaştırması bu eğriden okunur. İmleç, üstteki
+       mıknatıs indikçe eğri boyunca kayar. */
+    const veri = [];
+    for (let d = 3; d <= 27.0001; d += 0.25) veri.push({ t: d, v: teraziOkuma(d, p) });
+    const d = teraziD(st, p);
+    D.miniGrafik(ctx, Object.assign({}, sag, {
+      baslik: 'Terazideki değer − d', birim: 'g', tEtiket: 'd (cm)',
+      veri, tMin: 3, tMax: 27, vMin: 0, vMax: 100, renk: R.kuvvet,
+      imlec: { t: Math.min(27, d), v: teraziOkuma(Math.min(27, d), p) }
+    }));
+    return;
+  }
+
   if (p.mod < 2.5) {
     D.miniGrafik(ctx, Object.assign({}, sol, {
       baslik: 'Gezici pusulada B − t   (kutuplara yakınken büyük)', birim: 'mT',
@@ -683,6 +842,17 @@ function cizGrafik(ctx, w, h, st, p) {
 /* ----------------------------------------------------------- Okumalar */
 
 function okumalar(st, p) {
+  if (p.mod > 3.5) {
+    const d = teraziD(st, p), Fm = teraziKuvvet(d, p), oku = teraziOkuma(d, p);
+    return [
+      { et: 'Yakın kutuplar',        dg: p.yakin === 1 ? 'Aynı · itme' : 'Zıt · çekme', birim: '' },
+      { et: 'Aralık d',              dg: D.biçim(d, 1),                       birim: 'cm' },
+      { et: 'Manyetik kuvvet F',     dg: D.biçim(Math.abs(Fm), 3),            birim: 'N' },
+      { et: 'Terazi önce  m₁',       dg: D.biçim(KUTLE * 1000, 1),            birim: 'g' },
+      { et: 'Terazi şimdi  m₂',      dg: D.biçim(oku, 1),                     birim: 'g' },
+      { et: '2d’de olsaydı',         dg: D.biçim(teraziOkuma(2 * p.dTer, p), 1), birim: 'g' }
+    ];
+  }
   if (p.mod > 2.5) {
     const lam = enlem(p, st), B = dunyaB(lam);
     return [
@@ -729,7 +899,8 @@ D.simler['miknatislar'] = {
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'İki mıknatıs masada (itme / çekme)' },
       { d: 2, e: 'Tek mıknatıs + pusula' },
-      { d: 3, e: 'Dünya’nın manyetik alanı' }
+      { d: 3, e: 'Dünya’nın manyetik alanı' },
+      { d: 4, e: 'Kitap örneği: terazideki mıknatıs' }
     ]},
     { anahtar: 'ters1', etiket: 'Sol mıknatıs (1–2. düzenek)', tur: 'secim', deger: 0, secenekler: [
       { d: 0, e: 'N — S' },
@@ -741,7 +912,16 @@ D.simler['miknatislar'] = {
     ]},
     { anahtar: 'ara',   etiket: 'Aralarındaki uzaklık (1. düzenek)', min: 1, max: 10, adim: 0.5, deger: 2, birim: 'cm' },
     { anahtar: 'enlem', etiket: 'Manyetik enlem (3. düzenek)', min: 0, max: 90, adim: 1, deger: 39, birim: '°' },
-    { anahtar: 'sapma', etiket: 'Sapma açısı (3. düzenek)', min: 0, max: 20, adim: 1, deger: 6, birim: '°' }
+    { anahtar: 'sapma', etiket: 'Sapma açısı (3. düzenek)', min: 0, max: 20, adim: 1, deger: 6, birim: '°' },
+    { anahtar: 'yakin', etiket: 'Yakın kutuplar (4. düzenek)', tur: 'secim', deger: 1, secenekler: [
+      { d: 1, e: 'Aynı (N – N) · itme' },
+      { d: 2, e: 'Zıt (N – S) · çekme' }
+    ]},
+    { anahtar: 'guc', etiket: 'Üstteki mıknatıs (4. düzenek)', tur: 'secim', deger: 1, secenekler: [
+      { d: 1, e: 'Özdeş' },
+      { d: 2, e: 'Kutup şiddeti 2 kat' }
+    ]},
+    { anahtar: 'dTer', etiket: 'Mıknatıslar arası d (4. düzenek)', min: 3, max: 12, adim: 0.5, deger: 4, birim: 'cm' }
   ],
   durum, adim, bitti, cizGercek, cizKlasik, cizGrafik, okumalar
 };
