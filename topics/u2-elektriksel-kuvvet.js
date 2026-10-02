@@ -68,6 +68,19 @@ Buna <strong>üst üste binme (süperpozisyon)</strong> ilkesi denir.</p>
   karşılaştır: boyları hep eşittir.</p>
 </div>
 
+<h3 style="margin-top:22px">Yüklü cisim nötr cismi de çeker</h3>
+<p>Nötr bir cismin net yükü sıfırdır ama içinde eşit miktarda artı ve eksi yük vardır.
+Yüklü bir cisim yaklaşınca bu yükler ayrışır: nötr cismin yakın yüzünde
+<strong>zıt</strong>, uzak yüzünde <strong>aynı</strong> işaretli yük toplanır. Buna
+<strong>etki ile kutuplanma</strong> denir. Zıt yük daha yakında olduğundan çekme itmeden
+büyük çıkar. Sonuç: yüklü cisim nötr cismi <strong>işareti ne olursa olsun çeker</strong>.
+Saça sürtülen tarağın kâğıt parçalarını, yün kazağa sürtülen balonun duvarı çekmesi budur.
+Kitaptaki nötr elektroskop deneyinde yaprakların açılması da bu ayrışmadandır.</p>
+<p>Bu çekme Coulomb kuvvetinden çok daha zayıftır ve uzaklıkla çok hızlı azalır. a
+yarıçaplı nötr iletken küre için uzakta <code>F ≈ 2·k·q²·a³/d⁵</code>&rsquo;tir: uzaklık iki katına
+çıkınca kuvvet 32&rsquo;de bire düşer. İletken küreler <strong>değince</strong> yükü eşit paylaşır;
+nötr küre yüklenir ve bu kez <strong>itilir</strong>. Simülasyonda q₁ ya da q₂&rsquo;yi 0 yapıp dene.</p>
+
 <h3 style="margin-top:22px">Kütle çekimiyle karşılaştırma</h3>
 <p>İki yasa şaşırtıcı derecede benzerdir; ikisi de ters karedir. Ama iki temel fark vardır:</p>
 <table class="degisken-tablo">
