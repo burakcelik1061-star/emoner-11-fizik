@@ -67,6 +67,17 @@ function agirlikOrani(p) {
 }
 
 function isaret(q) { return q > 0 ? 1 : q < 0 ? -1 : 0; }
+
+/** Kuvveti 4 anlamlı basamakla, okunur birimde yazar (N · mN · μN). Sabit 5
+    ondalıkla yazılınca 4,5·10⁻⁵ N “0,00005” görünüp %11 sapıyordu. */
+function fYaz(F) {
+  if (F === 0) return '0 N';
+  if (F >= 1) return D.biçim(F, 3) + ' N';
+  if (F >= 1e-3) return D.biçim(F * 1e3, 3) + ' mN';
+  return D.biçim(F * 1e6, 3) + ' μN';
+}
+/** Süreyi okunur birimde yazar: 0,1 s’den kısaysa ms. */
+function tYaz(t) { return t < 0.1 ? D.biçim(t * 1e3, 2) + ' ms' : D.biçim(t, 3) + ' s'; }
 function yukRengi(q) { return q > 0 ? '#E2483F' : q < 0 ? '#2F6FD0' : '#8A949F'; }
 
 /* -------------------------------------------------------------- Durum */
@@ -346,7 +357,7 @@ function cizTekYuk(ctx, w, h, st, p) {
 
   D.yaziAydinlik(ctx, 'E = ' + D.biçim(E) + ' N/C', w - 10, 18, R.normal,
                  '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'F = ' + D.biçim(Fq, 5) + ' N', w - 10, 36, R.kuvvet,
+  D.yaziAydinlik(ctx, 'F = ' + fYaz(Fq), w - 10, 36, R.kuvvet,
                  '700 12px system-ui, sans-serif', 'right');
 }
 
@@ -514,7 +525,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['E = 9·10⁹ · ' + D.biçim(Math.abs(p.q)) + '·10⁻⁶ / ' + D.biçim(r * r, 4), K.metin2],
       ['E = ' + D.biçim(E) + ' N/C', R.normal],
       ['F = q₀ · E = ' + D.biçim(Math.abs(p.qt)) + '·10⁻⁹ · ' + D.biçim(E), K.metin2],
-      ['F = ' + D.biçim(Fq, 5) + ' N', R.kuvvet]
+      ['F = ' + fYaz(Fq), R.kuvvet]
     ];
     let sy = h - 16 - (satir.length - 1) * 17;
     satir.forEach(([t, c]) => {
@@ -631,9 +642,9 @@ function cizLevhalarKlasik(ctx, w, h, st, p) {
     [p.yc > 0.5 ? '' : 'yer çekimi ihmal · mg/qE = ' + (isFinite(oran) ? '%' + D.biçim(oran * 100, 0) : '∞'),
      oran > 0.1 && p.yc < 0.5 ? R.kuvvet : K.metin2, '11px system-ui, sans-serif'],
     ['E = V/d = ' + D.biçim(alanDuzgun(p)) + ' N/C', R.normal, '700 12px system-ui, sans-serif'],
-    ['F = q·E = ' + D.biçim(Math.abs(qTestC(p)) * alanDuzgun(p), 5) + ' N', R.kuvvet, '12px system-ui, sans-serif'],
+    ['F = q·E = ' + fYaz(Math.abs(qTestC(p)) * alanDuzgun(p)), R.kuvvet, '12px system-ui, sans-serif'],
     ['a = ' + D.biçim(a) + ' m/s²' + (a < 0 ? '  (yukarı)' : a > 0 ? '  (aşağı)' : ''), R.ivme, '700 12px system-ui, sans-serif'],
-    ['t = ' + D.biçim(st.t, 3) + ' s', K.metin2, '11px system-ui, sans-serif'],
+    ['t = ' + tYaz(st.t), K.metin2, '11px system-ui, sans-serif'],
     ['y = ' + D.biçim(st.y * 100) + ' cm', R.konum, '700 12px system-ui, sans-serif']
   ];
   /* Panel köşesindeki HTML etiketiyle çakışmasın diye aşağıdan başlar. */
@@ -733,11 +744,11 @@ function okumalar(st, pHam) {
     const a = ivmeZerre(p);
     return [
       { et: 'Alan  E = V/d', dg: D.biçim(alanDuzgun(p)),                    birim: 'N/C' },
-      { et: 'Kuvvet  F',     dg: D.biçim(Math.abs(qTestC(p)) * alanDuzgun(p), 5), birim: 'N' },
+      { et: 'Kuvvet  F',     dg: fYaz(Math.abs(qTestC(p)) * alanDuzgun(p)).split(' ')[0], birim: fYaz(Math.abs(qTestC(p)) * alanDuzgun(p)).split(' ')[1] },
       { et: 'İvme  a',       dg: D.biçim(a) + (a < 0 ? ' ↑' : a > 0 ? ' ↓' : ''), birim: 'm/s²' },
-      { et: 'Süre  t',       dg: D.biçim(st.t, 3),                          birim: 's' },
-      { et: 'Yatay  x',      dg: D.biçim(st.x * 100),                       birim: 'cm' },
-      { et: 'Sapma  y',      dg: D.biçim(st.y * 100),                       birim: 'cm' }
+      { et: 'Süre  t',       dg: tYaz(st.t).split(' ')[0],                  birim: tYaz(st.t).split(' ')[1] },
+      { et: 'Yatay  x',      dg: D.biçim(st.x * 100, 2),                    birim: 'cm' },
+      { et: 'Sapma  y',      dg: D.biçim(st.y * 100, 3),                    birim: 'cm' }
     ];
   }
   if (p.mod > 1.5) {
@@ -757,7 +768,7 @@ function okumalar(st, pHam) {
     { et: 'Uzaklık  d',     dg: D.biçim(p.r),                     birim: 'cm' },
     { et: 'Alan  E',        dg: D.biçim(E),                       birim: 'N/C' },
     { et: 'Test yükü  q₀',  dg: D.biçim(p.qt),                    birim: 'nC' },
-    { et: 'Kuvvet  F = q₀E', dg: D.biçim(Math.abs(qTestC(p)) * E, 5), birim: 'N' }
+    { et: 'Kuvvet  F = q₀E', dg: fYaz(Math.abs(qTestC(p)) * E).split(' ')[0], birim: fYaz(Math.abs(qTestC(p)) * E).split(' ')[1] }
   ];
 }
 
