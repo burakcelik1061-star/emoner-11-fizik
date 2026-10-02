@@ -26,6 +26,10 @@ içinde birbirinden en uzak durabilecekleri yer neresidir? <strong>Dış yüzey.
   <div class="fm-ad">İletkenin içinde net yük kalmaz</div>
 </div>
 
+<p>Yüklü bir <strong>kürede</strong> yük dış yüzeye <strong>düzgün</strong> dağılır. <strong>Sivri
+kısımları</strong> olan bir iletkende de yük dış yüzeydedir ama <strong>sivri uçlarda daha yoğun</strong>
+toplanır (kitap Şekil 2.10 ve 2.11). Bu yüzden kıvılcımlar ve yıldırım en çok sivri uçlara ve köşelere atlar.</p>
+
 <p>İçeride yük kalmadığına göre içeride alan da yoktur. Bu, iletkenin
 <strong>kendi</strong> yükü için geçerli. Peki dışarıdan bir alan uygulanırsa?</p>
 
@@ -52,6 +56,27 @@ Bu ayrışan yükler <strong>kendi alanlarını</strong> yaratır ve bu alan dı
 <p>Bu dengeleme <strong>inanılmaz hızlıdır</strong> — bakır gibi iyi bir iletkende
 mertebesi <code>10⁻¹⁹ s</code>&rsquo;dir. Simülasyonda görebilmen için yavaşlatıldı.</p>
 
+<h3 style="margin-top:22px">Kitaptaki örnek: kafes ve metal küre</h3>
+<p>Özüm Öğretmen, yalıtkan iple asılı nötr metal bir küreye pozitif yüklü bir çubuk yaklaştırıyor.
+Simülasyonun 4. düzeneği bu üç durumu gerçek kuvvetlerle hesaplar (küre 0,2 g, yarıçapı 1,5 cm,
+ip 25 cm, çubuk 250 nC):</p>
+<table class="degisken-tablo">
+  <thead><tr><th>Durum</th><th>Ne olur?</th><th>Simülasyonda</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Şekil I</strong> · kafes yok</td><td>Küre etki ile kutuplanır; yakın yüzü (−) daha yakın olduğu için
+    çekme itmeden büyüktür. Küre çubuğa doğru gelir ve bir açıyla durur.</td><td>F ≈ 68 μN · θ ≈ 2,0°</td></tr>
+    <tr><td><strong>Şekil II</strong> · küre kafesin içinde</td><td>Kafesin içinde E = 0. Küreye kuvvet etki etmez,
+    ilk denge konumunda kalır.</td><td>F = 0 · θ = 0°</td></tr>
+    <tr><td><strong>Şekil III</strong> · küre kafesin arkasında</td><td>Alan kafesin <em>içinde</em> sıfırdır ama kafesin
+    arka yüzündeki + yükler dışarıda alan oluşturur. Küre yine çubuk tarafına çekilir.</td><td>F ≈ 46 μN · θ ≈ 1,3°</td></tr>
+  </tbody>
+</table>
+<p style="margin-top:10px">Şekil III&rsquo;te ilginç bir sonuç var: aynı uzaklıkta kafes olmasaydı kuvvet yalnızca
+≈ 5 μN olurdu. Kafes arkasını korumaz; arka yüzüne toplanan + yükler küreye daha yakın olduğu için
+küreyi daha <strong>güçlü</strong> çeker. Kafes yalnızca <strong>kendi içini</strong> korur.</p>
+<p style="color:var(--text-2)">Açılar küçüktür, çünkü bu kuvvet uzaklığın beşinci kuvvetiyle (1/d⁵) azalır. Çubuk
+çok yüklüyse küre dengede kalamaz ve çubuğa yapışır. Kayma, aradaki uzaklığın beşte birini aşamaz.</p>
+
 <h3 style="margin-top:22px">Kafesin delikli olması sorun değil</h3>
 <p>Faraday kafesi <strong>kapalı bir kutu olmak zorunda değildir</strong>; tel örgü de
 işe yarar. Koşul şudur: <strong>göz aralığı, engellenecek dalganın boyundan çok küçük
@@ -73,7 +98,10 @@ levhanın sırrı budur: mikrodalgayı tutar, ışığı geçirir.</p>
   <li><strong>Asansör:</strong> metal kabin sinyali kestiği için telefon çekmez</li>
   <li><strong>MR odaları ve hassas laboratuvarlar:</strong> dış elektriksel gürültüden yalıtılır</li>
   <li><strong>Ekranlı (shield) kablolar:</strong> sinyal kablosunun etrafındaki metal örgü</li>
-  <li><strong>Yüksek gerilim bakım kıyafetleri:</strong> ilettken iplikli tulumlar</li>
+  <li><strong>Yüksek gerilim bakım kıyafetleri:</strong> iletken iplikli tulumlar</li>
+  <li><strong>Mikrodalga fırın:</strong> metal kafes mikrodalgayı içeride tutar; dışarıdaki Wi-Fi ve Bluetooth bağlantıları da etkilenmez</li>
+  <li><strong>Alüminyum folyo (Alıştırma 12):</strong> birkaç kat folyoya sıkıca sarılan telefon çalmaz; folyo kapalı bir iletken kabuktur</li>
+  <li><strong>Nanobilim laboratuvarları:</strong> çok hassas ölçümler için laboratuvarlar metalle kaplanır</li>
 </ul>
 
 <div class="kutu puf" style="margin:16px 0">

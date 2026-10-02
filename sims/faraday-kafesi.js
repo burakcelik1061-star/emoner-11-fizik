@@ -31,6 +31,11 @@ window.F11 = window.F11 || {};
 
    3) Asansörde telefon: Kafes gözü, dalga boyundan çok küçükse dalga giremez.
       Telefon sinyali için λ ≈ 33 cm; birkaç cm’lik göz bile yeterlidir.
+
+   4) Kitaptaki örnek (MEB s.182, Özüm Öğretmen): yalıtkan iple asılı nötr metal
+      küreye + yüklü çubuk yaklaştırılır. Şekil I kafessiz, Şekil II küre kafesin
+      içinde, Şekil III küre kafesin arkasında. Kuvvet ve sarkaç hareketi gerçek
+      formüllerle hesaplanır.
    ========================================================================== */
 
 const D = window.F11;
@@ -169,10 +174,93 @@ function yildirimAkimi(st) {
   return st.aktif ? 30 * Math.exp(-(st.yildirimY - 1) / 0.5) : 0;
 }
 
+/* ---- 4. düzenek: kitaptaki örnek (MEB s.182) ----
+   Şekil I  : kafes yok. Küre etki ile kutuplanır; yakın yüzü (−) çubuğa daha
+              yakın olduğu için çekme itmeden büyüktür ⟹ küre çubuğa doğru gelir.
+   Şekil II : küre kafesin içinde. İçeride E = 0 ⟹ kuvvet yok, küre kıpırdamaz.
+   Şekil III: küre kafesin arkasında (dışında). Kafesin arka yüzündeki + yükler
+              dışarıda alan oluşturur ⟹ küre yine çubuk tarafına çekilir.
+   Kuvvet:
+     Şekil I  : nokta yük + iletken küre, tam görüntü yükü çözümü
+                F = kQ²a³(2d² − a²) / (d³(d² − a²)²)
+     Şekil III: kafes, yalıtılmış iletken küresel kabuk sayılır. Dışarıdaki alan,
+                Q ile iki görüntü yükünün (−QR/D ve +QR/D) alanıdır. Küçük metal
+                küre bu alanda p = 4πε₀a³E kadar kutuplanır: F = (a³/2k)·∇(E²).
+   Denge yalnız küçük açılarda vardır: kuvvet 1/d⁵ gibi hızla büyüdüğü için
+   kayma, aradaki uzaklığın beşte birini aşarsa küre çubuğa yapışır. Q aralığı
+   bu sınırın altında tutuldu (Şekil I için sınır ≈ 311 nC, Şekil III için ≈ 334 nC). */
+const K_C = 9e9;
+const A_TOP = 0.015, M_TOP = 0.2e-3, L_IP = 0.25, G_YER = 9.8;   // m, kg, m, m/s²
+const RC = 0.07, UC_ARA = 0.05, ARKA_ARA = 0.05, D_I = 0.15;      // m
+const YAKLASMA = 2.5, SONUM = 1.6, ORNEK_SON = 9;                 // s, 1/s, s
+const SEKIL_AD = ['', 'Şekil I · kafes yok', 'Şekil II · küre kafesin içinde',
+                  'Şekil III · küre kafesin arkasında'];
+
+/** Çubuk ucunun son yeri ve kafes merkezi (küre düşeyde iken x = 0). */
+function ornekGeo(sekil) {
+  if (sekil === 1) return { uc: -D_I, kafes: null };
+  if (sekil === 2) return { uc: -(RC + UC_ARA), kafes: 0 };
+  const C = -(RC + ARKA_ARA);
+  return { uc: C - RC - UC_ARA, kafes: C };
+}
+
+/** Çubuk 30 cm öteden YAKLASMA sürede yumuşakça yaklaştırılır. */
+function ucKonum(st, g) {
+  const s = Math.min(1, st.t / YAKLASMA), e = s * s * (3 - 2 * s);
+  return g.uc - 0.30 * (1 - e);
+}
+
+/** Küreye etkiyen elektriksel kuvvet (N). (bx, by): küre merkezi, by yukarı. */
+function topKuvveti(Q, sekil, xu, bx, by) {
+  if (sekil === 2) return { x: 0, y: 0 };
+  if (sekil === 1) {
+    const dx = xu - bx, dy = -by, d = Math.hypot(dx, dy), a2 = A_TOP * A_TOP;
+    const F = K_C * Q * Q * A_TOP ** 3 * (2 * d * d - a2) / (d ** 3 * (d * d - a2) ** 2);
+    return { x: F * dx / d, y: F * dy / d };
+  }
+  const C = ornekGeo(3).kafes, D = C - xu;
+  const yk = [[Q, xu], [-Q * RC / D, C - RC * RC / D], [Q * RC / D, C]];
+  const E2 = (x, y) => {
+    let ex = 0, ey = 0;
+    for (const [q, qx] of yk) {
+      const dx = x - qx, r2 = dx * dx + y * y, r3 = r2 * Math.sqrt(r2);
+      ex += K_C * q * dx / r3; ey += K_C * q * y / r3;
+    }
+    return ex * ex + ey * ey;
+  };
+  const h = 1e-5, c = A_TOP ** 3 / (2 * K_C);
+  return { x: c * (E2(bx + h, by) - E2(bx - h, by)) / (2 * h),
+           y: c * (E2(bx, by + h) - E2(bx, by - h)) / (2 * h) };
+}
+
+function topKonum(st) {
+  return { x: L_IP * Math.sin(st.th), y: L_IP * (1 - Math.cos(st.th)) };
+}
+
+/** Anlık kuvvet (küre gerçek yerinde). */
+function ornekKuvvet(st, p) {
+  const g = ornekGeo(p.sekil), b = topKonum(st);
+  return topKuvveti(p.Q * 1e-9, p.sekil, ucKonum(st, g), b.x, b.y);
+}
+
+/** Kafessiz, aynı çubuk–küre uzaklığında olsaydı kuvvet (karşılaştırma). */
+function kafessizKuvvet(st, p) {
+  const g = ornekGeo(p.sekil), b = topKonum(st);
+  const F = topKuvveti(p.Q * 1e-9, 1, ucKonum(st, g), b.x, b.y);
+  return Math.hypot(F.x, F.y);
+}
+
+function fYaz(F) {
+  if (F === 0) return '0 N';
+  if (F >= 1) return D.biçim(F, 3) + ' N';
+  if (F >= 1e-3) return D.biçim(F * 1e3, 3) + ' mN';
+  return D.biçim(F * 1e6, 3) + ' μN';
+}
+
 /* -------------------------------------------------------------- Durum */
 
 function durum(p) {
-  return { t: 0, kayit: [], yildirimY: -0.2, aktif: false };
+  return { t: 0, kayit: [], yildirimY: -0.2, aktif: false, th: 0, om: 0 };
 }
 
 function adim(st, dt, p) {
@@ -180,7 +268,24 @@ function adim(st, dt, p) {
   /* Kafes göz aralığı taranır (yalnız asansör düzeneğinde anlamlı):
      ekranlamanın λ/2 eşiğinde nasıl çöktüğü hem sahnede hem Ekranlama−göz
      eğrisinde canlı görünür. */
-  if (p.mod > 2.5) st.goz = D.tarama(st.t, p.goz, p.goz < 20 ? 40 : 1, 12);
+  if (p.mod > 2.5 && p.mod < 3.5) st.goz = D.tarama(st.t, p.goz, p.goz < 20 ? 40 : 1, 12);
+
+  if (p.mod > 3.5) {
+    /* Sarkaç: m·L·θ'' = F·t̂ − m·g·sinθ − m·L·b·θ'  (t̂ = (cosθ, sinθ)).
+       Kuvvet 1/d⁵ gibi sert değiştiği için adım 8’e bölünür. */
+    st.t -= dt;
+    const n = 8, h = dt / n;
+    for (let i = 0; i < n; i++) {
+      st.t += h;
+      const F = ornekKuvvet(st, p);
+      const Ft = F.x * Math.cos(st.th) + F.y * Math.sin(st.th);
+      const al = Ft / (M_TOP * L_IP) - G_YER / L_IP * Math.sin(st.th) - SONUM * st.om;
+      st.om += al * h; st.th += st.om * h;
+    }
+    if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.02)
+      st.kayit.push({ t: st.t, v: -st.th * 180 / Math.PI });
+    return;
+  }
 
   if (p.mod < 1.5) {
     if (st.kayit.length === 0 || st.t - st.kayit[st.kayit.length - 1].t > 0.01)
@@ -201,6 +306,7 @@ const YILDIRIM_SON = 4.4;
 function bitti(st, p) {
   if (p.mod < 1.5) return st.t > AYRISMA_SURESI * 2.4;
   if (p.mod < 2.5) return st.yildirimY >= YILDIRIM_SON;
+  if (p.mod > 3.5) return st.t >= ORNEK_SON;
   return false;
 }
 
@@ -221,7 +327,8 @@ function cizGercek(ctx, w, h, st, pHam) {
   const p = etkin(st, pHam);
   if (p.mod < 1.5)      cizDuzgunAlan(ctx, w, h, st, p);
   else if (p.mod < 2.5) cizYildirim(ctx, w, h, st, p);
-  else                  cizSinyal(ctx, w, h, st, p);
+  else if (p.mod < 3.5) cizSinyal(ctx, w, h, st, p);
+  else                  cizOrnek(ctx, w, h, st, p);
 }
 
 function cizDuzgunAlan(ctx, w, h, st, p) {
@@ -426,6 +533,127 @@ function cizYildirim(ctx, w, h, st, p) {
                  '700 11px system-ui, sans-serif', 'right');
 }
 
+function ornekYerlesim(w, h) {
+  const s = Math.min(1400, (w - 40) / 0.44, (h - 60) / 0.2);     // px / m
+  return { s, x0: w - 0.17 * s, y0: h * 0.56 };
+}
+
+/** Tel örgü kafes: içi ağ, kenarı kalın. */
+function orguKafes(ctx, cx, cy, r, aralik, renk) {
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832); ctx.clip();
+  ctx.strokeStyle = renk; ctx.globalAlpha = 0.55; ctx.lineWidth = 1;
+  ctx.beginPath();
+  for (let x = cx - r; x <= cx + r; x += aralik) { ctx.moveTo(x, cy - r); ctx.lineTo(x, cy + r); }
+  for (let y = cy - r; y <= cy + r; y += aralik) { ctx.moveTo(cx - r, y); ctx.lineTo(cx + r, y); }
+  ctx.stroke();
+  ctx.restore();
+  ctx.save();
+  ctx.beginPath(); ctx.arc(cx, cy, r, 0, 6.2832);
+  ctx.strokeStyle = renk; ctx.lineWidth = 3; ctx.stroke();
+  ctx.restore();
+}
+
+/** Kafesin etki ile ayrışan yükleri: çubuğa bakan yüz −, arka yüz +. */
+function kafesYukleri(ctx, cx, cy, r, saydam, ic) {
+  if (saydam < 0.03) return;
+  ctx.save();
+  ctx.font = '700 14px system-ui, sans-serif';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.globalAlpha = Math.min(1, saydam);
+  const rr = r + (ic ? -10 : 10);
+  [-0.75, -0.38, 0, 0.38, 0.75].forEach(a => {
+    ctx.fillStyle = '#2F6FD0'; ctx.fillText('−', cx - rr * Math.cos(a), cy + rr * Math.sin(a));
+    ctx.fillStyle = '#E2483F'; ctx.fillText('+', cx + rr * Math.cos(a), cy + rr * Math.sin(a));
+  });
+  ctx.restore();
+}
+
+function cizOrnek(ctx, w, h, st, p) {
+  const L = ornekYerlesim(w, h), g = ornekGeo(p.sekil);
+  const X = x => L.x0 + x * L.s;
+  const xu = ucKonum(st, g), b = topKonum(st);
+  const bx = X(b.x), by = L.y0 - b.y * L.s, ra = A_TOP * L.s;
+  const ilerleme = Math.min(1, st.t / YAKLASMA);
+
+  /* masa */
+  ctx.fillStyle = '#C9B79C'; ctx.fillRect(0, h - 14, w, 14);
+
+  /* kafes ve yalıtkan ayağı */
+  if (g.kafes !== null) {
+    const kx = X(g.kafes), kr = RC * L.s;
+    ctx.fillStyle = '#B8A890'; ctx.fillRect(kx - 4, L.y0 + kr, 8, h - 14 - L.y0 - kr);
+    orguKafes(ctx, kx, L.y0, kr, Math.max(8, kr / 7), '#6E7A8A');
+    kafesYukleri(ctx, kx, L.y0, kr, 3 * RC / (g.kafes - xu) * (p.Q / 280), true);
+  }
+
+  /* düşey kılavuz ve ip (asılma noktası sahnenin üstünde) */
+  ctx.save();
+  ctx.strokeStyle = 'rgba(90,98,112,.45)'; ctx.setLineDash([4, 5]); ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(L.x0, 0); ctx.lineTo(L.x0, L.y0 + ra + 6); ctx.stroke();
+  ctx.restore();
+  const px = L.x0, py = L.y0 - L_IP * L.s;
+  ctx.strokeStyle = '#4A5260'; ctx.lineWidth = 1.4;
+  ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(bx, by); ctx.stroke();
+
+  /* + yüklü çubuk (yalıtkan sap solda) */
+  const ux = X(xu), ur = 8;
+  ctx.fillStyle = '#5A4A3A'; ctx.fillRect(-10, L.y0 - 7, Math.max(0, ux - 120) + 10, 14);
+  ctx.fillStyle = '#E2483F'; ctx.fillRect(Math.max(-10, ux - 120), L.y0 - 6, Math.min(120, ux + 10), 12);
+  ctx.beginPath(); ctx.arc(ux, L.y0, ur, 0, 6.2832); ctx.fill();
+  ctx.save();
+  ctx.font = '700 11px system-ui, sans-serif'; ctx.fillStyle = '#FFFFFF';
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  for (let x = ux - 6; x > ux - 118 && x > 4; x -= 18) ctx.fillText('+', x, L.y0 + 0.5);
+  ctx.restore();
+  /* Yazı çubuğun ucunun üstünde; dar panelde soldan taşmasın diye kaydırılır. */
+  D.yaziAydinlik(ctx, '+Q = ' + D.biçim(p.Q) + ' nC', Math.max(48, ux - 12), L.y0 - 20, '#B03030',
+                 '700 12px system-ui, sans-serif', 'center');
+
+  /* metal küre */
+  const gr = ctx.createRadialGradient(bx - ra * 0.35, by - ra * 0.35, ra * 0.1, bx, by, ra);
+  gr.addColorStop(0, '#F4F6F8'); gr.addColorStop(1, '#8A95A3');
+  ctx.fillStyle = gr; ctx.beginPath(); ctx.arc(bx, by, ra, 0, 6.2832); ctx.fill();
+
+  /* kürenin kutuplanması: çubuğa bakan yüz −, öbür yüz + */
+  const F = ornekKuvvet(st, p), Fb = Math.hypot(F.x, F.y);
+  if (p.sekil !== 2) {
+    ctx.save();
+    ctx.font = '700 13px system-ui, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.globalAlpha = 0.25 + 0.75 * ilerleme;
+    ctx.fillStyle = '#2F6FD0'; ctx.fillText('−', bx - ra * 0.55, by);
+    ctx.fillStyle = '#E2483F'; ctx.fillText('+', bx + ra * 0.55, by);
+    ctx.restore();
+  }
+
+  /* kuvvet oku: Şekil I’deki son kuvvete göre ölçekli (şekiller karşılaştırılabilsin).
+     Kürenin hemen üstüne çizilir; kürenin ve kafesin yük işaretlerini örtmesin. */
+  const Fref = Math.abs(topKuvveti(p.Q * 1e-9, 1, -D_I, 0, 0).x);
+  if (70 * Fb / Fref >= 10) {
+    const boy = Math.min(90, 70 * Fb / Fref), oy = by - ra - 9;
+    D.vektor(ctx, bx, oy, bx - boy * Math.abs(F.x) / Fb, oy + boy * F.y / Fb, R.kuvvet, '',
+             { kalinlik: 2.6, ucBoy: 8 });
+  }
+  D.yaziAydinlik(ctx, 'F = ' + fYaz(Fb), bx, by + ra + 14, R.kuvvet,
+                 '700 12px system-ui, sans-serif', 'center');
+
+  /* açı */
+  const thD = -st.th * 180 / Math.PI;
+  D.yaziAydinlik(ctx, 'θ = ' + D.biçim(Math.abs(thD), 2) + '°', L.x0 + 8, 78, R.mur,
+                 '700 12px system-ui, sans-serif', 'left');
+
+  /* açıklama */
+  const metin = p.sekil === 1 ? 'küre çubuğa doğru çekildi'
+              : p.sekil === 2 ? 'kafesin içinde E = 0 · küre kıpırdamaz'
+              : 'kafesin arka yüzündeki + yükler küreyi çeker';
+  D.yaziAydinlik(ctx, ilerleme < 1 ? 'çubuk yaklaştırılıyor…' : metin, bx, by + ra + 32,
+                 p.sekil === 2 ? R.hiz : '#9A6A00', '700 12px system-ui, sans-serif', 'center');
+  /* Sol üst köşe panel başlığına ayrılmıştır; rozet onun altına konur. */
+  D.rozet(ctx, 'MEB s.182 · ' + SEKIL_AD[p.sekil], w / 2, 36,
+          'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
+}
+
 function cizSinyal(ctx, w, h, st, p) {
   const kx = w * 0.42, kw = w * 0.34, ky = h * 0.18, kh = h * 0.62;
 
@@ -601,6 +829,8 @@ function cizKlasik(ctx, w, h, st, pHam) {
       D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
     });
 
+  } else if (p.mod > 3.5) {
+    cizOrnekKlasik(ctx, w, h, st, p);
   } else {
     /* --- Sinyal: göz aralığı ile dalga boyu karşılaştırması --- */
     const lam = dalgaBoyu(p), goz = p.goz / 100;
@@ -637,6 +867,69 @@ function cizKlasik(ctx, w, h, st, pHam) {
     D.yaziHaleli(ctx, 'Mikrodalga fırının camındaki delikler de bu yüzden küçüktür',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
   }
+}
+
+function cizOrnekKlasik(ctx, w, h, st, p) {
+  const g = ornekGeo(p.sekil);
+  D.yaziHaleli(ctx, 'Kitap örneği · ' + SEKIL_AD[p.sekil], 12, 46, K.beyaz,
+               '700 12px system-ui, sans-serif', 'left');
+
+  /* şema: çubuk ucu, kafes ve küre aynı ölçekle */
+  const s = Math.min(900, (w - 60) / 0.44), x0 = w - 0.16 * s - 20, cy = h * 0.40;
+  const X = x => x0 + x * s;
+  const xu = ucKonum(st, g), b = topKonum(st);
+  if (g.kafes !== null) {
+    const kx = X(g.kafes), kr = RC * s;
+    ctx.save();
+    ctx.setLineDash([5, 4]); ctx.strokeStyle = R.ivme; ctx.lineWidth = 2.4;
+    ctx.beginPath(); ctx.arc(kx, cy, kr, 0, 6.2832); ctx.stroke();
+    ctx.restore();
+    kafesYukleri(ctx, kx, cy, kr, 3 * RC / (g.kafes - xu) * (p.Q / 280), true);
+    if (p.sekil === 2)
+      D.yaziHaleli(ctx, 'E = 0', kx, cy - kr * 0.55, R.hiz, '700 12px system-ui, sans-serif', 'center');
+  }
+  D.noktaCisim(ctx, X(xu), cy, 8, R.kuvvet);
+  D.yaziHaleli(ctx, '+Q', X(xu), cy - 18, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
+
+  const bx = X(b.x), ra = Math.max(7, A_TOP * s);
+  ctx.save();
+  ctx.beginPath(); ctx.arc(bx, cy, ra, 0, 6.2832);
+  ctx.strokeStyle = K.beyaz; ctx.lineWidth = 2; ctx.stroke();
+  if (p.sekil !== 2) {
+    ctx.font = '700 11px system-ui, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = '#5B9BFF'; ctx.fillText('−', bx - ra * 0.5, cy);
+    ctx.fillStyle = '#FF6B6B'; ctx.fillText('+', bx + ra * 0.5, cy);
+  }
+  ctx.restore();
+
+  const F = ornekKuvvet(st, p), Fb = Math.hypot(F.x, F.y);
+  const Fref = Math.abs(topKuvveti(p.Q * 1e-9, 1, -D_I, 0, 0).x);
+  if (60 * Fb / Fref >= 10)
+    D.vektor(ctx, bx, cy + ra + 12, bx - Math.min(80, 60 * Fb / Fref), cy + ra + 12, R.kuvvet, '',
+             { kalinlik: 2.4, ucBoy: 8 });
+  D.yaziHaleli(ctx, 'F = ' + fYaz(Fb), bx, cy + ra + 30, R.kuvvet,
+               '700 12px system-ui, sans-serif', 'center');
+
+  /* kitaptaki cevap + denge hesabı */
+  const mg = M_TOP * G_YER, th = Math.abs(st.th) * 180 / Math.PI;
+  const satir = p.sekil === 1 ? [
+    ['Yakın yüz (−) çubuğa daha yakın ⟹ çekme > itme', K.beyaz],
+    ['bileşke kuvvet çubuğa doğru, küre bir açıyla durur', K.metin2],
+    ['tan θ = F / mg = ' + fYaz(Fb) + ' / ' + fYaz(mg) + '  ⟹  θ = ' + D.biçim(th, 2) + '°', R.ivme]
+  ] : p.sekil === 2 ? [
+    ['Kafesin içinde E = 0', R.hiz],
+    ['küreye bileşke kuvvet etki etmez', K.beyaz],
+    ['küre ilk denge konumunda kalır  ⟹  θ = 0°', K.metin2]
+  ] : [
+    ['Kafesin İÇİNDE E = 0, ama arkasında alan var', K.beyaz],
+    ['arka yüzdeki + yükler küreyi çubuk tarafına çeker  ⟹  θ = ' + D.biçim(th, 2) + '°', K.metin2],
+    ['kafes olmasaydı aynı uzaklıkta F = ' + fYaz(kafessizKuvvet(st, p)) + ' olurdu', R.ivme]
+  ];
+  let sy = h - 16 - (satir.length - 1) * 18;
+  satir.forEach(([t, c]) => {
+    D.yaziHaleli(ctx, t, 12, sy, c, '700 12px system-ui, sans-serif', 'left'); sy += 18;
+  });
 }
 
 /* ------------------------------------------------------- Grafikler */
@@ -678,6 +971,32 @@ function cizGrafik(ctx, w, h, st, pHam) {
     D.miniGrafik(ctx, Object.assign({}, sag, {
       baslik: 'İç boşlukta E − t   (akım ne olursa olsun SIFIR)', birim: 'N/C',
       veri: st.kayit.map(d => ({ t: d.t, v: 0 })), tMax: tSon, vMin: 0, vMax: 1, renk: R.hiz
+    }));
+    return;
+  }
+
+  if (p.mod > 3.5) {
+    const g = ornekGeo(p.sekil), Qc = p.Q * 1e-9;
+    const Fs = topKuvveti(Qc, p.sekil, g.uc, 0, 0);
+    /* Eksen: statik dengenin 1,6 katı ya da salınımın tepe noktası (hangisi büyükse);
+       çubuk yaklaşırken küre dengeyi bir miktar aşıp geri döner, tepe kırpılmasın. */
+    const thMax = Math.atan(Math.abs(Fs.x) / (M_TOP * G_YER)) * 180 / Math.PI;
+    const tepe = st.kayit.reduce((m, k) => Math.max(m, k.v), 0);
+    D.miniGrafik(ctx, Object.assign({}, sol, {
+      baslik: 'İpin düşeyle açısı θ − t', birim: '°',
+      veri: st.kayit, tMax: ORNEK_SON, vMin: 0, vMax: Math.max(0.5, thMax * 1.6, tepe * 1.1), renk: R.ivme
+    }));
+    /* Kuvvet − çubuk uzaklığı: küre düşeydeyken, çubuk yaklaşırken. İmleç
+       çubuğun o anki yerinde eğri üzerinde kayar. */
+    const d0 = -g.uc, veri = [];
+    for (let d = d0; d <= d0 + 0.30001; d += 0.005)
+      veri.push({ t: d * 100, v: 1e6 * Math.abs(topKuvveti(Qc, p.sekil, -d, 0, 0).x) });
+    const xu = ucKonum(st, g);
+    D.miniGrafik(ctx, Object.assign({}, sag, {
+      baslik: 'F − çubuk uzaklığı', birim: 'μN', tEtiket: 'uzaklık (cm)',
+      veri, tMin: d0 * 100, tMax: (d0 + 0.30) * 100, vMin: 0,
+      vMax: Math.max(1, veri[0].v * 1.05), renk: R.kuvvet,
+      imlec: { t: -xu * 100, v: 1e6 * Math.abs(topKuvveti(Qc, p.sekil, xu, 0, 0).x) }
     }));
     return;
   }
@@ -730,6 +1049,21 @@ function okumalar(st, pHam) {
       { et: 'Yolcu',        dg: 'Güvende',                      birim: '' }
     ];
   }
+  if (p.mod > 3.5) {
+    const g = ornekGeo(p.sekil), b = topKonum(st), xu = ucKonum(st, g);
+    const F = ornekKuvvet(st, p), Fb = Math.hypot(F.x, F.y);
+    const o = [
+      { et: 'Kitaptaki şekil',       dg: ['', 'I', 'II', 'III'][p.sekil],             birim: '' },
+      { et: 'Çubuk ucu – küre uzaklığı', dg: D.biçim(Math.hypot(b.x - xu, b.y) * 100, 1), birim: 'cm' },
+      { et: 'Küreye elektriksel kuvvet', dg: fYaz(Fb),                                birim: '' },
+      { et: 'Kürenin ağırlığı  mg',  dg: fYaz(M_TOP * G_YER),                         birim: '' },
+      { et: 'İpin düşeyle açısı θ',  dg: D.biçim(Math.abs(st.th) * 180 / Math.PI, 2), birim: '°' },
+      { et: 'Kürenin kayması',       dg: D.biçim(Math.abs(b.x) * 1000, 1),            birim: 'mm' }
+    ];
+    if (p.sekil === 2) o.push({ et: 'Kafesin içinde E', dg: '0', birim: 'N/C' });
+    if (p.sekil === 3) o.push({ et: 'Kafessiz olsaydı kuvvet', dg: fYaz(kafessizKuvvet(st, p)), birim: '' });
+    return o;
+  }
   return [
     { et: 'Frekans  f',    dg: D.biçim(p.f),                 birim: 'MHz' },
     { et: 'Dalga boyu λ',  dg: D.biçim(dalgaBoyu(p) * 100),  birim: 'cm' },
@@ -754,8 +1088,15 @@ D.simler['faraday-kafesi'] = {
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Düzgün dış alanda iletken küre' },
       { d: 2, e: 'Araca yıldırım çarpması' },
-      { d: 3, e: 'Asansörde telefon sinyali' }
+      { d: 3, e: 'Asansörde telefon sinyali' },
+      { d: 4, e: 'Kitap örneği: kafes ve metal küre' }
     ]},
+    { anahtar: 'sekil', etiket: 'Kitaptaki şekil (4. düzenek)', tur: 'secim', deger: 1, secenekler: [
+      { d: 1, e: 'Şekil I · kafes yok' },
+      { d: 2, e: 'Şekil II · küre kafesin içinde' },
+      { d: 3, e: 'Şekil III · küre kafesin arkasında' }
+    ]},
+    { anahtar: 'Q',   etiket: 'Çubuğun yükü (4. düzenek)', min: 50, max: 280, adim: 10, deger: 250, birim: 'nC' },
     { anahtar: 'E0',  etiket: 'Dış alan E₀ (1. düzenek)', min: 200, max: 5000, adim: 100, deger: 2000, birim: 'N/C' },
     { anahtar: 'f',   etiket: 'Sinyal frekansı (3. düzenek)', min: 100, max: 2600, adim: 100, deger: 900, birim: 'MHz' },
     { anahtar: 'goz', etiket: 'Kafes göz aralığı (3. düzenek)', min: 0.5, max: 40, adim: 0.5, deger: 2, birim: 'cm' }
