@@ -334,7 +334,8 @@ function cizIkiTel(ctx, w, h, st, p) {
   const s = ikiTelOlcek(w, p);
   const gCm = canliAralik(st, p);
   const x1 = w / 2 - gCm / 2 * s, x2 = w / 2 + gCm / 2 * s;
-  const rT = Math.max(5, Math.min(12, TEMAS_ARA * 100 / 2 * s));
+  /* tel kesiti tahtada ⊙ / ⊗ ayırt edilecek kadar büyük çizilir (en az 10 px) */
+  const rT = Math.max(10, Math.min(13, TEMAS_ARA * 100 / 2 * s));
 
   ikiTelCizgileri(ctx, [{ x: x1, y: cy, i: p.i1 }, { x: x2, y: cy, i: p.i2 }], w, h, 'rgba(56,150,200,.6)');
 
@@ -344,9 +345,10 @@ function cizIkiTel(ctx, w, h, st, p) {
 
   telKesiti(ctx, x1, cy, p.i1, rT);
   telKesiti(ctx, x2, cy, p.i2, rT);
-  D.yaziAydinlik(ctx, 'i₁ = ' + D.biçim(Math.abs(p.i1)) + ' A', x1, cy - 40, R.mur,
+  const yonIsaret = i => (i > 0 ? '  ⊙' : i < 0 ? '  ⊗' : '');
+  D.yaziAydinlik(ctx, 'i₁ = ' + D.biçim(Math.abs(p.i1)) + ' A' + yonIsaret(p.i1), x1, cy - 40, R.mur,
                  '700 12px system-ui, sans-serif', 'center');
-  D.yaziAydinlik(ctx, 'i₂ = ' + D.biçim(Math.abs(p.i2)) + ' A', x2, cy - 40, R.mur,
+  D.yaziAydinlik(ctx, 'i₂ = ' + D.biçim(Math.abs(p.i2)) + ' A' + yonIsaret(p.i2), x2, cy - 40, R.mur,
                  '700 12px system-ui, sans-serif', 'center');
 
   const cek = tellerCekiyor(p), yok = kuvvetYok(p);
