@@ -374,7 +374,7 @@ function cizIkiTel(ctx, w, h, st, p) {
                  '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'asılı alüminyum şeritler (uçtan görünüş) · 50 cm, 1 g/m', 10, h - 30, R.mur,
                  '600 11px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, 'DİKKAT: yüklerin tersi, aynı yön ÇEKER', 10, h - 12, R.ivme,
+  D.yaziAydinlik(ctx, 'DİKKAT: yüklerin tersi — aynı yön ÇEKER', 10, h - 12, R.ivme,
                  '700 11px system-ui, sans-serif', 'left');
 }
 
@@ -426,7 +426,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
   if (dunyaVar(p)) {
     const d0 = notrUzaklik(p);
     satir.push(['Dünya (yatay) = 25 μT, kuzeye', K.metin2, '11px system-ui, sans-serif']);
-    satir.push(['nötr nokta: d₀ = 2·10⁻⁷·i / 25 μT = ' + (d0 ? D.biçim(d0 * 100, 1) + ' cm' : '–'),
+    satir.push(['nötr nokta: d₀ = 2·10⁻⁷·i / 25 μT = ' + (d0 ? D.biçim(d0 * 100, 1) + ' cm' : '—'),
                 R.hiz, '700 11px system-ui, sans-serif']);
   }
   let sy = 46;
@@ -471,7 +471,7 @@ function klasikIkiTel(ctx, w, h, st, p) {
     sy += 18;
   });
 
-  D.yaziHaleli(ctx, 'Yüklerde aynı işaret İTERDİ: akımda aynı yön ÇEKER', 12, h - 16,
+  D.yaziHaleli(ctx, 'Yüklerde aynı işaret İTERDİ — akımda aynı yön ÇEKER', 12, h - 16,
                R.ivme, '600 11px system-ui, sans-serif', 'left');
 }
 

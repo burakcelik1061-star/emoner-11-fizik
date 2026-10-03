@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u2-manyetik-aki', {
 
 ozet: `Manyetik akı, bir yüzeyi <strong>kaç tane alan çizgisinin deldiğinin</strong> ölçüsüdür.
-Tek başına pek bir işe yaramaz, ama bir sonraki konuda göreceğin gibi,
+Tek başına pek bir işe yaramaz — ama bir sonraki konuda göreceğin gibi,
 <strong>akının değişmesi elektrik üretir</strong>. Bütün elektrik santralleri bu tek cümle
 üzerine kuruludur, o yüzden önce akıyı iyi tanımak gerekir.`,
 
@@ -49,12 +49,12 @@ yolu ayrı ayrı gösterir.</p>
     θ = 90° ⟹ <strong>Φ = 0</strong></li>
   </ul>
   <p style="margin:8px 0 0">Bir önceki konudaki motor formülünde (τ = BiANcosθ) θ,
-  <em>çerçeve düzlemi</em> ile alan arasındaydı. Tanımlar farklı: hangisini
+  <em>çerçeve düzlemi</em> ile alan arasındaydı. Tanımlar farklı — hangisini
   kullandığına dikkat et.</p>
 </div>
 
 <h3 style="margin-top:22px">Akı bir sayıdır, vektör değil</h3>
-<p>B bir vektördü, A yönlü bir büyüklük gibi düşünülebilir, ama Φ
+<p>B bir vektördü, A yönlü bir büyüklük gibi düşünülebilir — ama Φ
 <strong>skalerdir</strong>. Yalnızca bir sayıdır ve <strong>işaretli</strong> olabilir:
 çizgiler yüzeyi bir yönden deliyorsa pozitif, ters yönden deliyorsa negatif sayılır.</p>
 <p>Bir çerçeve tam bir tur dönerken akı <code>+Φ<sub>maks</sub></code> ile
@@ -78,7 +78,7 @@ konudaki formülde karşına çıkacak.</p>`,
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'Φ = B·A·cosθ',      aciklama: 'Manyetik akı: yüzeyi delen çizgi miktarı' },
+    { fm: 'Φ = B·A·cosθ',      aciklama: 'Manyetik akı — yüzeyi delen çizgi miktarı' },
     { fm: 'Φ<sub>maks</sub> = B·A', aciklama: 'θ = 0° · alan yüzeye dik geçerken' },
     { fm: 'Φ = 0',             aciklama: 'θ = 90° · alan yüzeye teğetken' },
     { fm: '1 Wb = 1 T·m²',     aciklama: 'Weber ile tesla arasındaki bağ' },
@@ -152,7 +152,7 @@ turetim: {
                  yerde: <strong>θ = 90° ve 270°</strong>. Tam da akının <em>sıfır</em>
                  olduğu noktalarda!</p>
                  <p>Akının <strong>en büyük</strong> olduğu yerlerde (0° ve 180°) ise eğim
-                 <strong>sıfırdır</strong>: akı bir an için hiç değişmez.</p>
+                 <strong>sıfırdır</strong> — akı bir an için hiç değişmez.</p>
                  <p>Bu ters ilişki, sonraki konudaki jeneratörün neden akı sıfırken en çok
                  gerilim ürettiğini açıklayacak.</p>` }
       ]
@@ -162,7 +162,7 @@ turetim: {
       adimlar: [
         { baslik: 'Alanı değiştir',
           html: `<p>Mıknatısı bobine yaklaştırıp uzaklaştırmak B&rsquo;yi değiştirir.
-                 Elektromıknatısın akımını değiştirmek de aynı işi yapar: hareketli parça
+                 Elektromıknatısın akımını değiştirmek de aynı işi yapar — hareketli parça
                  bile gerekmez.</p>` },
 
         { baslik: 'Yüzeyi değiştir',
@@ -226,7 +226,7 @@ puf: {
 
     <p><strong>6 · Grafik okuma refleksi:</strong> Φ−t grafiğinde <strong>eğim</strong>
     sorulacak. En dik yerde gerilim en büyük, yatay yerde gerilim sıfır. Bu, bir sonraki
-    konunun tamamıdır: şimdiden alışmaya başla.</p>
+    konunun tamamıdır — şimdiden alışmaya başla.</p>
 
     <p><strong>7 · Kapalı yüzey için Φ = 0.</strong> Bir küreyi ya da kapalı bir kutuyu
     tamamen saran yüzeyden geçen net akı <strong>daima sıfırdır</strong>, çünkü manyetik
@@ -343,12 +343,12 @@ osym: [
       <p style="margin-top:10px">Sezgiye aykırı görünür ama doğrudur: akı <strong>sıfırken</strong>
       en hızlı değişiyor, akı <strong>en büyükken</strong> hiç değişmiyor.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>Günlük benzetme:</strong> Salıncakta en yüksek noktadasın,
+        <p style="margin:0"><strong>Günlük benzetme:</strong> Salıncakta en yüksek noktadasın —
         hızın sıfır, bir an duruyorsun. En alçak noktada ise en hızlısın. Konum ile hız
         arasındaki ilişki, burada akı ile gerilim arasındaki ilişkinin aynısı.
         <br><strong>Neden önemli?</strong> Bir sonraki konuda göreceksin ki üretilen gerilim
         tam olarak bu eğime eşittir. Yani <strong>jeneratör, akının sıfır olduğu anda en çok
-        gerilim üretir</strong>. Bu cümle şimdi tuhaf geliyorsa, grafiğe bir daha bak:
+        gerilim üretir</strong>. Bu cümle şimdi tuhaf geliyorsa, grafiğe bir daha bak —
         aslında zaten kanıtladın.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -395,7 +395,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Hangi değişken etkileniyor?',
-        metin: 'Bobin de kapı da yerinde duruyor, yani <strong>A ve θ değişmiyor</strong>. Değişen tek şey <strong>B</strong> olabilir ve gerçekten öyle oluyor.' },
+        metin: 'Bobin de kapı da yerinde duruyor, yani <strong>A ve θ değişmiyor</strong>. Değişen tek şey <strong>B</strong> olabilir — ve gerçekten öyle oluyor.' },
       { bas: 'Metal alanı nasıl bozuyor?',
         metin: 'Değişen manyetik alan, iletken metalin içinde <strong>dolambaçlı akımlar</strong> (girdap akımları) oluşturur. Bu akımlar da kendi manyetik alanlarını üretir ve asıl alana <strong>eklenir</strong>. Algılayıcı bobinin gördüğü B değişir.' },
       { bas: 'Plastik neden vermiyor?',
@@ -408,7 +408,7 @@ baglam: [
         metin: 'Bu yüzden seramik bıçak, karbon fiber ya da plastik parçalar bu kapılardan <strong>geçebilir</strong>. Havaalanlarında ayrıca X-ışını tarayıcı kullanılmasının sebeplerinden biri budur.' }
     ],
     secenekler: [
-      'A ve θ sabit; metalde oluşan girdap akımları B’yi değiştirdiği için Φ değişir: plastikte serbest yük olmadığı için bu olmaz',
+      'A ve θ sabit; metalde oluşan girdap akımları B’yi değiştirdiği için Φ değişir — plastikte serbest yük olmadığı için bu olmaz',
       'Kişi yürüdüğü için çerçeve alanı A değişir',
       'Metal mıknatıslandığı için θ değişir; plastik mıknatıslanmaz',
       'Alarmı bozan şey metalin ağırlığıdır',
@@ -469,7 +469,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Hareketsizken ne oluyor?',
-        metin: 'Kart duruyorsa şeritteki mıknatıslar da duruyor. Bobinden geçen akı <strong>sabit</strong>. Sabit akı <strong>hiçbir şey üretmez</strong>: bu yüzden hiç sinyal yok.' },
+        metin: 'Kart duruyorsa şeritteki mıknatıslar da duruyor. Bobinden geçen akı <strong>sabit</strong>. Sabit akı <strong>hiçbir şey üretmez</strong> — bu yüzden hiç sinyal yok.' },
       { bas: 'Kaydırınca ne değişiyor?',
         metin: 'Kafanın önünden sırayla N, S, N, S kutupları geçer. Bobinin gördüğü <strong>B sürekli değişir</strong> ⟹ akı değişir ⟹ sinyal doğar.' },
       { bas: 'Hız neden önemli?',
@@ -477,7 +477,7 @@ baglam: [
       { bas: 'Formülle söyle',
         metin: 'Üretilen sinyal ΔΦ/Δt ile orantılıdır. ΔΦ aynı kalsa bile Δt büyürse <strong>oran küçülür</strong>.' },
       { bas: 'Çok hızlı olursa?',
-        metin: 'Aşırı hızda da sorun çıkar: elektronik devrenin örnekleme hızı yetişemez ve bitler karışır. Bu yüzden POS cihazları <strong>belirli bir hız aralığında</strong> güvenilir okur: çok yavaş da çok hızlı da olmaz.' },
+        metin: 'Aşırı hızda da sorun çıkar: elektronik devrenin örnekleme hızı yetişemez ve bitler karışır. Bu yüzden POS cihazları <strong>belirli bir hız aralığında</strong> güvenilir okur — çok yavaş da çok hızlı da olmaz.' },
       { bas: 'Neden çipe geçildi?',
         metin: 'Manyetik şerit kopyalanması kolay ve yıpranmaya açıktır (mıknatısa yaklaştırmak bilgiyi siler). Çipli kartlar bu iki sorunu da çözdüğü için manyetik şerit büyük ölçüde terk edildi.' }
     ],
@@ -500,7 +500,7 @@ baglam: [
         tam da bunun tersidir.
         <br><strong>Kendin dene:</strong> Simülasyonda dönme hızını (ω) değiştir ve Φ−t
         grafiğine bak. Akının <em>tepe değeri değişmiyor</em>, yalnızca eğri
-        <strong>sıklaşıyor</strong>, yani eğim dikleşiyor. Üretilen gerilimi belirleyen şey
+        <strong>sıklaşıyor</strong> — yani eğim dikleşiyor. Üretilen gerilimi belirleyen şey
         işte o eğimdir.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

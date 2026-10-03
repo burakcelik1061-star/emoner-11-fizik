@@ -11,7 +11,7 @@ F.konuKaydet('u2-induksiyon-gerilimi', {
 
 ozet: `Bu ünitenin en önemli konusu. <strong>Değişen manyetik akı, gerilim üretir.</strong>
 Dünyadaki elektriğin neredeyse tamamı bu tek cümleyle üretiliyor: santralde ne yakılırsa
-yakılsın (kömür, su, rüzgâr, uranyum) yapılan iş aynıdır, bir bobini bir mıknatısın
+yakılsın (kömür, su, rüzgâr, uranyum) yapılan iş aynıdır — bir bobini bir mıknatısın
 içinde döndürmek.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -37,7 +37,7 @@ ve bobine bağlı galvanometrenin ibresinin <strong>saptığını</strong> görd
 </div>
 
 <p>Bu formül, bir önceki konudaki üç değişkenin <strong>hangisi değişirse değişsin</strong>
-geçerlidir: B değişebilir, A değişebilir, θ değişebilir, sonuç aynı.</p>
+geçerlidir: B değişebilir, A değişebilir, θ değişebilir — sonuç aynı.</p>
 
 <p><strong>ΔΦ/Δt</strong>, akı-zaman grafiğinin <strong>eğimidir</strong>. Bu yüzden önceki
 konuda grafiğin eğimine bakmanı istemiştik: <strong>o eğim, ürettiğin gerilimdir</strong>.</p>
@@ -52,8 +52,8 @@ konuda grafiğin eğimine bakmanı istemiştik: <strong>o eğim, ürettiğin ger
 <table class="degisken-tablo">
   <thead><tr><th>Olan</th><th>İndüklenen akımın tepkisi</th></tr></thead>
   <tbody>
-    <tr><td>Akı <strong>artıyor</strong></td><td>artışa karşı: <em>zıt yönde</em> alan üretir</td></tr>
-    <tr><td>Akı <strong>azalıyor</strong></td><td>azalmaya karşı: <em>aynı yönde</em> alan üretir</td></tr>
+    <tr><td>Akı <strong>artıyor</strong></td><td>artışa karşı — <em>zıt yönde</em> alan üretir</td></tr>
+    <tr><td>Akı <strong>azalıyor</strong></td><td>azalmaya karşı — <em>aynı yönde</em> alan üretir</td></tr>
     <tr><td>Mıknatıs <strong>yaklaşıyor</strong></td><td>bobin onu <em>iter</em></td></tr>
     <tr><td>Mıknatıs <strong>uzaklaşıyor</strong></td><td>bobin onu <em>çeker</em></td></tr>
   </tbody>
@@ -64,7 +64,7 @@ konuda grafiğin eğimine bakmanı istemiştik: <strong>o eğim, ürettiğin ger
   <p style="margin:0">Lenz yasası tersine işleseydi ne olurdu? Mıknatısı bobine
   yaklaştırdığında bobin onu <em>çekerdi</em>; mıknatıs kendiliğinden hızlanır, üstelik
   elektrik de üretirdi. <strong>Hiçbir şey vermeden sınırsız enerji</strong> elde
-  edilirdi: imkânsız.</p>
+  edilirdi — imkânsız.</p>
   <p style="margin:8px 0 0">Bu yüzden doğa değişime direnir: elektrik enerjisi elde etmek
   için <strong>mutlaka iş yapman</strong> gerekir.</p>
 </div>
@@ -80,7 +80,7 @@ konuda grafiğin eğimine bakmanı istemiştik: <strong>o eğim, ürettiğin ger
 <p>Burada Lenz yasası çok somut görünür: indüklenen akım, telin hareketine
 <strong>karşı koyan</strong> bir kuvvet doğurur. Yani teli çekmeye devam etmek için
 <strong>sürekli kuvvet uygulaman</strong> gerekir. Yaptığın iş, üretilen elektrik
-enerjisine dönüşür: hiçbir şey bedava değildir.</p>
+enerjisine dönüşür — hiçbir şey bedava değildir.</p>
 
 <h3 style="margin-top:22px">Jeneratör: dönen çerçeve</h3>
 <p>Çerçeve ω açısal hızıyla dönerse:</p>
@@ -92,7 +92,7 @@ enerjisine dönüşür: hiçbir şey bedava değildir.</p>
 <ul>
   <li>Gerilim <strong>sürekli yön değiştirir</strong> ⟹ üretilen şey
   <strong>alternatif akımdır</strong> (sonraki konu)</li>
-  <li>Akı <strong>sıfırken</strong> gerilim <strong>en büyüktür</strong>, çünkü orada
+  <li>Akı <strong>sıfırken</strong> gerilim <strong>en büyüktür</strong> — çünkü orada
   akı en hızlı değişiyor</li>
 </ul>
 
@@ -113,11 +113,11 @@ enerjisine dönüşür: hiçbir şey bedava değildir.</p>
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'ε = −N · ΔΦ / Δt',       aciklama: 'Faraday yasası: eksi işareti Lenz’dir' },
-    { fm: 'ε = B · L · ϑ',          aciklama: 'Hareket emk’sı: raylar üzerinde kayan tel' },
-    { fm: 'ε = N·B·A·ω·sin(ωt)',    aciklama: 'Dönen çerçeve: jeneratör' },
+    { fm: 'ε = −N · ΔΦ / Δt',       aciklama: 'Faraday yasası — eksi işareti Lenz’dir' },
+    { fm: 'ε = B · L · ϑ',          aciklama: 'Hareket emk’sı — raylar üzerinde kayan tel' },
+    { fm: 'ε = N·B·A·ω·sin(ωt)',    aciklama: 'Dönen çerçeve — jeneratör' },
     { fm: 'ε<sub>maks</sub> = N·B·A·ω', aciklama: 'Jeneratörün tepe gerilimi' },
-    { fm: 'i = ε / R',              aciklama: 'İndüklenen akım: devre direnci R' },
+    { fm: 'i = ε / R',              aciklama: 'İndüklenen akım — devre direnci R' },
     { fm: 'F = i·B·L',              aciklama: 'İndüklenen akımın harekete karşı koyduğu kuvvet' }
   ],
   degiskenler: [
@@ -264,7 +264,7 @@ puf: {
 
     <div class="kutu puf" style="margin-top:14px">
       <div class="kutu-bas"><span class="ikon">🏭</span><span>Bütün santraller aynı şeyi yapar</span></div>
-      <p style="margin:0">Termik, hidroelektrik, rüzgâr, nükleer: hepsinde son adım
+      <p style="margin:0">Termik, hidroelektrik, rüzgâr, nükleer — hepsinde son adım
       <strong>bir bobini döndürmektir</strong>. Değişen tek şey türbini neyin döndürdüğüdür:
       buhar, su, rüzgâr ya da nükleer ısıyla üretilen buhar. Güneş panelleri ise
       <em>istisnadır</em>; orada dönen bir parça yoktur.</p>
@@ -290,14 +290,14 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Akı büyüktür</strong>: mıknatıs güçlü ve tam içeride, çizgiler bobini
+      <p><strong>Akı büyüktür</strong> — mıknatıs güçlü ve tam içeride, çizgiler bobini
       bolca deliyor.</p>
-      <p><strong>Ama gerilim sıfırdır</strong>, çünkü akı <strong>değişmiyor</strong>:</p>
+      <p><strong>Ama gerilim sıfırdır</strong> — çünkü akı <strong>değişmiyor</strong>:</p>
       <div class="formul" style="max-width:300px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">ΔΦ = 0 ⟹ ε = −N·(0)/Δt = 0</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> akıyı sıfır sanıyor: hayır, akı var
+        <p style="margin:0"><strong>C şıkkı</strong> akıyı sıfır sanıyor — hayır, akı var
         ve büyük.
         <br><strong>D şıkkı</strong> N&rsquo;ye bakıp karar veriyor. N bir <em>çarpandır</em>;
         çarpılan şey sıfırsa sonuç yine sıfırdır.
@@ -358,13 +358,13 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1: Gerilim.</strong></p>
+      <p><strong>Adım 1 — Gerilim.</strong></p>
       <p>ε = B·L·ϑ = 0,8 · 0,30 · 1,5 = <strong>0,36 V</strong></p>
 
-      <p><strong>Adım 2: Akım.</strong></p>
+      <p><strong>Adım 2 — Akım.</strong></p>
       <p>i = ε/R = 0,36 / 2 = <strong>0,18 A</strong></p>
 
-      <p><strong>Adım 3: Kuvvet.</strong> Akım taşıyan tel alanın içinde ⟹ bir önceki
+      <p><strong>Adım 3 — Kuvvet.</strong> Akım taşıyan tel alanın içinde ⟹ bir önceki
       konunun formülü:</p>
       <p>F = i·B·L = 0,18 · 0,8 · 0,30 = <strong>0,043 N</strong></p>
 
@@ -377,11 +377,11 @@ osym: [
       </div>
 
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>Enerji kontrolü, çözümün sağlaması:</strong>
+        <p style="margin:0"><strong>Enerji kontrolü — çözümün sağlaması:</strong>
         <br>Mekanik güç: <code>P = F·ϑ = 0,043 · 1,5 = 0,065 W</code>
         <br>Elektriksel güç: <code>P = ε·i = 0,36 · 0,18 = 0,065 W</code>
         <br><strong>Birebir eşit.</strong> Yaptığın mekanik iş, elektrik enerjisine
-        dönüşüyor. Bu eşitlik tutmasaydı enerji korunumu bozulurdu, yani bu kontrol,
+        dönüşüyor. Bu eşitlik tutmasaydı enerji korunumu bozulurdu — yani bu kontrol,
         çözümün doğruluğunu bağımsız olarak kanıtlıyor.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -427,9 +427,9 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Devre AÇIKKEN ne oluyor?',
-        metin: 'Dinamo döner, bobinde <strong>gerilim indüklenir</strong>, ama devre açık olduğu için <strong>akım akmaz</strong>.' },
+        metin: 'Dinamo döner, bobinde <strong>gerilim indüklenir</strong> — ama devre açık olduğu için <strong>akım akmaz</strong>.' },
       { bas: 'Akım yoksa kuvvet de yok',
-        metin: 'Karşı kuvvet <code>F = i·B·L</code> ile akıma bağlıdır. i = 0 ise <strong>F = 0</strong>. Bu yüzden yalnızca dinamonun kendi sürtünmesini hissedersin: hafiftir.' },
+        metin: 'Karşı kuvvet <code>F = i·B·L</code> ile akıma bağlıdır. i = 0 ise <strong>F = 0</strong>. Bu yüzden yalnızca dinamonun kendi sürtünmesini hissedersin — hafiftir.' },
       { bas: 'Farı yakınca',
         metin: 'Devre kapanır, <strong>akım akmaya başlar</strong>. Lenz yasası devreye girer: indüklenen akım, kendisini doğuran dönmeye <strong>karşı koyan</strong> bir kuvvet üretir.' },
       { bas: 'Pedal neden ağırlaşıyor?',
@@ -437,7 +437,7 @@ baglam: [
       { bas: 'Enerji akışını yaz',
         metin: 'bacak kası → pedal → tekerlek → dinamo → elektrik → ışık. <strong>Işık bedava değil</strong>; bacağından çıkıyor.' },
       { bas: 'Sayıyla',
-        metin: 'Tipik bir dinamo 3 W üretir. <code>P = F·ϑ</code> olduğuna göre 5 m/s hızda ek kuvvet <code>F = 3/5 = 0,6 N</code> kadardır. Küçük ama hissedilir: özellikle yokuşta.' }
+        metin: 'Tipik bir dinamo 3 W üretir. <code>P = F·ϑ</code> olduğuna göre 5 m/s hızda ek kuvvet <code>F = 3/5 = 0,6 N</code> kadardır. Küçük ama hissedilir — özellikle yokuşta.' }
     ],
     secenekler: [
       'Devre kapanınca akım akar; Lenz gereği bu akım dönmeye karşı kuvvet üretir ve o kuvveti yenmek için ek iş yaparsın',
@@ -454,7 +454,7 @@ baglam: [
         <div class="fm" style="color:var(--accent)">i = 0 ⟹ F = 0 &nbsp;·&nbsp; i ≠ 0 ⟹ F = i·B·L</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> ölçülebilir bir farkı yok sayıyor:
+        <p style="margin:0"><strong>C şıkkı</strong> ölçülebilir bir farkı yok sayıyor —
         bisiklete binen herkes bu farkı hisseder.
         <br><strong>Aynı olgunun başka yerleri:</strong> Elektrikli araçlarda
         <em>rejeneratif fren</em>, spor salonundaki kondisyon bisikletlerinin direnç ayarı
@@ -462,7 +462,7 @@ baglam: [
         Hepsi aynı cümlenin uygulaması: <strong>elektrik üretmek, harekete direnç
         demektir</strong>.
         <br><strong>Simülasyonda gör:</strong> İkinci düzenekte devre direncini (R)
-        küçült, akım büyür, karşı kuvvet de büyür.</p>
+        küçült — akım büyür, karşı kuvvet de büyür.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -533,7 +533,7 @@ baglam: [
         <div class="fm" style="color:var(--accent)">ε ∝ ω &nbsp;·&nbsp; P ∝ ε² ∝ ω²</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> ω&rsquo;nın karesini alıyor: gerilim
+        <p style="margin:0"><strong>B şıkkı</strong> ω&rsquo;nın karesini alıyor — gerilim
         ω ile <em>doğru orantılıdır</em>, kare olan <em>güçtür</em>. Bu ayrım sık karıştırılır.
         <br><strong>E şıkkı</strong> konunun temel cümlesini reddediyor: değişimin
         <em>hızı</em> gerilimi belirler.

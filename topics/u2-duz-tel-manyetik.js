@@ -13,7 +13,7 @@ F.konuKaydet('u2-duz-tel-manyetik', {
 ozet: `1820&rsquo;de Oersted, akım geçen bir telin yanındaki pusula iğnesinin saptığını
 gördü. Bu kaza eseri gözlem fiziği ikiye böldü: <strong>elektrik ve manyetizma ayrı iki
 konu değil, aynı olayın iki yüzüdür.</strong> Mıknatısı olmadan da manyetik alan
-üretebilirsin: tek gereken <strong>hareket eden yük</strong>, yani akımdır.`,
+üretebilirsin — tek gereken <strong>hareket eden yük</strong>, yani akımdır.`,
 
 /* ------------------------------------------------------------- Kavram */
 kavram: `
@@ -39,7 +39,7 @@ sanılıyordu. Oersted&rsquo;in gözlemi tek bir şey söylüyordu:</p>
 </div>
 
 <div class="kutu dikkat" style="margin:16px 0">
-  <div class="kutu-bas"><span class="ikon">⚠</span><span>Ters orantı, ters KARE değil</span></div>
+  <div class="kutu-bas"><span class="ikon">⚠</span><span>Ters orantı — ters KARE değil</span></div>
   <p style="margin:0">Coulomb ve elektriksel alan <code>1/d²</code> ile azalıyordu. Düz telin
   alanı <strong><code>1/d</code></strong> ile azalır. Uzaklık iki katına çıkarsa alan
   <strong>dörtte bire değil, yarıya</strong> iner. Sebebi geometridir: nokta yükün etkisi
@@ -54,7 +54,7 @@ Diğer dört parmağının sarılma yönü, <strong>alan çizgilerinin yönüdü
 <strong>çevreleyen iç içe çemberlerdir</strong>.</p>
 <ul>
   <li>Mıknatısta çizgiler N&rsquo;den çıkıp S&rsquo;ye giriyordu</li>
-  <li>Telde ise çizgilerin <strong>çıktığı ya da girdiği bir uç yoktur</strong>: sadece dönerler</li>
+  <li>Telde ise çizgilerin <strong>çıktığı ya da girdiği bir uç yoktur</strong> — sadece dönerler</li>
   <li>Yine de kural bozulmaz: çizgiler <strong>kapalıdır</strong> ve <strong>kesişmezler</strong></li>
 </ul>
 
@@ -62,8 +62,8 @@ Diğer dört parmağının sarılma yönü, <strong>alan çizgilerinin yönüdü
   <div class="kutu-bas"><span class="ikon">⊙⊗</span><span>Sayfa düzlemine dik yönler</span></div>
   <p style="margin:0">Üç boyutlu bir olayı kâğıda çizmek için iki simge kullanılır:</p>
   <ul style="margin:8px 0 0">
-    <li><strong>⊙</strong>, okun <em>ucu</em>: sayfadan <strong>dışarı</strong>, sana doğru</li>
-    <li><strong>⊗</strong>, okun <em>tüyü</em>: sayfanın <strong>içine</strong>, senden uzağa</li>
+    <li><strong>⊙</strong> — okun <em>ucu</em>: sayfadan <strong>dışarı</strong>, sana doğru</li>
+    <li><strong>⊗</strong> — okun <em>tüyü</em>: sayfanın <strong>içine</strong>, senden uzağa</li>
   </ul>
   <p style="margin:8px 0 0">Bu iki simge ünitenin sonuna kadar her şekilde karşına çıkacak.</p>
 </div>
@@ -99,7 +99,7 @@ metre başına 2·10⁻⁷ N kuvvet oluşturan akım, 1 amperdir.</p>`,
 formuller: {
   liste: [
     { fm: 'B = μ₀·i / (2π·d)',        aciklama: 'Düz telin manyetik alanı' },
-    { fm: 'B = 2·10⁻⁷ · i / d',       aciklama: 'Sadeleşmiş hâli: sınavda bunu kullan' },
+    { fm: 'B = 2·10⁻⁷ · i / d',       aciklama: 'Sadeleşmiş hâli — sınavda bunu kullan' },
     { fm: 'μ₀ = 4π·10⁻⁷ T·m/A',       aciklama: 'Boşluğun manyetik geçirgenliği' },
     { fm: 'F/L = 2·10⁻⁷ · i₁·i₂ / d', aciklama: 'İki paralel tel arasındaki kuvvet' },
     { fm: 'B ∝ i  ·  B ∝ 1/d',        aciklama: 'Akımla doğru, uzaklıkla TERS orantı' }
@@ -167,7 +167,7 @@ turetim: {
                  <p>Bu iki cümleyi ezberlersen kesit soruları saniyeler sürer.</p>` },
 
         { baslik: 'Bir noktadaki yönü oku',
-          html: `<p>Alan vektörü, o noktadan geçen çembere <strong>teğettir</strong>:
+          html: `<p>Alan vektörü, o noktadan geçen çembere <strong>teğettir</strong> —
                  asla telin üzerine doğru ya da telden dışa doğru değildir.
                  Pusula iğnesi de bu teğet doğrultuya yerleşir.</p>` }
       ]
@@ -181,7 +181,7 @@ turetim: {
 
         { baslik: 'İkinci teli o alanın içinde düşün',
           html: `<p>2. tel artık <strong>manyetik alan içinde akım taşıyan bir teldir</strong>.
-                 Böyle bir tele kuvvet etki eder: ayrıntısını 2.2.5&rsquo;te göreceğiz,
+                 Böyle bir tele kuvvet etki eder — ayrıntısını 2.2.5&rsquo;te göreceğiz,
                  burada sonucu kullanıyoruz.</p>` },
 
         { baslik: 'Yönü çıkar',
@@ -195,7 +195,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">F/L = 2·10⁻⁷ · i₁·i₂ / d</div>
                  </div>
                  <p>İfade <strong>simetriktir</strong>: i₁ ile i₂ yer değiştirse sonuç aynıdır.
-                 Yani iki tele etkiyen kuvvetler eşit büyüklüktedir: Newton III yine geçerli.</p>` }
+                 Yani iki tele etkiyen kuvvetler eşit büyüklüktedir — Newton III yine geçerli.</p>` }
       ]
     }
   ]
@@ -245,7 +245,7 @@ puf: {
     <div class="formul" style="max-width:260px;margin:10px 0">
       <div class="fm">i₁ / x = i₂ / (d − x)</div>
     </div>
-    <p>Karekök almaya kalkma: bu, iki konuyu karıştıranların düştüğü tuzaktır.</p>
+    <p>Karekök almaya kalkma — bu, iki konuyu karıştıranların düştüğü tuzaktır.</p>
 
     <p><strong>7 · Alan vektörü teğettir.</strong> Şekilli sorularda B&rsquo;yi telden dışa
     doğru (ışınsal) çizen şık daima yanlıştır.</p>`
@@ -296,25 +296,25 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1: Uzaklıklar.</strong> Orta nokta her iki telden de
+      <p><strong>Adım 1 — Uzaklıklar.</strong> Orta nokta her iki telden de
       <strong>10 cm = 0,1 m</strong> uzaklıktadır.</p>
-      <p><strong>Adım 2: Büyüklükler.</strong></p>
+      <p><strong>Adım 2 — Büyüklükler.</strong></p>
       <p>B₁ = 2·10⁻⁷ · 6 / 0,1 = 1,2·10⁻⁵ T = <strong>12 μT</strong></p>
       <p>B₂ = 2·10⁻⁷ · 8 / 0,1 = 1,6·10⁻⁵ T = <strong>16 μT</strong></p>
-      <p><strong>Adım 3: Yönler (asıl iş burada).</strong> İkisi de ⊙ olduğu için, sağ el
+      <p><strong>Adım 3 — Yönler (asıl iş burada).</strong> İkisi de ⊙ olduğu için, sağ el
       kuralıyla her ikisinin çizgileri de <strong>saat yönünün tersine</strong> döner.
       Orta noktada:</p>
       <ul>
         <li>Soldaki telin alanı <strong>yukarı</strong></li>
         <li>Sağdaki telin alanı <strong>aşağı</strong></li>
       </ul>
-      <p>Yani <strong>zıt yönlüler</strong>, çıkarılır:</p>
+      <p>Yani <strong>zıt yönlüler</strong> — çıkarılır:</p>
       <div class="formul" style="max-width:280px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">B = 16 − 12 = 4 μT</div>
       </div>
       <p>Yönü, büyük olanın yönündedir: <strong>aşağı</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı (28 μT)</strong> yönlere bakmadan toplayanlar için:
+        <p style="margin:0"><strong>B şıkkı (28 μT)</strong> yönlere bakmadan toplayanlar için —
         en sık yapılan hata budur.
         <br><strong>E şıkkı (0)</strong> “aynı yönlü akımlar ortada alanı götürür” diye
         ezberleyenler için. Bu ancak akımlar <em>eşit</em> olsaydı doğru olurdu.
@@ -343,7 +343,7 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p>Akımlar aynı yönlü olduğu için aradaki alanlar <strong>zıt yönlüdür</strong>:
+      <p>Akımlar aynı yönlü olduğu için aradaki alanlar <strong>zıt yönlüdür</strong> —
       demek ki arada bir sıfır noktası vardır. Nokta i₁&rsquo;den x uzaklıkta olsun:</p>
       <div class="formul" style="max-width:300px;margin:10px 0">
         <div class="fm">2·10⁻⁷ · 2 / x = 2·10⁻⁷ · 8 / (30 − x)</div>
@@ -359,7 +359,7 @@ osym: [
         <p style="margin:0">Elektrikte denge noktası için <strong>karekök</strong> alıyorduk
         (<code>√q₁/x = √q₂/(d−x)</code>), çünkü orada üs <strong>2</strong>&rsquo;ydi.
         Burada üs <strong>1</strong> olduğu için karekök <strong>yoktur</strong>.
-        Karekök alsaydın <code>√2/x = √8/(30−x)</code> çıkar ve x ≈ 10 cm bulurdun:
+        Karekök alsaydın <code>√2/x = √8/(30−x)</code> çıkar ve x ≈ 10 cm bulurdun —
         <strong>B şıkkı</strong> tam olarak bu hatayı yapanlar için konmuştur.</p>
       </div>
       <p style="margin-top:10px"><strong>Sağlama:</strong> Nokta, <em>küçük akıma</em> yakın
@@ -410,14 +410,14 @@ baglam: [
       { bas: 'İkinci gözlem kritik',
         metin: 'Üstte ve altta sapmaların <strong>ters</strong> olması, alanın telin iki yanında <strong>zıt yönlü</strong> olduğunu söyler.' },
       { bas: 'Hangi şekil buna uyar?',
-        metin: 'Alan telden dışa doğru ışınsal olsaydı üstte yukarı, altta aşağı olurdu: <em>ters</em> değil, <em>dışa</em>. Alan tele paralel olsaydı iki yanda da aynı olurdu. Tek uygun şekil: teli <strong>çevreleyen çemberler</strong>.' },
+        metin: 'Alan telden dışa doğru ışınsal olsaydı üstte yukarı, altta aşağı olurdu — <em>ters</em> değil, <em>dışa</em>. Alan tele paralel olsaydı iki yanda da aynı olurdu. Tek uygun şekil: teli <strong>çevreleyen çemberler</strong>.' },
       { bas: 'Çemberi kontrol et',
         metin: 'Bir çemberde üst nokta ile alt noktanın teğetleri birbirine <strong>zıttır</strong>. Gözlemle birebir uyuşuyor.' },
       { bas: 'Sonucu genelle',
         metin: 'Böylece hem alanın <strong>varlığı</strong> hem de <strong>şekli</strong> tek bir masa üstü gözlemden çıkarılmış olur. Oersted’in bu bulgusu elektromanyetizmanın başlangıcıdır ve beş yıl içinde elektromıknatısın, kırk yıl içinde elektrik motorunun önünü açmıştır.' }
     ],
     secenekler: [
-      'Akım manyetik alan üretir ve alan çizgileri teli çevreleyen çemberlerdir: çemberin üst ve alt teğetleri zıt olduğu için sapmalar ters çıkar',
+      'Akım manyetik alan üretir ve alan çizgileri teli çevreleyen çemberlerdir — çemberin üst ve alt teğetleri zıt olduğu için sapmalar ters çıkar',
       'Akım manyetik alan üretir ve çizgiler telden dışa doğru ışınsaldır',
       'Pusula telin ısınmasından etkilenmiştir, manyetik alanla ilgisi yoktur',
       'Alan yalnızca telin üstünde oluşur, alttaki sapma yansımadır',
@@ -428,11 +428,11 @@ baglam: [
       <p>İki gözlem birlikte <strong>hem varlığı hem geometriyi</strong> belirler:
       alan vardır ve <strong>çemberseldir</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> ışınsal alan öneriyor: o durumda üstte
+        <p style="margin:0"><strong>B şıkkı</strong> ışınsal alan öneriyor — o durumda üstte
         ve altta sapmalar <em>ters değil</em>, ikisi de telden uzağa doğru olurdu.
-        <br><strong>E şıkkı</strong> tele paralel alan öneriyor: o durumda iki pusula
+        <br><strong>E şıkkı</strong> tele paralel alan öneriyor — o durumda iki pusula
         <em>aynı</em> yöne saparaydı.
-        <br><strong>Yöntem notu:</strong> Burada yapılan şey fiziğin özüdür, bir gözlemle
+        <br><strong>Yöntem notu:</strong> Burada yapılan şey fiziğin özüdür — bir gözlemle
         uyumlu olmayan bütün modeller elenir, geriye kalan tek model kabul edilir.
         Simülasyondaki iki pusulayı karşılaştırarak aynı akıl yürütmeyi kendin tekrarlayabilirsin.</p>
       </div>
@@ -477,7 +477,7 @@ baglam: [
       { bas: 'Mıknatısla karşılaştır',
         metin: '5 mT = 5000 μT. Buzdolabı mıknatısı hattın altındaki alandan <strong>500 kat</strong> güçlüdür. Elini buzdolabına her dayadığında bundan çok daha büyük bir alana giriyorsun.' },
       { bas: 'Yüksekliği iki katına çıkar',
-        metin: 'B ∝ 1/d olduğu için alan <strong>yarıya</strong> iner: 5 μT. (Ters kare olsaydı dörtte bire inerdi: bu konudaki temel ayrım.)' },
+        metin: 'B ∝ 1/d olduğu için alan <strong>yarıya</strong> iner: 5 μT. (Ters kare olsaydı dörtte bire inerdi — bu konudaki temel ayrım.)' },
       { bas: 'Dürüst yorum',
         metin: 'Bu hesap yalnızca <em>manyetik alanın büyüklüğünü</em> söyler. Sağlık tartışması ayrı ve karmaşık bir konudur; fizik burada yalnızca mertebeyi verir: hattın altındaki alan, günlük hayatta karşılaştığın birçok alandan <strong>küçüktür</strong>.' }
     ],
@@ -500,7 +500,7 @@ baglam: [
         </tbody>
       </table>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> ters kare uygulayanlar için: düz telde
+        <p style="margin:0"><strong>B şıkkı</strong> ters kare uygulayanlar için — düz telde
         alan <code>1/d</code> ile azalır, <code>1/d²</code> ile değil. Bu, konunun
         <em>tek numaralı</em> ayrımıdır ve çeldirici hep buradan kurulur.
         <br><strong>Mühendislik notu:</strong> Gerçek hatlarda üç fazlı akım vardır ve fazların

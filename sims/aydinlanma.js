@@ -169,7 +169,7 @@ function cizGercek(ctx, w, h, st, pHam) {
                  '700 14px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'Φ_toplam = ' + D.biçim(toplamAki(p)) + ' lm', w - 10, 48, R.ivme,
                  '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'ışınlar noktadan her yöne yayılır: küreye dağılır',
+  D.yaziAydinlik(ctx, 'ışınlar noktadan her yöne yayılır — küreye dağılır',
                  10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -263,7 +263,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       if (t) D.yaziHaleli(ctx, t, w * 0.30, sy, c, f, 'left');
       sy += 18;
     });
-    D.yaziHaleli(ctx, 'Sonuç kesirli çıkarsa YUKARI yuvarlanır: eksik ışık olmaz',
+    D.yaziHaleli(ctx, 'Sonuç kesirli çıkarsa YUKARI yuvarlanır — eksik ışık olmaz',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
     return;
   }
@@ -321,7 +321,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     sy += 18;
   });
 
-  D.yaziHaleli(ctx, 'Coulomb ve elektriksel alan da ters kareydi: aynı geometri',
+  D.yaziHaleli(ctx, 'Coulomb ve elektriksel alan da ters kareydi — aynı geometri',
                12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 }
 

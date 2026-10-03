@@ -3,7 +3,7 @@
 window.F11 = window.F11 || {};
 
 /* ==========================================================================
-   app.js · Uygulama kabuğu, kenar çubuğu ve yönlendirici
+   app.js — Uygulama kabuğu, kenar çubuğu ve yönlendirici
    --------------------------------------------------------------------------
    Neden ES modülü değil?
    Sistem akıllı tahtada sunucusuz, terminalsiz çalışacak: index.html'e çift
@@ -18,8 +18,7 @@ window.F11 = window.F11 || {};
 const { MUFREDAT, konuBul, komsuKonular } = window.F11;
 const {
   kavramBloku, formulBloku, turetimBloku, turetimBagla,
-  simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla,
-  bolumCubugu, bolumBagla, ikon, ikonlariCevir
+  simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla
 } = window.F11;
 
 /* Konu kayıt defteri — topics/*.js dosyaları buraya yazar. */
@@ -28,7 +27,6 @@ function konuKaydet(ad, tanim) { KONULAR[ad] = tanim; }
 
 let icerik, kenarListe;
 let etkinSim = null;          // o an ekrandaki simülasyon koşucusu
-let bolumSok = null;          // bölüm çubuğu gözcüsünü söken fonksiyon
 
 /* ------------------------------------------------------- Kenar çubuğu */
 
@@ -38,14 +36,14 @@ function kenariKur() {
          style="--u:var(--u${u.no});--us:var(--u${u.no}s)">
       <button class="unite-bas" data-unite-dgm="${u.id}" aria-expanded="false">
         <span class="unite-no">${u.no}</span>
-        <span class="unite-ad">${u.ad}</span>
-        <span class="unite-ok">${ikon('caret-right')}</span>
+        <span>${u.ad}</span>
+        <span class="unite-ok" aria-hidden="true">›</span>
       </button>
       <div class="unite-konular">
         ${u.konular.map(k => `
           <a class="konu-bag" href="#/${u.id}/${k.id}" data-konu="${u.id}/${k.id}">
-            <span class="konu-ad">${k.ad}</span>
-            ${k.kitap ? `<span class="konu-no">${k.kitap}</span>` : ''}
+            <span>${k.ad}</span>
+            ${k.kitap ? `<span class="konu-rozet">${k.kitap}</span>` : ''}
           </a>`).join('')}
       </div>
     </div>`).join('');
@@ -73,67 +71,54 @@ function kenariIsaretle(uniteId, konuId) {
 
 /* --------------------------------------------------------- Karşılama */
 
-/** Son açılan konu (öğretmen ertesi ders kaldığı yerden açar). file:// altında
-    localStorage kapalı olabilir; o zaman sessizce ilk konuya düşülür. */
-const SON_ANAHTAR = 'fizik11-son';
-function sonKonu() {
-  try {
-    const [u, k] = (localStorage.getItem(SON_ANAHTAR) || '').split('/');
-    return u && k ? konuBul(u, k) : null;
-  } catch (e) { return null; }
-}
-
 function karsilamaCiz() {
   const toplam = MUFREDAT.reduce((s, u) => s + u.konular.length, 0);
-  const son = sonKonu();
-  const ilk = MUFREDAT[0].konular[0];
-  const hedef = son
-    ? { yol: `#/${son.uniteId}/${son.id}`, ust: 'Kaldığın yerden devam et', ad: son.ad }
-    : { yol: `#/${MUFREDAT[0].id}/${ilk.id}`, ust: 'İlk konuyla başla', ad: ilk.ad };
+  const hazir = MUFREDAT.reduce((s, u) =>
+    s + u.konular.filter(k => KONULAR[k.modul]).length, 0);
 
   icerik.innerHTML = `
     <div class="sayfa">
-      <header class="karsilama-bas">
-        <h1 class="sayfa-baslik">11. sınıf fizik</h1>
-        <p class="sayfa-ozet">Maarif Modeli müfredatına göre ${MUFREDAT.length} ünite, ${toplam} konu:
-        anlatım, türetim, simülasyon ve sorular.</p>
-        <a class="dgm birincil devam-dgm" href="${hedef.yol}">
-          <span class="devam-ust">${hedef.ust}</span>
-          <span class="devam-ad">${hedef.ad}${ikon('arrow-right')}</span>
-        </a>
-      </header>
+      <h1 class="sayfa-baslik">11. sınıf fizik</h1>
+      <p class="sayfa-ozet">
+        Türkiye Yüzyılı Maarif Modeli müfredatına göre ${MUFREDAT.length} ünite, ${toplam} konu.
+        Her konuda kısa anlatım, formülün adım adım türetimi, çalışan simülasyon,
+        test taktiği ve bağlam temelli sorular var.
+      </p>
 
-      <section class="icindekiler" aria-label="İçindekiler">
-        ${MUFREDAT.map(u => `
-        <div class="ic-sutun" style="--u:var(--u${u.no})">
-          <h2 class="ic-bas">
-            <span class="unite-no">${u.no}</span>
-            <span class="ic-baslik"><span class="ic-ad">${u.ad}</span>
-            <span class="ic-alt">${u.konular.length} konu · ${u.saat} ders saati</span></span>
-          </h2>
-          <ol class="ic-liste">
-            ${u.konular.map(k => `
-            <li><a class="ic-konu" href="#/${u.id}/${k.id}">
-              <span class="ic-no">${k.kitap || ''}</span>
-              <span class="ic-konu-ad">${k.ad}</span>
-              ${KONULAR[k.modul] ? '' : '<span class="ic-hazir">hazırlanıyor</span>'}
-            </a></li>`).join('')}
-          </ol>
-        </div>`).join('')}
-      </section>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:26px">
+        ${MUFREDAT.map(u => {
+          const h = u.konular.filter(k => KONULAR[k.modul]).length;
+          return `
+          <a href="#/${u.id}/${u.konular[0].id}" class="kart"
+             style="display:block;text-decoration:none;color:inherit;--b:var(--u${u.no});--u:var(--u${u.no})">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+              <span class="unite-no">${u.no}</span>
+              <strong>${u.ad}</strong>
+            </div>
+            <p style="color:var(--text-2);font-size:.92em;margin:0 0 10px">
+              ${u.konular.length} konu · ${u.saat} ders saati
+            </p>
+            <div style="height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden">
+              <div style="height:100%;width:${Math.round(h / u.konular.length * 100)}%;background:var(--u${u.no})"></div>
+            </div>
+            <p style="color:var(--text-3);font-size:.82em;margin:8px 0 0">${h} / ${u.konular.length} hazır</p>
+          </a>`;
+        }).join('')}
+      </div>
 
-      <p class="kisayol-serit">
-        <span class="kisayol-ikon">${ikon('keyboard')}</span>
-        <span><kbd>Boşluk</kbd> oynat / duraklat</span>
-        <span><kbd>R</kbd> sıfırla</span>
-        <span><kbd>→</kbd> yarım saniye ilerlet</span>
-        <span><kbd>F11</kbd> tam ekran</span>
-        <span><strong>Sunum modu</strong> yazıları büyütür</span>
+      <div class="kutu nott" style="margin-top:26px">
+        <div class="kutu-bas"><span class="ikon">⌨</span>Akıllı tahta kısayolları</div>
+        <p style="margin:0"><kbd>Boşluk</kbd> simülasyonu oynatır/duraklatır ·
+        <kbd>R</kbd> sıfırlar · <kbd>F11</kbd> tam ekran ·
+        üst sağdaki <strong>Sunum modu</strong> yazıları büyütür.</p>
+      </div>
+
+      <p style="color:var(--text-3);font-size:.85em;margin-top:20px">
+        Toplam ${hazir} / ${toplam} konu hazır.
       </p>
 
       ${window.F11.kunyeHtml()}
     </div>`;
-  ikonlariCevir(icerik);
 }
 
 /* ------------------------------------------------------- Konu sayfası */
@@ -154,34 +139,27 @@ function konuCiz(uniteId, konuId) {
         <div class="kutu dikkat">
           <div class="kutu-bas"><span class="ikon">⚠</span>Bu konu henüz hazır değil</div>
           <p><strong>${konu.ad}</strong> içeriği yazım aşamasında.</p>
-          <p class="bos-not">Beklenen dosya: <code>topics/${konu.modul}.js</code></p>
+          <p style="margin:0;font-size:.9em;color:var(--text-2)">Beklenen dosya: <code>topics/${konu.modul}.js</code></p>
         </div>
       </div>`;
-    ikonlariCevir(icerik);
-    uniteRengi(konu.uniteNo);
     kenariIsaretle(uniteId, konuId);
     document.title = `${konu.ad} · Fizik 11`;
     return;
   }
 
   const k = komsuKonular(konu);
-  /* Meta satırı: öğretmen kitabı aynı sayfada açabilsin diye sayfa no da var. */
-  const meta = [
-    konu.kitap ? `Kitap ${konu.kitap}` : '',
-    konu.sayfa ? `s. ${konu.sayfa}` : '',
-    konu.kod || ''
-  ].filter(Boolean).join(' · ');
 
   icerik.innerHTML = `
     <div class="sayfa" style="--u:var(--u${konu.uniteNo});--us:var(--u${konu.uniteNo}s)">
-      <header class="konu-bas">
-        <a class="konu-unite" href="#/"><span class="nokta" aria-hidden="true"></span>Ünite ${konu.uniteNo} · ${konu.uniteAd}</a>
+      <header class="konu-hero">
+        <div class="hero-ust">
+          <span class="hero-unite"><span class="nokta"></span>Ünite ${konu.uniteNo} · ${konu.uniteAd}</span>
+          ${konu.kitap ? `<span class="hero-kitap">${konu.kitap}</span>` : ''}
+          <span class="hero-kod">${konu.kod}</span>
+        </div>
         <h1 class="sayfa-baslik">${konu.ad}</h1>
         <p class="sayfa-ozet">${mod.ozet}</p>
-        ${meta ? `<p class="konu-meta">${meta}</p>` : ''}
       </header>
-
-      ${bolumCubugu(mod)}
 
       ${mod.kavram    ? kavramBloku(mod.kavram) : ''}
       ${mod.formuller ? formulBloku(mod.formuller) : ''}
@@ -191,35 +169,22 @@ function konuCiz(uniteId, konuId) {
       ${mod.osym      ? osymBloku(mod.osym) : ''}
       ${mod.baglam    ? baglamBloku(mod.baglam) : ''}
 
-      <nav class="konu-gecis" aria-label="Konular arası geçiş">
-        ${k.onceki ? `<a class="gecis onceki" href="#/${k.onceki.uniteId}/${k.onceki.id}">
-          <span class="gecis-ust">${ikon('arrow-left')}Önceki konu</span>
-          <span class="gecis-ad">${k.onceki.ad}</span></a>` : '<span></span>'}
-        ${k.sonraki ? `<a class="gecis sonraki" href="#/${k.sonraki.uniteId}/${k.sonraki.id}">
-          <span class="gecis-ust">Sonraki konu${ikon('arrow-right')}</span>
-          <span class="gecis-ad">${k.sonraki.ad}</span></a>` : ''}
+      <nav style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
+        ${k.onceki ? `<a class="dgm" href="#/${k.onceki.uniteId}/${k.onceki.id}">← ${k.onceki.ad}</a>` : '<span></span>'}
+        <span style="flex:1"></span>
+        ${k.sonraki ? `<a class="dgm birincil" href="#/${k.sonraki.uniteId}/${k.sonraki.id}">${k.sonraki.ad} →</a>` : ''}
       </nav>
 
       ${window.F11.kunyeHtml()}
     </div>`;
 
-  ikonlariCevir(icerik);
-  uniteRengi(konu.uniteNo);
   if (mod.turetim) turetimBagla(icerik, mod.turetim);
   etkinSim = mod.sim ? simBagla(icerik, mod.sim) : null;
   sorulariBagla(icerik);
-  bolumSok = bolumBagla(icerik, icerik);
 
   kenariIsaretle(uniteId, konuId);
   document.title = `${konu.ad} · Fizik 11`;
   icerik.scrollTop = 0;
-  try { localStorage.setItem(SON_ANAHTAR, `${uniteId}/${konuId}`); } catch (e) { /* file:// kısıtı */ }
-}
-
-/** Üst barın alt çizgisi o anki ünitenin rengini alır; ana sayfada nötr. */
-function uniteRengi(no) {
-  if (no) document.documentElement.dataset.unite = String(no);
-  else delete document.documentElement.dataset.unite;
 }
 
 function bulunamadi() {
@@ -233,11 +198,9 @@ function bulunamadi() {
 
 function yonlendir() {
   if (etkinSim) { etkinSim.yikil(); etkinSim = null; }
-  if (bolumSok) { bolumSok(); bolumSok = null; }
 
   const yol = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (yol.length < 2) {
-    uniteRengi(null);
     karsilamaCiz();
     document.title = 'Fizik 11 · Maarif Modeli';
   } else {
@@ -265,16 +228,7 @@ function basla() {
   icerik = document.getElementById('icerik');
   kenarListe = document.getElementById('kenar-liste');
 
-  /* "İçeriğe atla" bir hash bağlantısı gibi davranırsa yönlendirici onu konu
-     sanır; bu yüzden odak doğrudan içerik alanına taşınır. */
-  document.getElementById('atla').addEventListener('click', e => {
-    e.preventDefault();
-    icerik.focus();
-  });
-
-  const kenarDgm = document.getElementById('kenar-dgm');
-  kenarDgm.innerHTML = ikon('list');
-  kenarDgm.addEventListener('click', kenariDegistir);
+  document.getElementById('kenar-dgm').addEventListener('click', kenariDegistir);
 
   /* --- Açık / koyu tema ---
      Seçim localStorage'da tutulur; index.html'deki küçük betik sayfa açılırken
@@ -283,8 +237,8 @@ function basla() {
   const temaDgm = document.getElementById('tema-dgm');
   const temaTazele = () => {
     const acik = document.documentElement.dataset.tema === 'acik';
-    temaDgm.innerHTML = ikon(acik ? 'moon' : 'sun');
-    temaDgm.title = acik ? 'Koyu temaya geç' : 'Kâğıt temaya geç';
+    temaDgm.textContent = acik ? '☾' : '☀';
+    temaDgm.title = acik ? 'Koyu temaya geç' : 'Açık temaya geç';
     temaDgm.setAttribute('aria-pressed', String(acik));
 
     /* Klasik fizik paneli sayfanın TERSİ olur: koyu sayfada kâğıt panel,
@@ -296,33 +250,17 @@ function basla() {
   };
   temaTazele();
   temaDgm.addEventListener('click', () => {
-    const kok = document.documentElement;
-    const yeni = kok.dataset.tema === 'acik' ? 'koyu' : 'acik';
-    /* Tema anında değişir: renk geçiş animasyonu tahtada yavaş ve bulanık
-       görünür. Bir kare boyunca bütün geçişler kapatılır. */
-    kok.dataset.anlik = '1';
-    kok.dataset.tema = yeni;
+    const acik = document.documentElement.dataset.tema === 'acik';
+    const yeni = acik ? 'koyu' : 'acik';
+    document.documentElement.dataset.tema = yeni;
     try { localStorage.setItem('fizik11-tema', yeni); } catch (e) { /* file:// kısıtı */ }
     temaTazele();
-    void kok.offsetWidth;
-    requestAnimationFrame(() => { delete kok.dataset.anlik; });
   });
 
-  const sunumDgm = document.getElementById('sunum-dgm');
-  sunumDgm.insertAdjacentHTML('afterbegin', ikon('presentation'));
-  /* Sunum modu: yazılar ve dokunma hedefleri büyür, kenar çubuğu daralır
-     (menü düğmesiyle yine açılabilir), simülasyon içeriğin tam genişliğini
-     alır. Çıkınca kenar çubuğu eski hâline döner. */
-  let sunumOncesiKenar = null;
-  sunumDgm.addEventListener('click', () => {
-    const kok = document.documentElement;
-    const acik = kok.dataset.sunum === '1';
-    kok.dataset.sunum = acik ? '0' : '1';
-    sunumDgm.setAttribute('aria-pressed', String(!acik));
-    sunumDgm.title = acik ? 'Sunum modu: yazılar büyür (F11 ile tam ekran)'
-                          : 'Sunum modundan çık';
-    if (!acik) { sunumOncesiKenar = kok.dataset.kenar || 'acik'; kok.dataset.kenar = 'kapali'; }
-    else if (sunumOncesiKenar) { kok.dataset.kenar = sunumOncesiKenar; sunumOncesiKenar = null; }
+  document.getElementById('sunum-dgm').addEventListener('click', e => {
+    const acik = document.documentElement.dataset.sunum === '1';
+    document.documentElement.dataset.sunum = acik ? '0' : '1';
+    e.currentTarget.setAttribute('aria-pressed', String(!acik));
     window.dispatchEvent(new Event('resize'));
   });
 

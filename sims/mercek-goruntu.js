@@ -121,7 +121,7 @@ function durumAdi(a, f) {
 
 function ozellik(a, f) {
   const b = goruntuB(a, f);
-  if (b === null) return { cins: 'Oluşmaz', yon: '–', boy: '–' };
+  if (b === null) return { cins: 'Oluşmaz', yon: '—', boy: '—' };
   const m = Math.abs(b / a);
   return {
     cins: b > 0 ? 'Gerçek' : 'Sanal',
@@ -254,9 +254,9 @@ function cizGercek(ctx, w, h, st, p) {
   const bxPanel = y.b === null ? null : y.mx + y.b * y.olcek;
   if (y.b === null || bxPanel < w * 0.01 || bxPanel > w * 0.99) {
     D.yaziAydinlik(ctx,
-      y.b === null ? 'Cisim tam odakta: çıkan ışınlar PARALEL, görüntü sonsuzda'
+      y.b === null ? 'Cisim tam odakta — çıkan ışınlar PARALEL, görüntü sonsuzda'
                    : (y.b > 0 ? 'Görüntü merceğin ötesinde ' : 'Sanal görüntü cisim tarafında ') +
-                     D.biçim(Math.abs(y.b)) + ' cm uzakta: panelin dışında',
+                     D.biçim(Math.abs(y.b)) + ' cm uzakta — panelin dışında',
       w * 0.5, h * 0.95, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   } else {
     const bx = y.mx + y.b * y.olcek;
@@ -461,7 +461,7 @@ function cizKlasik(ctx, w, h, st, p) {
     ['a = ' + D.biçim(a, 4) + ' cm', R.hiz,  '700 13px system-ui, sans-serif'],
     ['b = ' + (o.b === undefined ? '∞' : D.biçim(o.b, 4)) + ' cm', R.kuvvet, '700 14px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
-    ['h′/h = |b|/a = ' + (o.m === undefined ? '–' : D.biçim(o.m, 4)), R.normal, '700 13px system-ui, sans-serif'],
+    ['h′/h = |b|/a = ' + (o.m === undefined ? '—' : D.biçim(o.m, 4)), R.normal, '700 13px system-ui, sans-serif'],
     ['(boylar oranı = uzaklıklar oranı)', K.metin2, '11px system-ui, sans-serif']
   ];
   if (p.mod > 4.5) {
@@ -502,13 +502,13 @@ function klasikMikroskop(ctx, w, h, st, p) {
     ['aralarındaki uzaklık ' + D.biçim(MIK_L, 3) + ' cm', K.metin2, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['örnek objektiften a = ' + D.biçim(a, 3) + ' cm', R.hiz, '700 12px system-ui, sans-serif'],
-    ['ara görüntü b = ' + (m ? D.biçim(m.bo, 3) : '–') + ' cm · gerçek · ters · ' + (m ? D.biçim(m.mo, 3) : '–') + '×',
+    ['ara görüntü b = ' + (m ? D.biçim(m.bo, 3) : '—') + ' cm · gerçek · ters · ' + (m ? D.biçim(m.mo, 3) : '—') + '×',
       R.kuvvet, '700 12px system-ui, sans-serif'],
-    ['okülerden ' + (m ? D.biçim(m.ae, 3) : '–') + ' cm < fₑ ⟹ büyüteç gibi', K.metin2, '11px system-ui, sans-serif'],
-    ['son görüntü ' + (m && isFinite(m.be) ? D.biçim(m.be, 3) + ' cm · sanal · ' + D.biçim(m.me, 3) + '×' : '–'),
+    ['okülerden ' + (m ? D.biçim(m.ae, 3) : '—') + ' cm < fₑ ⟹ büyüteç gibi', K.metin2, '11px system-ui, sans-serif'],
+    ['son görüntü ' + (m && isFinite(m.be) ? D.biçim(m.be, 3) + ' cm · sanal · ' + D.biçim(m.me, 3) + '×' : '—'),
       '#5F7FA8', '700 12px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
-    ['Toplam büyütme = ' + (m ? D.biçim(m.M, 3) : '–'), R.normal, '700 14px system-ui, sans-serif'],
+    ['Toplam büyütme = ' + (m ? D.biçim(m.M, 3) : '—'), R.normal, '700 14px system-ui, sans-serif'],
     ['(objektif büyütmesi × oküler büyütmesi)', K.metin2, '11px system-ui, sans-serif'],
     ['Kitap: 20× objektif ve 10× oküler ⟹ 200×', K.metin2, '11px system-ui, sans-serif']
   ];
@@ -593,9 +593,9 @@ function okumalar(st, p) {
     return [
       { et: 'Alet',               dg: 'Mikroskop', birim: '' },
       { et: 'Örnek uzaklığı a',   dg: D.biçim(a, 4), birim: 'cm' },
-      { et: 'Ara görüntü',        dg: m ? D.biçim(m.bo, 4) + ' cm · ' + D.biçim(m.mo, 3) + '×' : '–', birim: '' },
-      { et: 'Son görüntü',        dg: m && isFinite(m.be) ? D.biçim(m.be, 4) + ' cm · sanal' : '–', birim: '' },
-      { et: 'Toplam büyütme',     dg: m ? D.biçim(m.M, 4) : '–', birim: '×' }
+      { et: 'Ara görüntü',        dg: m ? D.biçim(m.bo, 4) + ' cm · ' + D.biçim(m.mo, 3) + '×' : '—', birim: '' },
+      { et: 'Son görüntü',        dg: m && isFinite(m.be) ? D.biçim(m.be, 4) + ' cm · sanal' : '—', birim: '' },
+      { et: 'Toplam büyütme',     dg: m ? D.biçim(m.M, 4) : '—', birim: '×' }
     ];
   }
   const f = odak(p, st), a = cisimA(st, p);
@@ -646,7 +646,7 @@ D.simler['mercek-goruntu'] = {
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Cisim uzaklığını tara' },
       { d: 4, e: 'Cisim sonsuzda (paralel ışınlar)' },
-      { d: 2, e: 'Otomatik tur: beş durum' },
+      { d: 2, e: 'Otomatik tur — beş durum' },
       { d: 5, e: 'Yaylı sarkaçtaki cisim (Alıştırma 28)' },
       { d: 3, e: 'Optik aletler' }
     ]},

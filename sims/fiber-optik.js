@@ -275,10 +275,10 @@ function cizYol(ctx, w, h, st, p) {
   const sa = sinirAcisi(p);
   D.yaziAydinlik(ctx,
     'Duvara çarpma açısı ' + D.biçim(duvarAcisi(p), 4) + '°   ·   sınır açısı ' +
-    (sa === null ? '–' : D.biçim(sa, 4) + '°'),
+    (sa === null ? '—' : D.biçim(sa, 4) + '°'),
     10, h - 10, tutar ? R.hiz : R.kuvvet, '700 12px system-ui, sans-serif', 'left');
 
-  D.yaziAydinlik(ctx, tutar ? 'TAM YANSIMA: ışık fiberde kalıyor' : 'Tam yansıma YOK: ışık kayboluyor',
+  D.yaziAydinlik(ctx, tutar ? 'TAM YANSIMA — ışık fiberde kalıyor' : 'Tam yansıma YOK — ışık kayboluyor',
                  10, h - 28, tutar ? R.hiz : R.kuvvet,
                  '700 12px system-ui, sans-serif', 'left');
 }
@@ -632,7 +632,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['L = ' + D.biçim(p.L) + ' km', R.normal, '12px system-ui, sans-serif'],
     ['Eksen ışını: ' + D.biçim(sureEksen(p) * 1e6, 4) + ' µs', R.hiz, '12px system-ui, sans-serif'],
     ['En eğik ışın: ' + (gecikme(p) === null ? 'tutunamaz' : D.biçim(sureEnUzun(p) * 1e6, 4) + ' µs'), R.kuvvet, '12px system-ui, sans-serif'],
-    ['Δt = ' + (gecikme(p) === null ? '–' : D.biçim(gecikme(p) * 1e9, 4) + ' ns'), R.surtunme, '700 13px system-ui, sans-serif'],
+    ['Δt = ' + (gecikme(p) === null ? '—' : D.biçim(gecikme(p) * 1e9, 4) + ' ns'), R.surtunme, '700 13px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Yol farkı oranı = n_ç/n_ö', K.metin2, '11px system-ui, sans-serif'],
     ['= ' + D.biçim(p.nc / p.nk, 5), K.metin2, '11px system-ui, sans-serif'],
@@ -760,7 +760,7 @@ function okumalar(st, pHam) {
   if (gec === null) {
     return [
       { et: 'Fiber uzunluğu L',  dg: D.biçim(p.L), birim: 'km' },
-      { et: 'Durum',             dg: 'n_ç ≤ n_ö: fiber ışığı tutamaz', birim: '' }
+      { et: 'Durum',             dg: 'n_ç ≤ n_ö — fiber ışığı tutamaz', birim: '' }
     ];
   }
   return [

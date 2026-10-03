@@ -269,7 +269,7 @@ function okumalar(st, p) {
     { et: 'Türü',          dg: st.hareketli ? 'Kinetik' : 'Statik', birim: '' },
     { et: 'Bileşke  F_net',dg: D.biçim(st.hareketli ? st.F - kinetik(p) : 0), birim: 'N' },
     { et: 'Hız  ϑ',        dg: D.biçim(st.v),                      birim: 'm/s' },
-    { et: 'Kopma kuvveti', dg: st.koptuF === null ? '–' : D.biçim(st.koptuF),
+    { et: 'Kopma kuvveti', dg: st.koptuF === null ? '—' : D.biçim(st.koptuF),
       birim: st.koptuF === null ? '' : 'N' }
   ];
 }

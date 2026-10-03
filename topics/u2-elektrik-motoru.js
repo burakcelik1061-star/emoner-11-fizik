@@ -81,16 +81,16 @@ ters döner ve döndürme etkisi <strong>yine aynı yönde</strong> olur.</p>
 olacak şekilde yerleştirilir. Biri ölü noktadayken diğerleri tork üretmeye devam eder.
 Motor hem hiç durmaz hem de daha düzgün döner.</p>
 <p style="color:var(--text-2)">Simülasyonda yükü sonuna kadar artırırsan motorun ölü
-noktada takıldığını görebilirsin: bu bir hata değil, tek çerçeveli tasarımın
+noktada takıldığını görebilirsin — bu bir hata değil, tek çerçeveli tasarımın
 gerçek davranışıdır.</p>
 
 <h3 style="margin-top:22px">Motorun gücünü ne belirler?</h3>
 <p>Formüldeki her çarpan bir tasarım kararıdır:</p>
 <ul>
-  <li><strong>B</strong>: daha güçlü mıknatıs (ya da elektromıknatıs)</li>
-  <li><strong>i</strong>: daha çok akım (ısınma sınırı var)</li>
-  <li><strong>A</strong>: daha büyük çerçeve (yer sınırı var)</li>
-  <li><strong>N</strong>: daha çok sarım (<em>en ucuz yol budur</em>)</li>
+  <li><strong>B</strong> — daha güçlü mıknatıs (ya da elektromıknatıs)</li>
+  <li><strong>i</strong> — daha çok akım (ısınma sınırı var)</li>
+  <li><strong>A</strong> — daha büyük çerçeve (yer sınırı var)</li>
+  <li><strong>N</strong> — daha çok sarım (<em>en ucuz yol budur</em>)</li>
 </ul>`,
 
 /* ---------------------------------------------------------- Formüller */
@@ -125,7 +125,7 @@ turetim: {
 
         { baslik: 'Toplamı kontrol et',
           html: `<p>F + (−F) = <strong>0</strong>. Çerçeve hiçbir yere ötelenmez.
-                 Ama iş bitmedi: kuvvetler <em>aynı doğru üzerinde değil</em>.</p>` },
+                 Ama iş bitmedi — kuvvetler <em>aynı doğru üzerinde değil</em>.</p>` },
 
         { baslik: 'Döndürme etkisini hesapla',
           html: `<p>Her kuvvet, dönme ekseninden <strong>a/2</strong> uzaklıkta. İkisinin
@@ -141,7 +141,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">τ = B·i·A·N·cosθ</div>
                  </div>
                  <p>Çerçevenin <strong>şekli</strong> formüle girmez, yalnızca
-                 <strong>alanı</strong> girer. Kare, dikdörtgen ya da daire: alan aynıysa
+                 <strong>alanı</strong> girer. Kare, dikdörtgen ya da daire — alan aynıysa
                  tork da aynıdır.</p>` }
       ]
     },
@@ -194,7 +194,7 @@ turetim: {
                  orada hava direnci ağırlığa eşitleniyordu, burada yük torku motor torkuna.</p>` },
 
         { baslik: 'Yükü artırırsan',
-          html: `<p>Denge daha düşük bir hızda kurulur: motor yavaşlar. Yük çok büyükse
+          html: `<p>Denge daha düşük bir hızda kurulur — motor yavaşlar. Yük çok büyükse
                  motor hiç kalkamaz; buna <strong>stall (takılma)</strong> denir.
                  Simülasyonda yükü sonuna kadar artırıp bunu görebilirsin.</p>` }
       ]
@@ -209,7 +209,7 @@ sim: F.simler['elektrik-motoru'],
 puf: {
   html: `
     <p><strong>1 · Çerçevenin şekli değil ALANI önemlidir.</strong> Kare, dikdörtgen,
-    daire: alanları eşitse torkları da eşittir. “Hangi şekil daha çok döndürür?” sorusunun
+    daire — alanları eşitse torkları da eşittir. “Hangi şekil daha çok döndürür?” sorusunun
     cevabı <em>alanı büyük olan</em>dır.</p>
 
     <p><strong>2 · Açı tanımına dikkat.</strong> Bu konuda θ, <strong>çerçeve düzlemi ile
@@ -232,7 +232,7 @@ puf: {
     ne zaman yapar (tork sıfırlanınca, θ = 90°), neden gerekir (yoksa çerçeve salınır).</p>
 
     <p><strong>5 · Oranlar:</strong> τ ∝ B, τ ∝ i, τ ∝ A, τ ∝ N. Hepsi <strong>birinci
-    dereceden</strong>. Karesi alınan bir şey yok: bir önceki konudaki
+    dereceden</strong>. Karesi alınan bir şey yok — bir önceki konudaki
     <code>F ∝ B²</code> ile karıştırma (o kaldırma kuvvetiydi).</p>
 
     <p><strong>6 · Motor mu, jeneratör mü?</strong> Aynı düzenek iki yönde çalışır:</p>
@@ -311,7 +311,7 @@ osym: [
         olan iki kuvvet, aynı doğru üzerinde değilse pekâlâ döndürebilir. Buna
         <strong>kuvvet çifti</strong> denir.
         <br><strong>Günlük örnek:</strong> Direksiyonu iki elinle ters yönde çevirirsin.
-        Ellerinin uyguladığı kuvvetlerin toplamı sıfırdır, araba yerinden oynamaz,
+        Ellerinin uyguladığı kuvvetlerin toplamı sıfırdır — araba yerinden oynamaz —
         ama direksiyon döner.
         <br><strong>B şıkkı</strong> bu ayrımı yapamayanlar için konmuştur.</p>
       </div>
@@ -346,7 +346,7 @@ osym: [
       </table>
       <p style="margin-top:10px">Çerçeve eylemsizliğiyle 90°&rsquo;yi geçer ama ötesinde tork
       onu <strong>geri çekmeye</strong> başlar. Sürtünme de enerji götürdüğü için salınım
-      giderek söner ve çerçeve <strong>θ = 90°&rsquo;de sabitlenir</strong>: torkun sıfır
+      giderek söner ve çerçeve <strong>θ = 90°&rsquo;de sabitlenir</strong> — torkun sıfır
       olduğu denge konumunda.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Elde edilen şey bir motor değil, bir sarkaçtır.</strong>
@@ -397,13 +397,13 @@ baglam: [
       { bas: 'Halıya çıkınca',
         metin: 'Yük torku <strong>artar</strong>. Denge bozulur, motor yavaşlar. Yavaşladıkça denge yeni ve <strong>daha düşük</strong> bir hızda yeniden kurulur.' },
       { bas: 'Tekerleği tutunca',
-        metin: 'Yük torku motorun üretebileceği en büyük torku <strong>aşar</strong>. Motor hiç dönemez: buna <strong>takılma (stall)</strong> denir.' },
+        metin: 'Yük torku motorun üretebileceği en büyük torku <strong>aşar</strong>. Motor hiç dönemez — buna <strong>takılma (stall)</strong> denir.' },
       { bas: 'Akım neden hâlâ geçiyor?',
         metin: 'Devre kapalı olduğu sürece akım geçer. Dönme durdu diye devre açılmaz; bobin hâlâ pile bağlıdır.' },
       { bas: 'Neden DAHA ÇOK ısınıyor?',
         metin: 'Dönen bir motor, dönerken kendi içinde akımı <strong>azaltan</strong> bir etki üretir (bunu 2.3.2’de göreceksin). Motor durunca bu etki kaybolur ve akım <strong>en büyük değerine</strong> çıkar. Isı <code>P = i²R</code> ile arttığı için motor takılıyken en çok ısınır.' },
       { bas: 'Pratik sonucu söyle',
-        metin: 'Takılı bir motor birkaç saniye içinde sargılarını yakabilir. Bu yüzden gerçek cihazlarda <strong>termik koruma</strong> ya da sigorta bulunur. Oyuncakta pil çabuk biter ve motor ısınır: ikisi de aynı sebebin sonucudur.' }
+        metin: 'Takılı bir motor birkaç saniye içinde sargılarını yakabilir. Bu yüzden gerçek cihazlarda <strong>termik koruma</strong> ya da sigorta bulunur. Oyuncakta pil çabuk biter ve motor ısınır — ikisi de aynı sebebin sonucudur.' }
     ],
     secenekler: [
       'Yük torku motor torkunu aşınca motor takılır; dönme durunca akımı sınırlayan etki kaybolduğu için akım ve ısınma artar',
@@ -470,7 +470,7 @@ baglam: [
       { bas: 'Bisiklette ne oluyor?',
         metin: 'Yokuş aşağı inerken tekerlek motoru döndürür ⟹ motor <strong>jeneratöre</strong> dönüşür ⟹ pil dolar. Üstelik üretilen akım, harekete karşı koyan bir tork yarattığı için <strong>fren görevi de görür</strong>.' },
       { bas: 'Bedava enerji mi?',
-        metin: '<strong>Hayır.</strong> Pile giden enerji, bisikletin <strong>yükseklik enerjisinden</strong> gelir. Yokuşu çıkarken harcadığın enerjinin bir kısmını geri alıyorsun. Üstelik sürtünme ve direnç kayıpları yüzünden <strong>hepsini değil</strong>: tipik olarak yarısından azını.' },
+        metin: '<strong>Hayır.</strong> Pile giden enerji, bisikletin <strong>yükseklik enerjisinden</strong> gelir. Yokuşu çıkarken harcadığın enerjinin bir kısmını geri alıyorsun. Üstelik sürtünme ve direnç kayıpları yüzünden <strong>hepsini değil</strong> — tipik olarak yarısından azını.' },
       { bas: 'Sınırı da söyle',
         metin: 'Rejeneratif fren tek başına yetmez; acil durumda ve düşük hızda klasik fren gerekir. Ayrıca pil doluysa üretilen enerjinin gidecek yeri kalmaz ve sistem devreden çıkar.' }
     ],
@@ -496,7 +496,7 @@ baglam: [
         doğuyor?” sorusunun cevabı <strong>indüksiyon</strong>dur ve 2.3.2&rsquo;nin
         konusudur. Bu ünitenin son üç konusu tamamen o soruyu cevaplar.
         <br><strong>Tarihsel not:</strong> Motorun jeneratör olarak da çalışabileceği
-        1870&rsquo;lerde tesadüfen keşfedildi, bir sergide iki motor yanlışlıkla birbirine
+        1870&rsquo;lerde tesadüfen keşfedildi — bir sergide iki motor yanlışlıkla birbirine
         bağlanınca biri diğerini döndürdü.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

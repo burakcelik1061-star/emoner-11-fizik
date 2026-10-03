@@ -230,7 +230,7 @@ function cizAci(ctx, w, h, st, p) {
     D.yaziAydinlik(ctx, 'F = ' + D.biçim(F, 3) + ' N ' + (disari ? '⊙ dışarı' : '⊗ içeri'),
                    fx + 26, fy, R.kuvvet, '700 12px system-ui, sans-serif', 'left');
   } else {
-    D.yaziAydinlik(ctx, p.i === 0 ? 'F = 0: telde akım yok' : 'F = 0: tel alana PARALEL',
+    D.yaziAydinlik(ctx, p.i === 0 ? 'F = 0 — telde akım yok' : 'F = 0 — tel alana PARALEL',
                    cx, by + bh + 32, R.hiz, '700 13px system-ui, sans-serif', 'center');
   }
 

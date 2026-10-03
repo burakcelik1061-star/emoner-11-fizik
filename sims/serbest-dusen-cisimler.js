@@ -252,7 +252,7 @@ function cizKlasik(ctx, w, h, st, p) {
       const c = cs[i], a = an[i], y = 84 + i * 20;
       const vL = c.k > 0 ? Math.sqrt(p.g / c.k) : Infinity;
       [t.ad, D.biçim(t.m < 0.1 ? t.m * 1000 : t.m, t.m < 0.1 ? 1 : 2) + (t.m < 0.1 ? ' g' : ' kg'), D.biçim(t.cap * 100, 1) + ' cm',
-       isFinite(vL) ? D.biçim(vL, 1) + ' m/s' : '–', a.indi ? D.biçim(a.Ti, 3) + ' s' : '…']
+       isFinite(vL) ? D.biçim(vL, 1) + ' m/s' : '—', a.indi ? D.biçim(a.Ti, 3) + ' s' : '…']
         .forEach((s, j) => D.yaziHaleli(ctx, s, kx[j], y, j === 0 ? K.beyaz : j === 4 ? R.kuvvet : K.metin,
                                         (j === 0 || j === 4 ? '700 ' : '') + '12px system-ui, sans-serif', 'left'));
     });
@@ -378,7 +378,7 @@ function okumalar(st, p) {
     return [tamam,
       { et: 'Ortam', dg: ay(p) ? 'Ay' : havaVar(p) ? 'Dünya · havalı' : 'Dünya · havasız', birim: '' },
       { et: 'Havasız iniş süresi', dg: D.biçim(Math.sqrt(2 * p.h0 / p.g), 3), birim: 's' },
-      { et: 'İnenler (sırayla)', dg: inenler.length ? inenler.map(x => x[0]).join(', ') : '–', birim: '' }];
+      { et: 'İnenler (sırayla)', dg: inenler.length ? inenler.map(x => x[0]).join(', ') : '—', birim: '' }];
   }
   return [tamam].concat(cs.flatMap((c, i) => [
     { et: c.ad + ' ϑ', dg: D.biçim(an[i].v, 2), birim: 'm/s' },

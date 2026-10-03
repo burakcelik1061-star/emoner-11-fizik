@@ -96,7 +96,7 @@ bölüm yerinde kalır. İki parça arasında bir <strong>kırık</strong> oluş
 (paranın üstüne cam konması) ve 3.7 prizmalar konusunda işe yarar.</p>
 <p>Bir cam levhaya eğik giren ışın, levhanın içinde normale yaklaşır, çıkarken normalden
 uzaklaşır. İki yüzey <strong>paralel</strong> olduğu için çıkan ışın gelen ışına
-<strong>paraleldir</strong>: yalnızca <strong>yana kaymıştır</strong>.</p>
+<strong>paraleldir</strong> — yalnızca <strong>yana kaymıştır</strong>.</p>
 <div class="formul" style="max-width:320px;margin:14px 0;border-top-color:var(--accent)">
   <div class="fm" style="color:var(--accent)">d = t · sin(θ₁ − θ₂) / cos θ₂</div>
 </div>
@@ -121,7 +121,7 @@ formuller: {
   degiskenler: [
     { sembol: 'h',  ad: 'Gerçek derinlik',  birim: 'cm' },
     { sembol: 'h′', ad: 'Görünür derinlik', birim: 'cm' },
-    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '-' },
+    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '—' },
     { sembol: 't',  ad: 'Levha kalınlığı',  birim: 'cm' },
     { sembol: 'd',  ad: 'Yanal kayma',      birim: 'cm' }
   ]
@@ -152,7 +152,7 @@ turetim: {
           html: `<div class="formul" style="max-width:320px">
                    <div class="fm">h·tan θ₁ = h′·tan θ₂ ⟹ h′ = h·tanθ₁/tanθ₂</div>
                  </div>
-                 <p>Bu <strong>tam</strong> sonuçtur: simülasyonun kullandığı bağıntı.</p>` },
+                 <p>Bu <strong>tam</strong> sonuçtur — simülasyonun kullandığı bağıntı.</p>` },
 
         { baslik: 'Küçük açı yaklaşıklığı',
           html: `<p>Dik bakışta açılar küçüktür; küçük açılarda
@@ -270,7 +270,7 @@ puf: {
     düz yüzeyli su için yanlıştır; büyüme ancak yüzey eğriyse (bardak, damla) olur.</p>
 
     <p><strong>7 · Levhada kayma var, sapma yok.</strong> “Paralel yüzlü levhadan geçen
-    ışın sapar” diyen şık yanlıştır: <strong>kayar</strong>, sapmaz.</p>
+    ışın sapar” diyen şık yanlıştır — <strong>kayar</strong>, sapmaz.</p>
 
     <p><strong>8 · Dik geliş ⟹ kayma sıfır.</strong> Levha sorularında θ₁ = 0 verilmişse
     cevap doğrudan 0&rsquo;dır, formül yazmaya gerek yok.</p>`
@@ -314,7 +314,7 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p>Her katmanın görünür kalınlığını <strong>ayrı ayrı</strong> hesaplayıp toplarız,
+      <p>Her katmanın görünür kalınlığını <strong>ayrı ayrı</strong> hesaplayıp toplarız —
       çünkü her katmanda kırılma indisi farklıdır.</p>
 
       <div class="formul" style="max-width:300px;margin:10px 0">
@@ -336,7 +336,7 @@ osym: [
         <br><strong>D şıkkı (33,3)</strong> toplam 50 cm&rsquo;yi tek bir n = 1,50 ile
         bölüyor.
         <br><strong>E şıkkı (37,5)</strong> ortalama indis <code>(1,25+1,50)/2 = 1,375</code>
-        alıp <code>50/1,375 = 36,4</code>&rsquo;e yakın bir hesap yapıyor: <strong>ortalama
+        alıp <code>50/1,375 = 36,4</code>&rsquo;e yakın bir hesap yapıyor — <strong>ortalama
         indis almak yanlıştır</strong>, katmanlar ayrı hesaplanmalıdır.
         <br><strong>Genel kural:</strong> <code>h′ = Σ (h_i / n_i)</code>
         <br><strong>Sağlama:</strong> Her katman kendi payını verir; kalın ve çok kırıcı
@@ -384,7 +384,7 @@ osym: [
         yanal kayma kalınlıkla <strong>doğru orantılı</strong>, ama gelme açısıyla
         <strong>doğrusal değil</strong>. Açı 0&rsquo;dan büyürken kayma önce yavaş, sonra
         hızla artar ve 90°&rsquo;ye yaklaşırken t&rsquo;ye yaklaşır.
-        <br><strong>Sağlama:</strong> Kayma hiçbir zaman kalınlıktan büyük olamaz,
+        <br><strong>Sağlama:</strong> Kayma hiçbir zaman kalınlıktan büyük olamaz —
         <code>d &lt; t</code>. 2,33 &lt; 12 ✓ Bu, cevabı hızlı elemek için iyi bir kontroldür.
         <br><strong>Simülasyonda:</strong> 3. düzenekte t = 12, n = 1,5, θ₁ = 30° yap;
         grafik panelinde kaymanın kalınlıkla düz bir doğru çizdiğini gör.</p>
@@ -433,9 +433,9 @@ baglam: [
       { bas: 'Nişan nereye?',
         metin: 'Gördüğün yere atarsan zıpkın balığın <strong>üstünden</strong> geçer. Bu yüzden <strong>gördüğünün altına</strong> nişan alınır.' },
       { bas: 'Eğik bakış işi büyütür',
-        metin: 'Tepeden bakmıyorsan hata daha da büyür. 30° eğik bakışta 1,20 m&rsquo;deki balık 0,78 m&rsquo;de görünür: sapma 30 değil <strong>42 cm</strong>. Bu yüzden deneyimli avcılar balığın <em>tam üstüne</em> gelmeye çalışır.' },
+        metin: 'Tepeden bakmıyorsan hata daha da büyür. 30° eğik bakışta 1,20 m&rsquo;deki balık 0,78 m&rsquo;de görünür — sapma 30 değil <strong>42 cm</strong>. Bu yüzden deneyimli avcılar balığın <em>tam üstüne</em> gelmeye çalışır.' },
       { bas: 'Tersi durumda ne olur?',
-        metin: 'Sudaki bir dalgıç kıyıdaki kuşa bakarsa <code>h′ = h·n</code> olur: kuş olduğundan <strong>yüksekte</strong> görünür. Bu kez <strong>gördüğünün altına</strong> değil, yine <strong>altına</strong> nişan alması gerekir, çünkü kuş göründüğünden alçaktadır.' },
+        metin: 'Sudaki bir dalgıç kıyıdaki kuşa bakarsa <code>h′ = h·n</code> olur: kuş olduğundan <strong>yüksekte</strong> görünür. Bu kez <strong>gördüğünün altına</strong> değil, yine <strong>altına</strong> nişan alması gerekir — çünkü kuş göründüğünden alçaktadır.' },
       { bas: 'Doğada bir örnek',
         metin: 'Okçu balık (<em>Toxotes</em>) sudan ağzıyla su püskürterek dal üstündeki böcekleri düşürür. Bu balıklar kırılmayı <strong>telafi etmeyi</strong> öğrenir; çoğu zaman böceğin tam altına nişan alarak vururlar.' }
     ],
@@ -453,7 +453,7 @@ baglam: [
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> bağıntıyı ters kuruyor
-        (<code>h·n = 1,60</code>): bu, <em>sudan havaya bakan</em> gözlemcinin durumudur,
+        (<code>h·n = 1,60</code>) — bu, <em>sudan havaya bakan</em> gözlemcinin durumudur,
         tersi değil.
         <br><strong>E şıkkı</strong> ikiye bölüyor; doğru bölen 1,33.
         <br><strong>Dikkat:</strong> Bu soruların hepsinde <em>hangi ortamda göz, hangi
@@ -461,7 +461,7 @@ baglam: [
         ezberle.
         <br><strong>Kendin dene:</strong> Bir bardağa su doldur, dibine bir madenî para
         koy. Yukarıdan bak: para dibe değil, biraz yukarıda duruyormuş gibi görünür.
-        Parmağını yandan sokup paraya dokunmaya çalış: ilk denemede ıskalarsın.</p>
+        Parmağını yandan sokup paraya dokunmaya çalış — ilk denemede ıskalarsın.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -503,7 +503,7 @@ baglam: [
       { bas: 'Toplam gerçek derinlik',
         metin: '<code>40 + 165,5 = <strong>205,5 cm ≈ 2,06 m</strong></code>' },
       { bas: 'Hata payı ne kadar?',
-        metin: 'Görünen 1,55 m, gerçek 2,06 m. Kırılma hesaba katılmasaydı derinlik <strong>%25 eksik</strong> ölçülürdü: buzda çalışan bir ekip için ciddi bir fark.' },
+        metin: 'Görünen 1,55 m, gerçek 2,06 m. Kırılma hesaba katılmasaydı derinlik <strong>%25 eksik</strong> ölçülürdü — buzda çalışan bir ekip için ciddi bir fark.' },
       { bas: 'Gerçek yöntemler',
         metin: 'Bilimsel ölçümlerde optik yerine <strong>sonar</strong> (ses) veya <strong>radar</strong> kullanılır; bunların da kendi hız düzeltmeleri vardır. Prensip aynı: dalganın ortamdaki hızını bilmeden derinlik hesaplanamaz.' }
     ],
@@ -523,10 +523,10 @@ baglam: [
         <div class="fm" style="color:var(--accent)">h = 124,47 × 1,33 = 165,5 cm</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> 124,47&rsquo;yi gerçek derinlik sanıyor,
+        <p style="margin:0"><strong>B şıkkı</strong> 124,47&rsquo;yi gerçek derinlik sanıyor —
         oysa o, suyun <em>görünen</em> kalınlığıdır; 1,33 ile çarpmak gerekir.
         <br><strong>E şıkkı</strong> saydamlığı kırılmasızlıkla karıştırıyor: buz saydamdır
-        <em>ve</em> kırıcıdır (n = 1,31). Saydam olmak kırmamak demek değildir: aksine,
+        <em>ve</em> kırıcıdır (n = 1,31). Saydam olmak kırmamak demek değildir — aksine,
         kırılmayı görebilmek için saydam olması gerekir.
         <br><strong>Yönü kontrol et:</strong> Görünen derinlik daima gerçekten
         <strong>küçüktür</strong> (sudan havaya bakışta). 1,55 &lt; 2,06 ✓ Eğer cevabın

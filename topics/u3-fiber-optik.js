@@ -23,7 +23,7 @@ kavram: `
   <tbody>
     <tr><td><strong>Çekirdek</strong> (merkez)</td><td class="sembol">n<sub>ç</sub> ≈ 1,48</td><td>8–62 µm</td><td>ışığı yansımalarla taşır</td></tr>
     <tr><td><strong>Cam örtü</strong></td><td class="sembol">n<sub>ö</sub> ≈ 1,46</td><td>125 µm</td><td>indisi çekirdekten küçük ⟹ tam yansımayı sağlar</td></tr>
-    <tr><td><strong>Kılıf</strong> (plastik)</td><td>-</td><td>250 µm ve üstü</td><td>nem ve darbeye karşı korur</td></tr>
+    <tr><td><strong>Kılıf</strong> (plastik)</td><td>—</td><td>250 µm ve üstü</td><td>nem ve darbeye karşı korur</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px">Kritik koşul tek bir eşitsizliktir: <strong>n<sub>ç</sub> &gt;
@@ -36,7 +36,7 @@ santimetrede kaçardı.</p>
   <div class="fm" style="color:var(--accent)">sin θ<sub>s</sub> = n<sub>ö</sub> / n<sub>ç</sub></div>
 </div>
 <p>n<sub>ç</sub> = 1,48 ve n<sub>ö</sub> = 1,46 için <code>θ_s = 80,57°</code>. Çok büyük bir
-açı, yani ışının duvara neredeyse <strong>yalayarak</strong> çarpması gerekir. Işın fiber
+açı — yani ışının duvara neredeyse <strong>yalayarak</strong> çarpması gerekir. Işın fiber
 ekseninden fazla sapmamalıdır.</p>
 
 <div class="kutu puf" style="margin:16px 0">
@@ -58,14 +58,14 @@ içinden</strong> girenler tutunur:</p>
 <strong>14,03°</strong>. Koninin tam açıklığı 28°&rsquo;dir. Bu yüzden fiber uçlarının
 hizalanması hassas bir iştir; birkaç mikronluk kayma sinyali yok edebilir.</p>
 
-<h3 style="margin-top:22px">Mod dağılımı: fiberin sınırı</h3>
+<h3 style="margin-top:22px">Mod dağılımı — fiberin sınırı</h3>
 <p>Eksen boyunca giden ışın en kısa yolu izler. Sınır açısında zikzak çizen ışın ise
 <code>n<sub>ç</sub>/n<sub>ö</sub></code> kat daha uzun yol alır. Aynı anda gönderilen bu iki
 ışın hedefe <strong>farklı zamanlarda</strong> varır:</p>
 <div class="formul" style="max-width:340px;margin:14px 0">
   <div class="fm">Δt = (L·n<sub>ç</sub>/c)·(n<sub>ç</sub>/n<sub>ö</sub> − 1)</div>
 </div>
-<p>Bu gecikme <strong>çok modlu</strong> fiberin sorunudur. Örnek fiberde <strong>67,6 ns/km</strong>. 10 km&rsquo;de 676 ns: keskin bir ışık
+<p>Bu gecikme <strong>çok modlu</strong> fiberin sorunudur. Örnek fiberde <strong>67,6 ns/km</strong>. 10 km&rsquo;de 676 ns — keskin bir ışık
 darbesi bu kadar <strong>yayılır</strong>. Darbeler birbirine karışmadan en fazla
 <strong>0,74 Mb/s</strong> veri gönderilebilir.</p>
 <p style="color:var(--text-2)">Gerçek internet omurgası bunun milyonlarca katı hızda
@@ -126,7 +126,7 @@ indüksiyon, bir cam telde sinyal üretemez.</p>
 <h3 style="margin-top:22px">Nerede kullanılır?</h3>
 <ul>
   <li><strong>İnternet ve telefon:</strong> kıtalararası denizaltı kabloları</li>
-  <li><strong>Tıp:</strong> endoskop, vücudun içine ışık götürür, görüntüyü geri getirir</li>
+  <li><strong>Tıp:</strong> endoskop — vücudun içine ışık götürür, görüntüyü geri getirir</li>
   <li><strong>Sensörler:</strong> köprü ve barajlarda gerilme ölçümü</li>
   <li><strong>Aydınlatma ve süs:</strong> fiber optik lambalar</li>
 </ul>`,
@@ -142,9 +142,9 @@ formuller: {
     { fm: 'Δt = (L·n<sub>ç</sub>/c)(n<sub>ç</sub>/n<sub>ö</sub> − 1)', aciklama: 'Mod dağılımı gecikmesi' }
   ],
   degiskenler: [
-    { sembol: 'n<sub>ç</sub>', ad: 'Çekirdek indisi', birim: '-' },
-    { sembol: 'n<sub>ö</sub>', ad: 'Cam örtü indisi',    birim: '-' },
-    { sembol: 'NA', ad: 'Sayısal açıklık',            birim: '-' },
+    { sembol: 'n<sub>ç</sub>', ad: 'Çekirdek indisi', birim: '—' },
+    { sembol: 'n<sub>ö</sub>', ad: 'Cam örtü indisi',    birim: '—' },
+    { sembol: 'NA', ad: 'Sayısal açıklık',            birim: '—' },
     { sembol: 'θ₀', ad: 'Giriş açısı',                birim: '°' },
     { sembol: 'L',  ad: 'Fiber uzunluğu',             birim: 'km' },
     { sembol: 'Δt', ad: 'Gecikme',                    birim: 'ns' }
@@ -192,7 +192,7 @@ turetim: {
           html: `<div class="formul" style="max-width:340px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">NA = sin θ₀(maks) = √(n<sub>ç</sub>² − n<sub>ö</sub>²)</div>
                  </div>
-                 <p>n<sub>ç</sub> sadeleşti: <strong>NA yalnızca iki indisin farkına
+                 <p>n<sub>ç</sub> sadeleşti — <strong>NA yalnızca iki indisin farkına
                  bağlı</strong>, fiberin kalınlığından bağımsız.</p>
                  <p>Sayısal: <code>√(1,48² − 1,46²) = √0,0588 = 0,2425</code> ⟹
                  θ<sub>kabul</sub> = <strong>14,03°</strong></p>` }
@@ -265,7 +265,7 @@ turetim: {
         { baslik: 'Neden ışık bitmiyor?',
           html: `<p>Sıradan bir aynada 1,9 milyon yansımadan sonra ışıktan eser kalmazdı
                  (%95&rsquo;lik bir ayna bile <code>0,95^1.900.000 ≈ 0</code> verir).</p>
-                 <p><strong>Tam yansımada kayıp yoktur</strong>: ışığın %100&rsquo;ü geri
+                 <p><strong>Tam yansımada kayıp yoktur</strong> — ışığın %100&rsquo;ü geri
                  döner. Fiberdeki asıl kayıp yansımalardan değil, camın içindeki
                  <strong>soğurma ve saçılmadan</strong> gelir: yaklaşık
                  <strong>0,2 dB/km</strong>.</p>
@@ -355,7 +355,7 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>1. Sınır açısı</strong>, çekirdek–cam örtü sınırında:</p>
+      <p><strong>1. Sınır açısı</strong> — çekirdek–cam örtü sınırında:</p>
       <div class="formul" style="max-width:340px;margin:10px 0">
         <div class="fm">sin θ_s = n_ö/n_ç = 1,20/1,50 = 0,80 ⟹ θ_s = <strong>53,13°</strong></div>
       </div>
@@ -372,13 +372,13 @@ osym: [
 
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> NA&rsquo;yı <code>1,50 − 1,20 = 0,30</code>
-        diye hesaplıyor: <strong>kareler farkının kökü</strong> alınmalı.
+        diye hesaplıyor — <strong>kareler farkının kökü</strong> alınmalı.
         <br><strong>C şıkkı</strong> sınır açısını <code>asin(n_ç/n_ö)</code> diye ters
         kuruyor (ve 36,87° tümleyeni veriyor).
         <br><strong>Dikkat edilecek nokta:</strong> Bu fiberin indis farkı gerçek
         fiberlerden çok büyük (0,30 yerine 0,02). Bu yüzden kabul açısı 64° gibi devasa
         çıkıyor. Gerçek telekom fiberinde bu açı 14° civarındadır.
-        <br><strong>Kontrol:</strong> NA ≤ 1 olmalıdır, yoksa fiber <em>her açıdan</em>
+        <br><strong>Kontrol:</strong> NA ≤ 1 olmalıdır — yoksa fiber <em>her açıdan</em>
         ışığı kabul eder demektir ki bu, <code>n_ç² − n_ö² ≥ 1</code> gerektirir. 0,90 ≤ 1 ✓
         <br><strong>Simülasyonda:</strong> n_ç = 1,50, n_ö = 1,20 yap; okumalarda tam bu üç
         sayıyı göreceksin.</p>
@@ -424,11 +424,11 @@ osym: [
         <strong>mod sayısını</strong> etkiler.</li>
       </ol>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>III. yargı</strong> bilerek “doğru gibi” yazıldı:
+        <p style="margin:0"><strong>III. yargı</strong> bilerek “doğru gibi” yazıldı —
         pek çok kaynak “fiber kıvrılsa da ışık kaçmaz” der. Bu, <em>makul
         kıvrımlar</em> için doğru, <em>keskin</em> kıvrımlar için yanlıştır.
         <br><strong>Kendin gözle:</strong> Bir fiber optik lambanın tellerinden birini
-        keskin bir açıyla kıvır, kıvrımın olduğu noktada telin <strong>parladığını</strong>
+        keskin bir açıyla kıvır — kıvrımın olduğu noktada telin <strong>parladığını</strong>
         görürsün. Kaçan ışık odur.
         <br><strong>Uygulamada:</strong> Bu sızıntı bir kusur olduğu kadar bir
         <em>ölçüm aracıdır</em> da: teknisyenler fiberi hafifçe bükerek sinyalin
@@ -480,7 +480,7 @@ baglam: [
       { bas: 'Peki neden hâlâ uydu var?',
         metin: 'Kablonun ulaşamadığı yerler: okyanus ortası gemiler, uçaklar, seyrek nüfuslu bölgeler. Ayrıca alçak yörünge (LEO) uyduları 550 km&rsquo;de olduğu için gecikmeleri çok daha düşüktür (~25 ms).' },
       { bas: 'İlginç sonuç',
-        metin: 'Boşluktaki ışık, camdaki ışıktan hızlıdır. Bu yüzden bazı finans şirketleri, kısa mesafelerde fiber yerine <strong>havadan mikrodalga</strong> kullanır: hava neredeyse boşluk gibi davrandığı için sinyal birkaç milisaniye önce varır.' }
+        metin: 'Boşluktaki ışık, camdaki ışıktan hızlıdır. Bu yüzden bazı finans şirketleri, kısa mesafelerde fiber yerine <strong>havadan mikrodalga</strong> kullanır — hava neredeyse boşluk gibi davrandığı için sinyal birkaç milisaniye önce varır.' }
     ],
     secenekler: [
       'Tek yön ~44 ms; boşlukta 30 ms sürerdi; GEO uydu ~480 ms gidiş-dönüş verdiği için kablo tercih edilir',
@@ -497,16 +497,16 @@ baglam: [
       <p>Bu formülü <code>t = L/v</code> ve <code>v = c/n</code> adımlarından tek satırda
       çıkarabilirsin.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> kırılma indisini yok sayıyor: fiberdeki
+        <p style="margin:0"><strong>B şıkkı</strong> kırılma indisini yok sayıyor — fiberdeki
         ışık boşluktakinden <strong>yavaştır</strong>, bu konunun temel bilgisi.
         <br><strong>E şıkkı</strong> yanlış: fiberdeki hız sabittir (v = c/n), değişen şey
         farklı <em>yolların</em> uzunluğudur.
         <br><strong>Kendin ölç:</strong> Bilgisayarda <code>ping</code> komutuyla bir sunucuya
         gidiş-dönüş süresini ölçebilirsin. Yurt dışı bir sunucuya ping atarsan gördüğün
-        milisaniyelerin büyük kısmı, tam olarak burada hesapladığımız şeydir: ışığın cam
+        milisaniyelerin büyük kısmı, tam olarak burada hesapladığımız şeydir — ışığın cam
         içinde geçirdiği süre.
         <br><strong>Fiziksel sınır:</strong> Bu gecikme daha iyi teknolojiyle azaltılamaz;
-        ışık hızı bir üst sınırdır. Ancak <em>daha kısa güzergâh</em> döşenerek azaltılabilir:
+        ışık hızı bir üst sınırdır. Ancak <em>daha kısa güzergâh</em> döşenerek azaltılabilir —
         yeni kablo projelerinin asıl satış noktası budur.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -517,9 +517,9 @@ baglam: [
       <p>Endoskop, mideyi ya da bağırsağı ameliyatsız incelemeye yarayan esnek bir
       cihazdır. İçinde <strong>iki ayrı fiber demeti</strong> bulunur:</p>
       <ul style="margin-left:.2em">
-        <li><strong>Aydınlatma demeti:</strong> dışarıdan içeriye ışık taşır, fiberler
+        <li><strong>Aydınlatma demeti:</strong> dışarıdan içeriye ışık taşır — fiberler
         rastgele dizilebilir</li>
-        <li><strong>Görüntü demeti:</strong> içerideki görüntüyü dışarı taşır, fiberler
+        <li><strong>Görüntü demeti:</strong> içerideki görüntüyü dışarı taşır — fiberler
         <strong>iki uçta da aynı düzende</strong> olmak zorundadır</li>
       </ul>
       <p><strong>Görüntü demetindeki fiberlerin neden düzenli olması gerektiğini açıkla.
@@ -555,11 +555,11 @@ baglam: [
       { bas: 'Her fiber bir piksel',
         metin: 'Görüntü demetindeki her bir fiber, görüntünün <strong>tek bir noktasını</strong> taşır. Demette 30 000 fiber varsa görüntü 30 000 pikseldir.' },
       { bas: 'Düzen neden şart?',
-        metin: 'Bir fiber giriş ucunda sol üstteki noktayı alıyorsa, çıkış ucunda da <strong>sol üstte</strong> olmalıdır. Fiberler karışırsa görüntü karışır: anlamsız bir nokta bulutu çıkar.' },
+        metin: 'Bir fiber giriş ucunda sol üstteki noktayı alıyorsa, çıkış ucunda da <strong>sol üstte</strong> olmalıdır. Fiberler karışırsa görüntü karışır — anlamsız bir nokta bulutu çıkar.' },
       { bas: 'Aydınlatmada neden gerekmiyor?',
         metin: 'Aydınlatma demetinin taşıdığı bilgi yok, yalnızca <strong>enerji</strong> var. Işığın hangi fiberden geldiğinin önemi yoktur; bu yüzden ucuz ve rastgele dizilebilir.' },
       { bas: 'Kıvrılınca ne oluyor?',
-        metin: 'Her fiber kendi içinde tam yansımayla çalışır ve <strong>komşusundan bağımsızdır</strong>. Demet kıvrıldığında fiberlerin uzunlukları biraz değişir ama <strong>sıraları değişmez</strong>: görüntü korunur.' },
+        metin: 'Her fiber kendi içinde tam yansımayla çalışır ve <strong>komşusundan bağımsızdır</strong>. Demet kıvrıldığında fiberlerin uzunlukları biraz değişir ama <strong>sıraları değişmez</strong> — görüntü korunur.' },
       { bas: 'Sınır nerede?',
         metin: 'Çok keskin kıvrımda duvara çarpma açısı sınır açısının altına düşer ve ışık sızar. Bu yüzden endoskopların en küçük bükülme yarıçapı vardır ve hekimler cihazı zorlamaz.' },
       { bas: 'Çözünürlük sınırı',
@@ -577,13 +577,13 @@ baglam: [
       <p>Anahtar fikir: <strong>bilgi taşıyan demet düzenli, enerji taşıyan demet rastgele
       olabilir.</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>D şıkkı</strong> ikisini yer değiştirmiş, mantığı test
+        <p style="margin:0"><strong>D şıkkı</strong> ikisini yer değiştirmiş — mantığı test
         eden şık budur: bilgi hangi demette taşınıyor?
         <br><strong>Üretim zorluğu:</strong> Düzenli demet üretmek çok daha pahalıdır;
         binlerce fiber ısıtılıp <em>tek parça hâlinde</em> çekilerek sıraları korunur.
         Bir endoskobun fiyatının önemli kısmı bu demettir.
         <br><strong>Fizik bağlantısı:</strong> Her fiberin bağımsız çalışması, tam
-        yansımanın <em>yerel</em> bir olay olmasından gelir, ışık yalnızca kendi
+        yansımanın <em>yerel</em> bir olay olmasından gelir — ışık yalnızca kendi
         çekirdeğinin duvarını görür, komşu fiberi değil. Cam örtü tam da bunun için vardır:
         fiberler yan yana dizilse ve cam örtü olmasaydı, ışık komşuya sızar ve görüntü
         bulanıklaşırdı.</p>

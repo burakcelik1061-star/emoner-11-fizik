@@ -25,7 +25,7 @@ kavram: `
 
 <div class="formul" style="max-width:340px;margin:14px 0">
   <div class="fm">e = 1,6 · 10⁻¹⁹ C</div>
-  <div class="fm-ad">Elektronun yük büyüklüğü: yükün en küçük birimi</div>
+  <div class="fm-ad">Elektronun yük büyüklüğü — yükün en küçük birimi</div>
 </div>
 
 <p>Bu yüzden günlük ölçekte <strong>mikrocoulomb</strong> kullanılır:
@@ -51,7 +51,7 @@ düzenekle yüklü küreler arasındaki kuvveti ölçtü ve şu sonuca vardı:</
   <div class="kutu-bas"><span class="ikon">⚠</span><span>İşaretleri formüle sokma</span></div>
   <p style="margin:0">Formüldeki mutlak değer önemlidir. Yüklerin işaretlerini formüle
   koyup <em>eksi kuvvet</em> bulmaya çalışma. Doğru yöntem: <strong>önce büyüklüğü hesapla</strong>,
-  sonra işaretlere bakıp <strong>yönü kendin söyle</strong>, aynı ise itme, zıt ise çekme.</p>
+  sonra işaretlere bakıp <strong>yönü kendin söyle</strong> — aynı ise itme, zıt ise çekme.</p>
 </div>
 
 <h3 style="margin-top:22px">Kuvvet bir vektördür</h3>
@@ -63,7 +63,7 @@ Buna <strong>üst üste binme (süperpozisyon)</strong> ilkesi denir.</p>
   <div class="kutu-bas"><span class="ikon">⚖</span><span>Newton III burada da geçerli</span></div>
   <p style="margin:0">q₁ yükü q₂&rsquo;ye ne kadar kuvvet uygularsa, q₂ de q₁&rsquo;e
   <strong>tam olarak o kadar</strong> kuvvet uygular; yönleri zıttır. Yüklerden biri
-  diğerinin beş katı olsa bile bu değişmez: formülde ikisinin
+  diğerinin beş katı olsa bile bu değişmez — formülde ikisinin
   <strong>çarpımı</strong> vardır, o da tek bir sayıdır. Simülasyonda iki oku
   karşılaştır: boyları hep eşittir.</p>
 </div>
@@ -93,12 +93,12 @@ nötr küre yüklenir ve bu kez <strong>itilir</strong>. Simülasyonda q₁ ya d
 </table>
 <p style="margin-top:10px;color:var(--text-2)">İki elektron arasındaki elektriksel itme,
 kütle çekimlerinden yaklaşık 10³⁶ kat büyüktür. Gezegenleri kütle çekimi tutar çünkü
-gök cisimleri <strong>nötrdür</strong>: artı ve eksi yükleri birbirini götürür.</p>`,
+gök cisimleri <strong>nötrdür</strong> — artı ve eksi yükleri birbirini götürür.</p>`,
 
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'F = k · |q₁·q₂| / d²', aciklama: 'Coulomb yasası: iki nokta yük arasındaki kuvvet' },
+    { fm: 'F = k · |q₁·q₂| / d²', aciklama: 'Coulomb yasası — iki nokta yük arasındaki kuvvet' },
     { fm: 'k = 9 · 10⁹ N·m²/C²',  aciklama: 'Coulomb sabiti (boşluk ve hava)' },
     { fm: 'q = n · e',            aciklama: 'Yük kesiklidir; e = 1,6·10⁻¹⁹ C' },
     { fm: '1 μC = 10⁻⁶ C',        aciklama: 'Soruların çoğu μC verir, SI’ye çevir' },
@@ -137,7 +137,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">etki ∝ 1 / d²</div>
                  </div>
                  <p>Ters kare yasası buradan gelir. Aynı geometri ışık şiddeti (3. ünite) ve
-                 kütle çekimi için de geçerlidir: üçü de noktadan her yöne yayılır.</p>` },
+                 kütle çekimi için de geçerlidir — üçü de noktadan her yöne yayılır.</p>` },
 
         { baslik: 'Yüklerin çarpımını ekle',
           html: `<p>q₁ iki katına çıkarsa etki iki katına, q₂ iki katına çıkarsa yine iki katına
@@ -156,7 +156,7 @@ turetim: {
                  yükler birbirinin etkisini bozmaz.</p>` },
 
         { baslik: 'Yönleri çiz, sonra hesapla',
-          html: `<p>Önce okları çiz: çekme mi itme mi, buna işaretlerden karar ver.
+          html: `<p>Önce okları çiz — çekme mi itme mi, buna işaretlerden karar ver.
                  <strong>Sonra</strong> büyüklükleri hesapla. Tersini yaparsan işaret hatası
                  yaparsın.</p>` },
 
@@ -185,7 +185,7 @@ turetim: {
                    <li><strong>Zıt işaretli yükler:</strong> denge noktası <strong>dışarıdadır</strong>,
                    üstelik <strong>küçük yükün dış tarafında</strong></li>
                  </ul>
-                 <p>Her iki durumda da nokta <strong>küçük yüke daha yakındır</strong>, çünkü
+                 <p>Her iki durumda da nokta <strong>küçük yüke daha yakındır</strong> — çünkü
                  büyük yükün etkisini dengelemek için ona uzaklaşmak gerekir.</p>` },
 
         { baslik: 'Denklemi kur',
@@ -193,7 +193,7 @@ turetim: {
                  <div class="formul" style="max-width:320px">
                    <div class="fm">k·q₁·q / x² = k·q₂·q / (d − x)²</div>
                  </div>
-                 <p>k ve q sadeleşir, <strong>üçüncü yükün değeri sonucu etkilemez</strong>:</p>
+                 <p>k ve q sadeleşir — <strong>üçüncü yükün değeri sonucu etkilemez</strong>:</p>
                  <div class="formul" style="max-width:260px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">q₁ / x² = q₂ / (d − x)²</div>
                  </div>` },
@@ -234,7 +234,7 @@ puf: {
     </div>
     <p>Toplam alınırken <strong>işaretler korunur</strong>. +8 ve −2 dokunursa her biri
     <code>(+8 − 2)/2 = +3</code> olur. Dikkat: dokunmadan önce çekme varsa, dokunduktan sonra
-    <strong>mutlaka itme</strong> olur, çünkü ikisi de aynı işarete gelir.</p>
+    <strong>mutlaka itme</strong> olur — çünkü ikisi de aynı işarete gelir.</p>
 
     <p style="margin-top:14px"><strong>3 · Kütle çeldiricidir.</strong> Soruda küre kütleleri
     verilmişse ve sorulan yalnızca Coulomb kuvvetiyse, kütleler işe yaramaz. Formülde kütle yoktur.</p>
@@ -284,7 +284,7 @@ osym: [
     dogru: 0,
     cozum: `
       <p><strong>Önce dokunmadan:</strong></p>
-      <p>F = k·(8)(2)/d² = <strong>16k/d²</strong>: zıt işaretli, <em>çekme</em>.</p>
+      <p>F = k·(8)(2)/d² = <strong>16k/d²</strong> — zıt işaretli, <em>çekme</em>.</p>
       <p><strong>Dokunma anında:</strong> Küreler özdeş olduğu için toplam yük ikiye eşit bölünür:</p>
       <div class="formul" style="max-width:280px;margin:10px 0">
         <div class="fm">q′ = (+8 − 2)/2 = +3 μC</div>
@@ -301,7 +301,7 @@ osym: [
         Dokunduktan sonra ikisi de artı olduğuna göre kuvvet <strong>itmeye</strong> döner.
         <br><strong>C şıkkı</strong> oranı ters yazanlar için.
         <br><strong>D şıkkı</strong> ise “toplam yük korunuyor, o hâlde kuvvet de aynı kalır”
-        diye düşünenler için, yük korunur ama <em>çarpımları</em> korunmaz: 16 → 9.</p>
+        diye düşünenler için — yük korunur ama <em>çarpımları</em> korunmaz: 16 → 9.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -345,7 +345,7 @@ osym: [
       <div class="formul" style="max-width:300px;margin:10px 0">
         <div class="fm">9 / x² = 4 / (50 − x)²</div>
       </div>
-      <p><strong>Karekök al</strong>, bu adım işlemi ikinci dereceden denklemden kurtarır:</p>
+      <p><strong>Karekök al</strong> — bu adım işlemi ikinci dereceden denklemden kurtarır:</p>
       <div class="formul" style="max-width:260px;margin:10px 0">
         <div class="fm">3 / x = 2 / (50 − x)</div>
       </div>
@@ -354,7 +354,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0">Nokta, <strong>küçük yüke (q₂) daha yakın</strong> çıktı: 20 cm.
         Bu her zaman böyledir ve cevabı kontrol etmenin en hızlı yoludur.
-        <br><strong>E şıkkı</strong> zıt işaretli yükler için doğru olurdu: burada ikisi de artı.
+        <br><strong>E şıkkı</strong> zıt işaretli yükler için doğru olurdu — burada ikisi de artı.
         <br><strong>B şıkkı</strong> yükleri 9 ve 4 yerine oranlayıp yarıya bölenler için.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -412,7 +412,7 @@ baglam: [
       { bas: 'Oranla',
         metin: 'F/G = 2,25·10⁻⁹ / 1,2·10⁻¹⁰ = <strong>≈ 19</strong>' },
       { bas: 'Yorumla',
-        metin: 'Elektriksel kuvvet ağırlığın yaklaşık <strong>19 katı</strong>. Kâğıdı ters çevirsen bile toner düşmez. Küçük ölçekte elektriksel kuvvet yer çekimini ezer: bu, tozun ekrana ve giysiye yapışmasının da sebebidir.' }
+        metin: 'Elektriksel kuvvet ağırlığın yaklaşık <strong>19 katı</strong>. Kâğıdı ters çevirsen bile toner düşmez. Küçük ölçekte elektriksel kuvvet yer çekimini ezer — bu, tozun ekrana ve giysiye yapışmasının da sebebidir.' }
     ],
     secenekler: [
       'Yaklaşık 19 katı; kâğıt ters çevrilse de toner dökülmez',
@@ -428,7 +428,7 @@ baglam: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Ölçek meselesi:</strong> Kütle çekimi kütleyle büyür,
         elektriksel kuvvet ise uzaklık küçüldükçe hızla büyür. Toz, saç, toner gibi çok küçük
-        ve çok yakın nesnelerde elektriksel kuvvet baskındır. Gezegen ölçeğinde ise tersi olur,
+        ve çok yakın nesnelerde elektriksel kuvvet baskındır. Gezegen ölçeğinde ise tersi olur —
         çünkü büyük cisimler nötrdür.
         <br><strong>E şıkkı</strong> 10⁻⁹/10⁻¹⁰ bölmesini 190 bulanlar için: üs farkı 1&rsquo;dir,
         2,25/1,2 ≈ 1,9 ile çarpılınca 19 çıkar.</p>
@@ -495,7 +495,7 @@ baglam: [
       <strong>F → 25F = 22,5 N</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> ters kareyi ters orantı sanıp 5&rsquo;e
-        bölenler için: en sık yapılan hata budur.
+        bölenler için — en sık yapılan hata budur.
         <br><strong>E şıkkı</strong> uzaklığın etkisini tümden yok sayıyor.
         <br><strong>Fizik notu:</strong> Kıvılcımın atlaması için havanın <em>delinme
         dayanımının</em> aşılması gerekir; kuru hava için bu yaklaşık 3·10⁶ V/m&rsquo;dir.

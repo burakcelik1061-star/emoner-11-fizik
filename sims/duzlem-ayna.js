@@ -298,7 +298,7 @@ function cizYansima(ctx, w, h, st, p) {
                  '700 11px system-ui, sans-serif', 'left');
 
   if (arkadanMi(p)) {
-    D.yaziAydinlik(ctx, 'ışın aynanın ARKASINA düşüyor: yansıma yok', w / 2, h - 12, '#B03030',
+    D.yaziAydinlik(ctx, 'ışın aynanın ARKASINA düşüyor — yansıma yok', w / 2, h - 12, '#B03030',
                    '700 12px system-ui, sans-serif', 'center');
     return;
   }
@@ -392,7 +392,7 @@ function cizGoruntu(ctx, w, h, st, p) {
   /* gereken ayna aralığı işaretle */
   const ust = (bas + goz) / 2, alt = (ayak + goz) / 2;
   D.olcu(ctx, ax + 30, ust, ax + 30, alt, D.biçim(gerekenAynaBoyu(p)) + ' cm', R.hiz);
-  D.rozet(ctx, yeterli ? 'BOYDAN BOYA GÖRÜYOR' : 'AYNA KISA: tamamı görünmüyor',
+  D.rozet(ctx, yeterli ? 'BOYDAN BOYA GÖRÜYOR' : 'AYNA KISA — tamamı görünmüyor',
           w / 2, 50, yeterli ? 'rgba(53,192,138,.92)' : 'rgba(226,72,63,.92)',
           yeterli ? '#0A2A1E' : '#FFFFFF', '700 11px system-ui, sans-serif', true);
 
@@ -401,7 +401,7 @@ function cizGoruntu(ctx, w, h, st, p) {
                  w - 10, 20, R.mur, '700 12px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'gereken: boyun YARISI = ' + D.biçim(gerekenAynaBoyu(p)) + ' cm',
                  w - 10, 38, R.hiz, '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'uzaklığı değiştir: gereken ayna boyu DEĞİŞMEZ',
+  D.yaziAydinlik(ctx, 'uzaklığı değiştir — gereken ayna boyu DEĞİŞMEZ',
                  w / 2, h - 12, R.mur, '600 11px system-ui, sans-serif', 'center');
 }
 
@@ -463,7 +463,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
                  '700 12px system-ui, sans-serif', 'left');
     const satir = [
       ['Gelme açısı = Yansıma açısı', K.beyaz, '700 13px system-ui, sans-serif'],
-      [arkadanMi(p) ? 'ışın aynanın arkasında: yansıma yok'
+      [arkadanMi(p) ? 'ışın aynanın arkasında — yansıma yok'
          : 'i = ' + D.biçim(Math.abs(gercekGelme(p)), 0) + '°  ·  r = ' + D.biçim(Math.abs(gercekGelme(p)), 0) + '°',
        R.ivme, '12px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
@@ -661,7 +661,7 @@ function okumalar(st, pHam) {
   const p = etkin(st, pHam);
   if (p.mod < 1.5) {
     return [
-      { et: 'Gelme açısı',   dg: arkadanMi(p) ? '–' : D.biçim(Math.abs(gercekGelme(p)), 0), birim: '°' },
+      { et: 'Gelme açısı',   dg: arkadanMi(p) ? '—' : D.biçim(Math.abs(gercekGelme(p)), 0), birim: '°' },
       { et: 'Yansıma açısı', dg: arkadanMi(p) ? 'yok' : D.biçim(Math.abs(gercekGelme(p)), 0), birim: '°' },
       { et: 'Ayna dönmesi',  dg: D.biçim(p.aynaAci),      birim: '°' },
       { et: 'Işının dönmesi',dg: D.biçim(isinDonmesi(p)), birim: '°' }

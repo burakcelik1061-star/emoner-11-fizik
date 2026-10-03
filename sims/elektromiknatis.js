@@ -485,10 +485,10 @@ function cizVinc(ctx, w, h, st, p) {
                  w - 10, 62, R.kuvvet, '700 12px system-ui, sans-serif', 'right');
 
   if (doymusMu(p))
-    D.yaziAydinlik(ctx, 'DOYMAYA YAKIN: akımı artırmanın faydası kalmadı',
+    D.yaziAydinlik(ctx, '⚠ DOYMAYA YAKIN — akımı artırmanın faydası kalmadı',
                    w / 2, h - 12, '#B03030', '700 11px system-ui, sans-serif', 'center');
   else
-    D.yaziAydinlik(ctx, 'akımı kesersen mıknatıslık kaybolur: yük düşer',
+    D.yaziAydinlik(ctx, 'akımı kesersen mıknatıslık kaybolur — yük düşer',
                    10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -617,7 +617,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
   const B = alan(p), Bham = alanHam(p);
 
   if (p.mod > 1.5) {
-    D.yaziHaleli(ctx, 'Zil devresi: kesintili çalışma', 12, 22, K.beyaz,
+    D.yaziHaleli(ctx, 'Zil devresi — kesintili çalışma', 12, 22, K.beyaz,
                  '700 12px system-ui, sans-serif', 'left');
     const adim = [
       ['1', 'Devre kapalı · akım geçer', R.hiz],
@@ -710,7 +710,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['μr = ' + D.biçim(c.mur), R.ivme, '11px system-ui, sans-serif'],
     ['n = ' + D.biçim(sarimYog(p)) + ' sarım/m', K.metin2, '11px system-ui, sans-serif'],
     ['Doyma olmasa: ' + D.biçim(Bham, 2) + ' T', K.metin2, '11px system-ui, sans-serif'],
-    ['Gerçek: ' + D.biçim(B, 3) + ' T' + (doymusMu(p) ? ' (doyumda)' : ''),
+    ['Gerçek: ' + D.biçim(B, 3) + ' T' + (doymusMu(p) ? ' ⚠' : ''),
      doymusMu(p) ? R.kuvvet : R.normal, '700 12px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['F = B²·A / (2μ₀)', K.beyaz, '700 12px system-ui, sans-serif'],
@@ -725,7 +725,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     sy += 17;
   });
 
-  D.yaziHaleli(ctx, 'F ∝ B²: alan 2 katına çıkarsa kaldırma gücü 4 katına',
+  D.yaziHaleli(ctx, 'F ∝ B² — alan 2 katına çıkarsa kaldırma gücü 4 katına',
                12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -839,7 +839,7 @@ function okumalar(st, pHam) {
     { et: 'Çekirdek',      dg: c.ad,                        birim: '' },
     { et: 'μr',            dg: D.biçim(c.mur),              birim: '' },
     { et: 'Doyma olmasa',  dg: D.biçim(alanHam(p), 3),      birim: 'T' },
-    { et: doymusMu(p) ? 'Gerçek  B (doyumda)' : 'Gerçek  B', dg: D.biçim(alan(p), 3), birim: 'T' },
+    { et: 'Gerçek  B',     dg: D.biçim(alan(p), 3) + (doymusMu(p) ? ' ⚠' : ''), birim: 'T' },
     { et: 'Kaldırma  F',   dg: D.biçim(kaldirmaKuvveti(p)), birim: 'N' },
     { et: 'Kaldırdığı',    dg: D.biçim(kaldirilanKutle(p)), birim: 'kg' },
     { et: 'Akım',          dg: akimAcik(st.t) ? 'Açık' : 'Kesildi', birim: '' },

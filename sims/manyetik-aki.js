@@ -328,10 +328,10 @@ D.simler['manyetik-aki'] = {
   grafikYukseklik: 170,
   parametreler: [
     { anahtar: 'mod', etiket: 'Neyi değiştirelim?', tur: 'secim', deger: 1, secenekler: [
-      { d: 1, e: 'Açıyı: çerçeve dönüyor' },
-      { d: 2, e: 'Alanı: mıknatıslar yaklaşıyor' },
-      { d: 3, e: 'Yüzeyi: çerçeve büyüyor' },
-      { d: 4, e: 'Konumu: çerçeve kayıyor (düzgün alan)' }
+      { d: 1, e: 'Açıyı — çerçeve dönüyor' },
+      { d: 2, e: 'Alanı — mıknatıslar yaklaşıyor' },
+      { d: 3, e: 'Yüzeyi — çerçeve büyüyor' },
+      { d: 4, e: 'Konumu — çerçeve kayıyor (düzgün alan)' }
     ]},
     { anahtar: 'B',     etiket: 'Manyetik alan B', min: 0.1, max: 2, adim: 0.1, deger: 0.8, birim: 'T' },
     { anahtar: 'a',     etiket: 'Çerçeve eni', min: 5, max: 40, adim: 5, deger: 20, birim: 'cm' },

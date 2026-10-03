@@ -537,7 +537,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
 
     /* Sağdaki 5 satırlık hesap dökümü h-84 ile h-16 arasını kaplıyor;
        not onun ÜSTÜNDE, eksenin altındaki boş bölgede durur. */
-    D.yaziHaleli(ctx, 'E kaynağa aittir: q₀ değişse de', 12, h * 0.60,
+    D.yaziHaleli(ctx, 'E kaynağa aittir — q₀ değişse de', 12, h * 0.60,
                  R.ivme, '600 11px system-ui, sans-serif', 'left');
     D.yaziHaleli(ctx, 'E DEĞİŞMEZ, yalnız F değişir', 12, h * 0.60 + 16,
                  R.ivme, '600 11px system-ui, sans-serif', 'left');

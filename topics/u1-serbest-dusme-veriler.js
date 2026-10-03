@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u1-serbest-dusme-veriler', {
 
 ozet: `Serbest düşme, sabit ivmeli hareketin özel bir hâlidir. Bu yüzden yeni formül
-ezberlemene gerek yok: <strong>bildiğin sabit ivmeli hareket formüllerinde <code>a</code>
+ezberlemene gerek yok — <strong>bildiğin sabit ivmeli hareket formüllerinde <code>a</code>
 yerine <code>g</code> yazıyorsun</strong>, hepsi bu. Bu konuda asıl mesele işaretleri
 doğru kurmak ve grafikleri okuyabilmek.`,
 
@@ -24,7 +24,7 @@ andan itibaren serbest düşer. Üçünün de ivmesi aynıdır: <code>g</code>, 
 <ul>
   <li><strong>Bırakma:</strong> ϑ₀ = 0</li>
   <li><strong>Aşağı atma:</strong> ϑ₀ hareket yönünde, hız baştan büyük</li>
-  <li><strong>Yukarı atma:</strong> ϑ₀ yukarı, ivme aşağı, cisim önce yavaşlar, durur, sonra iner</li>
+  <li><strong>Yukarı atma:</strong> ϑ₀ yukarı, ivme aşağı — cisim önce yavaşlar, durur, sonra iner</li>
 </ul>
 
 <h3 style="margin-top:20px">İşaretleri kurmak</h3>
@@ -40,13 +40,13 @@ Kurtuluş şu iki adımda:</p>
 <div class="kutu nott" style="margin:16px 0">
   <p style="margin:0">Sıfırı nereye koyduğun <strong>sonucu değiştirmez</strong>, sadece
   sayıların işaretini değiştirir. Aşağıdaki simülasyonda sol panel yerden yüksekliği,
-  sağ panel atış noktasına göre konumu gösteriyor: aynı olay, iki farklı sıfır noktası.
+  sağ panel atış noktasına göre konumu gösteriyor — aynı olay, iki farklı sıfır noktası.
   İkisini yan yana izle, bu fikir oturur.</p>
 </div>
 
 <h3 style="margin-top:20px">Grafiklerden ne okunur?</h3>
 <ul>
-  <li><strong>a − t:</strong> Sabit bir yatay doğru (−g). Serbest düşmede ivme asla değişmez:
+  <li><strong>a − t:</strong> Sabit bir yatay doğru (−g). Serbest düşmede ivme asla değişmez —
   ne çıkarken, ne tepede, ne inerken.</li>
   <li><strong>ϑ − t:</strong> Eğimi <code>−g</code> olan bir doğru. Eğim sabittir.
   <strong>Doğrunun altında kalan alan yer değiştirmeyi verir.</strong></li>
@@ -58,7 +58,7 @@ formuller: {
   liste: [
     { fm: 'h = ϑ₀·t ± ½·g·t²', aciklama: 'Yer değiştirmenin zamana bağlı ifadesi' },
     { fm: 'ϑ = ϑ₀ ± g·t',       aciklama: 'Hızın zamana bağlı ifadesi' },
-    { fm: 'ϑ² = ϑ₀² ± 2·g·h',   aciklama: 'Hızın yer değiştirmeye bağlı ifadesi: zaman geçmez' }
+    { fm: 'ϑ² = ϑ₀² ± 2·g·h',   aciklama: 'Hızın yer değiştirmeye bağlı ifadesi — zaman geçmez' }
   ],
   degiskenler: [
     { sembol: 'h',  ad: 'Yer değiştirme (atış noktasına göre)', birim: 'm' },
@@ -128,7 +128,7 @@ turetim: {
                  <code>t = 0</code>'da ϑ₀'dan başlar, eğimi <code>−g</code>'dir.</p>
                  <p>Herhangi bir <code>t</code> anındaki hız:</p>
                  <div class="formul" style="max-width:220px"><div class="fm">ϑ = ϑ₀ − g·t</div></div>
-                 <p style="margin-top:10px;color:var(--text-2)">Bu ilk formülü zaten bedavaya elde ettik:
+                 <p style="margin-top:10px;color:var(--text-2)">Bu ilk formülü zaten bedavaya elde ettik —
                  doğrunun denklemi bu.</p>` },
 
         { baslik: 'Alanın yer değiştirme olduğunu hatırla',
@@ -148,7 +148,7 @@ turetim: {
                  <div class="formul" style="max-width:300px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">h = ϑ₀·t − ½·g·t²</div>
                  </div>
-                 <p style="margin-top:12px">İkinci formül de çıktı: hem de ezber değil, sadece
+                 <p style="margin-top:12px">İkinci formül de çıktı — hem de ezber değil, sadece
                  bir yamuğun alanını hesaplayarak.</p>` },
 
         { baslik: 'Üçüncü formülü zamanı yok ederek bul',
@@ -161,7 +161,7 @@ turetim: {
                  </div>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Bu formülün içinde <strong>zaman yok</strong>. Soruda süre
-                   verilmemiş ve sorulmamışsa doğrudan buna git: bir bilinmeyenden kurtulursun.</p>
+                   verilmemiş ve sorulmamışsa doğrudan buna git — bir bilinmeyenden kurtulursun.</p>
                  </div>` }
       ]
     },
@@ -213,11 +213,11 @@ puf: {
       <li>Bırakılmışsa (ϑ₀ = 0) → <strong>5 m</strong></li>
     </ul>
 
-    <p><strong>Sonraki her saniyede yol 10'ar 10'ar değişir</strong>: aşağı hareket
+    <p><strong>Sonraki her saniyede yol 10'ar 10'ar değişir</strong> — aşağı hareket
     ediyorsa artar, yukarı hareket ediyorsa azalır.</p>
 
-    <div class="alt-kutu">
-      <table class="degisken-tablo">
+    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
+      <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Durum</th><th>1. sn</th><th>2. sn</th><th>3. sn</th><th>4. sn</th></tr></thead>
         <tbody>
           <tr><td>Bırakma (ϑ₀ = 0)</td><td class="sembol">5</td><td class="sembol">15</td><td class="sembol">25</td><td class="sembol">35</td></tr>
@@ -246,7 +246,7 @@ puf: {
       soru: `<p>İlk hızsız serbest bırakılan bir cisim <strong>3. saniyede</strong> kaç metre yol alır?
              (g = 10 m/s²)</p>
              <p style="color:var(--text-3);font-size:.9em">Dikkat: "3 saniyede" değil,
-             "3. saniyede", yani yalnızca 2. ve 3. saniye arasındaki yol.</p>`,
+             "3. saniyede" — yani yalnızca 2. ve 3. saniye arasındaki yol.</p>`,
       taktikle: `<p>Diziyi say: <strong>5, 15, <u>25</u></strong>, 35…</p>
                  <p style="margin-bottom:0">Cevap: <strong>25 m</strong>. Hiç işlem yok.</p>`,
       uzun: `<p>h(3) = ½·10·3² = 45 m, h(2) = ½·10·2² = 20 m</p>
@@ -269,7 +269,7 @@ puf: {
              10 m/s hızla atılıyor. Yere kaç saniyede çarpar? (g = 10 m/s²)</p>`,
       taktikle: `<p>Saniye saniye topla: 1. sn'de 10+5 = 15 m, 2. sn'de 25 m, 3. sn'de 35 m.</p>
                  <p>Toplam: 15 + 25 = 40 m (2 sn), +35 = 75 m (3 sn). 80 m'ye 5 m kaldı,
-                 demek ki cevap 3 ile 4 saniye arasında: seçeneklerde tam sayı varsa
+                 demek ki cevap 3 ile 4 saniye arasında — seçeneklerde tam sayı varsa
                  bu bilgi çoğu zaman yeter.</p>
                  <p style="margin-bottom:0">Kesin değer gerekiyorsa formüle geç.</p>`,
       uzun: `<p>80 = 10·t + ½·10·t² ⟹ 5t² + 10t − 80 = 0 ⟹ t² + 2t − 16 = 0</p>
@@ -323,7 +323,7 @@ osym: [
       <strong>−10 m/s²</strong>, yani g.</p>
       <ol>
         <li><strong>Doğru.</strong> Hız 2. saniyede sıfır oluyor. Hızın sıfır olduğu an tepe noktasıdır.</li>
-        <li><strong>YANLIŞ: aranan cevap bu.</strong> Tepede <em>hız</em> sıfırdır, <em>ivme</em> değil.
+        <li><strong>YANLIŞ — aranan cevap bu.</strong> Tepede <em>hız</em> sıfırdır, <em>ivme</em> değil.
         Grafiğin eğimi baştan sona sabit <strong>−10 m/s²</strong>'dir; hiçbir anda sıfır olmaz.
         Cisim havada olduğu sürece ivmesi g'dir.</li>
         <li><strong>Doğru.</strong> 0-2 s arası üçgenin alanı = ½·2·20 = <strong>20 m</strong>.</li>
@@ -333,7 +333,7 @@ osym: [
       </ol>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Klasik çeldirici:</strong> "tepede hız sıfır"
-        bilgisini "tepede ivme sıfır" diye genişletmeni bekler. Bu iki cümle taban tabana zıttır:
+        bilgisini "tepede ivme sıfır" diye genişletmeni bekler. Bu iki cümle taban tabana zıttır —
         ivme sıfır olsaydı cisim tepede asılı kalırdı.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B</strong></p>`
@@ -377,7 +377,7 @@ baglam: [
     baslik: 'Hava topu atışı',
     govde: `
       <p>Bir belediye, yeni yıl kutlaması için havai fişek gösterisi planlıyor. Güvenlik
-      uzmanı, fişeklerin <strong>en yüksek noktada patlaması</strong> gerektiğini söylüyor,
+      uzmanı, fişeklerin <strong>en yüksek noktada patlaması</strong> gerektiğini söylüyor —
       çünkü orada hız sıfırdır ve parçalar en simetrik dağılır.</p>
       <p>Fişek yerden <strong>40 m/s</strong> hızla düşey olarak fırlatılıyor. Teknisyen,
       fitilin kaç saniyede yanıp bitmesi gerektiğini ayarlamalı.</p>
@@ -413,7 +413,7 @@ baglam: [
       { bas: 'Verilenleri ayıkla',
         metin: 'ϑ₀ = 40 m/s (yukarı), g = 10 m/s². "Belediye", "yeni yıl", "güvenlik uzmanı" sahne kurar, hesaba girmez.' },
       { bas: 'Olayı fiziksel modele çevir',
-        metin: 'Kritik cümle: "en yüksek noktada patlamalı". Fizikte en yüksek nokta demek <strong>ϑ = 0</strong> demektir. Sorunun gizli verisi budur: metinde sayı olarak verilmemiş, senin çıkarman gerekiyor.' },
+        metin: 'Kritik cümle: "en yüksek noktada patlamalı". Fizikte en yüksek nokta demek <strong>ϑ = 0</strong> demektir. Sorunun gizli verisi budur — metinde sayı olarak verilmemiş, senin çıkarman gerekiyor.' },
       { bas: 'Süre için formülü seç',
         metin: 'ϑ ve ϑ₀ biliniyor, t isteniyor. Bunları bağlayan: <strong>ϑ = ϑ₀ − g·t</strong>' },
       { bas: 'Yükseklik için formülü seç',
@@ -421,7 +421,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'Süre: 0 = 40 − 10·t ⟹ <strong>t = 4 s</strong><br>Yükseklik: 0 = 40² − 2·10·h ⟹ 1600 = 20h ⟹ <strong>h = 80 m</strong>' },
       { bas: 'Yorumla',
-        metin: '80 m ≈ 25 katlı bina. Fitil 4 saniyede yanmalı. Fitil erken yanarsa fişek hâlâ yükselirken patlar ve parçalar yukarı savrulur; geç yanarsa fişek düşerken patlar: ikisi de tehlikelidir.' }
+        metin: '80 m ≈ 25 katlı bina. Fitil 4 saniyede yanmalı. Fitil erken yanarsa fişek hâlâ yükselirken patlar ve parçalar yukarı savrulur; geç yanarsa fişek düşerken patlar — ikisi de tehlikelidir.' }
     ],
     secenekler: [
       't = 4 s, h = 80 m',
@@ -437,7 +437,7 @@ baglam: [
       <p><strong>Yükseklik:</strong> ϑ² = ϑ₀² − 2gh ⟹ 0 = 1600 − 20h ⟹ <strong>h = 80 m</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C ve E neden tuzak?</strong> 8 s, fişeğin <em>yere geri düşme</em>
-        süresidir: soru patlama anını soruyor, dönüş anını değil. Çıkış süresi toplam sürenin yarısıdır.
+        süresidir — soru patlama anını soruyor, dönüş anını değil. Çıkış süresi toplam sürenin yarısıdır.
         <br><strong>B neden tuzak?</strong> h = ϑ₀·t = 40·4 = 160 diyenler için. Ama hız sabit değil ki;
         ortalama hız (40+0)/2 = 20 m/s, dolayısıyla h = 20·4 = 80 m.</p>
       </div>
@@ -486,7 +486,7 @@ baglam: [
       { bas: 'Çöz',
         metin: 't = (1 + √(1+16))/2 = (1 + √17)/2 ≈ (1 + 4,12)/2 ≈ <strong>2,56 s</strong>' },
       { bas: 'Yorumla',
-        metin: 'İlk hızsız düşseydi t = √(2·20/10) = 2 s olurdu. Yukarı hız cıvataya <strong>yarım saniyeden fazla ek süre</strong> kazandırdı: işçi için bu fark hayati olabilir. Vinç aşağı inseydi süre 2 saniyenin altına düşerdi.' }
+        metin: 'İlk hızsız düşseydi t = √(2·20/10) = 2 s olurdu. Yukarı hız cıvataya <strong>yarım saniyeden fazla ek süre</strong> kazandırdı — işçi için bu fark hayati olabilir. Vinç aşağı inseydi süre 2 saniyenin altına düşerdi.' }
     ],
     secenekler: ['2,00 s', '2,56 s', '3,00 s', '1,55 s', '4,00 s'],
     dogru: 1,
@@ -495,12 +495,12 @@ baglam: [
       <p>Yukarı pozitif, sıfır zeminde: 0 = 20 + 5t − 5t²</p>
       <p>t² − t − 4 = 0 ⟹ t = (1 + √17)/2 ≈ <strong>2,56 s</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>A şıkkı (2,00 s)</strong> ilk hızı sıfır sananlar için konmuştur:
+        <p style="margin:0"><strong>A şıkkı (2,00 s)</strong> ilk hızı sıfır sananlar için konmuştur —
         bu sorudaki asıl çeldirici odur. <strong>D şıkkı (1,55 s)</strong> ise ilk hızı <em>aşağı</em>
         yönde alanların bulacağı değerdir.
         <br>Kural: <strong>bir cisim hareketli bir taşıyıcıdan ayrılıyorsa, ayrıldığı andaki
         taşıyıcı hızıyla ayrılır.</strong> Uçaktan bırakılan paket, yürüyen bantta düşürülen
-        eşya, hareketli arabadan atılan top: hepsinde aynı kural işler.</p>
+        eşya, hareketli arabadan atılan top — hepsinde aynı kural işler.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B) 2,56 s</strong></p>`
   }

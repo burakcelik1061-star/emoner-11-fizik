@@ -3,7 +3,7 @@
 window.F11 = window.F11 || {};
 
 /* ==========================================================================
-   engine.js · Simülasyon motoru
+   engine.js — Simülasyon motoru
    --------------------------------------------------------------------------
    Her simülasyon aynı "tanım nesnesi" sözleşmesini uygular; motor arayüzü,
    döngüyü, klavyeyi ve ölçeklemeyi üstlenir. Simülasyon yazarken sadece
@@ -41,7 +41,7 @@ window.F11 = window.F11 || {};
    "5. saniyede 125 m" dediğinde ekran da tam onu gösterir.
    ========================================================================== */
 
-const { tuvaliOlcekle, biçim, K, ikon } = window.F11;
+const { tuvaliOlcekle, biçim, K } = window.F11;
 
 const SABIT_DT = 1 / 240;
 const EN_COK_BIRIKME = 0.25;   // sekme arkaplandayken sıçramayı önler
@@ -77,49 +77,45 @@ class SimKoşucu {
     const t = this.t;
     const cift = t.ciftPanel !== false;
 
-    /* Çerçeve: başlık şeridi (ad · durum · büyüt), tuvaller, kontroller,
-       parametre ızgarası, okumalar. Durum bir yanıp sönen noktayla değil,
-       düz metinle söylenir. */
     this.kap.innerHTML = `
       <div class="sim-kutu" data-oynuyor="0" data-basladi="0">
         <div class="sim-ust">
           <span class="sim-ad">${t.baslik || 'Simülasyon'}</span>
-          <span class="sim-durum" data-rol="durum-yazi" aria-live="polite">Hazır</span>
-          <button type="button" class="dgm ikon sim-buyut" data-rol="buyut"
-                  title="Simülasyonu büyüt" aria-label="Simülasyonu büyüt">${ikon('corners-out')}</button>
+          <span class="sim-canli"><span class="isik"></span><span data-rol="canli-yazi">hazır</span></span>
         </div>
         <div class="sim-tuval-sar ${cift ? '' : 'tek'}" style="--sim-h:${t.yukseklik || 340}px">
           <div class="sim-panel gercek">
             <span class="sim-etiket">gerçekçi görünüm</span>
-            <canvas data-panel="gercek" role="img" aria-label="${t.baslik || 'Simülasyon'}: gerçekçi görünüm"></canvas>
+            <canvas data-panel="gercek"></canvas>
           </div>
           ${cift ? `
           <div class="sim-panel">
             <span class="sim-etiket">klasik fizik görünümü</span>
-            <canvas data-panel="klasik" role="img" aria-label="${t.baslik || 'Simülasyon'}: klasik fizik görünümü"></canvas>
+            <canvas data-panel="klasik"></canvas>
           </div>` : ''}
         </div>
 
         ${t.grafikPanel ? `
-        <div class="sim-panel grafik" style="--grafik-h:${t.grafikYukseklik || 190}px">
-          <canvas data-panel="grafik" role="img" aria-label="${t.baslik || 'Simülasyon'}: grafikler"></canvas>
+        <div class="sim-panel grafik" style="--grafik-h:${t.grafikYukseklik || 190}px;border-top:1px solid var(--border)">
+          <canvas data-panel="grafik"></canvas>
         </div>` : ''}
 
         <div class="sim-kontrol">
-          <button type="button" class="dgm birincil sim-oynat" data-rol="oynat">
-            <span class="oynat-ikon" data-rol="oynat-ikon">${ikon('play')}</span><span data-rol="oynat-yazi">Oynat</span>
+          <button class="dgm birincil" data-rol="oynat" style="min-width:132px">
+            <span data-rol="oynat-ikon">▶</span><span data-rol="oynat-yazi">Oynat</span>
           </button>
-          <button type="button" class="dgm ikon" data-rol="sifirla" title="Sıfırla (R)" aria-label="Sıfırla">${ikon('arrow-counter-clockwise')}</button>
-          <button type="button" class="dgm" data-rol="atla" title="Yarım saniye ilerlet (→ tuşu)">+0,5 s</button>
+          <button class="dgm ikon" data-rol="sifirla" title="Sıfırla (R)" aria-label="Sıfırla">⟲</button>
+          <button class="dgm" data-rol="atla" title="Yarım saniye ilerlet (→ tuşu)"
+                  style="min-width:0;padding:0 14px">+0,5 s</button>
           <label class="sr" for="hiz-${t.id}">Oynatma hızı</label>
-          <select id="hiz-${t.id}" class="sim-hiz" data-rol="hiz">
+          <select id="hiz-${t.id}" data-rol="hiz" style="width:104px">
             <option value="0.25">0,25×</option>
             <option value="0.5">0,5×</option>
             <option value="1" selected>1×</option>
             <option value="2">2×</option>
           </select>
+          <div data-rol="parametreler" style="display:flex;gap:16px;flex-wrap:wrap;flex:1"></div>
         </div>
-        <div class="sim-parametreler" data-rol="parametreler"></div>
 
         <div class="sim-okuma" data-rol="okumalar"></div>
       </div>`;
@@ -134,10 +130,7 @@ class SimKoşucu {
     this.oynatYazi  = this.kap.querySelector('[data-rol="oynat-yazi"]');
     this.okumaKap   = this.kap.querySelector('[data-rol="okumalar"]');
     this.simKutu    = this.kap.querySelector('.sim-kutu');
-    this.durumYazi  = this.kap.querySelector('[data-rol="durum-yazi"]');
-    this.dgmBuyut   = this.kap.querySelector('[data-rol="buyut"]');
-    /* Tam ekran desteklenmiyorsa (eski tarayıcı) düğme hiç görünmesin. */
-    if (!this.simKutu.requestFullscreen) this.dgmBuyut.hidden = true;
+    this.canliYazi  = this.kap.querySelector('[data-rol="canli-yazi"]');
 
     this.#parametreleriKur();
     this.#okumalariKur();
@@ -152,10 +145,9 @@ class SimKoşucu {
       const id = `p-${this.t.id}-${pr.anahtar}`;
 
       if (pr.tur === 'secim') {
-        sar.classList.add('secim');
         sar.innerHTML = `
           <label for="${id}">${pr.etiket}</label>
-          <select id="${id}" data-p="${pr.anahtar}">
+          <select id="${id}" data-p="${pr.anahtar}" style="flex:1">
             ${pr.secenekler.map(s =>
               `<option value="${s.d}" ${s.d === pr.deger ? 'selected' : ''}>${s.e}</option>`).join('')}
           </select>`;
@@ -173,7 +165,6 @@ class SimKoşucu {
                   aria-label="${pr.etiket} artır" tabindex="-1">+</button>
           <span class="deger" data-pd="${pr.anahtar}">${biçim(pr.deger)} ${pr.birim || ''}</span>`;
         this.pDeger[pr.anahtar] = sar.querySelector('[data-pd]');
-        dolulukYaz(sar.querySelector('input[type="range"]'));
       }
       kap.appendChild(sar);
     }
@@ -212,21 +203,6 @@ class SimKoşucu {
       this.hizCarpani = parseFloat(e.target.value);
     });
 
-    /* Simülasyonu büyüt: tahtada en çok işe yarayan özellik. Tuval yeniden
-       boyutlanınca ResizeObserver kendiliğinden yeniden çizer. */
-    this.dgmBuyut.addEventListener('click', () => {
-      if (document.fullscreenElement === this.simKutu) document.exitFullscreen();
-      else this.simKutu.requestFullscreen().catch(() => {});
-    });
-    this.tamEkran = () => {
-      const acik = document.fullscreenElement === this.simKutu;
-      this.dgmBuyut.innerHTML = ikon(acik ? 'corners-in' : 'corners-out');
-      const ad = acik ? 'Tam ekrandan çık (Esc)' : 'Simülasyonu büyüt';
-      this.dgmBuyut.title = ad; this.dgmBuyut.setAttribute('aria-label', ad);
-      this.ciz();
-    };
-    document.addEventListener('fullscreenchange', this.tamEkran);
-
     /* −/+ düğmeleri kaydıracı bir adım oynatır ve normal input olayını tetikler */
     this.kap.addEventListener('click', e => {
       const dgm = e.target.closest('[data-padim]');
@@ -243,7 +219,6 @@ class SimKoşucu {
       const a = e.target.dataset.p;
       if (!a) return;
       this.p[a] = parseFloat(e.target.value);
-      if (e.target.type === 'range') dolulukYaz(e.target);
       if (this.pDeger[a]) {
         const pr = this.t.parametreler.find(x => x.anahtar === a);
         this.pDeger[a].textContent = `${biçim(this.p[a])} ${pr.birim || ''}`;
@@ -257,7 +232,6 @@ class SimKoşucu {
     /* Yeniden boyutlanma: akıllı tahtada tam ekrana geçince tuval ölçeklenmeli */
     this.gozlemci = new ResizeObserver(() => this.ciz());
     this.gozlemci.observe(this.kap);
-    this.gozlemci.observe(this.simKutu);
 
     /* Sekme gizlendiğinde duraklat — boşuna işlemci yakmasın */
     this.gorunurluk = () => { if (document.hidden && this.oynuyor) this.duraklat(); };
@@ -272,28 +246,27 @@ class SimKoşucu {
     this.oynuyor = true;
     this.sonZaman = 0;
     this.birikim = 0;
-    this.oynatIkon.innerHTML = ikon('pause');
+    this.oynatIkon.textContent = '❚❚';
     this.oynatYazi.textContent = 'Duraklat';
     this.simKutu.dataset.oynuyor = '1';
     this.simKutu.dataset.basladi = '1';
-    this.durumYazi.textContent = 'Oynuyor';
+    this.canliYazi.textContent = 'çalışıyor';
     this.rafId = requestAnimationFrame(ts => this.#kare(ts));
   }
 
-  duraklat(yazi = 'Duraklatıldı') {
-    const oynuyordu = this.oynuyor;
+  duraklat() {
     this.oynuyor = false;
-    this.oynatIkon.innerHTML = ikon('play');
+    this.oynatIkon.textContent = '▶';
     this.oynatYazi.textContent = 'Oynat';
     this.simKutu.dataset.oynuyor = '0';
-    if (oynuyordu || yazi !== 'Duraklatıldı') this.durumYazi.textContent = yazi;
+    this.canliYazi.textContent = 'duraklatıldı';
     cancelAnimationFrame(this.rafId);
   }
 
   degistir() { this.oynuyor ? this.duraklat() : this.oynat(); }
 
   sifirla() {
-    this.duraklat('Hazır');
+    this.duraklat();
     this.simKutu.dataset.basladi = '0';
     this.st = this.t.durum(this.p);
     if (this.turetimAdim >= 0) this.#turetimUygula();
@@ -316,7 +289,6 @@ class SimKoşucu {
       this.t.adim(this.st, SABIT_DT, this.p);
       if (this.t.bitti && this.t.bitti(this.st, this.p)) break;
     }
-    this.durumYazi.textContent = this.t.bitti && this.t.bitti(this.st, this.p) ? 'Tamamlandı' : 'Duraklatıldı';
     this.ciz();
     this.#okumalariTazele();
   }
@@ -338,7 +310,7 @@ class SimKoşucu {
     this.ciz();
     this.#okumalariTazele();
 
-    if (this.t.bitti && this.t.bitti(this.st, this.p)) { this.duraklat('Tamamlandı'); return; }
+    if (this.t.bitti && this.t.bitti(this.st, this.p)) { this.duraklat(); return; }
     this.rafId = requestAnimationFrame(t2 => this.#kare(t2));
   }
 
@@ -383,18 +355,7 @@ class SimKoşucu {
     this.duraklat();
     this.gozlemci?.disconnect();
     document.removeEventListener('visibilitychange', this.gorunurluk);
-    document.removeEventListener('fullscreenchange', this.tamEkran);
-    if (document.fullscreenElement === this.simKutu) document.exitFullscreen().catch(() => {});
   }
-}
-
-/** Kaydıracın dolu kısmı (Chrome'da) --dolu değişkeniyle çizilir;
-    Firefox ::-moz-range-progress ile kendisi yapar. */
-function dolulukYaz(el) {
-  if (!el) return;
-  const min = parseFloat(el.min), max = parseFloat(el.max);
-  const o = max > min ? (parseFloat(el.value) - min) / (max - min) * 100 : 0;
-  el.style.setProperty('--dolu', o.toFixed(2) + '%');
 }
 
 /* ----------------------------------------------------------- Kısayollar */
@@ -410,8 +371,7 @@ function kisayollariBagla(kosucuGetir) {
     const k = kosucuGetir();
     if (!k) return;
     const hedef = e.target;
-    /* Hedef her zaman bir öğe olmayabilir (ör. document); o zaman sınama atlanır. */
-    if (hedef instanceof Element && hedef.matches('input, select, textarea, button')) return;
+    if (hedef.matches('input, select, textarea, button')) return;
 
     if (e.code === 'Space')       { e.preventDefault(); k.degistir(); }
     else if (e.key === 'ArrowRight') { e.preventDefault(); k.ileriAtla(0.5); }

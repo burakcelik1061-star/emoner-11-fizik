@@ -17,7 +17,7 @@ Böylece elde ettiğin şey, bir düğmeyle <strong>açıp kapatabildiğin bir m
 kavram: `
 <h3>Bir halka, bükülmüş bir düz teldir</h3>
 <p>Düz telde alan çizgileri iç içe çemberlerdi. Teli bir halka hâline getirince ne olur?
-Halkanın <strong>her küçük parçası</strong> merkezde bir alan üretir ve bu katkıların
+Halkanın <strong>her küçük parçası</strong> merkezde bir alan üretir — ve bu katkıların
 hepsi <strong>aynı yöne</strong> bakar. Zıt yönlü katkı yoktur, hepsi toplanır.</p>
 
 <div class="formul" style="max-width:320px;margin:14px 0;border-top-color:var(--accent)">
@@ -53,7 +53,7 @@ Simülasyonda bu oran doğrudan okunuyor.</p>
 
 <h3 style="margin-top:22px">Solenoid: halkaları yan yana diz</h3>
 <p>Çok sayıda halkayı bir silindir üzerine yan yana sararsan <strong>solenoid</strong>
-(akım makarası) elde edersin. İçeride alan artık noktadan noktaya değişmez,
+(akım makarası) elde edersin. İçeride alan artık noktadan noktaya değişmez —
 <strong>düzgün</strong> hâle gelir:</p>
 
 <div class="formul" style="max-width:300px;margin:14px 0;border-top-color:var(--accent)">
@@ -73,7 +73,7 @@ ilk ve son sarım arasındaki uzaklıkla (L) <strong>ters</strong>, ortamın kat
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Solenoidde yarıçap YOKTUR</span></div>
   <p style="margin:0">Formüle iyi bak: <strong>r yok</strong>. Solenoidin kalın ya da ince
-  olması içerideki alanı değiştirmez. Ayrıca içeride <em>her nokta</em> aynı alanı görür:
+  olması içerideki alanı değiştirmez. Ayrıca içeride <em>her nokta</em> aynı alanı görür —
   eksende de, kenara yakın da. Bu, paralel levhalar arasındaki elektrik alanla
   <strong>birebir aynı durumdur</strong>.</p>
   <p style="margin:8px 0 0">Halkada <code>r</code> vardı ve ters orantılıydı; solenoidde yok.
@@ -109,14 +109,14 @@ aynısıdır</strong>: bir uçtan çıkar, dolanır, diğer uçtan girer. Yani s
   <p style="margin:0">Çubuk mıknatısı kapatamazsın. Solenoidi <strong>kapatabilirsin</strong>.
   Akımı artırınca güçlenir, yönünü değiştirince kutupları yer değiştirir. Bu üç özellik
   (açılıp kapanma, şiddet ayarı, kutup değiştirme) elektromıknatısı teknolojinin temel
-  parçası yapar: bir sonraki konu tamamen bununla ilgili.</p>
+  parçası yapar — bir sonraki konu tamamen bununla ilgili.</p>
 </div>`,
 
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
     { fm: 'B = μ₀·N·i / (2r)', aciklama: 'N sarımlı düz halkanın merkezinde' },
-    { fm: 'B = μ₀ · n · i',    aciklama: 'Uzun solenoidin içinde: düzgün alan' },
+    { fm: 'B = μ₀ · n · i',    aciklama: 'Uzun solenoidin içinde — düzgün alan' },
     { fm: 'B = 4·K·π·i·N / L', aciklama: 'Kitaptaki yazılış (K = 10⁻⁷ T·m/A)' },
     { fm: 'n = N / L',         aciklama: 'Birim uzunluktaki sarım sayısı (sarım/m)' },
     { fm: 'B<sub>halka</sub>/B<sub>tel</sub> = N·π', aciklama: 'Bükmenin kazancı' },
@@ -213,7 +213,7 @@ turetim: {
 
         { baslik: 'Akımı ters çevir',
           html: `<p>Pilin uçlarını değiştirirsen akım ters döner ve <strong>kutuplar yer
-                 değiştirir</strong>. Kalıcı mıknatısta bunu yapamazsın: elektromıknatısın
+                 değiştirir</strong>. Kalıcı mıknatısta bunu yapamazsın — elektromıknatısın
                  asıl üstünlüğü budur.</p>` }
       ]
     }
@@ -247,7 +247,7 @@ puf: {
         <tr><td>i → 2i</td><td class="sembol">2B</td><td class="sembol">2B</td></tr>
         <tr><td>N → 2N</td><td class="sembol">2B</td><td class="sembol">2B</td></tr>
         <tr><td>r → 2r</td><td class="sembol">B/2</td><td class="sembol">B (değişmez)</td></tr>
-        <tr><td>L → 2L (N sabit)</td><td>-</td><td class="sembol">B/2</td></tr>
+        <tr><td>L → 2L (N sabit)</td><td>—</td><td class="sembol">B/2</td></tr>
       </tbody>
     </table>
 
@@ -262,7 +262,7 @@ puf: {
     <code>B = μ₀ni/2</code> kullanılır. Bu ayrıntı sorulursa çoğu öğrenci kaçırır.</p>
 
     <p><strong>7 · İçine demir çekirdek konursa alan katlanır.</strong> Kaç kat? Demirin
-    <strong>bağıl geçirgenliği</strong> kadar: yüzlerce, bazen binlerce kat. Bir sonraki
+    <strong>bağıl geçirgenliği</strong> kadar — yüzlerce, bazen binlerce kat. Bir sonraki
     konunun konusu tam olarak budur.</p>`
 },
 
@@ -295,14 +295,14 @@ osym: [
         <div class="fm" style="color:var(--accent)">B′ = μ₀·n·i = B</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> yalnızca N&rsquo;ye bakanlar için:
+        <p style="margin:0"><strong>B şıkkı</strong> yalnızca N&rsquo;ye bakanlar için —
         bu konudaki bir numaralı hatadır. Solenoidde <em>toplam</em> sarım sayısı tek başına
         hiçbir şey söylemez.
         <br><strong>Sezgisel açıklama:</strong> Teli iki kat uzun bir silindire sardın;
         her santimetreye düşen sarım sayısı aynı kaldı. İçerideki bir nokta çevresinde
         <em>aynı sıklıkta</em> tel görüyor, dolayısıyla aynı alanı hissediyor.
         <br><strong>Karşılaştır:</strong> Bu bir <em>halka</em> olsaydı, N iki katına çıktığı
-        için alan da iki katına çıkardı, orada uzunluk diye bir kavram yok.</p>
+        için alan da iki katına çıkardı — orada uzunluk diye bir kavram yok.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -328,12 +328,12 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>I · Halka:</strong></p>
+      <p><strong>I — Halka:</strong></p>
       <p>B₁ = μ₀·N·i/(2r) = (4π·10⁻⁷ · 100 · 2) / (2 · 0,10)</p>
       <p>Pay: 4π·10⁻⁷ · 200 = 2,51·10⁻⁴ &nbsp;·&nbsp; Payda: 0,20</p>
       <p>B₁ = <strong>1,26·10⁻³ T = 1257 μT</strong></p>
 
-      <p style="margin-top:12px"><strong>II · Solenoid:</strong></p>
+      <p style="margin-top:12px"><strong>II — Solenoid:</strong></p>
       <p>n = N/L = 100 / 0,40 = <strong>250 sarım/m</strong></p>
       <p>B₂ = μ₀·n·i = 4π·10⁻⁷ · 250 · 2 = <strong>6,28·10⁻⁴ T = 628 μT</strong></p>
 
@@ -344,7 +344,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Oranı formülden de görebilirsin:</strong>
         <br><code>B₁/B₂ = [μ₀Ni/2r] / [μ₀(N/L)i] = L / (2r) = 0,40 / 0,20 = 2</code>
-        <br>N, i ve μ₀ sadeleşti: geriye yalnızca <strong>L/(2r)</strong> kaldı.
+        <br>N, i ve μ₀ sadeleşti — geriye yalnızca <strong>L/(2r)</strong> kaldı.
         Sayı koymadan da çözülebilirdi.
         <br><strong>D şıkkı</strong> solenoidde de r kullananlar için.
         <br><strong>B şıkkı</strong> “ikisi de 100 sarım, o hâlde aynı” diyenler için.</p>
@@ -421,7 +421,7 @@ baglam: [
         Soruyu çözemeyeceğini sanıp atlayan öğrenci bu tuzağa düşer.
         <br><strong>Ölçek duygusu:</strong> 1,5 T, Dünya&rsquo;nın alanının
         (50 μT) <strong>30 000 katıdır</strong>. Bu yüzden MR odasına metal eşya sokmak
-        ciddi tehlikedir: alan, sandalyeyi bile fırlatabilir.
+        ciddi tehlikedir — alan, sandalyeyi bile fırlatabilir.
         <br><strong>Bağlantı:</strong> Faraday kafesi elektriksel alanı durduruyordu ama
         <em>statik manyetik alanı durdurmaz</em>. MR odaları bu yüzden ayrıca özel
         manyetik ekranlamayla korunur.</p>
@@ -434,7 +434,7 @@ baglam: [
       <p>Bazı hassas deneylerde (beyin sinyallerinin ölçümü, kuantum deneyleri, uzay aracı
       parçalarının testi) ortamda <strong>hiç manyetik alan olmaması</strong> gerekir.
       Ama Dünya&rsquo;nın alanı her yerdedir: yaklaşık <strong>50 μT</strong>.</p>
-      <p>Faraday kafesi burada işe yaramaz: o <strong>elektriksel</strong> alanı durdurur,
+      <p>Faraday kafesi burada işe yaramaz — o <strong>elektriksel</strong> alanı durdurur,
       statik manyetik alanı değil. Çözüm, odayı büyük bir <strong>solenoidin içine</strong>
       almak ve Dünya&rsquo;nın alanına <strong>tam ters yönde</strong> aynı büyüklükte bir
       alan üretmektir.</p>
@@ -482,7 +482,7 @@ baglam: [
         metin: 'Asıl zorluk büyüklük değil, <strong>kararlılık ve düzgünlük</strong>: akımın çok kararlı olması, solenoidin çok düzgün sarılması ve odanın yöneliminin sabit kalması gerekir. Ayrıca Dünya’nın alanı zamanla biraz değişir, bu yüzden sistem <strong>sürekli ölçüp düzeltir</strong>.' }
     ],
     secenekler: [
-      'i ≈ 0,1 A; çok küçük bir akım: zor olan büyüklük değil, alanın kararlılığı ve düzgünlüğü',
+      'i ≈ 0,1 A; çok küçük bir akım — zor olan büyüklük değil, alanın kararlılığı ve düzgünlüğü',
       'i ≈ 10 A; büyük bir akım gerekir çünkü Dünya’nın alanı güçlüdür',
       'i ≈ 100 A; bu yüzden böyle odalar süper iletken kullanır',
       'Mümkün değildir; manyetik alan iptal edilemez',
@@ -498,7 +498,7 @@ baglam: [
         karşı yapabilecekleri bir şey yoktur. Manyetik ekranlama ya <em>aktif iptal</em>
         (bu soru) ya da <em>yüksek geçirgenlikli malzeme</em> (mumetal) ile yapılır.
         <br><strong>Ölçek:</strong> MR cihazı 1,5 T üretiyordu, burada iptal edilen 0,00005 T.
-        Aradaki fark <strong>30 000 kat</strong>: aynı formül, çok farklı mertebeler.</p>
+        Aradaki fark <strong>30 000 kat</strong> — aynı formül, çok farklı mertebeler.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }

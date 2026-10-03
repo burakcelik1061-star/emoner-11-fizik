@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u1-serbest-dusen-cisimler', {
 
 ozet: `Serbest düşme, <strong>başlangıç hızı olmayan</strong> düşme tipidir: cisim atılmaz,
-itilmez, yalnızca <strong>bırakılır</strong> (ϑ₀ = 0) ve düşüşünü sadece yer çekimi belirler.
+itilmez — yalnızca <strong>bırakılır</strong> (ϑ₀ = 0) ve düşüşünü sadece yer çekimi belirler.
 Konunun büyük fikri şu: <strong>serbest düşen bütün cisimler, kütlelerinden bağımsız olarak
 aynı ivmeyle düşer.</strong>`,
 
@@ -28,18 +28,18 @@ etkisi altında gerçekleşen harekettir. Bu ivmeye <strong>yer çekimi ivmesi</
 <p>Serbest düşmeyi diğer düşey hareketlerden ayıran şey <strong>ilk hızının sıfır
 olmasıdır</strong>. Cisme başlangıçta hiçbir hız verilmez; eliniz açılır ve cisim
 <strong>bırakılır</strong>. Cisme bir ilk hız verilmişse artık o bir
-<strong>atış</strong>tır: sonraki iki konunun konusudur.</p>
+<strong>atış</strong>tır — sonraki iki konunun konusudur.</p>
 
 <table class="degisken-tablo">
   <thead><tr><th>Hareket tipi</th><th>İlk hız</th><th>Başlangıçta ne oluyor?</th><th>Hareketin yapısı</th></tr></thead>
   <tbody>
-    <tr class="vurgu-satir"><td><strong>Serbest düşme</strong></td><td class="sembol">ϑ₀ = 0</td><td>Yok: cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr><td>Yukarıdan aşağıya atış</td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var: cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr><td>Aşağıdan yukarıya atış</td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var: cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
+    <tr style="background:var(--surface-2)"><td><strong>Serbest düşme</strong></td><td class="sembol">ϑ₀ = 0</td><td>Yok — cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr><td>Yukarıdan aşağıya atış</td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var — cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr><td>Aşağıdan yukarıya atış</td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var — cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Üçünün de <strong>ivmesi aynıdır: a = g, aşağı doğru.</strong>
-Aralarındaki tek fark <strong>ilk hızdır</strong>: hareketi birbirinden ayıran şey budur.</p>
+Aralarındaki tek fark <strong>ilk hızdır</strong> — hareketi birbirinden ayıran şey budur.</p>
 
 <p>Dünya yüzeyine yakın yerlerde <code>g ≈ 9,8 m/s²</code>'dir; sorularda işlem kolaylığı için
 genellikle <code>g = 10 m/s²</code> alınır. Kitaba göre g&rsquo;nin değeri <strong>yüksekliğe,
@@ -55,7 +55,7 @@ Ay&rsquo;da yaklaşık <code>1,62 m/s²</code>, yani Dünya&rsquo;nın altıda b
     bırakıldı” denince kastedilen budur; bu konunun konusu odur.</li>
     <li><strong>Geniş anlamı (fizik tanımı):</strong> üzerine yalnızca yer çekimi etki eden
     her hareket. Bu anlamda yukarı fırlatılan top da, aşağı atılan taş da
-    <strong>havayı terk ettiği andan itibaren serbest düşer</strong>: yukarı çıkarken bile
+    <strong>havayı terk ettiği andan itibaren serbest düşer</strong> — yukarı çıkarken bile
     ivmesi aşağı doğrudur.</li>
   </ul>
   <p style="margin:10px 0 0">Bu yüzden atışların formülleri ayrı değildir: hepsi aynı
@@ -105,7 +105,7 @@ konusunda ele alınacaktır.</p>`,
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'a = g', aciklama: 'Serbest düşen her cismin ivmesi g’dir: kütleye bağlı değildir.' },
+    { fm: 'a = g', aciklama: 'Serbest düşen her cismin ivmesi g’dir — kütleye bağlı değildir.' },
     { fm: 'G = m · g', aciklama: 'Cisme etki eden tek kuvvet: ağırlık.' },
     { fm: 'g<sub>Dünya</sub> ≈ 9,8 m/s²', aciklama: 'Sorularda genellikle 10 alınır. Ay’da ≈ 1,62 m/s², yaklaşık altıda biri.' }
   ],
@@ -146,7 +146,7 @@ turetim: {
                  <p style="margin-top:12px"><strong>Sonuç:</strong> İvme ifadesinde kütle
                  kalmadı. Bu yüzden 1 kg’lık taş da 100 kg’lık kaya da aynı ivmeyle düşer.</p>
                  <div class="kutu nott" style="margin-top:12px">
-                   <p style="margin:0">Ağır cisme daha büyük kuvvet etki eder, ama o cismin
+                   <p style="margin:0">Ağır cisme daha büyük kuvvet etki eder — ama o cismin
                    hızlanmaya karşı direnci (eylemsizliği) de aynı oranda büyüktür.
                    İkisi birbirini tam olarak götürür.</p>
                  </div>` }
@@ -172,7 +172,7 @@ turetim: {
 
         { baslik: 'Çelişkiyi gör',
           html: `<p>Aynı varsayım hem "daha yavaş" hem "daha hızlı" diyor. Bu bir
-                 <strong>çelişkidir</strong>: demek ki başlangıçtaki varsayım yanlıştır.</p>
+                 <strong>çelişkidir</strong> — demek ki başlangıçtaki varsayım yanlıştır.</p>
                  <div class="formul" style="max-width:340px;border-color:var(--accent)">
                    <div class="fm" style="color:var(--accent);font-size:1.05em">
                      Düşme hızı kütleye bağlı olamaz
@@ -199,7 +199,7 @@ turetim: {
                  ile 1,32 kg’lık jeolog çekicini aynı yükseklikten aynı anda bıraktı.
                  Kütleleri arasında <strong>44 kat</strong> fark olmasına rağmen ikisi
                  aynı anda yüzeye ulaştı.</p>
-                 <p>Ay’ın atmosferi yoktur, yani doğal bir vakum odasıdır. Galileo’nun
+                 <p>Ay’ın atmosferi yoktur — yani doğal bir vakum odasıdır. Galileo’nun
                  350 yıl önceki hipotezi böylece Dünya dışında doğrulanmış oldu.</p>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Aşağıdaki simülasyonda <strong>Ortam</strong>'ı
@@ -216,7 +216,7 @@ sim: F.simler['serbest-dusen-cisimler'],
 /* ------------------------------------------------------- Püf noktası */
 puf: {
   html: `
-    <p><strong>Kütle, yoğunluk, hacim, şekil: hepsi tuzaktır.</strong> Serbest düşme
+    <p><strong>Kütle, yoğunluk, hacim, şekil — hepsi tuzaktır.</strong> Serbest düşme
     sorusunda cismin neyden yapıldığı, kaç kg olduğu asla sonucu değiştirmez.
     Soruda "kütlesi 2m olan cisim" görürsen, o bilgi çoğu zaman <em>sadece seni
     oyalamak için</em> konmuştur.</p>
@@ -246,7 +246,7 @@ puf: {
       soru: `<p>Yukarı doğru fırlatılan bir topun <strong>en yüksek noktadaki</strong> hızı ve
              ivmesi için ne söylenebilir?</p>`,
       taktikle: `<p>Klasik tuzak. <strong>Hız sıfırdır ama ivme sıfır değildir.</strong>
-                 Top havada olduğu sürece ivmesi hep g’dir ve hep aşağı doğrudur:
+                 Top havada olduğu sürece ivmesi hep g’dir ve hep aşağı doğrudur —
                  çıkarken de, tepedeyken de, inerken de.</p>`,
       uzun: `<p>Tepe noktada ϑ = 0. Ancak cisme hâlâ yalnızca ağırlık etki eder:
              F<sub>net</sub> = m·g ⟹ a = g (aşağı yönde).</p>`
@@ -285,7 +285,7 @@ osym: [
         <li><strong>Doğru.</strong> Tepki süresi t artarsa, h = ½gt² gereği h artar.
         t karesiyle etkilediği için küçük bir gecikme bile fark yaratır.</li>
         <li><strong>Yanlış.</strong> Formülde kütle yok. Serbest düşmede kütle sonucu
-        değiştirmez: bu seçenek klasik tuzaktır.</li>
+        değiştirmez — bu seçenek klasik tuzaktır.</li>
         <li><strong>Yanlış.</strong> g <em>azalırsa</em> h de <em>azalır</em>.
         Cetvel 6 cm'den daha az yol alırdı, 8 cm'ye çıkmazdı. Yön ters.</li>
       </ol>
@@ -313,7 +313,7 @@ osym: [
       <p>İkisi de aynı g ivmesiyle düşüyor, ama <strong>farklı anlarda</strong> başladılar.
       Önder t süre önce başladığı için her an Şeref'ten daha hızlıdır.</p>
       <p>Önder'in hızı: ϑ<sub>Ö</sub> = g·(t + t′), Şeref'inki: ϑ<sub>Ş</sub> = g·t′</p>
-      <p>Aradaki hız farkı: ϑ<sub>Ö</sub> − ϑ<sub>Ş</sub> = <strong>g·t</strong>, yani sabit
+      <p>Aradaki hız farkı: ϑ<sub>Ö</sub> − ϑ<sub>Ş</sub> = <strong>g·t</strong> — yani sabit
       ve sıfırdan büyük bir fark. Önder her an Şeref'ten g·t kadar hızlı olduğuna göre
       aralarındaki mesafe sürekli <strong>açılır</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
@@ -355,7 +355,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Verilenleri ayıkla',
-        metin: 'Hikâyede ölçülen tek şey <strong>süre</strong>: t = 2 s. Bir de g = 10 m/s² verilmiş. "Muhtar", "telefon", "kurumuş kuyu" birer sahne unsuru, fiziksel veri değil.' },
+        metin: 'Hikâyede ölçülen tek şey <strong>süre</strong>: t = 2 s. Bir de g = 10 m/s² verilmiş. "Muhtar", "telefon", "kurumuş kuyu" birer sahne unsuru — fiziksel veri değil.' },
       { bas: 'Olayı fiziksel modele çevir',
         metin: 'Taş elden <em>bırakılıyor</em>, atılmıyor. Demek ki <strong>ϑ₀ = 0</strong> ile serbest düşme. Ses anında duyuluyor kabul edildiği için 2 s’nin tamamı düşme süresidir.' },
       { bas: 'Formülü sen seç',
@@ -363,7 +363,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'h = ½ · 10 · 2² = ½ · 10 · 4 = <strong>20 m</strong>' },
       { bas: 'Yorumla',
-        metin: 'Yaklaşık 6 katlı bir bina yüksekliği. Gerçekte ses de yol aldığı için ölçülen 2 s’nin bir kısmı sesin dönüşüne gider, yani gerçek derinlik 20 m’den biraz <em>azdır</em>.' }
+        metin: 'Yaklaşık 6 katlı bir bina yüksekliği. Gerçekte ses de yol aldığı için ölçülen 2 s’nin bir kısmı sesin dönüşüne gider — yani gerçek derinlik 20 m’den biraz <em>azdır</em>.' }
     ],
     secenekler: ['10 m', '20 m', '40 m', '5 m', '100 m'],
     dogru: 1,
@@ -412,7 +412,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Verilenleri ayıkla',
-        metin: 'Yükseklik 45 m, serbest düşme süresi 1 s, g = 10 m/s². Paketin kütlesi, ilacın ne olduğu, köyün adı: hiçbiri hesaba girmez.' },
+        metin: 'Yükseklik 45 m, serbest düşme süresi 1 s, g = 10 m/s². Paketin kütlesi, ilacın ne olduğu, köyün adı — hiçbiri hesaba girmez.' },
       { bas: 'Olayı fiziksel modele çevir',
         metin: 'Drone <strong>havada sabit asılı</strong> duruyor. Bu çok önemli: paketin ilk hızı sıfırdır (<strong>ϑ₀ = 0</strong>). Eğer drone hareket hâlinde olsaydı paket o hızla fırlatılmış sayılırdı.' },
       { bas: 'Formülleri sen seç',
@@ -420,7 +420,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'h = ½ · 10 · 1² = <strong>5 m</strong> düştü. ϑ = 10 · 1 = <strong>10 m/s</strong> hıza ulaştı. Yerden yüksekliği: 45 − 5 = <strong>40 m</strong>.' },
       { bas: 'Yorumla',
-        metin: 'Sadece 1 saniyede paket 10 m/s’ye, yani 36 km/s hıza ulaşmış. Paraşütün bu kadar erken açılması tesadüf değil: geç açılsaydı hız çok daha yüksek olacaktı.' }
+        metin: 'Sadece 1 saniyede paket 10 m/s’ye, yani 36 km/s hıza ulaşmış. Paraşütün bu kadar erken açılması tesadüf değil — geç açılsaydı hız çok daha yüksek olacaktı.' }
     ],
     secenekler: [
       '5 m düşer, hızı 10 m/s olur',
@@ -437,7 +437,7 @@ baglam: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Püf:</strong> g = 10 m/s² iken ilk saniyede cisim
         <strong>5 m</strong> yol alır ama hızı <strong>10 m/s</strong> olur. Bu ikisi
-        sürekli karıştırılır. Sebep: yol ortalama hızla hesaplanır, ilk saniyede
+        sürekli karıştırılır. Sebep: yol ortalama hızla hesaplanır — ilk saniyede
         ortalama hız (0 + 10)/2 = 5 m/s’dir, bu yüzden 5 m yol alınır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A) 5 m düşer, hızı 10 m/s olur</strong></p>`

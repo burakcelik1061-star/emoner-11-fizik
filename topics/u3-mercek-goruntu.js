@@ -53,7 +53,7 @@ eşittir: <code>h′/h = |b|/a</code>.</p>
 <table class="degisken-tablo">
   <thead><tr><th>Cismin yeri</th><th>Görüntünün yeri</th><th>Cins</th><th>Yön</th><th>Boy</th><th>Kullanım</th></tr></thead>
   <tbody>
-    <tr><td>Sonsuzda</td><td>F&rsquo;de</td><td>gerçek</td><td>-</td><td>nokta</td><td>güneş ışığıyla yakma</td></tr>
+    <tr><td>Sonsuzda</td><td>F&rsquo;de</td><td>gerçek</td><td>—</td><td>nokta</td><td>güneş ışığıyla yakma</td></tr>
     <tr><td>2F&rsquo;nin dışında</td><td>F ile 2F arasında</td><td>gerçek</td><td>ters</td><td>küçük</td><td><strong>fotoğraf makinesi</strong></td></tr>
     <tr><td><strong>2F&rsquo;de</strong></td><td><strong>2F&rsquo;de</strong></td><td>gerçek</td><td>ters</td><td><strong>eşit</strong></td><td>fotokopi (1:1)</td></tr>
     <tr><td>F ile 2F arasında</td><td>2F ile sonsuz arasında</td><td>gerçek</td><td>ters</td><td>büyük</td><td><strong>projeksiyon</strong></td></tr>
@@ -177,7 +177,7 @@ turetim: {
                  </div>` },
 
         { baslik: 'Aynayla aynı çıktı',
-          html: `<p>3.4&rsquo;teki türetimle karşılaştır: <strong>adımlar neredeyse
+          html: `<p>3.4&rsquo;teki türetimle karşılaştır — <strong>adımlar neredeyse
                  birebir aynı</strong>. Sebebi, her iki durumda da aynı iki benzerliğin
                  kurulması. Bu yüzden beş durum tablosu da aynıdır.</p>` }
       ]
@@ -239,13 +239,13 @@ turetim: {
 
         { baslik: 'Makro çekim',
           html: `<p>a = 6 cm olsaydı: <code>b = 6·5/1 = 30 cm</code>. Mercek sensörden
-                 <strong>25 cm</strong> uzaklaşmalıydı: normal bir objektifte bu mümkün
+                 <strong>25 cm</strong> uzaklaşmalıydı — normal bir objektifte bu mümkün
                  değildir. Makro objektiflerin uzun ve pahalı olmasının sebebi budur.</p>` },
 
         { baslik: 'Büyütmeyi kontrol et',
           html: `<p>a = 200, b = 5,13 ⟹ <code>m = 0,0256</code>. Yani 1,7 m boyundaki bir
                  insan sensöre <code>170 × 0,0256 = <strong>4,4 cm</strong></code> olarak
-                 düşer. Tam boy fotoğraf için sensörün en az bu kadar büyük olması gerekir:
+                 düşer. Tam boy fotoğraf için sensörün en az bu kadar büyük olması gerekir —
                  ya da daha uzaktan çekilmelidir.</p>` }
       ]
     }
@@ -360,7 +360,7 @@ osym: [
 
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>D şıkkı</strong> bu sorunun asıl tuzağı: a ile b&rsquo;yi
-        <em>çıkarıyor</em> (36 − 18 = 18). Bu, <strong>aynada</strong> doğru olurdu: orada
+        <em>çıkarıyor</em> (36 − 18 = 18). Bu, <strong>aynada</strong> doğru olurdu — orada
         görüntü cismin tarafındadır. Mercekte ışık geçtiği için toplanır.
         <br><strong>B şıkkı</strong> büyütmeyi ters alıyor (a/b yerine b/a).
         <br><strong>Genel kural:</strong> İnce kenarlı mercekte gerçek görüntü için
@@ -400,7 +400,7 @@ osym: [
         <li><strong>Doğru.</strong> f &lt; a &lt; 2f ⟹ gerçek, ters, <strong>büyük</strong>.
         Küçük bir slaydı büyük perdeye yansıtmak budur.</li>
         <li><strong>Doğru.</strong> a &lt; f ⟹ sanal, düz, büyük. Büyüteçle bakarken
-        görüntünün <strong>düz</strong> olması şarttır: ters olsaydı kullanılamazdı.</li>
+        görüntünün <strong>düz</strong> olması şarttır — ters olsaydı kullanılamazdı.</li>
         <li><strong>Yanlış.</strong> a = f ⟹ çıkan ışınlar <strong>paraleldir</strong>,
         hiçbir yerde kesişmez ⟹ <strong>görüntü oluşmaz</strong>. Perdeye hiçbir şey
         düşmez; perdeyi ne kadar uzağa koyarsan koy bulanık bir aydınlık görürsün.</li>
@@ -466,7 +466,7 @@ baglam: [
       { bas: 'Görüntü neden ters?',
         metin: '<code>b &gt; 0</code> ⟹ görüntü <strong>gerçek</strong>, gerçek görüntü ise <strong>daima terstir</strong>. Bu optik bir zorunluluktur, kusur değil.' },
       { bas: 'Nasıl düzeltiliyor?',
-        metin: 'Panel cihazın içine <strong>baş aşağı</strong> yerleştirilir; iki ters birbirini götürür. Modern cihazlarda bu, görüntüyü elektronik olarak çevirerek yapılır: “tavana montaj” ayarı tam olarak bu çevirmeyi açıp kapatır.' }
+        metin: 'Panel cihazın içine <strong>baş aşağı</strong> yerleştirilir; iki ters birbirini götürür. Modern cihazlarda bu, görüntüyü elektronik olarak çevirerek yapılır — “tavana montaj” ayarı tam olarak bu çevirmeyi açıp kapatır.' }
     ],
     secenekler: [
       'a = 12,24 cm, b = 6,12 m; görüntü gerçek olduğu için ters oluşur ve panel baş aşağı yerleştirilerek düzeltilir',
@@ -486,11 +486,11 @@ baglam: [
       <p>Genel bağıntı: <code>a = f·(m+1)/m</code> ve <code>b = f·(m+1)</code>. Büyütme
       büyüdükçe a, f&rsquo;ye yaklaşır ve b neredeyse <code>m·f</code> olur.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> a ile b&rsquo;yi yer değiştirmiş:
+        <p style="margin:0"><strong>C şıkkı</strong> a ile b&rsquo;yi yer değiştirmiş —
         bu aslında <em>tersinirlik</em> nedeniyle geçerli bir düzenektir ama o zaman görüntü
         büyük değil <strong>küçük</strong> olur (fotoğraf makinesi durumu).
         <br><strong>D şıkkı</strong> a = f durumunu seçiyor; o zaman gerçekten görüntü
-        oluşmaz, ama biz 12,24 cm bulduk, tam f değil.
+        oluşmaz — ama biz 12,24 cm bulduk, tam f değil.
         <br><strong>Sınıfta dene:</strong> Projeksiyon cihazını perdeye yaklaştırıp
         uzaklaştırırken her seferinde yeniden netlemek zorunda kalırsın. Sebebi:
         <code>b</code> değişince <code>a</code>&rsquo;nın da değişmesi gerekir. Cihazın
@@ -532,11 +532,11 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Uzağa bakarken',
-        metin: '<code>a = ∞ ⟹ 1/a = 0 ⟹ 1/f = 1/b</code> ⟹ <code>f = b = <strong>2,20 cm</strong></code>. Göz merceği en <strong>gevşek</strong>, en ince hâlindedir: bu, gözün dinlenme konumudur.' },
+        metin: '<code>a = ∞ ⟹ 1/a = 0 ⟹ 1/f = 1/b</code> ⟹ <code>f = b = <strong>2,20 cm</strong></code>. Göz merceği en <strong>gevşek</strong>, en ince hâlindedir — bu, gözün dinlenme konumudur.' },
       { bas: 'Yakına bakarken',
         metin: '<code>a = 25 cm, b = 2,2 cm</code>: <code>1/f = 1/25 + 1/2,2 = 0,04 + 0,4545 = 0,4945</code> ⟹ <code>f = <strong>2,022 cm</strong></code>' },
       { bas: 'Ne kadar değişti?',
-        metin: 'Odak uzaklığı 2,20&rsquo;den 2,02 cm&rsquo;ye indi: yalnızca <strong>1,8 mm</strong>. Ama dioptri olarak <code>45,5 D</code>&rsquo;den <code>49,5 D</code>&rsquo;ye çıktı: <strong>4 dioptrilik</strong> bir güç artışı.' },
+        metin: 'Odak uzaklığı 2,20&rsquo;den 2,02 cm&rsquo;ye indi — yalnızca <strong>1,8 mm</strong>. Ama dioptri olarak <code>45,5 D</code>&rsquo;den <code>49,5 D</code>&rsquo;ye çıktı: <strong>4 dioptrilik</strong> bir güç artışı.' },
       { bas: 'Bu gücü ne sağlıyor?',
         metin: 'Kirpiksi kas mercek etrafındaki bağları gevşetir; mercek kendi esnekliğiyle <strong>şişer</strong>, yüzeylerin R&rsquo;si küçülür ve mercek yapıcı denklemi gereği f küçülür (3.8.1).' },
       { bas: 'Yaşla ne oluyor?',
@@ -566,10 +566,10 @@ baglam: [
         <strong>güçlenmeli</strong>, yani f <em>küçülmeli</em>. a küçüldükçe f de küçülür.
         <br><strong>C ve E şıkları</strong> mekanizmayı karıştırıyor: gözde b (retina
         uzaklığı) sabittir, değişen <strong>f</strong>&rsquo;dir. Fotoğraf makinesinde ise
-        tam tersi: f sabit, b değişir. Bu ayrım, bu konunun en çok sorulan
+        tam tersi — f sabit, b değişir. Bu ayrım, bu konunun en çok sorulan
         karşılaştırmasıdır.
         <br><strong>Kendin gözlemle:</strong> Parmağını burnuna yaklaştırıp odaklanmaya
-        çalış. Bir noktadan sonra netleyemezsin: orası senin “en yakın net görme
+        çalış. Bir noktadan sonra netleyemezsin — orası senin “en yakın net görme
         noktan”dır. Yaş ilerledikçe bu nokta uzaklaşır; 45 yaş civarında kitap kol
         mesafesine gitmeye başlar.
         <br><strong>Ünite bağlantısı:</strong> Bu soru 3.9&rsquo;daki yapıcı denklemi

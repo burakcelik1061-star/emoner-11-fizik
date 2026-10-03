@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u3-mercekler', {
 
 ozet: `Mercek, iki yüzeyi de eğri olan saydam bir cisimdir. Aynadan tek farkı, ışığı
-<strong>yansıtmak yerine kırmasıdır</strong>, ama sonuç şaşırtıcı derecede benzer: ince
+<strong>yansıtmak yerine kırmasıdır</strong> — ama sonuç şaşırtıcı derecede benzer: ince
 kenarlı mercek ışığı toplar (çukur ayna gibi), kalın kenarlı mercek dağıtır (tümsek ayna
 gibi). Gözlüğün, kameranın, mikroskobun ve gözünün temeli budur.`,
 
@@ -25,7 +25,7 @@ kavram: `
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Adı kenarına göre verilir: “ince kenarlı”
-merceğin <em>kenarı</em> incedir, ortası kalındır. Karıştırmamak için biçimine bak:
+merceğin <em>kenarı</em> incedir, ortası kalındır. Karıştırmamak için biçimine bak —
 ortası şişkinse toplar.</p>
 
 <h3 style="margin-top:22px">Merceğin iki odağı vardır</h3>
@@ -117,7 +117,7 @@ bu yüzden mavi ışığın odağı merceğe biraz daha yakındır.</p>
 görüntüsü öbür taraftaki 2F noktasıdır (a = 2f ⟹ b = 2f). O noktadan çıkan her ışın bu yüzden
 öbür 2F&rsquo;de toplanır.</p>
 <p style="margin-top:10px"><strong>2. ışın neden sapmaz?</strong> Merceğin tam ortasında iki
-yüzey birbirine <strong>paraleldir</strong>. Yani orası ince bir cam levha gibi davranır:
+yüzey birbirine <strong>paraleldir</strong>. Yani orası ince bir cam levha gibi davranır —
 3.5&rsquo;in ek bilgisinde gördüğümüz gibi levhadan geçen ışın <strong>sapmaz</strong>, yalnızca kayar.
 Mercek ince kabul edildiği için kayma da ihmal edilir.</p>
 
@@ -159,7 +159,7 @@ formuller: {
   ],
   degiskenler: [
     { sembol: 'f',  ad: 'Odak uzaklığı',     birim: 'cm veya m' },
-    { sembol: 'n',  ad: 'Cam indisi',        birim: '-' },
+    { sembol: 'n',  ad: 'Cam indisi',        birim: '—' },
     { sembol: 'R₁', ad: '1. yüzeyin yarıçapı', birim: 'cm' },
     { sembol: 'R₂', ad: '2. yüzeyin yarıçapı', birim: 'cm' },
     { sembol: 'D',  ad: 'Dioptri',           birim: '1/m' }
@@ -174,7 +174,7 @@ turetim: {
       adimlar: [
         { baslik: 'Merceği prizmalara böl',
           html: `<p>İnce kenarlı bir merceği düşey olarak dilimlere ayır. Her dilim, küçük
-                 bir <strong>prizmaya</strong> benzer ve prizmalar tabanlarına doğru saptırır.</p>` },
+                 bir <strong>prizmaya</strong> benzer — ve prizmalar tabanlarına doğru saptırır.</p>` },
 
         { baslik: 'Prizmaların yönüne bak',
           html: `<p>Merceğin <strong>üst</strong> yarısındaki dilimlerin tabanı
@@ -190,7 +190,7 @@ turetim: {
           html: `<p>Kenara gidildikçe dilimlerin tepe açısı büyür ⟹ sapma da büyür. Eğrilik
                  doğru seçilirse tam da bu artış, uzak ışınları aynı noktaya getirir.</p>
                  <p>Kalın kenarlı mercekte prizmaların tabanları <strong>dışarı</strong>
-                 baktığı için ışınlar eksenden uzaklaşır: mercek dağıtır.</p>` },
+                 baktığı için ışınlar eksenden uzaklaşır — mercek dağıtır.</p>` },
 
         { baslik: 'Küresel sapma burada da var',
           html: `<p>3.3&rsquo;teki gibi, küresel yüzeyli merceklerde kenar ışınlar tam olarak
@@ -244,7 +244,7 @@ turetim: {
                  </div>
                  <p>n_cam = 1,5 ve n_su = 1,33 için çarpan <code>0,128</code>&rsquo;e düşer;
                  aynı mercek suda yaklaşık <strong>4 kat zayıf</strong> olur. Suyun altında
-                 net göremememizin sebebi tam olarak budur: gözümüzün merceği suda işini
+                 net göremememizin sebebi tam olarak budur — gözümüzün merceği suda işini
                  yapamaz.</p>` },
 
         { baslik: 'Dalış maskesi neden işe yarıyor?',
@@ -354,7 +354,7 @@ osym: [
         <div class="fm" style="color:var(--accent)">f = 1/0,075 = <strong>13,33 cm</strong></div>
       </div>
 
-      <p><strong>3. Dioptri: f METRE olmalı.</strong></p>
+      <p><strong>3. Dioptri — f METRE olmalı.</strong></p>
       <div class="formul" style="max-width:340px;margin:10px 0">
         <div class="fm">D = 1/0,1333 m = <strong>+7,5 dioptri</strong></div>
       </div>
@@ -365,7 +365,7 @@ osym: [
         birimindedir; dioptri <strong>1/m</strong>&rsquo;dir. Aradaki çarpan
         <strong>100</strong>&rsquo;dür.
         <br><strong>B şıkkı</strong> R₂&rsquo;yi de pozitif alıyor:
-        <code>0,6·(1/12 − 1/24) = 0,025 ⟹ f = 40</code>, bu da tutmuyor; B aslında
+        <code>0,6·(1/12 − 1/24) = 0,025 ⟹ f = 40</code> — bu da tutmuyor; B aslında
         yarıçapları toplayanların bulduğu değer.
         <br><strong>Hızlı kontrol:</strong> <code>D = 100/f(cm) = 100/13,33 = 7,5</code> ✓
         Bu kısayolu kullanırsan birim hatası yapmazsın.
@@ -406,7 +406,7 @@ osym: [
         levha gibidir; levhadan geçen ışın sapmaz (3.5).</li>
         <li><strong>Doğru.</strong> Yapıcı denklemdeki çarpan <code>(n_cam/n_ortam − 1)</code>
         olur. Havada <code>1,5 − 1 = 0,5</code>, suda <code>1,5/1,33 − 1 = 0,128</code>.
-        Çarpan küçüldüğü için <strong>f büyür</strong>: mercek zayıflar.</li>
+        Çarpan küçüldüğü için <strong>f büyür</strong> — mercek zayıflar.</li>
         <li><strong>Doğru.</strong> <code>f &lt; 0 ⟹ D = 1/f &lt; 0</code>. Miyop
         gözlüklerinin numarası bu yüzden eksilidir.</li>
       </ol>
@@ -462,9 +462,9 @@ baglam: [
       { bas: 'Sistemin odak uzaklığı',
         metin: '<code>f = 1/(−0,75) = <strong>−1,33 m = −133 cm</strong></code>. Sistem hâlâ <strong>kalın kenarlı</strong> davranır ama çok daha zayıftır.' },
       { bas: 'Odak uzaklıklarını toplasaydık?',
-        metin: '<code>−40 + 57,1 = 17,1 cm</code> çıkardı: <strong>tamamen yanlış</strong>, hem işaret hem büyüklük tutmaz. Odak uzaklıkları toplanmaz.' },
+        metin: '<code>−40 + 57,1 = 17,1 cm</code> çıkardı — <strong>tamamen yanlış</strong>, hem işaret hem büyüklük tutmaz. Odak uzaklıkları toplanmaz.' },
       { bas: 'Pratikte ne işe yarar?',
-        metin: 'Optikçiler numara değişikliğini bu toplamayla hesaplar. Ayrıca <strong>deneme çerçevelerinde</strong> küçük mercekler üst üste takılarak istenen numara elde edilir: her eklenen cam, dioptriyi toplar.' },
+        metin: 'Optikçiler numara değişikliğini bu toplamayla hesaplar. Ayrıca <strong>deneme çerçevelerinde</strong> küçük mercekler üst üste takılarak istenen numara elde edilir — her eklenen cam, dioptriyi toplar.' },
       { bas: 'Kontakt lens farkı',
         metin: 'Kontakt lens göze <em>değdiği</em> için, aynı düzeltme biraz farklı numara gerektirir. Yüksek numaralarda gözlük ile lens numarası 0,25–0,50 D ayrışır; sebebi merceğin gözden uzaklığıdır.' }
     ],
@@ -481,7 +481,7 @@ baglam: [
         <div class="fm" style="color:var(--accent)">D = −2,50 + 1,75 = −0,75 ⟹ f = −1,33 m</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>D şıkkı</strong> odak uzaklıklarını topluyor: bu
+        <p style="margin:0"><strong>D şıkkı</strong> odak uzaklıklarını topluyor — bu
         konunun en önemli uyarısı.
         <br><strong>C şıkkı</strong> yanlış: mercekler birbirini yok etmez, dioptrileri
         toplanır. Tam olarak yok olmaları için numaraların birbirinin <em>tersi</em> olması
@@ -535,13 +535,13 @@ baglam: [
       { bas: 'Suda',
         metin: 'Su n = 1,33, kornea n = 1,376. Fark <code>1,376 − 1,33 = <strong>0,046</strong></code>. Fark yaklaşık <strong>8 kat</strong> azaldı ⟹ kornea neredeyse hiç kırmıyor.' },
       { bas: 'Sonuç ne oluyor?',
-        metin: 'Gözün toplam gücü ciddi biçimde düşer, ışınlar retinaya varmadan odaklanamaz; odak <strong>retinanın arkasına</strong> düşer. Bu, aşırı hipermetropluk gibidir: görüntü bulanıktır.' },
+        metin: 'Gözün toplam gücü ciddi biçimde düşer, ışınlar retinaya varmadan odaklanamaz; odak <strong>retinanın arkasına</strong> düşer. Bu, aşırı hipermetropluk gibidir — görüntü bulanıktır.' },
       { bas: 'Göz merceği kurtaramaz mı?',
         metin: 'Hayır. Göz merceği uyum yaparak gücünü ancak birkaç dioptri artırabilir; oysa kaybedilen güç onlarca dioptridir. Açık kalan kayıp çok büyüktür.' },
       { bas: 'Maske ne yapıyor?',
         metin: 'Maske gözün önüne düz bir cam ve arkasına <strong>hava</strong> koyar. Kornea yine <strong>havayla</strong> temas ettiği için fark yeniden 0,376 olur ve göz normal çalışır.' },
       { bas: 'Bir yan etki',
-        metin: 'Maskenin düz camında su–cam–hava geçişleri olduğu için cisimler yaklaşık <strong>%33 büyük</strong> ve <strong>%25 yakın</strong> görünür. Dalgıçlar mesafe tahminini buna göre düzeltmeyi öğrenir: 3.6&rsquo;daki görünür derinlik konusunun doğrudan uygulamasıdır.' },
+        metin: 'Maskenin düz camında su–cam–hava geçişleri olduğu için cisimler yaklaşık <strong>%33 büyük</strong> ve <strong>%25 yakın</strong> görünür. Dalgıçlar mesafe tahminini buna göre düzeltmeyi öğrenir — 3.6&rsquo;daki görünür derinlik konusunun doğrudan uygulamasıdır.' },
       { bas: 'Doğada',
         metin: 'Karabatak gibi hem havada hem suda avlanan kuşların göz merceği <strong>çok esnektir</strong> ve suya girince şekil değiştirerek kaybedilen gücü telafi eder.' }
     ],
@@ -566,7 +566,7 @@ baglam: [
         hiç yanmadığı serumda da aynı bulanıklık olur.
         <br><strong>C şıkkı</strong> abartılı: suda ışık hızı yalnızca %25 azalır.
         <br><strong>Düşünme egzersizi:</strong> Cam bir küreyi suya batırırsan da benzer
-        şey olur, kürenin kırma gücü azalır. Buzu suya koyarsan (n = 1,31 ile 1,33)
+        şey olur — kürenin kırma gücü azalır. Buzu suya koyarsan (n = 1,31 ile 1,33)
         neredeyse <strong>görünmez</strong> hâle gelir; bazı canlıların saydam olmasının
         sırrı da vücut indislerini suya yaklaştırmalarıdır.</p>
       </div>

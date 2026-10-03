@@ -24,25 +24,25 @@ Bu çizime <strong>serbest cisim diyagramı</strong> denir.</p>
 masa, ip, zemin çizilmez. Onların etkisi yalnızca birer <strong>ok</strong> olarak kalır.</p>
 
 <h3 style="margin-top:22px">Diyagrama hangi kuvvetler girer?</h3>
-<div class="iki-sutun">
-  <div class="yan-kart ton" style="--c:var(--green)">
-    <div class="yan-kart-bas"><span class="ikon">✓</span>GİRER</div>
-    <ul style="padding-left:1.1em">
-      <li>Ağırlık (G): her zaman, istisnasız</li>
-      <li>Normal kuvvet (N): yüzeye değiyorsa</li>
-      <li>İp gerilmesi (T): ip bağlıysa</li>
-      <li>Uygulanan kuvvet (F): biri itiyor/çekiyorsa</li>
-      <li>Sürtünme (f): 1.4’te gelecek</li>
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:14px 0">
+  <div style="background:var(--green-soft);border:1px solid #1F6B4F;border-radius:var(--r-sm);padding:14px 16px">
+    <div style="color:var(--green);font-weight:700;font-size:.85em;margin-bottom:8px">✓ GİRER</div>
+    <ul style="margin:0;padding-left:1.1em">
+      <li>Ağırlık (G) — her zaman, istisnasız</li>
+      <li>Normal kuvvet (N) — yüzeye değiyorsa</li>
+      <li>İp gerilmesi (T) — ip bağlıysa</li>
+      <li>Uygulanan kuvvet (F) — biri itiyor/çekiyorsa</li>
+      <li>Sürtünme (f) — 1.4’te gelecek</li>
     </ul>
   </div>
-  <div class="yan-kart ton" style="--c:var(--red)">
-    <div class="yan-kart-bas"><span class="ikon">✗</span>GİRMEZ</div>
-    <ul style="padding-left:1.1em">
-      <li><strong>"Hareket kuvveti"</strong>: böyle bir kuvvet yoktur</li>
+  <div style="background:var(--red-soft);border:1px solid #6B2B33;border-radius:var(--r-sm);padding:14px 16px">
+    <div style="color:var(--red);font-weight:700;font-size:.85em;margin-bottom:8px">✗ GİRMEZ</div>
+    <ul style="margin:0;padding-left:1.1em">
+      <li><strong>"Hareket kuvveti"</strong> — böyle bir kuvvet yoktur</li>
       <li>Cismin <em>başkasına</em> uyguladığı kuvvetler</li>
       <li>Başka cisimlere etki eden kuvvetler</li>
       <li>İvme (o bir kuvvet değil, sonuçtur)</li>
-      <li>"Merkezkaç kuvveti": gerçek bir kuvvet değil</li>
+      <li>"Merkezkaç kuvveti" — gerçek bir kuvvet değil</li>
     </ul>
   </div>
 </div>
@@ -58,7 +58,7 @@ masa, ip, zemin çizilmez. Onların etkisi yalnızca birer <strong>ok</strong> o
 <ol>
   <li><strong>Cismi seç.</strong> Birden fazla cisim varsa her biri için ayrı diyagram çizilir.</li>
   <li><strong>Cismi bir kutu/nokta olarak çiz.</strong> Çevresini silin.</li>
-  <li><strong>Ağırlığı çiz</strong>: daima aşağı, daima var.</li>
+  <li><strong>Ağırlığı çiz</strong> — daima aşağı, daima var.</li>
   <li><strong>Temas ettiği her şeyi tara.</strong> Değdiği her yüzey bir N, bağlı her ip bir T verir.</li>
   <li><strong>Eksenleri seç.</strong> Genelde birini ivme yönünde seçmek hesabı kolaylaştırır.</li>
 </ol>
@@ -68,8 +68,8 @@ masa, ip, zemin çizilmez. Onların etkisi yalnızca birer <strong>ok</strong> o
 bırakırsak hareket iki eksene birden yayılır ve hesap zorlaşır. Bunun yerine eksenleri
 eğime göre döndürürüz:</p>
 <ul>
-  <li><strong>x ekseni eğim boyunca</strong>: hareket sadece bu eksende olur</li>
-  <li><strong>y ekseni eğime dik</strong>: bu eksende her zaman denge vardır</li>
+  <li><strong>x ekseni eğim boyunca</strong> — hareket sadece bu eksende olur</li>
+  <li><strong>y ekseni eğime dik</strong> — bu eksende her zaman denge vardır</li>
 </ul>
 <p>Bu seçimde <code>N</code> zaten y ekseninde durur, sadece <strong>ağırlığı ayırmak</strong>
 kalır. Simülasyonda 5. senaryoyu seçip açıyı değiştirerek bunu izleyebilirsin.</p>`,
@@ -80,8 +80,8 @@ formuller: {
     { fm: 'ΣF<sub>x</sub> = m·a<sub>x</sub>', aciklama: 'Her eksen için ayrı Newton II yazılır' },
     { fm: 'ΣF<sub>y</sub> = m·a<sub>y</sub>', aciklama: 'Hareket olmayan eksende sağ taraf sıfırdır' },
     { fm: 'G∥ = G·sin α', aciklama: 'Eğik düzlemde ağırlığın eğim boyunca bileşeni' },
-    { fm: 'G⊥ = G·cos α', aciklama: 'Eğime dik bileşen: normal kuvvet bunu dengeler' },
-    { fm: 'a = g·sin α',  aciklama: 'Sürtünmesiz eğik düzlemde ivme: kütleden bağımsız' },
+    { fm: 'G⊥ = G·cos α', aciklama: 'Eğime dik bileşen — normal kuvvet bunu dengeler' },
+    { fm: 'a = g·sin α',  aciklama: 'Sürtünmesiz eğik düzlemde ivme — kütleden bağımsız' },
     { fm: 'N = m(g ± a)', aciklama: 'Asansörde: yukarı ivmede +, aşağı ivmede −' }
   ],
   degiskenler: [
@@ -103,14 +103,14 @@ turetim: {
           html: `<p>Bu soruyu atlama. Bir problemde birden fazla cisim varsa
                  <strong>her biri için ayrı diyagram</strong> çizilir.</p>
                  <p>Örnek: İple bağlı iki blok varsa, blok A’nın diyagramı ile blok B’nin
-                 diyagramı farklıdır, ipteki gerilme her ikisine <em>zıt yönlerde</em> etkir.</p>
+                 diyagramı farklıdır — ipteki gerilme her ikisine <em>zıt yönlerde</em> etkir.</p>
                  <div class="kutu puf" style="margin-top:10px">
                    <p style="margin:0">Cismi seçtiğin an, dünyanın geri kalanı senin için
                    sadece "kuvvet uygulayan şeyler" listesine dönüşür.</p>
                  </div>` },
 
         { baslik: 'Cismi kopar, kutuya indirge',
-          html: `<p>Masa, ip, zemin, eğik düzlem: hiçbirini çizme. Cismi tek başına,
+          html: `<p>Masa, ip, zemin, eğik düzlem — hiçbirini çizme. Cismi tek başına,
                  boş bir alanda bir <strong>kutu</strong> olarak çiz.</p>
                  <p>Kitap s.53’teki ifadeyle: <em>"cismin bir parçacık gibi davrandığı
                  kabul edilir"</em>. Kovanın kova, kitabın kitap olması hiçbir şeyi değiştirmez.</p>
@@ -119,7 +119,7 @@ turetim: {
 
         { baslik: 'Önce ağırlığı çiz',
           html: `<p>Ağırlık <strong>her zaman vardır</strong> ve <strong>her zaman düşey
-                 aşağı doğrudur</strong>: cisim eğik düzlemde de olsa, havada da olsa,
+                 aşağı doğrudur</strong> — cisim eğik düzlemde de olsa, havada da olsa,
                  asansörde de olsa.</p>
                  <div class="formul" style="max-width:200px"><div class="fm">G = m·g</div></div>
                  <div class="kutu dikkat" style="margin-top:10px">
@@ -137,7 +137,7 @@ turetim: {
                    <li>Biri itiyor/çekiyorsa → <strong>F</strong></li>
                  </ul>
                  <p><strong>Değmiyorsa yoktur.</strong> Simülasyondaki 3. senaryoda (asılı kova)
-                 ve 6. senaryoda (serbest düşme) cisim hiçbir yüzeye değmez:
+                 ve 6. senaryoda (serbest düşme) cisim hiçbir yüzeye değmez —
                  bu yüzden o diyagramlarda <strong>N kuvveti yoktur</strong>.</p>` },
 
         { baslik: 'Eksenleri akıllıca seç',
@@ -158,7 +158,7 @@ turetim: {
       adimlar: [
         { baslik: 'Sorunu gör',
           html: `<p>Eğik düzlemde <strong>N</strong> eğime diktir, <strong>hareket</strong>
-                 eğim boyuncadır: ikisi düzgün duruyor. Ama <strong>G düşeydir</strong>,
+                 eğim boyuncadır — ikisi düzgün duruyor. Ama <strong>G düşeydir</strong>,
                  yani ikisine de uymaz.</p>
                  <p>Çözüm: N’yi döndürmek yerine <strong>G’yi iki bileşene ayırmak</strong>.</p>` },
 
@@ -185,7 +185,7 @@ turetim: {
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0"><strong>sin mi cos mu?</strong> Şu kontrolü yap:
                    α = 0 (düz zemin) olsaydı cisim kaymamalı. sin0° = 0 olduğundan
-                   G∥ = 0 çıkar: doğru. Karıştırdığında bu testi uygula, hangisinin
+                   G∥ = 0 çıkar — doğru. Karıştırdığında bu testi uygula, hangisinin
                    hangisi olduğunu 3 saniyede bulursun.</p>
                  </div>` },
 
@@ -198,7 +198,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">a = g·sin α</div>
                  </div>
                  <p style="margin-top:12px"><strong>Kütle sadeleşti.</strong> Sürtünmesiz eğik
-                 düzlemde 1 kg’lık da 100 kg’lık da aynı ivmeyle kayar: tıpkı serbest düşmedeki
+                 düzlemde 1 kg’lık da 100 kg’lık da aynı ivmeyle kayar — tıpkı serbest düşmedeki
                  gibi. Zaten α = 90° koyarsan a = g çıkar: eğik düzlem dikleşince serbest düşmeye
                  dönüşür.</p>` }
       ]
@@ -253,7 +253,7 @@ puf: {
   html: `
     <p><strong>1 · "Hareket kuvveti" diye bir kuvvet yoktur.</strong> Cisim hareket ediyor
     diye hareket yönünde bir ok çizme. Sabit hızla giden bir cisme hareket yönünde
-    hiçbir kuvvet etki etmiyor olabilir: Newton I bunu söylüyor.</p>
+    hiçbir kuvvet etki etmiyor olabilir — Newton I bunu söylüyor.</p>
 
     <p><strong>2 · Değmiyorsa N yoktur.</strong> Havadaki, ipte asılı, serbest düşen cisimlerde
     normal kuvvet <em>yoktur</em>. Öğrenciler alışkanlıkla her diyagrama N çizer.</p>
@@ -267,7 +267,7 @@ puf: {
     <p><strong>5 · Eksenleri ivme yönüne göre seç.</strong> Eğik düzlemde eksenleri döndür,
     asansörde düşey al. Diğer eksende sağ taraf sıfır olur, tek denklemle çözersin.</p>
 
-    <div class="alt-kutu">
+    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
       <p style="margin:0 0 8px;font-weight:600">Ezberlenecek üç sonuç</p>
       <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Durum</th><th>Sonuç</th></tr></thead>
@@ -281,7 +281,7 @@ puf: {
 
     <p style="margin-bottom:0"><strong>6 · İpin iki ucu zıt yönlüdür.</strong> Bir ip iki cismi
     bağlıyorsa gerilme her iki cisme de <em>ipin merkezine doğru</em> etkir. Bir cisme sağa
-    çekiyorsa diğerine sola çeker, ama <strong>büyüklüğü aynıdır</strong> (ip esnemez ve
+    çekiyorsa diğerine sola çeker — ama <strong>büyüklüğü aynıdır</strong> (ip esnemez ve
     kütlesiz kabul edilir).</p>`,
 
   ornekler: [
@@ -310,7 +310,7 @@ puf: {
       taktikle: `<p>İvme aşağı ⟹ kişi <strong>hafif</strong> hisseder ⟹ N &lt; G.</p>
                  <p style="margin-bottom:0">N = m(g − a) = 60 · (10 − 3) = <strong>420 N</strong></p>`,
       uzun: `<p>Aşağı pozitif alalım: G − N = m·a ⟹ N = m(g − a) = 60·7 = 420 N</p>
-             <p style="color:var(--text-3)">a = 10 olsaydı N = 0 çıkardı: serbest düşüş,
+             <p style="color:var(--text-3)">a = 10 olsaydı N = 0 çıkardı — serbest düşüş,
              yani tam ağırlıksızlık.</p>`
     }
   ]
@@ -346,8 +346,8 @@ osym: [
     cozum: `
       <p>Temas listesini çıkaralım:</p>
       <ul>
-        <li><strong>Ağırlık (G)</strong>: her zaman var ✓</li>
-        <li><strong>Normal kuvvet (N)</strong>: buza değiyor ✓</li>
+        <li><strong>Ağırlık (G)</strong> — her zaman var ✓</li>
+        <li><strong>Normal kuvvet (N)</strong> — buza değiyor ✓</li>
         <li>İp yok ⟹ T yok</li>
         <li>İten kimse yok ⟹ F yok</li>
         <li>Sürtünmesiz ⟹ f yok</li>
@@ -357,7 +357,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı (3 tane)</strong> bu sorudaki asıl tuzaktır:
         kızak hareket ettiği için sağa doğru bir "hareket kuvveti" çizenler oraya düşer.
-        <strong>Böyle bir kuvvet yoktur.</strong> Hareket, kuvvetin sonucu değil:
+        <strong>Böyle bir kuvvet yoktur.</strong> Hareket, kuvvetin sonucu değil —
         kuvvet olmadan da süren bir durumdur.
         <br>Kendine sor: sağa doğru bu kuvveti <em>hangi cisim</em> uyguluyor? Cevap yoksa ok da yoktur.</p>
       </div>
@@ -385,12 +385,12 @@ osym: [
         <li><strong>A · İvme:</strong> a = g·sin α ⟹ <span style="color:var(--green)">artar</span></li>
         <li><strong>B · G∥:</strong> m·g·sin α ⟹ <span style="color:var(--green)">artar</span></li>
         <li><strong>C · Normal kuvvet:</strong> N = m·g·cos α ⟹ <span style="color:var(--red)">azalır</span> ✓</li>
-        <li><strong>D · Ağırlık:</strong> G = m·g, açıyla hiç ilgisi yok, <strong>değişmez</strong></li>
+        <li><strong>D · Ağırlık:</strong> G = m·g — açıyla hiç ilgisi yok, <strong>değişmez</strong></li>
         <li><strong>E · Kütle:</strong> Madde miktarı, değişmez</li>
       </ul>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>D şıkkı ciddi bir kavram tuzağıdır.</strong> Açı arttıkça
-        cismin <em>ağırlığı</em> değişmez: değişen şey ağırlığın <strong>bileşenleridir</strong>.
+        cismin <em>ağırlığı</em> değişmez — değişen şey ağırlığın <strong>bileşenleridir</strong>.
         G hep m·g’dir ve hep düşey aşağı doğrudur.
         <br><strong>Sağlama:</strong> α = 90° koy. Düzlem dikey olur, cisim serbest düşer:
         N = m·g·cos90° = 0 (düzlem artık cisme değmiyor), a = g·sin90° = g. İkisi de doğru.</p>
@@ -438,7 +438,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Verilenleri ayıkla',
-        metin: 'İki açı (20° ve 37°), sınır ivme 3 m/s², g = 10 m/s². Kayakçının kütlesi <strong>verilmemiş</strong>: bu tesadüf değil, sorunun bir parçası.' },
+        metin: 'İki açı (20° ve 37°), sınır ivme 3 m/s², g = 10 m/s². Kayakçının kütlesi <strong>verilmemiş</strong> — bu tesadüf değil, sorunun bir parçası.' },
       { bas: 'Olayı fiziksel modele çevir',
         metin: 'Kayakçı sürtünmesiz eğik düzlemde kayan bir cisimdir. Serbest cisim diyagramında iki kuvvet var: <strong>G (düşey)</strong> ve <strong>N (eğime dik)</strong>.' },
       { bas: 'Formülü sen çıkar',
@@ -446,9 +446,9 @@ baglam: [
       { bas: 'İki eğimi hesapla',
         metin: '20° için: a = 10 · 0,34 = <strong>3,4 m/s²</strong> → sınırı aşıyor<br>37° için: a = 10 · 0,6 = <strong>6 m/s²</strong> → sınırı katbekat aşıyor' },
       { bas: 'Kütle sorusunu yanıtla',
-        metin: 'a = g·sin α ifadesinde <strong>kütle yok</strong>, çünkü m·a = m·g·sin α denkleminde sadeleşti. Ağır kayakçıya daha büyük kuvvet etki eder ama eylemsizliği de aynı oranda büyüktür. <strong>Ayrı piste gerek yok.</strong>' },
+        metin: 'a = g·sin α ifadesinde <strong>kütle yok</strong> — çünkü m·a = m·g·sin α denkleminde sadeleşti. Ağır kayakçıya daha büyük kuvvet etki eder ama eylemsizliği de aynı oranda büyüktür. <strong>Ayrı piste gerek yok.</strong>' },
       { bas: 'Yorumla',
-        metin: 'Her iki eğim de sınırı aşıyor. Kural a ≤ 3 m/s² ise gereken açı: sin α ≤ 0,3 ⟹ <strong>α ≤ 17,5°</strong>. Gerçek pistlerde kar sürtünmesi ivmeyi düşürdüğü için sınır biraz daha esnektir, ama sürtünmesiz hesap her zaman <em>en kötü durumu</em> verir, güvenlikte doğru yaklaşım budur.' }
+        metin: 'Her iki eğim de sınırı aşıyor. Kural a ≤ 3 m/s² ise gereken açı: sin α ≤ 0,3 ⟹ <strong>α ≤ 17,5°</strong>. Gerçek pistlerde kar sürtünmesi ivmeyi düşürdüğü için sınır biraz daha esnektir — ama sürtünmesiz hesap her zaman <em>en kötü durumu</em> verir, güvenlikte doğru yaklaşım budur.' }
     ],
     secenekler: [
       'Sadece 20° uygun; kütle ivmeyi etkilemez',
@@ -466,7 +466,7 @@ baglam: [
       ağır kayakçı da hafif kayakçı da aynı ivmeyle kayar.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C ve D şıkları</strong> "ağır olan daha hızlı kayar"
-        sezgisine oynuyor: bu, 1.1’de kırdığımız Aristoteles yanılgısının eğik düzlem hâli.
+        sezgisine oynuyor — bu, 1.1’de kırdığımız Aristoteles yanılgısının eğik düzlem hâli.
         <br><strong>A şıkkı</strong> ise 3,4 ile 3 arasındaki farkı gözden kaçıranlar için.
         Sınır değerine yakın sonuçlarda <em>küçük farkı görmezden gelmek</em> mühendislikte
         en pahalı hatalardan biridir.</p>
@@ -519,7 +519,7 @@ baglam: [
       { bas: 'Görevlinin hissini açıkla',
         metin: 'Valizin ağırlığı üç durumda da <strong>200 N</strong>, hiç değişmedi. Değişen şey görevlinin <em>uygulamak zorunda kaldığı kuvvet</em>. "Ağırlaştı" dediği şey aslında kendi kas kuvvetidir.' },
       { bas: 'Yorumla',
-        metin: 'Bu yüzden asansörde hissettiğin ağırlaşma/hafifleme sadece <strong>kalkış ve duruş anlarında</strong> olur, yani ivmenin olduğu anlarda. Yolculuğun sabit hızlı kısmında hiçbir şey hissetmezsin.' }
+        metin: 'Bu yüzden asansörde hissettiğin ağırlaşma/hafifleme sadece <strong>kalkış ve duruş anlarında</strong> olur — yani ivmenin olduğu anlarda. Yolculuğun sabit hızlı kısmında hiçbir şey hissetmezsin.' }
     ],
     secenekler: [
       '240 N · 200 N · 160 N',
@@ -539,7 +539,7 @@ baglam: [
       </ul>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> "ağırlık değişmez, o hâlde kuvvet de
-        değişmez" diyenler için. Ağırlık gerçekten değişmiyor, ama <em>uygulanan kuvvet</em>
+        değişmez" diyenler için. Ağırlık gerçekten değişmiyor — ama <em>uygulanan kuvvet</em>
         ağırlık değil.
         <br><strong>Ayrım cümlesi:</strong> Asansörde <strong>ağırlığın değişmez, hissettiğin
         değişir.</strong> Hissettiğin şey seni taşıyan kuvvettir (elin, zeminin, tartının),

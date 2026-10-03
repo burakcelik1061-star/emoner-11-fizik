@@ -9,7 +9,7 @@ const F = window.F11;
 
 F.konuKaydet('u2-alternatif-akim', {
 
-ozet: `Jeneratör sinüs biçiminde gerilim üretiyordu, yani <strong>sürekli yön değiştiren</strong>
+ozet: `Jeneratör sinüs biçiminde gerilim üretiyordu — yani <strong>sürekli yön değiştiren</strong>
 bir akım. Prizden gelen elektrik budur. Peki sürekli değişen bir şeye nasıl
 “220 volt” diyoruz? Cevap <strong>etkin değer</strong> kavramında ve bu konunun tamamı
 onun üzerine kurulu.`,
@@ -31,7 +31,7 @@ tam bir çevrim yapar, yani <strong>100 kez</strong> sıfırdan geçer. Periyot
 
 <h3 style="margin-top:22px">“220 V” neyin değeri?</h3>
 <p>Gerilim sürekli değişiyorsa hangi sayıyı yazacağız? Ortalamasını alsak
-<strong>sıfır çıkar</strong>: yarısı pozitif, yarısı negatif. Tepe değerini yazsak,
+<strong>sıfır çıkar</strong> — yarısı pozitif, yarısı negatif. Tepe değerini yazsak,
 gerilim zamanın çoğunda ondan küçük olduğu için yanıltıcı olur.</p>
 
 <div class="kutu puf" style="margin:16px 0">
@@ -60,7 +60,7 @@ gerilim zamanın çoğunda ondan küçük olduğu için yanıltıcı olur.</p>
 
 <h3 style="margin-top:22px">Neden √2?</h3>
 <p>Isıtma gücü akımın <strong>karesiyle</strong> orantılıdır (<code>P = i²R</code>).
-Kare alınınca negatif değerler de pozitife döner: bu yüzden ortalama sıfır çıkmaz.
+Kare alınınca negatif değerler de pozitife döner — bu yüzden ortalama sıfır çıkmaz.
 Sinüsün karesinin ortalaması <strong>tam olarak yarısıdır</strong>. Karekökünü alınca
 <code>1/√2</code> çıkar. Adı da buradan gelir: <strong>karekök-ortalama-kare</strong>
 (root-mean-square, RMS).</p>
@@ -83,7 +83,7 @@ Sinüsün karesinin ortalaması <strong>tam olarak yarısıdır</strong>. Karek�
 </div>
 <p>Akım ters yöne aksa da direnç yine ısınır. Simülasyondaki P−t grafiğine bak:
 sıfırın altına hiç inmiyor ve <strong>frekansı gerilimin iki katı</strong>. Ampul de
-bu yüzden saniyede <strong>100 kez</strong> parlayıp sönüyor: gözümüz bu kadar hızlı
+bu yüzden saniyede <strong>100 kez</strong> parlayıp sönüyor — gözümüz bu kadar hızlı
 değişimi ayırt edemediği için sabit görünüyor.</p>
 
 <div class="formul" style="max-width:320px;margin:14px 0">
@@ -95,7 +95,7 @@ değişimi ayırt edemediği için sabit görünüyor.</p>
 savundu. AC kazandı ve sebebi tek bir cümleyle özetlenebilir:</p>
 <div class="kutu nott" style="margin:16px 0">
   <p style="margin:0"><strong>Alternatif akımın gerilimi transformatörle kolayca
-  değiştirilebilir.</strong> Doğru akımda bu mümkün değildir, çünkü transformatör
+  değiştirilebilir.</strong> Doğru akımda bu mümkün değildir — çünkü transformatör
   <em>değişen</em> akıya ihtiyaç duyar. Bir sonraki konu tamamen budur.</p>
 </div>`,
 
@@ -127,7 +127,7 @@ turetim: {
         { baslik: 'Ortalama gerilim işe yaramaz',
           html: `<p>Sinüsün bir periyottaki ortalaması <strong>sıfırdır</strong>: pozitif
                  yarım ile negatif yarım birbirini götürür. Ama ampul yanıyor, ısıtıcı
-                 ısıtıyor: demek ki sıfır doğru ölçüt değil.</p>` },
+                 ısıtıyor — demek ki sıfır doğru ölçüt değil.</p>` },
 
         { baslik: 'Güce bak, karesi var',
           html: `<p>Isıtma gücü <code>P = i²R</code>&rsquo;dir. <strong>Kare</strong> alındığı
@@ -156,7 +156,7 @@ turetim: {
 
         { baslik: 'Gücü izle',
           html: `<p>P = i²R. Akım pozitif tepedeyken güç en büyük. Akım sıfırken güç sıfır.
-                 Akım <strong>negatif</strong> tepedeyken güç <strong>yine en büyük</strong>,
+                 Akım <strong>negatif</strong> tepedeyken güç <strong>yine en büyük</strong> —
                  çünkü kare alınıyor.</p>` },
 
         { baslik: 'Say',
@@ -169,7 +169,7 @@ turetim: {
           html: `<p>50 Hz şebekede lambaya giden güç saniyede <strong>100 kez</strong> sıfıra iner.
                  Akkor ampulün teli bu kısa sürede soğuyamadığı için ışığı yalnızca birkaç yüzde
                  titrer; zaten gözümüz yaklaşık 25 Hz üstünü ayırt edemez.</p>
-                 <p>Ama kamerayla çekersen bu titreşimi görürsün: eski floresan lambaların
+                 <p>Ama kamerayla çekersen bu titreşimi görürsün — eski floresan lambaların
                  videolarda titremesinin sebebi budur.</p>` }
       ]
     },
@@ -179,7 +179,7 @@ turetim: {
         { baslik: 'İletim kaybını yaz',
           html: `<p>Kablolarda kaybedilen güç:</p>
                  <div class="formul" style="max-width:200px"><div class="fm">P<sub>kayıp</sub> = i²·R<sub>kablo</sub></div></div>
-                 <p>Kaybı azaltmanın en etkili yolu <strong>akımı küçültmektir</strong>,
+                 <p>Kaybı azaltmanın en etkili yolu <strong>akımı küçültmektir</strong> —
                  çünkü karesi alınıyor.</p>` },
 
         { baslik: 'Akımı nasıl küçültürsün?',
@@ -192,7 +192,7 @@ turetim: {
                  <strong>yükseltip sonra düşürebilmek</strong> gerekiyor.</p>` },
 
         { baslik: 'İşte AC’nin üstünlüğü',
-          html: `<p>Transformatör bunu kolayca yapar, ama yalnızca <strong>değişen</strong>
+          html: `<p>Transformatör bunu kolayca yapar — ama yalnızca <strong>değişen</strong>
                  akıyla çalışır. Doğru akımda akı sabittir, transformatör çalışmaz.</p>
                  <div class="formul" style="max-width:320px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">AC ⟹ gerilim değiştirilebilir ⟹ uzağa taşınabilir</div>
@@ -240,7 +240,7 @@ puf: {
     </table>
 
     <p style="margin-top:14px"><strong>7 · Isıtıcı, ampul, fırın gibi cihazlarda AC ile DC
-    farkı yoktur</strong>: ikisi de aynı ısıyı verir (etkin değer eşitse). Fark, motor ve
+    farkı yoktur</strong> — ikisi de aynı ısıyı verir (etkin değer eşitse). Fark, motor ve
     elektronik cihazlarda ortaya çıkar.</p>`
 },
 
@@ -263,13 +263,13 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1: Verilen değer hangisi?</strong> “220 V&rsquo;luk şebeke” ifadesi
+      <p><strong>Adım 1 — Verilen değer hangisi?</strong> “220 V&rsquo;luk şebeke” ifadesi
       <strong>etkin</strong> değeri gösterir. Ekstra bir çevrim yapmaya gerek yok.</p>
-      <p><strong>Adım 2: Etkin akım.</strong> Ohm yasası etkin değerlerle doğrudan çalışır:</p>
+      <p><strong>Adım 2 — Etkin akım.</strong> Ohm yasası etkin değerlerle doğrudan çalışır:</p>
       <div class="formul" style="max-width:280px;margin:10px 0">
         <div class="fm">i<sub>etkin</sub> = V<sub>etkin</sub>/R = 220/44 = <strong>5 A</strong></div>
       </div>
-      <p><strong>Adım 3: Ortalama güç.</strong></p>
+      <p><strong>Adım 3 — Ortalama güç.</strong></p>
       <div class="formul" style="max-width:320px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">P = V<sub>etkin</sub>·i<sub>etkin</sub> = 220 · 5 = 1100 W</div>
       </div>
@@ -335,7 +335,7 @@ osym: [
         <br><strong>C şıkkı</strong> tepe değerini etkin sanıyor.
         <br><strong>D şıkkı</strong> √2 ile bölmek yerine <em>çarpıyor</em> (141·1,41 = 199).
         <br><strong>Grafik okuma kuralı:</strong> Eğrinin <strong>tepesi V_maks</strong>&rsquo;tır,
-        etkin değer grafikte <em>görünmez</em>, hesaplanır. Periyot, eğrinin kendini
+        etkin değer grafikte <em>görünmez</em> — hesaplanır. Periyot, eğrinin kendini
         tekrarladığı en kısa süredir; iki tepe arası ya da üç ardışık sıfırdan geçiş.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -359,11 +359,11 @@ baglam: [
       <svg viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg" role="img"
            aria-label="Gerilim sinüsü ve gücün iki kat frekansla titreşmesi">
         <rect width="520" height="200" fill="#17223A"/>
-        <text x="20" y="28" fill="#38D6E0" font-size="12" font-family="system-ui">V: 50 Hz</text>
+        <text x="20" y="28" fill="#38D6E0" font-size="12" font-family="system-ui">V — 50 Hz</text>
         <path d="M20 60 q 25 -30 50 0 q 25 30 50 0 q 25 -30 50 0 q 25 30 50 0 q 25 -30 50 0 q 25 30 50 0"
               stroke="#38D6E0" stroke-width="2.4" fill="none"/>
         <path d="M20 60 H500" stroke="#4A5F86" stroke-width="1"/>
-        <text x="20" y="116" fill="#FF6B6B" font-size="12" font-family="system-ui">P: 100 Hz (hep pozitif)</text>
+        <text x="20" y="116" fill="#FF6B6B" font-size="12" font-family="system-ui">P — 100 Hz (hep pozitif)</text>
         <path d="M20 170 q 12 -40 25 0 q 12 40 25 0 q 12 -40 25 0 q 12 40 25 0 q 12 -40 25 0 q 12 40 25 0 q 12 -40 25 0 q 12 40 25 0 q 12 -40 25 0 q 12 40 25 0 q 12 -40 25 0 q 12 40 25 0"
               stroke="#FF6B6B" stroke-width="2.4" fill="none"/>
         <path d="M20 170 H500" stroke="#4A5F86" stroke-width="1"/>
@@ -399,7 +399,7 @@ baglam: [
       <p><strong>f_güç = 2 · f_gerilim = 100 Hz</strong> ⟹ saniyede 100 parlama.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> gücün frekansının iki kat olduğunu
-        kaçırıyor: bu konunun en ayırt edici ayrıntısıdır.
+        kaçırıyor — bu konunun en ayırt edici ayrıntısıdır.
         <br><strong>Pratik sonuç:</strong> Sinema ve televizyon çekimlerinde bu yüzden
         <em>flicker-free</em> aydınlatma kullanılır. Ayrıca sanayide dönen makinelerin
         yanında floresan aydınlatma <strong>tehlikelidir</strong>: stroboskobik etki
@@ -437,18 +437,18 @@ baglam: [
         <text x="260" y="106" fill="#6F84A8" font-size="11" font-family="system-ui" text-anchor="middle">R_kablo = 10 Ω</text>
       </svg>`,
     adimlar: [
-      { bas: 'Akımı bul: A seçeneği',
+      { bas: 'Akımı bul — A seçeneği',
         metin: 'P = V·i ⟹ i = P/V = 1 000 000 / 1000 = <strong>1000 A</strong>' },
-      { bas: 'Kaybı hesapla: A',
-        metin: 'P_kayıp = i²·R = 1000² · 10 = 1 000 000 · 10 = <strong>10 000 000 W = 10 MW</strong><br>Gönderilen güç 1 MW, kayıp 10 MW. <strong>İmkânsız</strong>: enerji zaten hatta yetmiyor, kablo erirdi.' },
-      { bas: 'Akımı bul: B seçeneği',
+      { bas: 'Kaybı hesapla — A',
+        metin: 'P_kayıp = i²·R = 1000² · 10 = 1 000 000 · 10 = <strong>10 000 000 W = 10 MW</strong><br>Gönderilen güç 1 MW, kayıp 10 MW. <strong>İmkânsız</strong> — enerji zaten hatta yetmiyor, kablo erirdi.' },
+      { bas: 'Akımı bul — B seçeneği',
         metin: 'i = 1 000 000 / 100 000 = <strong>10 A</strong>' },
-      { bas: 'Kaybı hesapla: B',
+      { bas: 'Kaybı hesapla — B',
         metin: 'P_kayıp = 10² · 10 = <strong>1000 W</strong><br>Yani gönderilen gücün yalnızca <strong>binde biri</strong>.' },
       { bas: 'Oranı yorumla',
         metin: 'Gerilim <strong>100 kat</strong> arttı ⟹ akım <strong>100 kat</strong> azaldı ⟹ kayıp <strong>10 000 kat</strong> azaldı. Çünkü kayıp akımın <strong>karesiyle</strong> orantılı.' },
       { bas: 'Peki neden eve 220 V geliyor?',
-        metin: '100 000 V evde ölümcül ve kullanılamaz olurdu. Bu yüzden gerilim şehir girişinde ve mahalle trafolarında kademeli olarak düşürülür. Yükseltip sonra düşürebilmek, <strong>alternatif akım sayesinde</strong> mümkündür: bir sonraki konunun tamamı budur.' }
+        metin: '100 000 V evde ölümcül ve kullanılamaz olurdu. Bu yüzden gerilim şehir girişinde ve mahalle trafolarında kademeli olarak düşürülür. Yükseltip sonra düşürebilmek, <strong>alternatif akım sayesinde</strong> mümkündür — bir sonraki konunun tamamı budur.' }
     ],
     secenekler: [
       'A’da kayıp 10 MW (taşınamaz), B’de 1000 W; kayıp i² ile orantılı olduğu için gerilim yükseltilir',
@@ -470,12 +470,12 @@ baglam: [
         <div class="fm" style="color:var(--accent)">V ×100 ⟹ i ÷100 ⟹ kayıp ÷10 000</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>D şıkkı</strong> oranı doğrusal sanıyor: kaybı belirleyen
+        <p style="margin:0"><strong>D şıkkı</strong> oranı doğrusal sanıyor — kaybı belirleyen
         akımın <em>karesidir</em>, bu yüzden 100 değil <strong>10 000</strong> kat fark var.
         <br><strong>Türkiye’de:</strong> İletim hatları 154 kV ve 400 kV, dağıtım 34,5 kV,
         mahalle trafosundan çıkış 400/230 V. Her kademede bir transformatör var.
         <br><strong>Bu soru aslında bir sonraki konunun gerekçesidir:</strong> Gerilimi
-        yükseltip düşürebilmek zorunluluktur ve bunu yapan cihaz transformatördür.</p>
+        yükseltip düşürebilmek zorunluluktur — ve bunu yapan cihaz transformatördür.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }

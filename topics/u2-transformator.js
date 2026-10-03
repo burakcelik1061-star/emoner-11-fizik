@@ -34,7 +34,7 @@ yoktur</strong>; aralarındaki tek bağ <strong>manyetik akıdır</strong>.</p>
 </div>
 
 <p>Her iki bobin de <strong>aynı akıyı</strong> görür. Faraday yasasına göre indüklenen
-gerilim sarım sayısıyla orantılıdır: bu yüzden oran doğrudan sarım oranına eşittir.</p>
+gerilim sarım sayısıyla orantılıdır — bu yüzden oran doğrudan sarım oranına eşittir.</p>
 
 <table class="degisken-tablo">
   <thead><tr><th>Durum</th><th>Tür</th><th>Sonuç</th></tr></thead>
@@ -59,7 +59,7 @@ gerilim sarım sayısıyla orantılıdır: bu yüzden oran doğrudan sarım oran
 
 <div class="formul" style="max-width:300px;margin:14px 0">
   <div class="fm">i₂ / i₁ = N₁ / N₂</div>
-  <div class="fm-ad">Akım, sarım sayısıyla TERS orantılı: dikkat, ters çevrik</div>
+  <div class="fm-ad">Akım, sarım sayısıyla TERS orantılı — dikkat, ters çevrik</div>
 </div>
 
 <h3 style="margin-top:22px">Neden doğru akımda çalışmaz?</h3>
@@ -71,7 +71,7 @@ gerilim sarım sayısıyla orantılıdır: bu yüzden oran doğrudan sarım oran
     <div class="fm">ΔΦ = 0 ⟹ ε = −N·(0)/Δt = <strong>0</strong></div>
   </div>
   <p style="margin:0">Yani ikincil bobinde <strong>hiçbir gerilim doğmaz</strong>.
-  Transformatör pile bağlanırsa çıkışta sıfır volt ölçülür: üstelik birincil sargı
+  Transformatör pile bağlanırsa çıkışta sıfır volt ölçülür — üstelik birincil sargı
   düşük dirençli olduğu için <strong>yanabilir</strong>.</p>
   <p style="margin:8px 0 0">Simülasyonda düzenek olarak “DC kaynak” seç: anahtar kapanırken çok kısa bir darbe görülür, sonra ikincil gerilim sıfır kalır.</p>
 </div>
@@ -87,7 +87,7 @@ gerilim sarım sayısıyla orantılıdır: bu yüzden oran doğrudan sarım oran
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Güç transformatörlerinin verimi
-<strong>%95-99</strong> arasındadır: makineler arasında en verimli olanlardandır,
+<strong>%95-99</strong> arasındadır — makineler arasında en verimli olanlardandır,
 çünkü hareketli parçası yoktur. Yine de büyük trafolar soğutma yağıyla soğutulur;
 o uğultu sesi ve radyatör benzeri kanatlar bu yüzdendir.</p>
 
@@ -143,7 +143,7 @@ turetim: {
 
         { baslik: 'Kritik noktayı fark et',
           html: `<p>Türetimin tamamı <code>ΔΦ/Δt</code> üzerine kuruldu. Bu terim
-                 <strong>sıfırsa</strong>, yani akı değişmiyorsa, hiçbir gerilim doğmaz.
+                 <strong>sıfırsa</strong> — yani akı değişmiyorsa — hiçbir gerilim doğmaz.
                  <strong>Transformatörün DC’de çalışmamasının kanıtı, kendi
                  türetiminin içindedir.</strong></p>` }
       ]
@@ -176,7 +176,7 @@ turetim: {
       ad: 'Kaynak makinesi neden böyle yapılır?',
       adimlar: [
         { baslik: 'Kaynak ne ister?',
-          html: `<p>Metali eritmek için <strong>çok yüksek akım</strong> gerekir:
+          html: `<p>Metali eritmek için <strong>çok yüksek akım</strong> gerekir —
                  yüzlerce amper. Yüksek gerilime ise ihtiyaç yoktur, hatta tehlikelidir.</p>` },
 
         { baslik: 'Hangi tür transformatör?',
@@ -195,7 +195,7 @@ turetim: {
                  <div class="formul" style="max-width:280px">
                    <div class="fm">i₂ = 20 · 110 = <strong>2200 A</strong></div>
                  </div>
-                 <p>Bu yüzden kaynak makineleri ağırdır ve kısa süreli çalıştırılır:
+                 <p>Bu yüzden kaynak makineleri ağırdır ve kısa süreli çalıştırılır —
                  bakır kaybı (i²R) çok büyüktür.</p>` }
       ]
     }
@@ -219,7 +219,7 @@ puf: {
     Sebebi: ΔΦ = 0 ⟹ ε = 0. Bu, ünitenin en sık sorulan kavram sorusudur.</p>
 
     <p><strong>3 · Güç korunur, gerilim korunmaz.</strong> “Transformatör gücü artırır”
-    diyen şık her zaman yanlıştır. Artan tek şey gerilim ya da akımdır: ikisi birden asla.</p>
+    diyen şık her zaman yanlıştır. Artan tek şey gerilim ya da akımdır — ikisi birden asla.</p>
 
     <p><strong>4 · Verim sorularında yön:</strong> <code>P₂ = verim · P₁</code>.
     Çıkan güç girenden <strong>küçüktür</strong>. Ters yazarsan enerji üretmiş olursun.</p>
@@ -239,7 +239,7 @@ puf: {
     kalın olan <em>çıkış</em>, yüksek gerilim trafosunda kalın olan <em>giriş</em> tarafıdır.</p>
 
     <p><strong>7 · İki devre elektriksel olarak AYRIDIR.</strong> Aralarında yalnızca
-    manyetik bağ vardır. 1:1 transformatörler sırf bu yalıtım için kullanılır,
+    manyetik bağ vardır. 1:1 transformatörler sırf bu yalıtım için kullanılır —
     gerilimi değiştirmezler, yalnızca devreleri birbirinden ayırırlar.</p>
 
     <div class="kutu puf" style="margin-top:14px">
@@ -330,7 +330,7 @@ osym: [
         <li>Demir çekirdekteki girdap akımları ve histerezis (demir kaybı)</li>
       </ul>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>E şıkkı</strong> gereksiz veri arıyor: verim için
+        <p style="margin:0"><strong>E şıkkı</strong> gereksiz veri arıyor — verim için
         sarım sayılarına <em>gerek yok</em>, yalnızca giren ve çıkan güç yeterli.
         <br><strong>C şıkkı</strong> bir sağlama noktasıdır: verim <strong>asla
         %100&rsquo;ü geçemez</strong>. Böyle bir sonuç bulursan hesabında hata var demektir.
@@ -387,7 +387,7 @@ baglam: [
       { bas: 'Kaybı hesapla',
         metin: 'P_kayıp = 11,8 − 10 = <strong>1,8 W</strong>' },
       { bas: 'Kayıp nereye gidiyor?',
-        metin: 'Tamamı <strong>ısıya</strong>: sargı tellerinin direncinde, çekirdekteki girdap akımlarında ve şarj aletinin elektronik devrelerinde. Enerji yok olmaz: biçim değiştirir.' },
+        metin: 'Tamamı <strong>ısıya</strong>: sargı tellerinin direncinde, çekirdekteki girdap akımlarında ve şarj aletinin elektronik devrelerinde. Enerji yok olmaz — biçim değiştirir.' },
       { bas: 'Neden hissedilir kadar ısınıyor?',
         metin: '1,8 W küçük bir sayı gibi görünür ama <strong>çok küçük bir hacimde</strong> ve sürekli açığa çıkıyor. Kıyas: aynı güç, küçük bir LED lambanın tükettiği güce yakındır ve o da elle tutulamayacak kadar ısınır.' },
       { bas: 'Telefon dolduktan sonra',
@@ -413,7 +413,7 @@ baglam: [
         filtre ve regülatör devreleri vardır; kayıp onlarda birikir.
         <br><strong>Ülke ölçeğinde:</strong> Türkiye’de on milyonlarca şarj aleti var.
         Her birinin boşta birkaç yüz miliwatt tüketmesi, toplamda santral ölçeğinde
-        bir güce karşılık gelir: enerji verimliliği düzenlemelerinin bu tür cihazları
+        bir güce karşılık gelir — enerji verimliliği düzenlemelerinin bu tür cihazları
         hedeflemesinin sebebi budur.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -458,9 +458,9 @@ baglam: [
       { bas: 'Giriş akımını hesapla',
         metin: 'i₁ = P/V₁ = 250 000 / 34 500 ≈ <strong>7,2 A</strong>' },
       { bas: 'Oranı kontrol et',
-        metin: '625 / 7,2 ≈ 86 ✓: akım oranı, sarım oranının <strong>tersi</strong>. Gerilim 86 kat düştü, akım 86 kat arttı.' },
+        metin: '625 / 7,2 ≈ 86 ✓ — akım oranı, sarım oranının <strong>tersi</strong>. Gerilim 86 kat düştü, akım 86 kat arttı.' },
       { bas: 'Kablo kalınlığını açıkla',
-        metin: 'Kablo kalınlığını belirleyen şey gerilim değil <strong>akımdır</strong>. Giriş 7,2 A taşır: ince tel yeter. Çıkış 625 A taşır: çok kalın iletken gerekir, yoksa <code>i²R</code> ısısıyla erir.' },
+        metin: 'Kablo kalınlığını belirleyen şey gerilim değil <strong>akımdır</strong>. Giriş 7,2 A taşır — ince tel yeter. Çıkış 625 A taşır — çok kalın iletken gerekir, yoksa <code>i²R</code> ısısıyla erir.' },
       { bas: 'Yalıtımı da ekle',
         metin: 'Kalınlığı akım, <strong>yalıtım kalınlığını</strong> ise gerilim belirler. 34 500 V’luk ince kablonun yalıtımı çok kalındır; 400 V’luk kalın kablonunki incedir. İki farklı tasarım ölçütü.' }
     ],
@@ -485,11 +485,11 @@ baglam: [
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>D şıkkı</strong> gücün korunmasını akımın korunması
-        sanıyor: korunan <em>çarpımdır</em>, çarpanlar değil.
+        sanıyor — korunan <em>çarpımdır</em>, çarpanlar değil.
         <br><strong>C şıkkı</strong> ise kalınlığın sebebini yalıtıma bağlıyor; ikisi
         ayrı ölçüttür ve soru bunu ayırt edebilmeyi istiyor.
         <br><strong>Bu soru ünitenin özeti:</strong> Coulomb’dan başlayıp buraya geldik.
-        Sokak başındaki o gri kutunun içinde, bu ünitede öğrendiğin her şey var:
+        Sokak başındaki o gri kutunun içinde, bu ünitede öğrendiğin her şey var —
         akım, manyetik alan, akı ve indüksiyon.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

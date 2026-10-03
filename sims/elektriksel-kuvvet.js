@@ -451,7 +451,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     D.yaziHaleli(ctx, 'Nötr cisim kutuplanır: yakın yüzde ZIT yük ⟹ çekme > itme (Newton III yine geçerli)',
                  12, ekseny + 46, R.normal, '600 11px system-ui, sans-serif', 'left');
   else if (y2 !== 0)
-    D.yaziHaleli(ctx, '|F₁₂| = |F₂₁|: yükler farklı olsa bile eşittir (Newton III)',
+    D.yaziHaleli(ctx, '|F₁₂| = |F₂₁|  — yükler farklı olsa bile eşittir (Newton III)',
                  12, ekseny + 46, R.normal, '600 11px system-ui, sans-serif', 'left');
 
   {

@@ -498,7 +498,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['', K.metin2, '11px'],
       ['Aynı akım, DÜZ telde (r kadar uzakta):', K.metin2, '11px system-ui, sans-serif'],
       ['B_tel = ' + D.biçim(Btel * 1e6) + ' μT', R.kuvvet, '12px system-ui, sans-serif'],
-      ['Tek sarım π ≈ 3,14 kat · N sarım πN = ' + (p.i === 0 ? '–' : D.biçim(B / Btel, 0)) + ' kat', R.ivme, '700 12px system-ui, sans-serif']
+      ['Tek sarım π ≈ 3,14 kat · N sarım πN = ' + (p.i === 0 ? '—' : D.biçim(B / Btel, 0)) + ' kat', R.ivme, '700 12px system-ui, sans-serif']
     ];
   } else {
     const Bid = alanSolenoid(p.N, p.i, L), Bm = solenoidEksen(p.N, p.i, L, r, 0);
@@ -506,7 +506,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     satir = [
       ['B = μ₀ · n · i   (uzun solenoid, L ≫ r)', K.beyaz, '700 12px system-ui, sans-serif'],
       ['n = N/L = ' + D.biçim(p.N) + '/' + D.biçim(L, 3) + ' = ' + D.biçim(sarimYogunlugu(p)) + ' sarım/m', K.metin2, '11px system-ui, sans-serif'],
-      ['B = ' + D.biçim(Bid * 1e6) + ' μT: yarıçap formülde YOK', R.normal, '700 13px system-ui, sans-serif'],
+      ['B = ' + D.biçim(Bid * 1e6) + ' μT   — yarıçap formülde YOK', R.normal, '700 13px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
       ['Bu makarada L/r = ' + D.biçim(L / r, 1) + ':', K.metin2, '11px system-ui, sans-serif'],
       ['merkezde gerçek B = ' + D.biçim(Bm * 1e6) + ' μT (%' + D.biçim(Bid > 0 ? 100 * Bm / Bid : 100, 0) + ')', R.ivme, '700 12px system-ui, sans-serif'],
@@ -628,7 +628,7 @@ function okumalar(st, pHam) {
       { et: 'Akım  i',     dg: D.biçim(Math.abs(p.i), 2), birim: 'A' },
       { et: 'Yarıçap  r',  dg: D.biçim(p.r),              birim: 'cm' },
       { et: 'B (merkez)',  dg: D.biçim(B * 1e6),          birim: 'μT' },
-      { et: 'Tek düz tele göre (πN)', dg: p.i === 0 ? '–' : D.biçim(B / alanDuzTel(p.i, r), 0), birim: 'kat' }
+      { et: 'Tek düz tele göre (πN)', dg: p.i === 0 ? '—' : D.biçim(B / alanDuzTel(p.i, r), 0), birim: 'kat' }
     ];
   }
   const Bid = alanSolenoid(p.N, p.i, L), Bm = solenoidEksen(p.N, p.i, L, r, 0);
@@ -638,7 +638,7 @@ function okumalar(st, pHam) {
     { et: 'Akım  i',       dg: D.biçim(Math.abs(p.i), 2),    birim: 'A' },
     { et: 'B = μ₀ni',      dg: D.biçim(Bid * 1e6),           birim: 'μT' },
     { et: 'B merkez (gerçek)', dg: D.biçim(Bm * 1e6),        birim: 'μT' },
-    { et: 'Kutuplar',      dg: p.i > 0 ? 'S – N' : p.i < 0 ? 'N – S' : 'Yok', birim: '' }
+    { et: 'Kutuplar',      dg: p.i > 0 ? 'S — N' : p.i < 0 ? 'N — S' : 'Yok', birim: '' }
   ];
 }
 
