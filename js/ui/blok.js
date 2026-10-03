@@ -157,14 +157,16 @@ function turetimBloku(turetim, kimlik) {
 
   const ust = yollar.length > 1
     ? `<div class="sekmeler" role="tablist" aria-label="Türetim yolu">${yollar.map((y, i) =>
-        `<button type="button" class="sekme" role="tab" aria-selected="${i === 0}" data-yol="${i}">${kac(y.ad)}</button>`
+        `<button type="button" class="sekme" role="tab" aria-selected="${i === 0}" tabindex="${i === 0 ? 0 : -1}"
+                 aria-controls="turetim-govde-${kimlik}" data-yol="${i}">${kac(y.ad)}</button>`
       ).join('')}</div>`
     : `<p class="turetim-tek">${kac(yollar[0].ad)}</p>`;
 
   return `${blokAc('turetim', `data-turetim="${kimlik}"`)}
     <div class="turetim">
       ${ust}
-      <div class="turetim-govde" data-rol="turetim-govde" aria-live="polite"></div>
+      <div class="turetim-govde" id="turetim-govde-${kimlik}" data-rol="turetim-govde" aria-live="polite"
+           ${yollar.length > 1 ? 'role="tabpanel"' : ''}></div>
       <div class="turetim-alt">
         <button type="button" class="dgm" data-rol="t-geri">${ikon('arrow-left')}<span>Geri</span></button>
         <span class="adim-say" data-rol="t-say"></span>
@@ -212,11 +214,21 @@ function turetimBagla(kok, turetim) {
                           : `<span>İleri</span>${ikon('arrow-right')}`;
   }
 
-  sar.querySelectorAll('[data-yol]').forEach(b => b.addEventListener('click', () => {
-    sar.querySelectorAll('[data-yol]').forEach(x => x.setAttribute('aria-selected', 'false'));
-    b.setAttribute('aria-selected', 'true');
+  const sekmeler = [...sar.querySelectorAll('[data-yol]')];
+  const sekmeSec = b => {
+    sekmeler.forEach(x => { x.setAttribute('aria-selected', 'false'); x.tabIndex = -1; });
+    b.setAttribute('aria-selected', 'true'); b.tabIndex = 0;
     yolNo = +b.dataset.yol; adimNo = 0; ciz(false);
-  }));
+  };
+  sekmeler.forEach(b => b.addEventListener('click', () => sekmeSec(b)));
+  /* Sekme listesi deseni: ← → ile sekmeler arasında gezilir. */
+  sar.querySelector('[role="tablist"]')?.addEventListener('keydown', e => {
+    const i = sekmeler.indexOf(document.activeElement);
+    if (i < 0 || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    e.preventDefault();
+    const yeni = sekmeler[(i + (e.key === 'ArrowRight' ? 1 : -1) + sekmeler.length) % sekmeler.length];
+    yeni.focus(); sekmeSec(yeni);
+  });
   geri.addEventListener('click',  () => { adimNo--; ciz(true); });
   ileri.addEventListener('click', () => { adimNo++; ciz(true); });
 

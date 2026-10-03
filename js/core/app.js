@@ -265,6 +265,13 @@ function basla() {
   icerik = document.getElementById('icerik');
   kenarListe = document.getElementById('kenar-liste');
 
+  /* "İçeriğe atla" bir hash bağlantısı gibi davranırsa yönlendirici onu konu
+     sanır; bu yüzden odak doğrudan içerik alanına taşınır. */
+  document.getElementById('atla').addEventListener('click', e => {
+    e.preventDefault();
+    icerik.focus();
+  });
+
   const kenarDgm = document.getElementById('kenar-dgm');
   kenarDgm.innerHTML = ikon('list');
   kenarDgm.addEventListener('click', kenariDegistir);
@@ -303,10 +310,19 @@ function basla() {
 
   const sunumDgm = document.getElementById('sunum-dgm');
   sunumDgm.insertAdjacentHTML('afterbegin', ikon('presentation'));
+  /* Sunum modu: yazılar ve dokunma hedefleri büyür, kenar çubuğu daralır
+     (menü düğmesiyle yine açılabilir), simülasyon içeriğin tam genişliğini
+     alır. Çıkınca kenar çubuğu eski hâline döner. */
+  let sunumOncesiKenar = null;
   sunumDgm.addEventListener('click', () => {
-    const acik = document.documentElement.dataset.sunum === '1';
-    document.documentElement.dataset.sunum = acik ? '0' : '1';
+    const kok = document.documentElement;
+    const acik = kok.dataset.sunum === '1';
+    kok.dataset.sunum = acik ? '0' : '1';
     sunumDgm.setAttribute('aria-pressed', String(!acik));
+    sunumDgm.title = acik ? 'Sunum modu: yazılar büyür (F11 ile tam ekran)'
+                          : 'Sunum modundan çık';
+    if (!acik) { sunumOncesiKenar = kok.dataset.kenar || 'acik'; kok.dataset.kenar = 'kapali'; }
+    else if (sunumOncesiKenar) { kok.dataset.kenar = sunumOncesiKenar; sunumOncesiKenar = null; }
     window.dispatchEvent(new Event('resize'));
   });
 

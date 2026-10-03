@@ -91,18 +91,18 @@ class SimKoşucu {
         <div class="sim-tuval-sar ${cift ? '' : 'tek'}" style="--sim-h:${t.yukseklik || 340}px">
           <div class="sim-panel gercek">
             <span class="sim-etiket">gerçekçi görünüm</span>
-            <canvas data-panel="gercek"></canvas>
+            <canvas data-panel="gercek" role="img" aria-label="${t.baslik || 'Simülasyon'}: gerçekçi görünüm"></canvas>
           </div>
           ${cift ? `
           <div class="sim-panel">
             <span class="sim-etiket">klasik fizik görünümü</span>
-            <canvas data-panel="klasik"></canvas>
+            <canvas data-panel="klasik" role="img" aria-label="${t.baslik || 'Simülasyon'}: klasik fizik görünümü"></canvas>
           </div>` : ''}
         </div>
 
         ${t.grafikPanel ? `
         <div class="sim-panel grafik" style="--grafik-h:${t.grafikYukseklik || 190}px">
-          <canvas data-panel="grafik"></canvas>
+          <canvas data-panel="grafik" role="img" aria-label="${t.baslik || 'Simülasyon'}: grafikler"></canvas>
         </div>` : ''}
 
         <div class="sim-kontrol">

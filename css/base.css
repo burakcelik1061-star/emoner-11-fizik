@@ -106,6 +106,15 @@ canvas { display: block; }
 /* --- İkon: rengi metinden, boyu yazıdan --- */
 .ik { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: currentColor; vertical-align: -.2em; }
 
+/* --- İçeriğe atla: klavyeyle gelen, 35 konuluk listeyi geçebilsin --- */
+.atla {
+  position: absolute; left: var(--s4); top: var(--s2); z-index: var(--z-tamekran);
+  padding: var(--s2) var(--s4); border-radius: var(--r-sm);
+  background: var(--ink); color: var(--ink-text); font-weight: 600;
+  transform: translateY(-200%);
+}
+.atla:focus { transform: none; text-decoration: none; }
+
 /* --- Ekran okuyucu için gizli metin --- */
 .sr {
   position: absolute; width: 1px; height: 1px;
@@ -133,11 +142,14 @@ canvas { display: block; }
    uygulanırsa ızgara alanlarıyla çakışır ve yerleşim çöker. */
 @media (min-width: 901px) {
   :root[data-kenar="kapali"] #uygulama { grid-template-columns: 0 1fr; }
+  /* Daralmış kenar çubuğundaki bağlantılar klavyeyle odaklanmasın. */
+  :root[data-kenar="kapali"] #kenar { visibility: hidden; }
 }
 
 #ustbar  { grid-area: ustbar; min-width: 0; }
 #kenar   { grid-area: kenar; overflow: hidden; }
-#icerik  { grid-area: icerik; min-width: 0; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+#icerik  { grid-area: icerik; min-width: 0; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth;
+           container-type: inline-size; container-name: icerik; }
 
 /* --- Kaydırma çubuğu: temaya bağlı, ince --- */
 #icerik::-webkit-scrollbar,
@@ -162,8 +174,12 @@ canvas { display: block; }
   }
   #kenar {
     position: fixed; inset: 64px auto 0 0; width: 280px; z-index: var(--z-cekmece);
-    transform: translateX(-100%); transition: transform var(--dur-cekmece) var(--ease);
+    transform: translateX(-100%);
+    /* Kapanırken görünürlük kayma bittikten sonra kalkar; kapalı çekmecedeki
+       bağlantılar klavye odağı almaz. */
+    visibility: hidden;
+    transition: transform var(--dur-cekmece) var(--ease), visibility 0s linear var(--dur-cekmece);
     box-shadow: 0 8px 24px rgba(0,0,0,.35);   /* tek gölge: içeriğin üstünde açılan çekmece */
   }
-  :root[data-mobil="acik"] #kenar { transform: none; }
+  :root[data-mobil="acik"] #kenar { transform: none; visibility: visible; transition-delay: 0s; }
 }

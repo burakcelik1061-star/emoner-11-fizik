@@ -228,39 +228,22 @@
    Formül kartı her zaman sayfanın TERSİ olur:
      koyu sayfa  → aydınlık kart (simülasyonun kâğıt paneliyle aynı beyaz)
      açık sayfa  → koyu kart (simülasyonun pano paneliyle aynı aile)
-   Böylece formüller ve simülasyon aynı görsel katmanda durur, ikisi birden
-   sayfadan ayrışır. */
-:root[data-tema="koyu"] .formul {
+   Renkler sabit yazılmaz: kartın içinde token'lar ters temanın değerlerini
+   alır (tokens.css, "TERS KAPSAM"). Izgara dokusu gerçek bir yazı yüzeyi
+   olduğu için kalır, çok soluk. */
+:root[data-tema] .formul {
   background:
-    repeating-linear-gradient(0deg,  rgba(20,35,60,.028) 0 1px, transparent 1px 21px),
-    repeating-linear-gradient(90deg, rgba(20,35,60,.028) 0 1px, transparent 1px 21px),
-    #F4F7FB;
-  border-color: #CAD6E6;
+    repeating-linear-gradient(0deg,  var(--formul-doku) 0 1px, transparent 1px 21px),
+    repeating-linear-gradient(90deg, var(--formul-doku) 0 1px, transparent 1px 21px),
+    var(--formul-zemin);
+  border-color: var(--border);
 }
-:root[data-tema="koyu"] .formul .fm       { color: #121924; }
-:root[data-tema="koyu"] .formul .aciklama,
-:root[data-tema="koyu"] .formul .fm-ad    { color: #5B6880; }
-:root[data-tema="koyu"] .formul code,
-:root[data-tema="koyu"] .formul kbd       { background: #E2E9F3; color: #1B2436; }
-:root[data-tema="koyu"] .formul strong    { color: #0B121C; }
-
-/* --- Açık sayfada formül kartları KOYU zemine geçer ---
-   Formüller "yazı tahtasına yazılmış" gibi durur ve açık sayfada metinden
-   belirgin biçimde ayrışır. Koyu sayfada kart zaten sayfayla aynı ailededir,
-   orada ayrışmayı simülasyonun kâğıt paneli sağlar. */
-:root[data-tema="acik"] .formul {
-  background:
-    repeating-linear-gradient(0deg,  rgba(255,255,255,.025) 0 1px, transparent 1px 21px),
-    repeating-linear-gradient(90deg, rgba(255,255,255,.025) 0 1px, transparent 1px 21px),
-    #1B2436;
-  border-color: #2E3C57;
-}
-:root[data-tema="acik"] .formul .fm       { color: #F2F6FC; }
-:root[data-tema="acik"] .formul .aciklama,
-:root[data-tema="acik"] .formul .fm-ad    { color: #98A8C2; }
-:root[data-tema="acik"] .formul code,
-:root[data-tema="acik"] .formul kbd       { background: #2A3752; color: #EAF0FA; }
-:root[data-tema="acik"] .formul strong    { color: #FFFFFF; }
+:root[data-tema] .formul .fm      { color: var(--text-guclu); }
+:root[data-tema] .formul .aciklama,
+:root[data-tema] .formul .fm-ad   { color: var(--text-3); }
+:root[data-tema] .formul code,
+:root[data-tema] .formul kbd      { background: var(--surface-2); color: var(--text); }
+:root[data-tema] .formul strong   { color: var(--text-guclu); }
 math { font-size: 1.05em; }
 
 .degisken-tablo { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: .92em; }
@@ -353,6 +336,22 @@ math { font-size: 1.05em; }
   .sim-panel.grafik { height: calc(var(--grafik-h, 190px) * 1.28); }
 }
 .sim-tuval-sar.tek { grid-template-columns: 1fr; }
+
+/* Sunum modunda simülasyon, metin sütununun değil içerik alanının tam
+   genişliğini alır (container query: içerik alanı genişliği 100cqw).
+   Desteklemeyen eski tarayıcıda kural yok sayılır, sim normal genişlikte kalır. */
+:root[data-sunum="1"] .blok[data-genis] {
+  margin-inline: calc((100% - 100cqw) / 2 + var(--pad));
+}
+:root[data-sunum="1"] .sim-tuval-sar { height: calc(var(--sim-h, 340px) * 1.2); }
+:root[data-sunum="1"] .sim-panel.grafik { height: calc(var(--grafik-h, 190px) * 1.15); }
+
+/* Telefonda iki panel yan yana çok daralıyordu: alt alta dizilir,
+   her panel kendi tam yüksekliğini alır. */
+@media (max-width: 600px) {
+  .sim-tuval-sar { grid-template-columns: 1fr; height: auto; }
+  .sim-tuval-sar > .sim-panel { height: var(--sim-h, 340px); }
+}
 .sim-panel { position: relative; background: var(--surface-0); }
 .sim-panel canvas { width: 100%; height: 100%; }
 

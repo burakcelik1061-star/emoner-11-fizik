@@ -214,6 +214,7 @@
    ========================================================================== */
 :root[data-tema="koyu"] .formul {
   color-scheme: light;
+  --formul-zemin: #F4F7FB;  --formul-doku: rgba(20,35,60,.028);
   --text: #1F242B;  --text-2: #4B5461;  --text-3: #5A6370;  --text-guclu: #121924;
   --border: #CAD6E6;  --border-strong: #AFC0D6;
   --surface-2: #E2E9F3;  --surface-3: #D3DDEB;
@@ -224,6 +225,7 @@
 }
 :root[data-tema="acik"] .formul {
   color-scheme: dark;
+  --formul-zemin: #1B2436;  --formul-doku: rgba(255,255,255,.025);
   --text: #EEF2F8;  --text-2: #B6C3D9;  --text-3: #98A8C2;  --text-guclu: #F8FAFD;
   --border: #2E3C57;  --border-strong: #445A80;
   --surface-2: #2A3752;  --surface-3: #33425F;
