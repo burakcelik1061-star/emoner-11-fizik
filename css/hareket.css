@@ -1,0 +1,197 @@
+/* ==========================================================================
+   hareket.css: Hareketli arka plan, sayfa açılış geçişi, dokunma tepkileri
+   --------------------------------------------------------------------------
+   Arka plan üç sürümlüdür (gece / nebula / tahta) ve hareketi kapatılabilir:
+     <html data-zemin="gece|nebula|tahta" data-hareket="1|0">
+   Renkler tokens.css'te. Burada yalnız katman ve hareket kuralları var.
+
+   Performans (zayıf okul bilgisayarı): yalnız transform ve opacity
+   canlandırılır, filtre/bulanıklık yok. Simülasyon oynarken arka plan
+   durur (data-simoynuyor), işlemci simülasyona kalır.
+   ========================================================================== */
+
+/* ------------------------------------------------------ Arka plan katmanı */
+#zemin {
+  position: fixed; inset: 0; z-index: -1;
+  overflow: hidden; pointer-events: none;
+  background: var(--bg);
+}
+/* Üç ışık hâlesi: büyük, yumuşak kenarlı daireler yavaşça süzülür. */
+#zemin i {
+  position: absolute; width: 72vmax; height: 72vmax; border-radius: 50%;
+  background: radial-gradient(closest-side, var(--c), transparent);
+  will-change: transform;
+}
+#zemin .z1 { --c: var(--zemin-1); left: -22vmax; top: -34vmax; animation: suzul-1 38s ease-in-out infinite alternate; }
+#zemin .z2 { --c: var(--zemin-2); right: -26vmax; top: -18vmax; animation: suzul-2 47s ease-in-out infinite alternate; }
+#zemin .z3 { --c: var(--zemin-3); left: 18vmax; bottom: -44vmax; animation: suzul-3 55s ease-in-out infinite alternate; }
+
+@keyframes suzul-1 { to { transform: translate(20vmax, 14vmax) scale(1.18); } }
+@keyframes suzul-2 { to { transform: translate(-16vmax, 20vmax) scale(.86); } }
+@keyframes suzul-3 { to { transform: translate(14vmax, -22vmax) scale(1.12); } }
+
+/* Milimetrik ızgara hâlelerin üstünde durur. */
+#zemin::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--bg-cizgi) 1px, transparent 1px),
+    linear-gradient(90deg, var(--bg-cizgi) 1px, transparent 1px);
+  background-size: var(--bg-izgara) var(--bg-izgara);
+}
+
+/* Nebula sürümünde yıldızlar: sabit nokta dokusu, yavaşça göz kırpar. */
+#zemin .z-yildiz {
+  position: absolute; inset: 0; display: none;
+  background-image:
+    radial-gradient(circle at 20px 30px, var(--yildiz) 1.3px, transparent 2px),
+    radial-gradient(circle at 140px 90px, var(--yildiz) 1px, transparent 1.6px),
+    radial-gradient(circle at 230px 170px, var(--yildiz) 1.6px, transparent 2.4px),
+    radial-gradient(circle at 80px 200px, var(--yildiz) 1px, transparent 1.6px),
+    radial-gradient(circle at 290px 40px, var(--yildiz) 1.2px, transparent 1.9px),
+    radial-gradient(circle at 180px 240px, var(--yildiz) .9px, transparent 1.5px);
+  background-size: 320px 260px;
+  animation: goz-kirp 6s ease-in-out infinite alternate;
+}
+:root[data-tema="koyu"][data-zemin="nebula"] #zemin .z-yildiz { display: block; }
+@keyframes goz-kirp { from { opacity: .45; } to { opacity: 1; } }
+
+/* Hareket kapalı, simülasyon oynuyor ya da sistem "hareketi azalt" diyorsa
+   hâleler yerinde durur (görünüm aynı kalır, yalnız süzülme biter). */
+:root[data-hareket="0"] #zemin i,
+:root[data-hareket="0"] #zemin .z-yildiz { animation: none; }
+:root[data-simoynuyor="1"] #zemin i,
+:root[data-simoynuyor="1"] #zemin .z-yildiz { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  #zemin i, #zemin .z-yildiz { animation: none; }
+}
+
+/* ----------------------------------------------------- Arka plan seçici */
+.zemin-sec { position: relative; }
+.zemin-sec .dgm.ikon svg { width: 22px; height: 22px; fill: currentColor; }
+.zemin-panel {
+  position: absolute; right: 0; top: calc(100% + 10px); z-index: 60;
+  width: 270px; padding: 14px;
+  background: var(--surface-1); border: 1px solid var(--border-strong);
+  border-radius: var(--r);
+  box-shadow: 0 18px 40px -18px rgba(0,0,0,.6);
+  transform-origin: top right;
+  animation: panel-ac .2s cubic-bezier(.16,1,.3,1);
+}
+.zemin-panel[hidden] { display: none; }
+@keyframes panel-ac { from { opacity: 0; transform: translateY(-6px) scale(.97); } }
+.zemin-panel-bas {
+  font-size: .76em; font-weight: 600; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text-3); margin: 0 2px 10px;
+}
+.zemin-secenekler { display: grid; gap: 8px; }
+.zemin-secenek {
+  display: flex; align-items: center; gap: 12px;
+  min-height: var(--touch); padding: 6px 10px 6px 6px;
+  background: var(--surface-2); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--r-sm);
+  font: inherit; font-size: .92em; text-align: left; cursor: pointer;
+  transition: border-color var(--dur) var(--ease), background var(--dur) var(--ease), transform var(--dur) var(--ease);
+}
+.zemin-secenek:hover { background: var(--surface-3); border-color: var(--border-strong); }
+.zemin-secenek:active { transform: scale(.98); }
+.zemin-secenek[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); }
+.zemin-secenek .ornek {
+  flex: 0 0 auto; width: 46px; height: 34px; border-radius: 6px;
+  border: 1px solid rgba(255,255,255,.12);
+}
+.zemin-secenek[data-zemin="gece"]   .ornek { background: var(--ornek-gece); }
+.zemin-secenek[data-zemin="nebula"] .ornek { background: var(--ornek-nebula); }
+.zemin-secenek[data-zemin="tahta"]  .ornek { background: var(--ornek-tahta); }
+.zemin-secenek .tik { margin-left: auto; color: var(--accent); opacity: 0; }
+.zemin-secenek[aria-pressed="true"] .tik { opacity: 1; }
+
+/* Aç/kapa anahtarı */
+.zemin-anahtar {
+  display: flex; align-items: center; gap: 12px; width: 100%;
+  min-height: var(--touch); margin-top: 12px; padding: 4px 4px 0;
+  background: none; border: 0; border-top: 1px solid var(--border);
+  color: var(--text); font: inherit; font-size: .92em; text-align: left; cursor: pointer;
+}
+.zemin-anahtar .anahtar {
+  margin-left: auto; flex: 0 0 auto; position: relative;
+  width: 46px; height: 26px; border-radius: 13px;
+  background: var(--surface-3); border: 1px solid var(--border-strong);
+  transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.zemin-anahtar .anahtar::after {
+  content: ""; position: absolute; left: 3px; top: 3px;
+  width: 18px; height: 18px; border-radius: 50%; background: var(--text-2);
+  transition: transform .22s cubic-bezier(.16,1,.3,1), background var(--dur) var(--ease);
+}
+.zemin-anahtar[aria-checked="true"] .anahtar { background: var(--accent); border-color: var(--accent); }
+.zemin-anahtar[aria-checked="true"] .anahtar::after { transform: translateX(20px); background: #06121F; }
+
+/* ----------------------------------------------------- Sayfa açılış geçişi
+   Konu ya da karşılama sayfası açılınca parçalar sırayla, yumuşakça yukarı
+   kayarak belirir. Yalnız başlangıç durumu uygulanır (backwards): geçiş
+   bitince öğede transform kalmaz, tam ekran ve tuval ölçüleri etkilenmez. */
+@keyframes giris { from { opacity: 0; transform: translateY(16px); } }
+@keyframes cizgi-ciz { from { transform: scaleX(0); } }
+
+:root:not([data-hareket="0"]) .sayfa > * { animation: giris .6s cubic-bezier(.16,1,.3,1) backwards; }
+:root:not([data-hareket="0"]) .sayfa > :nth-child(2) { animation-delay: 70ms; }
+:root:not([data-hareket="0"]) .sayfa > :nth-child(3) { animation-delay: 140ms; }
+:root:not([data-hareket="0"]) .sayfa > :nth-child(4) { animation-delay: 210ms; }
+:root:not([data-hareket="0"]) .sayfa > :nth-child(n+5) { animation-delay: 280ms; }
+/* Bölüm başlığının yanındaki çizgi soldan sağa çizilir. */
+.blok-bas::after { transform-origin: left center; }
+:root:not([data-hareket="0"]) .blok-bas::after { animation: cizgi-ciz .9s .25s cubic-bezier(.16,1,.3,1) backwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .sayfa > *, .blok-bas::after { animation: none !important; }
+}
+
+/* ------------------------------------------------- Dokunma ve üzerine gelme
+   Yalnız tıklanabilir öğeler tepki verir; düz metin kutuları kıpırdamaz
+   (tıklanır sanılmasın). */
+.dgm { transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease),
+                   box-shadow var(--dur) var(--ease), transform .12s var(--ease); }
+.dgm:hover { box-shadow: 0 0 0 3px var(--accent-soft); }
+.dgm:active { transform: scale(.97); }
+
+/* Karşılamadaki ünite kartları: hafifçe kalkar, ünite renginde parlar. */
+a.kart { transition: transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s cubic-bezier(.16,1,.3,1), border-color var(--dur) var(--ease); }
+a.kart:hover {
+  transform: translateY(-4px);
+  border-color: var(--b, var(--border-strong));
+  box-shadow: 0 16px 34px -18px var(--b, rgba(0,0,0,.5));
+}
+a.kart:active { transform: translateY(-1px); }
+
+/* Kenar çubuğundaki konu bağlantıları sağa doğru hafifçe kayar. */
+.konu-bag { transition: background var(--dur) var(--ease), color var(--dur) var(--ease), transform .2s cubic-bezier(.16,1,.3,1); }
+.konu-bag:hover { transform: translateX(3px); }
+.unite-bas .unite-no { transition: transform .2s cubic-bezier(.16,1,.3,1); }
+.unite-bas:hover .unite-no { transform: scale(1.1); }
+
+/* Soru seçenekleri ve türetim sekmeleri */
+.secenek { transition: background var(--dur) var(--ease), border-color var(--dur) var(--ease), transform .15s var(--ease); }
+.secenek:hover { transform: translateX(3px); }
+.secenek:active { transform: scale(.99); }
+.secenek.dogru { animation: dogru-vur .45s cubic-bezier(.16,1,.3,1); }
+.secenek.yanlis { animation: yanlis-salla .4s ease; }
+@keyframes dogru-vur { 40% { transform: scale(1.02); } }
+@keyframes yanlis-salla { 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-3px); } 80% { transform: translateX(2px); } }
+
+@media (prefers-reduced-motion: reduce) {
+  a.kart:hover, .konu-bag:hover, .secenek:hover, .unite-bas:hover .unite-no { transform: none; }
+  .secenek.dogru, .secenek.yanlis { animation: none; }
+}
+:root[data-hareket="0"] .secenek.dogru,
+:root[data-hareket="0"] .secenek.yanlis { animation: none; }
+
+/* ---------------------------------------------------- Dar ekranda üst bar
+   Arka plan düğmesi eklenince telefonda üst bar taşıyordu: künye ve alt
+   başlık gizlenir, sunum düğmesi yalnız simgeye iner. */
+@media (max-width: 600px) {
+  .ustbar-kunye, .marka span { display: none; }
+  #ustbar { gap: 8px; padding: 0 10px; }
+  #sunum-dgm { width: var(--touch); padding: 0; font-size: 0; }
+  #sunum-dgm span { font-size: 17px; }
+  .zemin-panel { right: -60px; width: min(270px, calc(100vw - 20px)); }
+}

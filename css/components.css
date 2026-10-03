@@ -543,3 +543,31 @@ select, input[type="number"], input[type="text"] {
 /* -------------------------------------------------- Boş / yükleniyor */
 .bos-durum { display: grid; place-items: center; height: 70vh; text-align: center; color: var(--text-3); }
 .bos-durum h2 { color: var(--text-2); }
+
+/* --------------------------------------------- Açık tema okunurluk düzeltmeleri
+   Kâğıt temada renkli rozetler koyulaştığı için üzerlerindeki yazı beyaz olur.
+   Bazı konu metinlerinde koyu tema için yazılmış sabit renkler (beyaz formül,
+   parlak turuncu/yeşil başlık) kâğıtta okunmuyordu: tema renklerine bağlanır. */
+:root[data-tema="acik"] .unite-no,
+:root[data-tema="acik"] .blok-bas .no,
+:root[data-tema="acik"] .konu-bag[aria-current="page"] .konu-rozet,
+:root[data-tema="acik"] .dgm.birincil { color: #FFFFFF; }
+:root[data-tema="acik"] .dgm.birincil:hover { background: #0F4E9C; }
+:root[data-tema="acik"] #icerik [style*="color:#fff"] { color: var(--text-guclu) !important; }
+:root[data-tema="acik"] #icerik [style*="color:#FF7A45"] { color: var(--b7) !important; }
+:root[data-tema="acik"] #icerik [style*="color:#35C08A"] { color: var(--b4) !important; }
+
+/* --------------------------------------------- Formül kartında ters renkler
+   Formül kartı sayfanın tersidir (koyu sayfada beyaz kart). Konu metnindeki
+   satır içi vurgu renkleri (var(--accent), var(--b3) ...) kartın zeminine
+   göre koyu ya da açık karşılığını alır; aksi hâlde beyaz kartta soluk kalır. */
+:root[data-tema="koyu"] .formul {
+  --accent: #1660BC; --amber: #8A5606; --violet: #6A46C0; --green: #13744F; --red: #A82C2C; --cyan: #0B6F79;
+  --b1: #1660BC; --b2: #0B6F79; --b3: #6A46C0; --b4: #13744F; --b5: #8A5606; --b6: #A23A55; --b7: #A2400F;
+  --u1: #1660BC; --u2: #8A5606; --u3: #6A46C0;
+}
+:root[data-tema="acik"] .formul {
+  --accent: #5AB0FF; --amber: #FFB020; --violet: #A78BFA; --green: #35C08A; --red: #FF6B6B; --cyan: #38D6E0;
+  --b1: #5AB0FF; --b2: #38D6E0; --b3: #A78BFA; --b4: #35C08A; --b5: #FFB020; --b6: #FF8FA3; --b7: #FF7A45;
+  --u1: #5AB0FF; --u2: #FFB020; --u3: #A78BFA;
+}

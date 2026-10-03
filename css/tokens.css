@@ -130,25 +130,25 @@
 
   --text:          #22272F;
   --text-2:        #515A66;
-  --text-3:        #6B7482;
+  --text-3:        #5B6371;
   --text-guclu:    #14181E;
 
-  --accent:        #1C6DD0;   --accent-soft: #DCE8F9;
+  --accent:        #1660BC;   --accent-soft: #DCE8F9;
   --amber:         #8A5606;   --amber-soft:  #F7EDD5;
   --violet:        #6A46C0;   --violet-soft: #E8E1F8;
   --green:         #13744F;   --green-soft:  #D8EFE4;
   --red:           #A82C2C;   --red-soft:    #F9DFDF;
   --cyan:          #0B6F79;   --cyan-soft:   #D4EEF0;
 
-  --b1: #1C6DD0;  --b1s: #DCE8F9;
+  --b1: #1660BC;  --b1s: #DCE8F9;
   --b2: #0B6F79;  --b2s: #D4EEF0;
   --b3: #6A46C0;  --b3s: #E8E1F8;
   --b4: #13744F;  --b4s: #D8EFE4;
   --b5: #8A5606;  --b5s: #F7EDD5;
-  --b6: #B24560;  --b6s: #F8DDE4;
-  --b7: #B24A19;  --b7s: #F8E1D3;
+  --b6: #A23A55;  --b6s: #F8DDE4;
+  --b7: #A2400F;  --b7s: #F8E1D3;
 
-  --u1: #1C6DD0;  --u1s: #DCE8F9;
+  --u1: #1660BC;  --u1s: #DCE8F9;
   --u2: #8A5606;  --u2s: #F7EDD5;
   --u3: #6A46C0;  --u3s: #E8E1F8;
 
@@ -156,4 +156,78 @@
   --bg-cizgi:  rgba(95,80,55,.07);
   --bg-isik1:  rgba(214,180,120,.26);
   --bg-isik2:  rgba(150,175,210,.20);
+}
+
+/* ==========================================================================
+   ARKA PLAN SÜRÜMLERİ: <html data-zemin="gece|nebula|tahta">
+   --------------------------------------------------------------------------
+   Üst bardaki "Arka plan" düğmesinden seçilir. Koyu temada zemin ve yüzey
+   tonlarını değiştirir; açık temada (kâğıt) yalnız ışık hâlelerinin rengi
+   değişir. Fizik büyüklüklerinin renkleri (--q-*) hiçbir sürümde değişmez.
+   ========================================================================== */
+:root {
+  /* hareketli ışık hâleleri (hareket.css) */
+  --zemin-1: rgba(40,120,255,.30);
+  --zemin-2: rgba(140,90,255,.22);
+  --zemin-3: rgba(30,200,230,.12);
+  --yildiz:  rgba(225,230,255,.85);
+  /* seçicideki küçük önizlemeler */
+  --ornek-gece:   radial-gradient(circle at 25% 20%, #2F73E0, transparent 60%), radial-gradient(circle at 85% 30%, #7A5AE0, transparent 55%), #060B17;
+  --ornek-nebula: radial-gradient(circle at 25% 25%, #B03CD8, transparent 60%), radial-gradient(circle at 85% 70%, #28C8E6, transparent 55%), #0B0920;
+  --ornek-tahta:  radial-gradient(circle at 25% 25%, #2F9C86, transparent 60%), radial-gradient(circle at 85% 70%, #E0A040, transparent 55%), #0B1716;
+}
+
+/* --- Derin gece (varsayılan): bugünkü mavi kimlik, daha derin ve canlı --- */
+:root[data-tema="koyu"][data-zemin="gece"] {
+  --bg:#060B17; --surface-0:#0C1426; --surface-1:#111C33; --surface-2:#182643; --surface-3:#203156;
+  --border:#22345A; --border-strong:#34508A;
+  --bg-cizgi: rgba(110,160,255,.055);
+  --accent:#5AB0FF; --text-3:#8597BA;
+  --b1:#5AB0FF; --b2:#3FE0EA; --b3:#B49BFF; --b4:#3FD69A; --b5:#FFBE3D; --b6:#FF9DB2; --b7:#FF8A57;
+  --u1:#5AB0FF; --u2:#FFBE3D; --u3:#B49BFF;
+}
+
+/* --- Nebula: mor-lacivert uzay, macenta ve camgöbeği ışık, yıldızlar --- */
+:root[data-tema="koyu"][data-zemin="nebula"] {
+  --bg:#0B0920; --surface-0:#120F2C; --surface-1:#18143A; --surface-2:#211B4B; --surface-3:#2B245E;
+  --border:#33296A; --border-strong:#4A3D92;
+  --text-2:#B7B2DA; --text-3:#9A94C8;
+  --bg-cizgi: rgba(170,150,255,.04);
+  --accent:#8EA2FF; --accent-soft:#241F5A;
+  --b1:#8EA2FF; --b2:#44E3EF; --b3:#C79BFF; --b4:#4BE0A6; --b5:#FFC24A; --b6:#FF8FC8; --b7:#FF8A5C;
+  --u1:#8EA2FF; --u2:#FFC24A; --u3:#E08BFF;
+  --zemin-1: rgba(190,60,220,.30);
+  --zemin-2: rgba(40,200,230,.20);
+  --zemin-3: rgba(110,80,255,.22);
+}
+
+/* --- Kara tahta: yeşilimsi arduvaz, tebeşir ızgarası, sıcak ışık --- */
+:root[data-tema="koyu"][data-zemin="tahta"] {
+  --bg:#0B1716; --surface-0:#10201E; --surface-1:#152A27; --surface-2:#1B3531; --surface-3:#22423D;
+  --border:#2A4A44; --border-strong:#3D6A61;
+  --text-2:#ACC8C1; --text-3:#7FA39B;
+  --bg-cizgi: rgba(220,240,230,.06);
+  --accent:#4FD1B8; --accent-soft:#123A33;
+  --b1:#5FB8FF; --b2:#4FD1B8; --b3:#B49BFF; --b4:#7EDB6A; --b5:#FFC14D; --b6:#FF9AA8; --b7:#FF8E5A;
+  --u1:#5FB8FF; --u2:#FFC14D; --u3:#B49BFF;
+  --zemin-1: rgba(60,200,170,.20);
+  --zemin-2: rgba(255,170,60,.15);
+  --zemin-3: rgba(80,160,230,.12);
+}
+
+/* --- Açık tema (kâğıt): yalnız hâlelerin tonu sürüme göre değişir --- */
+:root[data-tema="acik"] {
+  --zemin-1: rgba(214,180,120,.34);
+  --zemin-2: rgba(150,175,210,.30);
+  --zemin-3: rgba(190,160,220,.18);
+}
+:root[data-tema="acik"][data-zemin="nebula"] {
+  --zemin-1: rgba(205,130,225,.28);
+  --zemin-2: rgba(110,200,225,.28);
+  --zemin-3: rgba(160,140,240,.20);
+}
+:root[data-tema="acik"][data-zemin="tahta"] {
+  --zemin-1: rgba(90,190,165,.26);
+  --zemin-2: rgba(235,180,90,.30);
+  --zemin-3: rgba(120,170,220,.18);
 }

@@ -9,13 +9,21 @@
 try {
   var t = localStorage.getItem('fizik11-tema');
   document.documentElement.dataset.tema = (t === 'acik') ? 'acik' : 'koyu';
-} catch (e) { document.documentElement.dataset.tema = 'koyu'; }
+  var z = localStorage.getItem('fizik11-zemin');
+  document.documentElement.dataset.zemin = (z === 'nebula' || z === 'tahta') ? z : 'gece';
+  document.documentElement.dataset.hareket = localStorage.getItem('fizik11-hareket') === '0' ? '0' : '1';
+} catch (e) {
+  document.documentElement.dataset.tema = 'koyu';
+  document.documentElement.dataset.zemin = 'gece';
+  document.documentElement.dataset.hareket = '1';
+}
 </script>
 <title>Fizik 11 · Maarif Modeli</title>
 <meta name="description" content="11. sınıf fizik — konu anlatımı, formül türetimi, simülasyonlar, test taktikleri ve bağlam temelli sorular. Akıllı tahta için.">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/base.css">
 <link rel="stylesheet" href="css/components.css">
+<link rel="stylesheet" href="css/hareket.css">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>&#9883;</text></svg>">
 </head>
 <body>
@@ -30,6 +38,23 @@ try {
     </div>
     <div class="ustbar-bosluk"></div>
     <span class="ustbar-kunye" id="ustbar-kunye"></span>
+    <div class="zemin-sec">
+      <button class="dgm ikon" id="zemin-dgm" aria-expanded="false" aria-controls="zemin-panel"
+              aria-label="Arka plan" title="Arka plan">
+        <svg viewBox="0 0 256 256" aria-hidden="true"><path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm8,16.37a86.4,86.4,0,0,1,16,3V212.67a86.4,86.4,0,0,1-16,3Zm32,9.26a87.81,87.81,0,0,1,16,10.54V195.83a87.81,87.81,0,0,1-16,10.54ZM40,128a88.11,88.11,0,0,1,80-87.63V215.63A88.11,88.11,0,0,1,40,128Zm160,50.54V77.46a87.82,87.82,0,0,1,0,101.08Z"/></svg>
+      </button>
+      <div class="zemin-panel" id="zemin-panel" hidden>
+        <div class="zemin-panel-bas">Arka plan</div>
+        <div class="zemin-secenekler">
+          <button type="button" class="zemin-secenek" data-zemin="gece" aria-pressed="false"><span class="ornek"></span>Derin gece<span class="tik" aria-hidden="true">✓</span></button>
+          <button type="button" class="zemin-secenek" data-zemin="nebula" aria-pressed="false"><span class="ornek"></span>Nebula<span class="tik" aria-hidden="true">✓</span></button>
+          <button type="button" class="zemin-secenek" data-zemin="tahta" aria-pressed="false"><span class="ornek"></span>Kara tahta<span class="tik" aria-hidden="true">✓</span></button>
+        </div>
+        <button type="button" class="zemin-anahtar" id="hareket-dgm" role="switch" aria-checked="true">
+          Hareketli arka plan<span class="anahtar" aria-hidden="true"></span>
+        </button>
+      </div>
+    </div>
     <button class="dgm ikon" id="tema-dgm" aria-pressed="false"
             aria-label="Açık veya koyu tema" title="Açık temaya geç">☀</button>
     <button class="dgm" id="sunum-dgm" aria-pressed="false" title="Sunum modu — yazılar büyür (F11 ile tam ekran)">
@@ -58,6 +83,7 @@ try {
        4) uygulama kabuğu    5) simülasyonlar 6) konular    7) başlat
      ========================================================================= -->
 
+<script src="js/ui/zemin.js"></script>
 <script src="js/sim/draw2d.js"></script>
 <script src="js/sim/engine.js"></script>
 <script src="data/curriculum.js"></script>
