@@ -311,36 +311,30 @@ math { font-size: 1.05em; }
 .adim-nokta.gecti { background: var(--ink); }
 .dgm.tamam:disabled { opacity: 1; cursor: default; background: var(--green-soft); border-color: transparent; color: var(--green); }
 
-/* ------------------------------------------------------- Simülasyon */
+/* ------------------------------------------------------- Simülasyon
+   Sahnenin yıldızı simülasyon; çerçeve sakin kalır. Durum düz metinle
+   söylenir, yanıp sönen nokta ya da bulanık cam yok (zayıf ekran kartı
+   hareketli tuvalin üstünde bulanıklığı her karede yeniden hesaplıyordu). */
 .sim-kutu {
   background: var(--surface-1); border: 1px solid var(--border);
-  border-radius: var(--r); overflow: hidden;
+  border-radius: var(--r-lg); overflow: hidden;
 }
-
-/* Simülasyonun üst şeridi: düzeneği bir "cihaz" gibi çerçeveliyor.
-   Adı ve canlı göstergesi, sayfadaki diğer kartlardan ayırıyor. */
 .sim-ust {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 16px; background: var(--surface-2);
+  display: flex; align-items: center; gap: var(--s3);
+  padding: var(--s2) var(--s2) var(--s2) var(--s4); background: var(--surface-2);
   border-bottom: 1px solid var(--border);
 }
-.sim-ad { font-weight: 600; font-size: .95em; color: var(--text); }
-.sim-canli {
-  margin-left: auto; display: inline-flex; align-items: center; gap: 7px;
-  font-size: .76em; letter-spacing: .08em; text-transform: uppercase;
-  color: var(--green);
-}
-.sim-canli .isik {
-  width: 8px; height: 8px; border-radius: 50%; background: var(--green);
-}
-.sim-kutu[data-oynuyor="1"] .sim-canli .isik { animation: nabiz 1.1s infinite; }
-@keyframes nabiz { 0%,100% { opacity: 1; } 50% { opacity: .25; } }
+.sim-ad { flex: 1; min-width: 0; font-weight: 600; color: var(--text); }
+.sim-durum { color: var(--text-2); font-size: .89em; white-space: nowrap; }
+.sim-kutu[data-oynuyor="1"] .sim-durum { color: var(--text); }
+.sim-buyut { flex: 0 0 auto; }
+
 .sim-tuval-sar {
   display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
   background: var(--border);
   height: var(--sim-h, 340px);
 }
-.sim-panel.grafik { height: var(--grafik-h, 190px); }
+.sim-panel.grafik { height: var(--grafik-h, 190px); border-top: 1px solid var(--border); }
 
 /* --- Akıllı tahta yerleşimi ---------------------------------------------
    Metin okunur bir ölçüde (max 1180px) kalmalı; ama simülasyon, sınıfın
@@ -361,85 +355,125 @@ math { font-size: 1.05em; }
 .sim-tuval-sar.tek { grid-template-columns: 1fr; }
 .sim-panel { position: relative; background: var(--surface-0); }
 .sim-panel canvas { width: 100%; height: 100%; }
-.sim-etiket {
-  position: absolute; top: 10px; left: 10px; z-index: 2;
-  font-size: .74em; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
-  padding: 5px 11px; border-radius: 20px;
-  background: rgba(11,18,32,.72); color: var(--text-2);
-  backdrop-filter: blur(4px);
-}
-.sim-panel.gercek .sim-etiket { background: rgba(255,255,255,.86); color: #2C3850; }
-/* Kâğıt paletinde klasik panel de aydınlık olur; etiketi de aydınlık yap. */
-:root[data-simtema="kagit"] .sim-panel .sim-etiket { background: rgba(255,255,255,.86); color: #2C3850; }
 
-/* Simülasyon bir kez başladıktan sonra etiketler sönükleşir: sol üst köşedeki
-   değerleri ve "tamamlandı" rozetini kapatmasınlar. Sıfırla’ya basınca geri gelir. */
-.sim-etiket { transition: opacity .3s ease, background-color .3s ease; }
-.sim-kutu[data-basladi="1"] .sim-etiket,
-.sim-kutu[data-basladi="1"] .sim-panel.gercek .sim-etiket {
-  opacity: .25;
-  background: transparent;
-  backdrop-filter: none;
+/* Panel etiketi: küçük opak çip, cümle düzeni. */
+.sim-etiket {
+  position: absolute; top: var(--s2); left: var(--s2); z-index: 2;
+  font-size: .78em; font-weight: 600; line-height: 1.3;
+  padding: 3px 10px; border-radius: 999px;
+  background: rgba(12,18,32,.82); color: #DDE5F0;
   pointer-events: none;
+  transition: opacity .3s ease;
 }
-/* Fareyle üstüne gelince tam okunur — tahtada dokunmatik için de geçerli. */
+.sim-panel.gercek .sim-etiket,
+:root[data-simtema="kagit"] .sim-panel .sim-etiket { background: rgba(255,255,255,.9); color: #2C3850; }
+/* Simülasyon bir kez başladıktan sonra etiketler soluklaşır: sol üst köşedeki
+   değerleri kapatmasınlar. Sıfırla'ya basınca geri gelir. */
+.sim-kutu[data-basladi="1"] .sim-etiket { opacity: .25; }
+/* Telefonda paneller dar: etiket tek satır ve küçük kalsın, tuvali örtmesin. */
+@media (max-width: 600px) {
+  .sim-etiket { font-size: .66em; padding: 2px 7px; white-space: nowrap; max-width: calc(100% - 16px);
+    overflow: hidden; text-overflow: ellipsis; }
+}
 .sim-kutu[data-basladi="1"] .sim-panel:hover .sim-etiket { opacity: .85; }
 
-.sim-kontrol {
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-  padding: 14px 16px; border-top: 1px solid var(--border); background: var(--surface-1);
+/* --- Tam ekran: tuval kalan yüksekliğin tamamını alır --- */
+.sim-kutu:fullscreen {
+  display: flex; flex-direction: column;
+  border: 0; border-radius: 0; background: var(--bg); overflow: auto;
 }
-.parametre { display: flex; align-items: center; gap: 8px; flex: 1 1 330px; min-width: 300px; }
-.parametre > label { font-size: .9em; color: var(--text-2); white-space: nowrap; min-width: 62px; }
+.sim-kutu:fullscreen .sim-tuval-sar { flex: 1 1 auto; height: auto; min-height: 240px; }
+.sim-kutu:fullscreen .sim-panel.grafik { flex: 0 0 auto; }
+.sim-kutu::backdrop { background: #0C1220; }
+/* Tahtada tam ekranda parametreler üç sütuna dizilir, tuvale yer kalır. */
+@media (min-width: 1400px) {
+  .sim-kutu:fullscreen .sim-parametreler { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
 
-/* Kaydıraç adım düğmeleri — dokunmatik tahtada parmakla değer tutturmak için.
-   44px, dokunma hedefi alt sınırının üstünde kalacak kadar büyük. */
+/* --- Kontroller --- */
+.sim-kontrol {
+  display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap;
+  padding: var(--s3) var(--s4); border-top: 1px solid var(--border); background: var(--surface-1);
+}
+.sim-oynat { min-width: 140px; }
+.oynat-ikon { display: grid; }
+.sim-hiz { width: 104px; }
+
+/* Parametreler ayrı satırda, iki sütunlu ızgara; etiket solda. */
+.sim-parametreler {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s2) var(--s6);
+  padding: 0 var(--s4) var(--s3); background: var(--surface-1);
+}
+.sim-parametreler:empty { display: none; }
+@media (max-width: 900px) { .sim-parametreler { grid-template-columns: 1fr; } }
+.parametre {
+  display: grid; align-items: center; gap: var(--s2); min-height: 48px;
+  grid-template-columns: minmax(6.5em, 9.5em) 48px minmax(60px, 1fr) 48px minmax(84px, auto);
+}
+.parametre.secim { grid-template-columns: minmax(6.5em, 9.5em) minmax(0, 1fr); }
+.parametre.secim select { width: 100%; min-width: 0; }
+.parametre > label { font-size: .89em; color: var(--text-2); line-height: 1.25; }
+@media (max-width: 600px) {
+  .parametre { grid-template-columns: 48px minmax(0, 1fr) 48px minmax(72px, auto); }
+  .parametre > label { grid-column: 1 / -1; }
+  .parametre.secim { grid-template-columns: minmax(0, 1fr); }
+}
+
+/* Kaydıraç adım düğmeleri: tahtada parmakla değer tutturmak için. */
 .dgm.adim {
-  flex: 0 0 auto; width: 44px; min-height: 44px; padding: 0;
+  width: 48px; min-height: 48px; padding: 0;
   font-size: 1.3em; font-weight: 700; line-height: 1;
   background: var(--surface-2); color: var(--text);
 }
-.dgm.adim:active { background: var(--accent); color: #06121F; }
+.dgm.adim:active { background: var(--surface-3); }
 .parametre .deger {
-  font-family: var(--font-mono); font-size: .95em; font-weight: 600; color: var(--text-guclu);
-  min-width: 78px; text-align: right; font-variant-numeric: tabular-nums;
+  font-size: .95em; font-weight: 600; color: var(--text-guclu);
+  text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums;
 }
 
+/* Kaydıraç: dolu kısım vurgu renginde (Chrome --dolu ile, Firefox kendisi).
+   Tutamaç 28px (sunumda 34px), dokunma yüksekliği 48px. */
 input[type="range"] {
-  flex: 1; min-width: 70px; height: 24px;
+  --dolu: 0%;
+  width: 100%; min-width: 0; height: 48px; margin: 0;
   -webkit-appearance: none; appearance: none; background: none; cursor: pointer;
 }
-input[type="range"]::-webkit-slider-runnable-track { height: 5px; border-radius: 3px; background: var(--surface-3); }
-input[type="range"]::-moz-range-track          { height: 5px; border-radius: 3px; background: var(--surface-3); }
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 6px; border-radius: 3px;
+  background: linear-gradient(var(--accent), var(--accent)) 0 0 / var(--dolu) 100% no-repeat, var(--surface-3);
+}
+input[type="range"]::-moz-range-track    { height: 6px; border-radius: 3px; background: var(--surface-3); }
+input[type="range"]::-moz-range-progress { height: 6px; border-radius: 3px; background: var(--accent); }
 input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none; width: 20px; height: 20px; margin-top: -7.5px;
+  -webkit-appearance: none; width: 28px; height: 28px; margin-top: -11px;
   border-radius: 50%; background: var(--accent); border: 3px solid var(--surface-0); cursor: grab;
 }
 input[type="range"]::-moz-range-thumb {
-  width: 20px; height: 20px; border-radius: 50%;
+  width: 22px; height: 22px; border-radius: 50%;
   background: var(--accent); border: 3px solid var(--surface-0); cursor: grab;
 }
+:root[data-sunum="1"] input[type="range"]::-webkit-slider-thumb { width: 34px; height: 34px; margin-top: -14px; }
+:root[data-sunum="1"] input[type="range"]::-moz-range-thumb { width: 28px; height: 28px; }
 
 select, input[type="number"], input[type="text"] {
-  min-height: 42px; padding: 0 12px;
+  min-height: var(--touch); padding: 0 12px;
   background: var(--surface-2); color: var(--text);
   border: 1px solid var(--border-strong); border-radius: var(--r-sm);
   font: inherit; font-size: .94em;
 }
 
+/* --- Okumalar: etiket üstte, değer büyük ve tabular; 1px ayraçlı hücreler --- */
 .sim-okuma {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 1px; background: var(--border); border-top: 1px solid var(--border);
 }
-.okuma {
-  background: var(--surface-0); padding: 12px 16px;
-}
-.okuma .et { font-size: .78em; color: var(--text-3); margin-bottom: 2px; }
+.okuma { background: var(--surface-0); padding: var(--s3) var(--s4); min-width: 0; }
+.okuma .et { font-size: .83em; color: var(--text-3); margin-bottom: var(--s1); line-height: 1.3; }
 .okuma .dg {
-  font-family: var(--font-mono); font-size: 1.32em; font-weight: 600; color: var(--text-guclu);
-  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-deger); font-weight: 600; color: var(--text-guclu); line-height: 1.2;
+  font-variant-numeric: tabular-nums; overflow-wrap: anywhere;
 }
-.okuma .dg small { font-size: .62em; font-weight: 400; color: var(--text-3); margin-left: 3px; }
+.okuma .dg small { font-size: .55em; font-weight: 500; color: var(--text-2); margin-left: 4px; }
 
 /* --------------------------------------------------- Vurgu kutuları
    Çerçeve, kutunun kendi renginin %40'ı (color-mix desteklemeyen eski
