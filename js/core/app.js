@@ -19,7 +19,7 @@ const { MUFREDAT, konuBul, komsuKonular } = window.F11;
 const {
   kavramBloku, formulBloku, turetimBloku, turetimBagla,
   simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla,
-  ikon, ikonlariCevir
+  bolumCubugu, bolumBagla, ikon, ikonlariCevir
 } = window.F11;
 
 /* Konu kayıt defteri — topics/*.js dosyaları buraya yazar. */
@@ -28,6 +28,7 @@ function konuKaydet(ad, tanim) { KONULAR[ad] = tanim; }
 
 let icerik, kenarListe;
 let etkinSim = null;          // o an ekrandaki simülasyon koşucusu
+let bolumSok = null;          // bölüm çubuğu gözcüsünü söken fonksiyon
 
 /* ------------------------------------------------------- Kenar çubuğu */
 
@@ -152,18 +153,23 @@ function konuCiz(uniteId, konuId) {
   }
 
   const k = komsuKonular(konu);
+  /* Meta satırı: öğretmen kitabı aynı sayfada açabilsin diye sayfa no da var. */
+  const meta = [
+    konu.kitap ? `Kitap ${konu.kitap}` : '',
+    konu.sayfa ? `s. ${konu.sayfa}` : '',
+    konu.kod || ''
+  ].filter(Boolean).join(' · ');
 
   icerik.innerHTML = `
     <div class="sayfa" style="--u:var(--u${konu.uniteNo});--us:var(--u${konu.uniteNo}s)">
-      <header class="konu-hero">
-        <div class="hero-ust">
-          <span class="hero-unite"><span class="nokta"></span>Ünite ${konu.uniteNo} · ${konu.uniteAd}</span>
-          ${konu.kitap ? `<span class="hero-kitap">${konu.kitap}</span>` : ''}
-          <span class="hero-kod">${konu.kod}</span>
-        </div>
+      <header class="konu-bas">
+        <a class="konu-unite" href="#/"><span class="nokta" aria-hidden="true"></span>Ünite ${konu.uniteNo} · ${konu.uniteAd}</a>
         <h1 class="sayfa-baslik">${konu.ad}</h1>
         <p class="sayfa-ozet">${mod.ozet}</p>
+        ${meta ? `<p class="konu-meta">${meta}</p>` : ''}
       </header>
+
+      ${bolumCubugu(mod)}
 
       ${mod.kavram    ? kavramBloku(mod.kavram) : ''}
       ${mod.formuller ? formulBloku(mod.formuller) : ''}
@@ -173,10 +179,13 @@ function konuCiz(uniteId, konuId) {
       ${mod.osym      ? osymBloku(mod.osym) : ''}
       ${mod.baglam    ? baglamBloku(mod.baglam) : ''}
 
-      <nav style="display:flex;gap:12px;margin-top:40px;padding-top:24px;border-top:1px solid var(--border)">
-        ${k.onceki ? `<a class="dgm" href="#/${k.onceki.uniteId}/${k.onceki.id}">← ${k.onceki.ad}</a>` : '<span></span>'}
-        <span style="flex:1"></span>
-        ${k.sonraki ? `<a class="dgm birincil" href="#/${k.sonraki.uniteId}/${k.sonraki.id}">${k.sonraki.ad} →</a>` : ''}
+      <nav class="konu-gecis" aria-label="Konular arası geçiş">
+        ${k.onceki ? `<a class="gecis onceki" href="#/${k.onceki.uniteId}/${k.onceki.id}">
+          <span class="gecis-ust">${ikon('arrow-left')}Önceki konu</span>
+          <span class="gecis-ad">${k.onceki.ad}</span></a>` : '<span></span>'}
+        ${k.sonraki ? `<a class="gecis sonraki" href="#/${k.sonraki.uniteId}/${k.sonraki.id}">
+          <span class="gecis-ust">Sonraki konu${ikon('arrow-right')}</span>
+          <span class="gecis-ad">${k.sonraki.ad}</span></a>` : ''}
       </nav>
 
       ${window.F11.kunyeHtml()}
@@ -187,6 +196,7 @@ function konuCiz(uniteId, konuId) {
   if (mod.turetim) turetimBagla(icerik, mod.turetim);
   etkinSim = mod.sim ? simBagla(icerik, mod.sim) : null;
   sorulariBagla(icerik);
+  bolumSok = bolumBagla(icerik, icerik);
 
   kenariIsaretle(uniteId, konuId);
   document.title = `${konu.ad} · Fizik 11`;
@@ -210,6 +220,7 @@ function bulunamadi() {
 
 function yonlendir() {
   if (etkinSim) { etkinSim.yikil(); etkinSim = null; }
+  if (bolumSok) { bolumSok(); bolumSok = null; }
 
   const yol = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (yol.length < 2) {

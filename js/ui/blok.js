@@ -3,7 +3,7 @@
 window.F11 = window.F11 || {};
 
 /* ==========================================================================
-   blok.js — Konu sayfası bloklarını HTML'e çeviren oluşturucular
+   blok.js · Konu sayfası bloklarını HTML'e çeviren oluşturucular
    --------------------------------------------------------------------------
    Her konu modülü saf veri döndürür; görünümü burası kurar. Böylece konu
    yazarken tek satır HTML/CSS düşünülmez, sadece içerik yazılır.
@@ -15,35 +15,115 @@ window.F11 = window.F11 || {};
    anlatırken ekran farklı bir dil konuşmasın.
    ========================================================================== */
 
-const { SimKoşucu } = window.F11;
+const { SimKoşucu, ikon, ikonlariCevir } = window.F11;
 
-/* Basit HTML kaçışı — konu metinleri güvenilir ama sayı/etiket araya girerse diye. */
+/* Basit HTML kaçışı: konu metinleri güvenilir ama sayı/etiket araya girerse diye. */
 const kac = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
-/* -------------------------------------------------------------- Başlık */
+/* ----------------------------------------------------- Blok türleri
+   Her blok kendi rengini (--bN) yalnız başlık ikonunda ve kendi kutusunda
+   taşır. Numara yok: sıra bilgi taşımıyor, ikon ve ad yeterli. */
+const BLOKLAR = {
+  kavram:  { ad: 'Kavram',                      kisa: 'Kavram',      ikon: 'book-open-text', b: 1 },
+  formul:  { ad: 'Formüller',                   kisa: 'Formüller',   ikon: 'function',       b: 2 },
+  turetim: { ad: 'Formül nereden geliyor?',     kisa: 'Türetim',     ikon: 'path',           b: 3 },
+  sim:     { ad: 'Simülasyon',                  kisa: 'Simülasyon',  ikon: 'atom',           b: 4 },
+  puf:     { ad: 'Püf noktası ve test taktiği', kisa: 'Püf noktası', ikon: 'lightbulb',      b: 5 },
+  osym:    { ad: 'Zorlayıcı sorular',           kisa: 'Sorular',     ikon: 'target',         b: 6 },
+  baglam:  { ad: 'Bağlam temelli sorular',      kisa: 'Sorular',     ikon: 'compass',        b: 7 }
+};
 
-function blokBasligi(no, ad) {
-  return `<div class="blok-bas">
-    <span class="hap"><span class="no">${no}</span>${kac(ad)}</span>
-  </div>`;
+/** Bloğun açılış etiketi ve başlığı. Kapanış </section> çağıranda. */
+function blokAc(tur, ek = '') {
+  const t = BLOKLAR[tur];
+  return `<section class="blok" id="bolum-${tur}" data-bolum="${tur}" ${ek}
+             style="--b:var(--b${t.b});--bs:var(--b${t.b}s)">
+    ${blokBasligi(tur)}`;
+}
+
+function blokBasligi(tur) {
+  const t = BLOKLAR[tur];
+  return `<h2 class="blok-bas"><span class="blok-ikon">${ikon(t.ikon)}</span>${kac(t.ad)}</h2>`;
+}
+
+/* ------------------------------------------------------- Bölüm çubuğu
+   Konu başlığının altında yapışkan durur; öğretmen uzun sayfada
+   simülasyona ya da sorulara tek dokunuşla iner. Yalnız sayfada olan
+   bloklar listelenir. İki soru bloğu tek "Sorular" düğmesinde birleşir. */
+function bolumCubugu(mod) {
+  const l = [];
+  if (mod.kavram)    l.push(['kavram', 'kavram']);
+  if (mod.formuller) l.push(['formul', 'formul']);
+  if (mod.turetim)   l.push(['turetim', 'turetim']);
+  if (mod.sim)       l.push(['sim', 'sim']);
+  if (mod.puf)       l.push(['puf', 'puf']);
+  const soru = mod.osym && mod.osym.length ? 'osym' : mod.baglam && mod.baglam.length ? 'baglam' : null;
+  if (soru) l.push([soru, 'soru']);
+  if (l.length < 2) return '';
+  return `<nav class="bolum-cubuk" aria-label="Bu sayfadaki bölümler">
+    <div class="bolum-liste">${l.map(([hedef, grup]) => `
+      <button type="button" class="bolum-dgm${grup === 'sim' ? ' sim' : ''}" data-hedef="${hedef}" data-grup="${grup}">
+        ${grup === 'sim' ? ikon('atom') : ''}<span>${BLOKLAR[hedef].kisa}</span>
+      </button>`).join('')}
+    </div>
+  </nav>`;
+}
+
+/** Bölüm çubuğunu canlandırır. Kaydırma dinleyicisi yok: hangi bölümde
+    olunduğunu IntersectionObserver söyler. Geri dönen fonksiyon gözcüyü söker. */
+function bolumBagla(kok, kaydirici) {
+  const cubuk = kok.querySelector('.bolum-cubuk');
+  if (!cubuk) return () => {};
+  const dgmler = [...cubuk.querySelectorAll('[data-hedef]')];
+  const grupOf = tur => (tur === 'osym' || tur === 'baglam') ? 'soru' : tur;
+
+  /* scrollIntoView kullanılmaz: taşması gizli gövdeyi de kaydırıp üst barı
+     ekrandan çıkarıyordu. Yalnız içerik alanı kaydırılır; başlık çubuğun
+     altında kalsın diye scroll-margin-top kadar pay bırakılır. */
+  dgmler.forEach(d => d.addEventListener('click', () => {
+    const hedef = kok.querySelector('#bolum-' + d.dataset.hedef);
+    if (!hedef || !kaydirici) return;
+    const pay = parseFloat(getComputedStyle(hedef).scrollMarginTop) || 0;
+    const ust = hedef.getBoundingClientRect().top - kaydirici.getBoundingClientRect().top
+              + kaydirici.scrollTop - pay;
+    kaydirici.scrollTo({ top: Math.max(0, ust) });
+  }));
+
+  const isaretle = grup => dgmler.forEach(d => {
+    const etkin = d.dataset.grup === grup;
+    d.classList.toggle('etkin', etkin);
+    if (etkin) d.setAttribute('aria-current', 'true'); else d.removeAttribute('aria-current');
+  });
+
+  if (!('IntersectionObserver' in window)) return () => {};
+  const bolumler = [...kok.querySelectorAll('.blok[data-bolum]')];
+  const gorunen = new Set();
+  /* Çubuğun hemen altındaki ince bant: başı bu banda giren bölüm "şu an"dır. */
+  const gozcu = new IntersectionObserver(girisler => {
+    girisler.forEach(g => g.isIntersecting ? gorunen.add(g.target) : gorunen.delete(g.target));
+    const ilk = bolumler.find(b => gorunen.has(b));
+    if (ilk) isaretle(grupOf(ilk.dataset.bolum));
+  }, { root: kaydirici, rootMargin: '-80px 0px -60% 0px' });
+  bolumler.forEach(b => gozcu.observe(b));
+  return () => gozcu.disconnect();
 }
 
 /* ------------------------------------------------------------- Kavram */
 
 function kavramBloku(html) {
-  return `<section class="blok" style="--b:var(--b1);--bs:var(--b1s)">
-    ${blokBasligi(1, 'Kavram')}
-    <div class="kart">${html}</div>
+  return `${blokAc('kavram')}
+    <div class="kavram">${html}</div>
   </section>`;
 }
 
 /* ----------------------------------------------------------- Formüller */
 
 function formulBloku({ liste = [], degiskenler = [] }) {
+  /* Formül adı kartın üstünde küçük bir başlık şeridi; formül altında. */
   const serit = liste.map(f => `
     <div class="formul">
+      ${f.aciklama ? `<div class="formul-ad">${kac(f.aciklama)}</div>` : ''}
       <div class="fm">${f.fm}</div>
-      ${f.aciklama ? `<div class="aciklama">${kac(f.aciklama)}</div>` : ''}
     </div>`).join('');
 
   const tablo = degiskenler.length ? `
@@ -53,17 +133,14 @@ function formulBloku({ liste = [], degiskenler = [] }) {
         <tr>
           <td class="sembol">${d.sembol}</td>
           <td>${kac(d.ad)}</td>
-          <td class="birim">${d.birim || '—'}</td>
+          <td class="birim">${d.birim || '-'}</td>
         </tr>`).join('')}
       </tbody>
     </table>` : '';
 
-  return `<section class="blok" style="--b:var(--b2);--bs:var(--b2s)">
-    ${blokBasligi(2, 'Formüller')}
-    <div class="kart">
-      <div class="formul-serit">${serit}</div>
-      ${tablo}
-    </div>
+  return `${blokAc('formul')}
+    <div class="formul-serit">${serit}</div>
+    ${tablo}
   </section>`;
 }
 
@@ -78,22 +155,21 @@ function turetimBloku(turetim, kimlik) {
   if (!turetim || !turetim.yollar?.length) return '';
   const yollar = turetim.yollar;
 
-  const sekmeler = yollar.length > 1
-    ? `<div class="turetim-yol">${yollar.map((y, i) =>
-        `<button class="dgm yol-dgm ${i === 0 ? 'etkin' : ''}" data-yol="${i}">${kac(y.ad)}</button>`
+  const ust = yollar.length > 1
+    ? `<div class="sekmeler" role="tablist" aria-label="Türetim yolu">${yollar.map((y, i) =>
+        `<button type="button" class="sekme" role="tab" aria-selected="${i === 0}" data-yol="${i}">${kac(y.ad)}</button>`
       ).join('')}</div>`
-    : `<strong style="font-size:.95em">${kac(yollar[0].ad)}</strong>`;
+    : `<p class="turetim-tek">${kac(yollar[0].ad)}</p>`;
 
-  return `<section class="blok" data-turetim="${kimlik}" style="--b:var(--b3);--bs:var(--b3s)">
-    ${blokBasligi(3, 'Formül nereden geliyor?')}
+  return `${blokAc('turetim', `data-turetim="${kimlik}"`)}
     <div class="turetim">
-      <div class="turetim-ust">${sekmeler}</div>
-      <div class="turetim-govde" data-rol="turetim-govde"></div>
+      ${ust}
+      <div class="turetim-govde" data-rol="turetim-govde" aria-live="polite"></div>
       <div class="turetim-alt">
-        <button class="dgm" data-rol="t-geri">← Geri</button>
+        <button type="button" class="dgm" data-rol="t-geri">${ikon('arrow-left')}<span>Geri</span></button>
         <span class="adim-say" data-rol="t-say"></span>
-        <div class="adim-cizgi" data-rol="t-cizgi"></div>
-        <button class="dgm birincil" data-rol="t-ileri">İleri →</button>
+        <div class="adim-cizgi" data-rol="t-cizgi" aria-hidden="true"></div>
+        <button type="button" class="dgm birincil" data-rol="t-ileri"></button>
       </div>
     </div>
   </section>`;
@@ -111,43 +187,49 @@ function turetimBagla(kok, turetim) {
 
   let yolNo = 0, adimNo = 0;
 
-  function ciz() {
+  /* İmza hareket: "İleri"ye basılınca yeni adım 8px aşağıdan yerine oturur,
+     tahtaya bir satır daha yazılmış gibi. Başka hiçbir yerde giriş hareketi yok. */
+  function ciz(hareket) {
     const yol = turetim.yollar[yolNo];
     const n = yol.adimlar.length;
     adimNo = Math.max(0, Math.min(adimNo, n - 1));
     const a = yol.adimlar[adimNo];
 
     govde.innerHTML = `
-      ${a.baslik ? `<h3 style="margin-bottom:10px">${kac(a.baslik)}</h3>` : ''}
-      <div>${a.html}</div>`;
+      <div class="adim-icerik${hareket ? ' gir' : ''}">
+        ${a.baslik ? `<h3 class="adim-baslik">${kac(a.baslik)}</h3>` : ''}
+        <div>${a.html}</div>
+      </div>`;
+    ikonlariCevir(govde);
     say.textContent = `${adimNo + 1} / ${n}`;
     cizgi.innerHTML = Array.from({ length: n }, (_, i) =>
       `<span class="adim-nokta ${i <= adimNo ? 'gecti' : ''}"></span>`).join('');
     geri.disabled = adimNo === 0;
-    ileri.disabled = adimNo === n - 1;
-    ileri.textContent = adimNo === n - 1 ? 'Türetim tamam ✓' : 'İleri →';
+    const son = adimNo === n - 1;
+    ileri.disabled = son;
+    ileri.classList.toggle('tamam', son);
+    ileri.innerHTML = son ? `${ikon('check')}<span>Türetim tamam</span>`
+                          : `<span>İleri</span>${ikon('arrow-right')}`;
   }
 
   sar.querySelectorAll('[data-yol]').forEach(b => b.addEventListener('click', () => {
-    sar.querySelectorAll('[data-yol]').forEach(x => x.classList.remove('etkin'));
-    b.classList.add('etkin');
-    yolNo = +b.dataset.yol; adimNo = 0; ciz();
+    sar.querySelectorAll('[data-yol]').forEach(x => x.setAttribute('aria-selected', 'false'));
+    b.setAttribute('aria-selected', 'true');
+    yolNo = +b.dataset.yol; adimNo = 0; ciz(false);
   }));
-  geri.addEventListener('click',  () => { adimNo--; ciz(); });
-  ileri.addEventListener('click', () => { adimNo++; ciz(); });
+  geri.addEventListener('click',  () => { adimNo--; ciz(true); });
+  ileri.addEventListener('click', () => { adimNo++; ciz(true); });
 
-  ciz();
+  ciz(false);
 }
 
 /* --------------------------------------------------------- Simülasyon */
 
 function simBloku() {
-  return `<section class="blok genis" style="--b:var(--b4);--bs:var(--b4s)">
-    ${blokBasligi(4, 'Simülasyon')}
+  return `${blokAc('sim', 'data-genis="1"')}
     <div data-rol="sim-kap"></div>
-    <p style="font-size:.85em;color:var(--text-3);margin-top:10px">
-      Boşluk tuşu oynatır/duraklatır, <kbd>R</kbd> sıfırlar. Değerleri değiştirince simülasyon başa döner.
-    </p>
+    <p class="sim-ipucu"><kbd>Boşluk</kbd> oynatır ya da duraklatır, <kbd>R</kbd> sıfırlar.
+    Değerleri değiştirince simülasyon başa döner.</p>
   </section>`;
 }
 
@@ -160,38 +242,35 @@ function simBagla(kok, simTanim) {
 /* --------------------------------------------------------- Püf noktası */
 
 function pufBloku({ html, ornekler = [] }) {
+  /* Örnekler iç içe kart değil: aynı kutuda ayraçla ayrılmış alt bölümler. */
   const orn = ornekler.map((o, i) => `
-    <div class="soru" style="margin-top:12px">
-      <div class="soru-ust"><span class="soru-no">${i + 1}</span>Taktikle çözüm</div>
-      <div class="soru-govde">${o.soru}</div>
-      <div class="cozum">
-        <div class="cozum-bas">Taktikle</div>
-        ${o.taktikle}
-        ${o.uzun ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
-          <div class="cozum-bas" style="color:var(--text-3)">Formülle (kontrol)</div>${o.uzun}</div>` : ''}
-      </div>
+    <div class="puf-ornek">
+      <h3 class="puf-ornek-bas">Taktikle çözüm ${ornekler.length > 1 ? i + 1 : ''}</h3>
+      <div class="puf-soru">${o.soru}</div>
+      <p class="cozum-bas">Taktikle</p>
+      ${o.taktikle}
+      ${o.uzun ? `<div class="puf-uzun"><p class="cozum-bas soluk">Formülle (kontrol)</p>${o.uzun}</div>` : ''}
     </div>`).join('');
 
-  return `<section class="blok" style="--b:var(--b5);--bs:var(--b5s)">
-    ${blokBasligi(5, 'Püf noktası · test taktiği')}
-    <div class="kutu puf">
-      <div class="kutu-bas"><span class="ikon">💡</span>Taktik</div>
+  return `${blokAc('puf')}
+    <div class="puf-kutu">
+      <div class="kutu-bas"><span class="ikon">${ikon('lightbulb')}</span>Taktik</div>
       ${html}
+      ${orn}
     </div>
-    ${orn}
   </section>`;
 }
 
 /* --------------------------------------------------------------- Soru */
 
-/** Çoktan seçmeli soru kartı. kaynak varsa rozet olarak gösterilir. */
-function soruKarti(s, i, sinif = '') {
+/** Çoktan seçmeli soru kartı. kaynak varsa küçük bir çip olarak gösterilir. */
+function soruKarti(s, i) {
   const harfler = ['A', 'B', 'C', 'D', 'E'];
   return `
-    <div class="soru ${sinif}" data-soru="${i}" data-dogru="${s.dogru}">
+    <div class="soru" data-soru="${i}" data-dogru="${s.dogru}">
       <div class="soru-ust">
         <span class="soru-no">${i + 1}</span>
-        ${s.baslik ? kac(s.baslik) : ''}
+        ${s.baslik ? `<span class="soru-baslik">${kac(s.baslik)}</span>` : ''}
         ${s.kaynak ? `<span class="soru-kaynak">${kac(s.kaynak)}</span>` : ''}
       </div>
       <div class="soru-govde">${s.govde}</div>
@@ -200,27 +279,26 @@ function soruKarti(s, i, sinif = '') {
         <div class="baglam-adim">
           <div><div class="ba-bas">${kac(a.bas)}</div><div class="ba-metin">${a.metin}</div></div>
         </div>`).join('')}</div>` : ''}
-      ${s.secenekler ? `<div class="secenekler" style="margin-top:14px">${s.secenekler.map((o, j) => `
-        <button class="secenek" data-sec="${j}">
-          <span class="harf">${harfler[j]}</span><span>${o}</span>
+      ${s.secenekler ? `<div class="secenekler">${s.secenekler.map((o, j) => `
+        <button type="button" class="secenek" data-sec="${j}">
+          <span class="harf">${harfler[j]}</span><span class="secenek-metin">${o}</span>
         </button>`).join('')}</div>` : ''}
       <div data-rol="uyari"></div>
       <div class="cozum" hidden data-rol="cozum">
-        <div class="cozum-bas">Çözüm</div>
+        <p class="cozum-bas">${ikon('check')}Çözüm</p>
         ${s.cozum}
       </div>
-      <button class="dgm" data-rol="cozum-dgm" style="margin-top:12px">Çözümü göster</button>
+      <button type="button" class="dgm cozum-dgm" data-rol="cozum-dgm">Çözümü göster</button>
     </div>`;
 }
 
 function osymBloku(sorular = []) {
   if (!sorular.length) return '';
-  return `<section class="blok" data-soru-grup="osym" style="--b:var(--b6);--bs:var(--b6s)">
-    ${blokBasligi(6, 'Zorlayıcı sorular')}
-    <div class="kutu osym" style="margin-bottom:14px">
-      <div class="kutu-bas"><span class="ikon">🎯</span>Burada formül yetmez</div>
-      <p style="margin:0">Bu sorular tek bir formülü değil, kavramı anladığını ölçer.
-      Çeldiriciler rastgele değil — her biri sık yapılan <strong>belirli bir hataya</strong> karşılık gelir.
+  return `${blokAc('osym', 'data-soru-grup="osym"')}
+    <div class="kutu osym kutu-giris">
+      <div class="kutu-bas"><span class="ikon">${ikon('target')}</span>Burada formül yetmez</div>
+      <p>Bu sorular tek bir formülü değil, kavramı anladığını ölçer.
+      Çeldiriciler rastgele değil: her biri sık yapılan <strong>belirli bir hataya</strong> karşılık gelir.
       Yanlış bir şık seçtiğinde çözümde o hatanın adı yazıyor.</p>
     </div>
     ${sorular.map((s, i) => soruKarti(s, i)).join('')}
@@ -229,17 +307,17 @@ function osymBloku(sorular = []) {
 
 function baglamBloku(sorular = []) {
   if (!sorular.length) return '';
-  return `<section class="blok" data-soru-grup="baglam" style="--b:var(--b7);--bs:var(--b7s)">
-    ${blokBasligi(7, 'Bağlam temelli sorular')}
-    <div class="kutu baglam" style="margin-bottom:14px">
-      <div class="kutu-bas"><span class="ikon">🧭</span>Önce metni fiziğe çevir</div>
-      <p style="margin:0">Bu sorularda formül hazır verilmez. Önce hikâyeden verilenleri ayıklarsın, olayı fiziksel modele çevirirsin, sonra formülü sen seçersin.</p>
+  return `${blokAc('baglam', 'data-soru-grup="baglam"')}
+    <div class="kutu baglam kutu-giris">
+      <div class="kutu-bas"><span class="ikon">${ikon('compass')}</span>Önce metni fiziğe çevir</div>
+      <p>Bu sorularda formül hazır verilmez. Önce hikâyeden verilenleri ayıklarsın, olayı fiziksel modele çevirirsin, sonra formülü sen seçersin.</p>
     </div>
     ${sorular.map((s, i) => soruKarti(s, i)).join('')}
   </section>`;
 }
 
-/** Soru kartlarını canlandırır: seçenek işaretleme + çözüm açma. */
+/** Soru kartlarını canlandırır: seçenek işaretleme + çözüm açma.
+    Doğru/yanlış renkle birlikte ikonla da gösterilir: renk tek başına anlam taşımaz. */
 function sorulariBagla(kok) {
   kok.querySelectorAll('.soru[data-dogru]').forEach(kart => {
     const dogru = +kart.dataset.dogru;
@@ -248,19 +326,28 @@ function sorulariBagla(kok) {
     const uyari = kart.querySelector('[data-rol="uyari"]');
     let secildi = false;
 
+    const isaretle = (b, dogruMu) => {
+      b.classList.add(dogruMu ? 'dogru' : 'yanlis');
+      b.insertAdjacentHTML('beforeend',
+        `<span class="secenek-durum">${ikon(dogruMu ? 'check' : 'x')}<span class="sr">${dogruMu ? 'doğru' : 'yanlış'}</span></span>`);
+    };
+
     kart.querySelectorAll('[data-sec]').forEach(b => b.addEventListener('click', () => {
       if (secildi) return;
       secildi = true;
       uyari.innerHTML = '';
       const j = +b.dataset.sec;
-      b.classList.add(j === dogru ? 'dogru' : 'yanlis');
-      if (j !== dogru) kart.querySelector(`[data-sec="${dogru}"]`)?.classList.add('dogru');
+      isaretle(b, j === dogru);
+      if (j !== dogru) {
+        const d = kart.querySelector(`[data-sec="${dogru}"]`);
+        if (d) isaretle(d, true);
+      }
       cozum.hidden = false;
       dgm.hidden = true;
     }));
 
     dgm?.addEventListener('click', () => {
-      /* Seçenekli soruda önce cevap istenir — öğrenci doğrudan çözüme atlamasın. */
+      /* Seçenekli soruda önce cevap istenir: öğrenci doğrudan çözüme atlamasın. */
       if (kart.querySelector('[data-sec]') && !secildi) {
         uyari.innerHTML = '<p class="uyari-metin">Önce bir seçenek işaretle.</p>';
         return;
@@ -272,5 +359,9 @@ function sorulariBagla(kok) {
 }
 
 
-Object.assign(window.F11, { blokBasligi, kavramBloku, formulBloku, turetimBloku, turetimBagla, simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla });
+Object.assign(window.F11, {
+  blokBasligi, bolumCubugu, bolumBagla,
+  kavramBloku, formulBloku, turetimBloku, turetimBagla, simBloku, simBagla,
+  pufBloku, osymBloku, baglamBloku, sorulariBagla
+});
 })();
