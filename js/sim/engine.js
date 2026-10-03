@@ -410,7 +410,8 @@ function kisayollariBagla(kosucuGetir) {
     const k = kosucuGetir();
     if (!k) return;
     const hedef = e.target;
-    if (hedef.matches('input, select, textarea, button')) return;
+    /* Hedef her zaman bir öğe olmayabilir (ör. document); o zaman sınama atlanır. */
+    if (hedef instanceof Element && hedef.matches('input, select, textarea, button')) return;
 
     if (e.code === 'Space')       { e.preventDefault(); k.degistir(); }
     else if (e.key === 'ArrowRight') { e.preventDefault(); k.ileriAtla(0.5); }

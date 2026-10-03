@@ -73,50 +73,62 @@ function kenariIsaretle(uniteId, konuId) {
 
 /* --------------------------------------------------------- Karşılama */
 
+/** Son açılan konu (öğretmen ertesi ders kaldığı yerden açar). file:// altında
+    localStorage kapalı olabilir; o zaman sessizce ilk konuya düşülür. */
+const SON_ANAHTAR = 'fizik11-son';
+function sonKonu() {
+  try {
+    const [u, k] = (localStorage.getItem(SON_ANAHTAR) || '').split('/');
+    return u && k ? konuBul(u, k) : null;
+  } catch (e) { return null; }
+}
+
 function karsilamaCiz() {
   const toplam = MUFREDAT.reduce((s, u) => s + u.konular.length, 0);
-  const hazir = MUFREDAT.reduce((s, u) =>
-    s + u.konular.filter(k => KONULAR[k.modul]).length, 0);
+  const son = sonKonu();
+  const ilk = MUFREDAT[0].konular[0];
+  const hedef = son
+    ? { yol: `#/${son.uniteId}/${son.id}`, ust: 'Kaldığın yerden devam et', ad: son.ad }
+    : { yol: `#/${MUFREDAT[0].id}/${ilk.id}`, ust: 'İlk konuyla başla', ad: ilk.ad };
 
   icerik.innerHTML = `
     <div class="sayfa">
-      <h1 class="sayfa-baslik">11. sınıf fizik</h1>
-      <p class="sayfa-ozet">
-        Türkiye Yüzyılı Maarif Modeli müfredatına göre ${MUFREDAT.length} ünite, ${toplam} konu.
-        Her konuda kısa anlatım, formülün adım adım türetimi, çalışan simülasyon,
-        test taktiği ve bağlam temelli sorular var.
-      </p>
+      <header class="karsilama-bas">
+        <h1 class="sayfa-baslik">11. sınıf fizik</h1>
+        <p class="sayfa-ozet">Maarif Modeli müfredatına göre ${MUFREDAT.length} ünite, ${toplam} konu:
+        anlatım, türetim, simülasyon ve sorular.</p>
+        <a class="dgm birincil devam-dgm" href="${hedef.yol}">
+          <span class="devam-ust">${hedef.ust}</span>
+          <span class="devam-ad">${hedef.ad}${ikon('arrow-right')}</span>
+        </a>
+      </header>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-top:26px">
-        ${MUFREDAT.map(u => {
-          const h = u.konular.filter(k => KONULAR[k.modul]).length;
-          return `
-          <a href="#/${u.id}/${u.konular[0].id}" class="kart"
-             style="display:block;text-decoration:none;color:inherit;--b:var(--u${u.no});--u:var(--u${u.no})">
-            <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-              <span class="unite-no">${u.no}</span>
-              <strong>${u.ad}</strong>
-            </div>
-            <p style="color:var(--text-2);font-size:.92em;margin:0 0 10px">
-              ${u.konular.length} konu · ${u.saat} ders saati
-            </p>
-            <div style="height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden">
-              <div style="height:100%;width:${Math.round(h / u.konular.length * 100)}%;background:var(--u${u.no})"></div>
-            </div>
-            <p style="color:var(--text-3);font-size:.82em;margin:8px 0 0">${h} / ${u.konular.length} hazır</p>
-          </a>`;
-        }).join('')}
-      </div>
+      <section class="icindekiler" aria-label="İçindekiler">
+        ${MUFREDAT.map(u => `
+        <div class="ic-sutun" style="--u:var(--u${u.no})">
+          <h2 class="ic-bas">
+            <span class="unite-no">${u.no}</span>
+            <span class="ic-baslik"><span class="ic-ad">${u.ad}</span>
+            <span class="ic-alt">${u.konular.length} konu · ${u.saat} ders saati</span></span>
+          </h2>
+          <ol class="ic-liste">
+            ${u.konular.map(k => `
+            <li><a class="ic-konu" href="#/${u.id}/${k.id}">
+              <span class="ic-no">${k.kitap || ''}</span>
+              <span class="ic-konu-ad">${k.ad}</span>
+              ${KONULAR[k.modul] ? '' : '<span class="ic-hazir">hazırlanıyor</span>'}
+            </a></li>`).join('')}
+          </ol>
+        </div>`).join('')}
+      </section>
 
-      <div class="kutu nott" style="margin-top:26px">
-        <div class="kutu-bas"><span class="ikon">⌨</span>Akıllı tahta kısayolları</div>
-        <p style="margin:0"><kbd>Boşluk</kbd> simülasyonu oynatır/duraklatır ·
-        <kbd>R</kbd> sıfırlar · <kbd>F11</kbd> tam ekran ·
-        üst sağdaki <strong>Sunum modu</strong> yazıları büyütür.</p>
-      </div>
-
-      <p style="color:var(--text-3);font-size:.85em;margin-top:20px">
-        Toplam ${hazir} / ${toplam} konu hazır.
+      <p class="kisayol-serit">
+        <span class="kisayol-ikon">${ikon('keyboard')}</span>
+        <span><kbd>Boşluk</kbd> oynat / duraklat</span>
+        <span><kbd>R</kbd> sıfırla</span>
+        <span><kbd>→</kbd> yarım saniye ilerlet</span>
+        <span><kbd>F11</kbd> tam ekran</span>
+        <span><strong>Sunum modu</strong> yazıları büyütür</span>
       </p>
 
       ${window.F11.kunyeHtml()}
@@ -142,7 +154,7 @@ function konuCiz(uniteId, konuId) {
         <div class="kutu dikkat">
           <div class="kutu-bas"><span class="ikon">⚠</span>Bu konu henüz hazır değil</div>
           <p><strong>${konu.ad}</strong> içeriği yazım aşamasında.</p>
-          <p style="margin:0;font-size:.9em;color:var(--text-2)">Beklenen dosya: <code>topics/${konu.modul}.js</code></p>
+          <p class="bos-not">Beklenen dosya: <code>topics/${konu.modul}.js</code></p>
         </div>
       </div>`;
     ikonlariCevir(icerik);
@@ -201,6 +213,7 @@ function konuCiz(uniteId, konuId) {
   kenariIsaretle(uniteId, konuId);
   document.title = `${konu.ad} · Fizik 11`;
   icerik.scrollTop = 0;
+  try { localStorage.setItem(SON_ANAHTAR, `${uniteId}/${konuId}`); } catch (e) { /* file:// kısıtı */ }
 }
 
 /** Üst barın alt çizgisi o anki ünitenin rengini alır; ana sayfada nötr. */

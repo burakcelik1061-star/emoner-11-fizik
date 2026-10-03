@@ -643,6 +643,55 @@ select, input[type="number"], input[type="text"] {
 .kunye-alt { color: var(--text-3); font-size: .89em; }
 .kunye-not { margin: var(--s2) 0 0; font-size: .89em; color: var(--text-3); }
 
+/* --------------------------------------------------------- Karşılama
+   İlk ekranda: başlık, tek cümle ve tek eylem. Altında içindekiler; kart
+   ızgarası değil, ayraçlı listeler. Öğretmen tek dokunuşla konuya gider. */
+.karsilama-bas { padding: var(--s6) 0 var(--s7); }
+.devam-dgm {
+  margin-top: var(--s5); min-height: 64px; padding: var(--s2) var(--s5);
+  flex-direction: column; align-items: flex-start; justify-content: center; gap: 2px;
+  text-decoration: none;
+}
+.devam-dgm:hover { text-decoration: none; }
+.devam-ust { font-size: .83em; font-weight: 500; opacity: .8; }
+.devam-ad { display: inline-flex; align-items: center; gap: var(--s2); font-size: 1.05em; font-weight: 600; }
+
+.icindekiler {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s6);
+  padding-top: var(--s6); border-top: 1px solid var(--border);
+}
+@media (max-width: 900px) { .icindekiler { grid-template-columns: 1fr; } }
+.ic-bas {
+  display: flex; align-items: center; gap: var(--s3);
+  margin: 0 0 var(--s2); font-size: 1.1em;
+}
+.ic-baslik { display: flex; flex-direction: column; min-width: 0; }
+.ic-ad { font-weight: 600; color: var(--text-guclu); }
+.ic-alt { font-size: .76em; font-weight: 400; color: var(--text-3); font-variant-numeric: tabular-nums; }
+.ic-liste { list-style: none; margin: 0; padding: 0; }
+.ic-liste li { margin: 0; border-bottom: 1px solid var(--border); }
+.ic-liste li:last-child { border-bottom: 0; }
+.ic-konu {
+  display: flex; align-items: center; gap: var(--s3);
+  min-height: 44px; padding: var(--s2);
+  border-radius: var(--r-sm); color: var(--text);
+  transition: background var(--dur) var(--ease);
+}
+.ic-konu:hover { background: var(--surface-1); text-decoration: none; }
+.ic-no { flex: 0 0 3.4em; color: var(--text-3); font-size: .89em; font-variant-numeric: tabular-nums; }
+.ic-konu-ad { flex: 1; min-width: 0; line-height: 1.35; }
+.ic-hazir { flex: 0 0 auto; font-size: .78em; color: var(--text-3); }
+
+.kisayol-serit {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s5);
+  margin: var(--s7) 0 0; padding: var(--s3) var(--s4);
+  background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--r);
+  color: var(--text-2); font-size: .89em;
+}
+.kisayol-ikon { display: grid; color: var(--text-3); }
+.kisayol-ikon .ik { width: 1.4em; height: 1.4em; }
+.bos-not { margin: 0; font-size: .89em; color: var(--text-2); }
+
 /* -------------------------------------------------- Boş / yükleniyor */
 .bos-durum { display: grid; place-items: center; height: 70vh; text-align: center; color: var(--text-3); }
 .bos-durum h2 { color: var(--text-2); }
