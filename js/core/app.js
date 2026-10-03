@@ -3,7 +3,7 @@
 window.F11 = window.F11 || {};
 
 /* ==========================================================================
-   app.js — Uygulama kabuğu, kenar çubuğu ve yönlendirici
+   app.js · Uygulama kabuğu, kenar çubuğu ve yönlendirici
    --------------------------------------------------------------------------
    Neden ES modülü değil?
    Sistem akıllı tahtada sunucusuz, terminalsiz çalışacak: index.html'e çift
@@ -18,7 +18,8 @@ window.F11 = window.F11 || {};
 const { MUFREDAT, konuBul, komsuKonular } = window.F11;
 const {
   kavramBloku, formulBloku, turetimBloku, turetimBagla,
-  simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla
+  simBloku, simBagla, pufBloku, osymBloku, baglamBloku, sorulariBagla,
+  ikon, ikonlariCevir
 } = window.F11;
 
 /* Konu kayıt defteri — topics/*.js dosyaları buraya yazar. */
@@ -36,14 +37,14 @@ function kenariKur() {
          style="--u:var(--u${u.no});--us:var(--u${u.no}s)">
       <button class="unite-bas" data-unite-dgm="${u.id}" aria-expanded="false">
         <span class="unite-no">${u.no}</span>
-        <span>${u.ad}</span>
-        <span class="unite-ok" aria-hidden="true">›</span>
+        <span class="unite-ad">${u.ad}</span>
+        <span class="unite-ok">${ikon('caret-right')}</span>
       </button>
       <div class="unite-konular">
         ${u.konular.map(k => `
           <a class="konu-bag" href="#/${u.id}/${k.id}" data-konu="${u.id}/${k.id}">
-            <span>${k.ad}</span>
-            ${k.kitap ? `<span class="konu-rozet">${k.kitap}</span>` : ''}
+            <span class="konu-ad">${k.ad}</span>
+            ${k.kitap ? `<span class="konu-no">${k.kitap}</span>` : ''}
           </a>`).join('')}
       </div>
     </div>`).join('');
@@ -119,6 +120,7 @@ function karsilamaCiz() {
 
       ${window.F11.kunyeHtml()}
     </div>`;
+  ikonlariCevir(icerik);
 }
 
 /* ------------------------------------------------------- Konu sayfası */
@@ -142,6 +144,8 @@ function konuCiz(uniteId, konuId) {
           <p style="margin:0;font-size:.9em;color:var(--text-2)">Beklenen dosya: <code>topics/${konu.modul}.js</code></p>
         </div>
       </div>`;
+    ikonlariCevir(icerik);
+    uniteRengi(konu.uniteNo);
     kenariIsaretle(uniteId, konuId);
     document.title = `${konu.ad} · Fizik 11`;
     return;
@@ -178,6 +182,8 @@ function konuCiz(uniteId, konuId) {
       ${window.F11.kunyeHtml()}
     </div>`;
 
+  ikonlariCevir(icerik);
+  uniteRengi(konu.uniteNo);
   if (mod.turetim) turetimBagla(icerik, mod.turetim);
   etkinSim = mod.sim ? simBagla(icerik, mod.sim) : null;
   sorulariBagla(icerik);
@@ -185,6 +191,12 @@ function konuCiz(uniteId, konuId) {
   kenariIsaretle(uniteId, konuId);
   document.title = `${konu.ad} · Fizik 11`;
   icerik.scrollTop = 0;
+}
+
+/** Üst barın alt çizgisi o anki ünitenin rengini alır; ana sayfada nötr. */
+function uniteRengi(no) {
+  if (no) document.documentElement.dataset.unite = String(no);
+  else delete document.documentElement.dataset.unite;
 }
 
 function bulunamadi() {
@@ -201,6 +213,7 @@ function yonlendir() {
 
   const yol = location.hash.replace(/^#\/?/, '').split('/').filter(Boolean);
   if (yol.length < 2) {
+    uniteRengi(null);
     karsilamaCiz();
     document.title = 'Fizik 11 · Maarif Modeli';
   } else {
@@ -228,7 +241,9 @@ function basla() {
   icerik = document.getElementById('icerik');
   kenarListe = document.getElementById('kenar-liste');
 
-  document.getElementById('kenar-dgm').addEventListener('click', kenariDegistir);
+  const kenarDgm = document.getElementById('kenar-dgm');
+  kenarDgm.innerHTML = ikon('list');
+  kenarDgm.addEventListener('click', kenariDegistir);
 
   /* --- Açık / koyu tema ---
      Seçim localStorage'da tutulur; index.html'deki küçük betik sayfa açılırken
@@ -237,8 +252,8 @@ function basla() {
   const temaDgm = document.getElementById('tema-dgm');
   const temaTazele = () => {
     const acik = document.documentElement.dataset.tema === 'acik';
-    temaDgm.textContent = acik ? '☾' : '☀';
-    temaDgm.title = acik ? 'Koyu temaya geç' : 'Açık temaya geç';
+    temaDgm.innerHTML = ikon(acik ? 'moon' : 'sun');
+    temaDgm.title = acik ? 'Koyu temaya geç' : 'Kâğıt temaya geç';
     temaDgm.setAttribute('aria-pressed', String(acik));
 
     /* Klasik fizik paneli sayfanın TERSİ olur: koyu sayfada kâğıt panel,
@@ -250,17 +265,24 @@ function basla() {
   };
   temaTazele();
   temaDgm.addEventListener('click', () => {
-    const acik = document.documentElement.dataset.tema === 'acik';
-    const yeni = acik ? 'koyu' : 'acik';
-    document.documentElement.dataset.tema = yeni;
+    const kok = document.documentElement;
+    const yeni = kok.dataset.tema === 'acik' ? 'koyu' : 'acik';
+    /* Tema anında değişir: renk geçiş animasyonu tahtada yavaş ve bulanık
+       görünür. Bir kare boyunca bütün geçişler kapatılır. */
+    kok.dataset.anlik = '1';
+    kok.dataset.tema = yeni;
     try { localStorage.setItem('fizik11-tema', yeni); } catch (e) { /* file:// kısıtı */ }
     temaTazele();
+    void kok.offsetWidth;
+    requestAnimationFrame(() => { delete kok.dataset.anlik; });
   });
 
-  document.getElementById('sunum-dgm').addEventListener('click', e => {
+  const sunumDgm = document.getElementById('sunum-dgm');
+  sunumDgm.insertAdjacentHTML('afterbegin', ikon('presentation'));
+  sunumDgm.addEventListener('click', () => {
     const acik = document.documentElement.dataset.sunum === '1';
     document.documentElement.dataset.sunum = acik ? '0' : '1';
-    e.currentTarget.setAttribute('aria-pressed', String(!acik));
+    sunumDgm.setAttribute('aria-pressed', String(!acik));
     window.dispatchEvent(new Event('resize'));
   });
 

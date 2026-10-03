@@ -35,6 +35,8 @@
      Formül kartının ters zemini ile aynı aile. */
   --ink:           #EEF2F8;
   --ink-text:      #0C1220;
+  --ink-hover:     #D6DFEC;
+  --renk-ustu:     #0C1220;   /* ünite/blok renkli dolgusunun üstündeki yazı */
 
   /* --- Eski arka plan dokusu ---
      Arka plan artık düz; adlar yalnız geriye uyumluluk için duruyor. */
@@ -140,6 +142,11 @@
   --touch: 56px;
 }
 
+/* Telefon: uzun Türkçe sözcükler (ör. "Elektromıknatıslar") başlıkta taşmasın. */
+@media (max-width: 600px) {
+  :root { --fs-h1: 1.6em; --fs-h2: 1.3em; }
+}
+
 /* Hareket azaltma: arayüz geçişleri durur, simülasyonlar çalışmaya devam eder. */
 @media (prefers-reduced-motion: reduce) {
   :root { --dur: 0ms; --dur-orta: 0ms; --dur-cekmece: 0ms; }
@@ -172,6 +179,8 @@
 
   --ink:           #1B2436;
   --ink-text:      #F6F2EA;
+  --ink-hover:     #2C3954;
+  --renk-ustu:     #FCF9F3;
 
   --accent:        #1C62C0;   --accent-soft: #DCE8F9;
   --amber:         #8A5606;   --amber-soft:  #F7EDD5;

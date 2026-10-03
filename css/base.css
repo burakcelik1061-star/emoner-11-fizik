@@ -100,6 +100,12 @@ canvas { display: block; }
   border-radius: 4px;
 }
 
+/* --- Tema değişirken bir kare boyunca geçiş yok (bkz. app.js) --- */
+:root[data-anlik] *, :root[data-anlik] *::before, :root[data-anlik] *::after { transition: none !important; }
+
+/* --- İkon: rengi metinden, boyu yazıdan --- */
+.ik { width: 1.15em; height: 1.15em; flex: 0 0 auto; fill: currentColor; vertical-align: -.2em; }
+
 /* --- Ekran okuyucu için gizli metin --- */
 .sr {
   position: absolute; width: 1px; height: 1px;
@@ -115,7 +121,7 @@ canvas { display: block; }
 #uygulama {
   display: grid;
   grid-template-rows: auto 1fr;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 280px 1fr;
   grid-template-areas:
     "ustbar ustbar"
     "kenar  icerik";
@@ -129,9 +135,9 @@ canvas { display: block; }
   :root[data-kenar="kapali"] #uygulama { grid-template-columns: 0 1fr; }
 }
 
-#ustbar  { grid-area: ustbar; }
+#ustbar  { grid-area: ustbar; min-width: 0; }
 #kenar   { grid-area: kenar; overflow: hidden; }
-#icerik  { grid-area: icerik; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
+#icerik  { grid-area: icerik; min-width: 0; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
 
 /* --- Kaydırma çubuğu: temaya bağlı, ince --- */
 #icerik::-webkit-scrollbar,
@@ -155,8 +161,9 @@ canvas { display: block; }
     grid-template-areas: "ustbar" "icerik";
   }
   #kenar {
-    position: fixed; inset: 62px auto 0 0; width: 300px; z-index: var(--z-cekmece);
+    position: fixed; inset: 64px auto 0 0; width: 280px; z-index: var(--z-cekmece);
     transform: translateX(-100%); transition: transform var(--dur-cekmece) var(--ease);
+    box-shadow: 0 8px 24px rgba(0,0,0,.35);   /* tek gölge: içeriğin üstünde açılan çekmece */
   }
   :root[data-mobil="acik"] #kenar { transform: none; }
 }
