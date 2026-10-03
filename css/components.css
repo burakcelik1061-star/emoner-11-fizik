@@ -213,6 +213,13 @@
   border-radius: var(--r-sm); padding: 16px 18px;
 }
 .formul .fm { font-size: 1.42em; color: var(--text-guclu); letter-spacing: .005em; line-height: 1.45; }
+/* Konu dosyaları formül kutularına sabit max-width veriyor (ör. 240px). Yazı
+   büyüyünce kısa formüller bile iki satıra kırılıyordu. Kutu içeriği kadar
+   genişler, sütunu aşarsa satır içinde kırılır. */
+.formul[style*="max-width"] { width: fit-content; max-width: 100% !important; }
+/* Formüller bloğunda kartlar eşit 200px’e sıkışmaz: her kart formülü kadar
+   genişler, sığmayan alt satıra geçer. */
+.formul-serit > .formul { flex: 1 1 auto; max-width: 100%; }
 .formul .aciklama,
 .formul .fm-ad { font-size: .84em; color: var(--text-3); margin-top: 6px; }
 

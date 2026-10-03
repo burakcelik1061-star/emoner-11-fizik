@@ -1,6 +1,34 @@
 /* ==========================================================================
-   base.css — Sıfırlama, tipografi, sayfa iskeleti
+   base.css · Yerel fontlar, sıfırlama, tipografi, sayfa iskeleti
    ========================================================================== */
+
+/* --- Yerel fontlar (OFL, bkz. fonts/OFL.txt) ---
+   Çift tıklayınca açılan sitede de çalışsın diye hepsi yerelde, CDN yok.
+   Alt kümeye indirildi: Latin, Türkçe, Yunanca, noktalama, alt/üst simgeler. */
+@font-face {
+  font-family: "Fira Sans"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("../fonts/FiraSans-Regular.woff") format("woff");
+}
+@font-face {
+  font-family: "Fira Sans"; font-style: italic; font-weight: 400; font-display: swap;
+  src: url("../fonts/FiraSans-Italic.woff") format("woff");
+}
+@font-face {
+  font-family: "Fira Sans"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("../fonts/FiraSans-SemiBold.woff") format("woff");
+}
+@font-face {
+  font-family: "Fira Sans"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("../fonts/FiraSans-Bold.woff") format("woff");
+}
+/* Fira'da olmayan matematik işaretleri: ⟹ ⟺ ∝ ⊗ ⊙ ∥ ⊥ ≪ ≫ ′ ∇ ∈ ∓ ≡ ✓ ↺ ↻ ⟲ ▶ ○ ● ☾ */
+@font-face {
+  font-family: "F11 Matematik"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("../fonts/F11Matematik.woff") format("woff");
+  unicode-range: U+2032, U+21BA-21BB, U+2207-2208, U+220B, U+2213, U+221D, U+2225, U+2261,
+                 U+226A-226B, U+2297, U+2299, U+22A5, U+25B6, U+25CB, U+25CF, U+263E, U+2713,
+                 U+27F2, U+27F9-27FA;
+}
 
 *, *::before, *::after { box-sizing: border-box; }
 
@@ -11,42 +39,43 @@ html, body {
 }
 
 body {
-  /* İki yumuşak ışık lekesi + milimetrik kâğıt ızgarası. Doku yalnızca içerik
-     alanında görünür; üst bar ve kenar çubuğu opak yüzeyler kullanır. */
-  background-color: var(--bg);
-  background-image:
-    radial-gradient(1100px 620px at 12% -8%,  var(--bg-isik1), transparent 62%),
-    radial-gradient(900px 520px  at 98%  4%,  var(--bg-isik2), transparent 58%),
-    linear-gradient(var(--bg-cizgi) 1px, transparent 1px),
-    linear-gradient(90deg, var(--bg-cizgi) 1px, transparent 1px);
-  background-size:
-    100% 100%, 100% 100%,
-    var(--bg-izgara) var(--bg-izgara),
-    var(--bg-izgara) var(--bg-izgara);
-  background-attachment: fixed;
+  /* Düz zemin: desen ve ışık lekesi yok. Hem dikkat simülasyonda kalır hem
+     zayıf ekran kartı her karede büyük bir gradyanı yeniden boyamaz. */
+  background: var(--bg);
   color: var(--text);
   font-family: var(--font);
   font-size: var(--fs-base);
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-kerning: normal;
+  caret-color: var(--accent);
+  accent-color: var(--accent);
   overflow: hidden;            /* kaydırma iç panellerde, sayfada değil */
 }
 
+/* Ölçek oranı 1,2 · başlığın üstü altından fazla */
 h1, h2, h3, h4 {
   margin: 0 0 .5em;
   font-weight: 600;
   line-height: 1.25;
   letter-spacing: -.01em;
+  text-wrap: balance;
 }
-h1 { font-size: 1.7em; }
-h2 { font-size: 1.3em; }
-h3 { font-size: 1.1em; }
+h1 { font-size: var(--fs-h1); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; }
+h2 { font-size: var(--fs-h2); }
+h3 { font-size: var(--fs-h3); line-height: 1.3; }
 h4 { font-size: 1em; color: var(--text-2); }
+
+/* Seçim, imleç ve sayılar temaya bağlı */
+::selection { background: var(--accent-soft); color: var(--text-guclu); }
+input, select, textarea, button { caret-color: var(--accent); }
+output, .tabular, td, th { font-variant-numeric: tabular-nums; }
 
 p { margin: 0 0 .9em; }
 p:last-child { margin-bottom: 0; }
 
-a { color: var(--accent); text-decoration: none; }
+a { color: var(--accent); text-decoration: none; text-underline-offset: .2em; }
 a:hover { text-decoration: underline; }
 
 ul, ol { margin: 0 0 .9em; padding-left: 1.4em; }
@@ -59,7 +88,7 @@ code, kbd {
   font-size: .92em;
   background: var(--surface-2);
   padding: .1em .4em;
-  border-radius: 5px;
+  border-radius: var(--r-sm);
 }
 
 canvas { display: block; }
@@ -104,7 +133,7 @@ canvas { display: block; }
 #kenar   { grid-area: kenar; overflow: hidden; }
 #icerik  { grid-area: icerik; overflow-y: auto; overflow-x: hidden; scroll-behavior: smooth; }
 
-/* --- Kaydırma çubuğu: koyu temaya uygun, ince --- */
+/* --- Kaydırma çubuğu: temaya bağlı, ince --- */
 #icerik::-webkit-scrollbar,
 .kaydir::-webkit-scrollbar { width: 10px; }
 #icerik::-webkit-scrollbar-track,
@@ -126,8 +155,8 @@ canvas { display: block; }
     grid-template-areas: "ustbar" "icerik";
   }
   #kenar {
-    position: fixed; inset: 62px auto 0 0; width: 300px; z-index: 40;
-    transform: translateX(-100%); transition: transform var(--dur) var(--ease);
+    position: fixed; inset: 62px auto 0 0; width: 300px; z-index: var(--z-cekmece);
+    transform: translateX(-100%); transition: transform var(--dur-cekmece) var(--ease);
   }
   :root[data-mobil="acik"] #kenar { transform: none; }
 }

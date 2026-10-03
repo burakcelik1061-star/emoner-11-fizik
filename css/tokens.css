@@ -1,52 +1,67 @@
 /* ==========================================================================
-   tokens.css — Tasarım değişkenleri
-   Fizik 11 · Akıllı tahta sunum sistemi
+   tokens.css · Tasarım değişkenleri
+   Fizik 11 · Akıllı tahta ders aracı
    Tüm renk / ölçü / tipografi kararları burada. Başka dosyada ham renk yok.
+
+   İlke: renk fiziğe ait. Kabuk neredeyse renksizdir (mürekkep + kâğıt);
+   doygun renkler yalnız fiziksel anlam taşıyan yerlerde yaşar: sim
+   vektörleri, büyüklük renkleri, formül vurguları, blok işaretleri.
+
+   Token ADLARI sabittir: topics/*.js içindeki inline stiller bu adlara
+   bağlı. Değer değişebilir, eski ad silinmez.
    ========================================================================== */
 
 :root {
-  /* --- Kabuk yüzeyleri (koyu sunum teması) --- */
-  --bg:            #0B1220;
-  --surface-0:     #111A2B;
-  --surface-1:     #17223A;
-  --surface-2:     #1E2B47;
-  --surface-3:     #263654;
+  color-scheme: dark;
 
-  /* --- Kenarlıklar --- */
-  --border:        #2A3A5C;
-  --border-strong: #3A4E76;
+  /* --- Nötr merdiven (koyu, varsayılan) ---
+     Gölge yok; derinlik yüzey basamağı + 1px çizgiyle verilir. Basamaklar
+     akıllı tahtada ayırt edilsin diye geniş tutuldu. */
+  --bg:            #0C1220;
+  --surface-0:     #121A2A;   /* kenar çubuğu, üst bar */
+  --surface-1:     #172235;   /* kart */
+  --surface-2:     #1F2B42;   /* iç yüzey, kontrol */
+  --surface-3:     #293852;   /* hover, seçili */
 
-  /* --- Metin --- */
-  --text:          #EAF0FA;
-  --text-2:        #A7B8D4;
-  --text-3:        #6F84A8;
-  --text-guclu:    #FFFFFF;   /* kalın vurgu, formül metni */
+  --border:        #314260;
+  --border-strong: #445A80;
 
-  /* --- Arka plan dokusu ---
-     Çok hafif: ders içeriğinin okunurluğunu bozmamalı. İki yumuşak ışık
-     lekesi + milimetrik kâğıt ızgarası. */
-  --bg-cizgi:      rgba(125,165,225,.055);
-  --bg-isik1:      rgba(45,110,200,.16);
-  --bg-isik2:      rgba(120,80,200,.10);
+  --text:          #EEF2F8;
+  --text-2:        #B6C3D9;
+  --text-3:        #8696B3;   /* s1 üstünde 5,3:1 */
+  --text-guclu:    #F8FAFD;   /* saf beyaz değil */
+
+  /* --- Mürekkep: birincil düğme ve seçili sekme dolgusu ---
+     Formül kartının ters zemini ile aynı aile. */
+  --ink:           #EEF2F8;
+  --ink-text:      #0C1220;
+
+  /* --- Eski arka plan dokusu ---
+     Arka plan artık düz; adlar yalnız geriye uyumluluk için duruyor. */
+  --bg-cizgi:      transparent;
+  --bg-isik1:      transparent;
+  --bg-isik2:      transparent;
   --bg-izgara:     48px;
 
-  /* --- Vurgu renkleri --- */
-  --accent:        #4DA3FF;   /* birincil · seçili konu, bağlantı */
-  --accent-soft:   #16304F;
-  --amber:         #FFB020;   /* püf noktası kutusu */
+  /* --- Vurgu (mavi): odak halkası, bağlantı, kaydıraç, seçim ---
+     Düğme dolgusu olarak kullanılmaz; o iş --ink'in. */
+  --accent:        #6AAEFF;
+  --accent-soft:   #1A3354;
+
+  /* --- Anlamsal --- */
+  --amber:         #FFB020;   /* püf noktası */
   --amber-soft:    #3A2A0C;
-  --violet:        #A78BFA;   /* ÖSYM arşivi */
+  --violet:        #A78BFA;
   --violet-soft:   #2A2348;
-  --green:         #35C08A;   /* doğru cevap, onay */
+  --green:         #35C08A;   /* doğru, onay */
   --green-soft:    #10322A;
-  --red:           #FF6B6B;   /* yanlış cevap, uyarı */
+  --red:           #FF6B6B;   /* yanlış, dikkat */
   --red-soft:      #3A1A1F;
-  --cyan:          #38D6E0;   /* bağlam temelli soru */
+  --cyan:          #38D6E0;
   --cyan-soft:     #0E3238;
 
   /* --- Fizik büyüklüklerinin sabit renkleri ---
-     Bu renkler TÜM simülasyonlarda aynı anlamı taşır.
-     Öğrenci bir kez öğrenir, her konuda tanır. */
+     Bu renkler TÜM simülasyonlarda aynı anlamı taşır. Dokunulmaz. */
   --q-konum:       #4DA3FF;   /* konum, yer değiştirme */
   --q-hiz:         #35C08A;   /* hız vektörü */
   --q-ivme:        #FFB020;   /* ivme, g */
@@ -56,104 +71,155 @@
   --q-agirlik:     #FF8FA3;   /* ağırlık */
   --q-merkezcil:   #FF7A45;   /* merkezcil kuvvet/ivme */
 
-  /* --- Blok kimlik renkleri ---
-     Konu sayfasındaki 7 bloğun her biri kendi rengini taşır. Öğrenci sayfayı
-     kaydırırken hangi bölümde olduğunu başlığı okumadan renkten anlar.
-     --bN solid renk, --bNs o rengin koyu zemindeki yumuşak karşılığı. */
-  --b1: #4DA3FF;  --b1s: #12304F;   /* kavram        · mavi      */
-  --b2: #38D6E0;  --b2s: #0E3238;   /* formüller     · camgöbeği */
-  --b3: #A78BFA;  --b3s: #2A2348;   /* türetim       · mor       */
-  --b4: #35C08A;  --b4s: #10322A;   /* simülasyon    · yeşil     */
-  --b5: #FFB020;  --b5s: #3A2A0C;   /* püf noktası   · amber     */
-  --b6: #FF8FA3;  --b6s: #3C1C26;   /* ÖSYM arşivi   · pembe     */
-  --b7: #FF7A45;  --b7s: #3B1F12;   /* bağlam temelli· turuncu   */
+  /* --- Blok renkleri ---
+     Yalnız blok başlık ikonu ve kendi bloğunun kutusunda kullanılır.
+     Yedisi de OKLCH'de eşit açıklık ve doygunlukta: hiçbiri ötekinden
+     bağırmaz. --bN düz renk, --bNs aynı tonun koyu zemindeki karşılığı.
+     (oklch() doğrudan yazılmadı: okul tarayıcısının sürümü belirsiz.) */
+  --b1: #6DB0F4;  --b1s: #192F46;   /* kavram         oklch(.74 .12 250) / oklch(.30 .05 250) */
+  --b2: #26C0CF;  --b2s: #02353A;   /* formüller      oklch(.74 .12 205) / oklch(.30 .05 205) */
+  --b3: #B09BEE;  --b3s: #302844;   /* türetim        oklch(.74 .12 295) / oklch(.30 .05 295) */
+  --b4: #66C189;  --b4s: #173523;   /* simülasyon     oklch(.74 .12 155) / oklch(.30 .05 155) */
+  --b5: #D79F4C;  --b5s: #3C2A0E;   /* püf noktası    oklch(.74 .12 75)  / oklch(.30 .05 75)  */
+  --b6: #E68AAF;  --b6s: #41232F;   /* zorlayıcı      oklch(.74 .12 355) / oklch(.30 .05 355) */
+  --b7: #E99169;  --b7s: #422518;   /* bağlam         oklch(.74 .12 45)  / oklch(.30 .05 45)  */
 
-  /* --- Ünite renkleri --- */
-  --u1: #4DA3FF;  --u1s: #12304F;   /* kuvvet ve hareket     */
-  --u2: #FFB020;  --u2s: #3A2A0C;   /* elektrik ve manyetizma*/
-  --u3: #A78BFA;  --u3s: #2A2348;   /* optik                 */
+  /* --- Ünite renkleri ---
+     Yalnız ünite rozeti, konu sayfası ünite noktası ve üst bar alt çizgisi. */
+  --u1: #4DA3FF;  --u1s: #12304F;   /* kuvvet ve hareket      */
+  --u2: #FFB020;  --u2s: #3A2A0C;   /* elektrik ve manyetizma */
+  --u3: #A78BFA;  --u3s: #2A2348;   /* optik                  */
 
-  /* --- Ölçü --- */
-  --r-sm: 8px;
-  --r:    12px;
-  --r-lg: 18px;
-  --pad:  20px;
-  --gap:  14px;
+  /* --- Aralık (4'lük taban) --- */
+  --s1: 4px;  --s2: 8px;  --s3: 12px; --s4: 16px;
+  --s5: 24px; --s6: 32px; --s7: 48px; --s8: 64px;
+  --pad:  24px;
+  --gap:  16px;
+
+  /* --- Köşe (tek ölçek) --- */
+  --r-sm: 6px;    /* kontrol */
+  --r:    12px;   /* kart */
+  --r-lg: 16px;   /* sim paneli */
+
+  /* --- Katman sırası --- */
+  --z-cubuk:    10;
+  --z-cekmece:  40;
+  --z-tamekran: 60;
 
   /* --- Tipografi ---
-     --fs-base akıllı tahtada sunum moduna geçince büyür (bkz. base.css) */
-  --fs-base: 17px;
-  --font: "Segoe UI", Ubuntu, Cantarell, "DejaVu Sans", system-ui, sans-serif;
+     Fira Sans metin, F11 Matematik yalnız oklar ve operatörler için
+     (unicode-range ile, bkz. base.css). --fs-base sunum modunda büyür. */
+  --fs-base: 18px;
+  --font: "Fira Sans", "F11 Matematik", "Segoe UI", Ubuntu, "DejaVu Sans", sans-serif;
   --font-mono: "Cascadia Mono", "Ubuntu Mono", "DejaVu Sans Mono", monospace;
+
+  /* Ölçek oranı 1,2 */
+  --fs-h1:    2.2em;    /* ≈ 40px */
+  --fs-h2:    1.44em;   /* ≈ 26px */
+  --fs-h3:    1.2em;    /* ≈ 22px */
+  --fs-kucuk: .89em;    /* ≈ 16px */
+  --fs-etiket: .83em;   /* 15px, alt sınır */
+  --fs-deger: 1.5em;    /* okuma değeri ≈ 27px */
+  --olcu:     70ch;     /* okuma sütunu */
 
   /* --- Dokunma hedefi (akıllı tahta parmakla kullanılıyor) --- */
   --touch: 48px;
 
-  /* --- Geçişler --- */
-  --dur: 160ms;
-  --ease: cubic-bezier(.2,.7,.3,1);
+  /* --- Hareket --- */
+  --dur: 120ms;                         /* hover, basılı */
+  --dur-orta: 180ms;                    /* ünite aç/kapa */
+  --dur-cekmece: 250ms;
+  --ease: cubic-bezier(.16, 1, .3, 1);
 }
 
 /* Sunum modu: F11 / "Sunum" düğmesi <html data-sunum="1"> yapar.
    Uzaktan okunurluk için her şey büyür. */
 :root[data-sunum="1"] {
-  --fs-base: 21px;
-  --pad: 26px;
+  --fs-base: 22px;
+  --pad: 28px;
   --touch: 56px;
 }
 
-/* Hareket azaltma tercihi olan kullanıcı için animasyonları kıs.
-   Simülasyonlar çalışmaya devam eder, sadece arayüz geçişleri durur. */
+/* Hareket azaltma: arayüz geçişleri durur, simülasyonlar çalışmaya devam eder. */
 @media (prefers-reduced-motion: reduce) {
-  :root { --dur: 0ms; }
+  :root { --dur: 0ms; --dur-orta: 0ms; --dur-cekmece: 0ms; }
 }
 
 
 /* ==========================================================================
-   AÇIK TEMA — <html data-tema="acik">
+   KÂĞIT TEMA · <html data-tema="acik">
    --------------------------------------------------------------------------
-   Kâğıt tonu, saf beyaz değil: akıllı tahtada saf beyaz parlar ve uzun derste
-   göz yorar. Metin de saf siyah değil, koyu kurşun. Vurgu renkleri açık zeminde
-   yeterli kontrast için koyulaştırıldı.
-
-   Simülasyon tuvalleri bu temadan ETKİLENMEZ — onlar kendi görünümünü korur.
+   Aydınlık sınıf için ayrı kompoze edilmiş tema, koyunun tersi değil.
+   Sıcak kâğıt tonu bilinçli: saf beyaz panelde parlar. Vurgu mavide kalır
+   (krem + turuncu kümesine düşmesin). Simülasyon tuvalleri etkilenmez.
    ========================================================================== */
 :root[data-tema="acik"] {
+  color-scheme: light;
+
   --bg:            #EDE8DE;
   --surface-0:     #F7F3EB;
   --surface-1:     #FCF9F3;
   --surface-2:     #F1ECE2;
   --surface-3:     #E5DED0;
 
-  --border:        #D8D0BF;
-  --border-strong: #BAB09E;
+  --border:        #D3CAB8;
+  --border-strong: #B3A894;
 
-  --text:          #22272F;
-  --text-2:        #515A66;
-  --text-3:        #6B7482;
+  --text:          #1F242B;
+  --text-2:        #4B5461;
+  --text-3:        #5A6370;   /* bg üstünde 5:1 */
   --text-guclu:    #14181E;
 
-  --accent:        #1C6DD0;   --accent-soft: #DCE8F9;
+  --ink:           #1B2436;
+  --ink-text:      #F6F2EA;
+
+  --accent:        #1C62C0;   --accent-soft: #DCE8F9;
   --amber:         #8A5606;   --amber-soft:  #F7EDD5;
   --violet:        #6A46C0;   --violet-soft: #E8E1F8;
   --green:         #13744F;   --green-soft:  #D8EFE4;
   --red:           #A82C2C;   --red-soft:    #F9DFDF;
   --cyan:          #0B6F79;   --cyan-soft:   #D4EEF0;
 
-  --b1: #1C6DD0;  --b1s: #DCE8F9;
-  --b2: #0B6F79;  --b2s: #D4EEF0;
-  --b3: #6A46C0;  --b3s: #E8E1F8;
-  --b4: #13744F;  --b4s: #D8EFE4;
-  --b5: #8A5606;  --b5s: #F7EDD5;
-  --b6: #B24560;  --b6s: #F8DDE4;
-  --b7: #B24A19;  --b7s: #F8E1D3;
+  --b1: #2266A4;  --b1s: #DDEDFF;   /* oklch(.50 .12 250) / oklch(.94 .03 250) */
+  --b2: #007583;  --b2s: #D5F1F5;   /* oklch(.50 .12 205) / oklch(.94 .03 205) */
+  --b3: #6953A0;  --b3s: #ECE8FE;   /* oklch(.50 .12 295) / oklch(.94 .03 295) */
+  --b4: #0B7643;  --b4s: #DCF2E3;   /* oklch(.50 .12 155) / oklch(.94 .03 155) */
+  --b5: #8A5700;  --b5s: #F7E9D6;   /* oklch(.50 .12 75)  / oklch(.94 .03 75)  */
+  --b6: #964267;  --b6s: #FDE3EC;   /* oklch(.50 .12 355) / oklch(.94 .03 355) */
+  --b7: #994920;  --b7s: #FEE5DB;   /* oklch(.50 .12 45)  / oklch(.94 .03 45)  */
 
   --u1: #1C6DD0;  --u1s: #DCE8F9;
   --u2: #8A5606;  --u2s: #F7EDD5;
   --u3: #6A46C0;  --u3s: #E8E1F8;
+}
 
-  /* Kâğıt dokusu: sıcak ışık + soluk ızgara */
-  --bg-cizgi:  rgba(95,80,55,.07);
-  --bg-isik1:  rgba(214,180,120,.26);
-  --bg-isik2:  rgba(150,175,210,.20);
+
+/* ==========================================================================
+   TERS KAPSAM · formül kartı
+   --------------------------------------------------------------------------
+   Formül kartı her zaman sayfanın tersidir (koyu sayfada kâğıt, kâğıt
+   sayfada pano). Konu dosyalarındaki formüller kartın içinde var(--accent),
+   var(--b5) gibi token'lar kullanıyor; bu token'lar kartın içinde TERS
+   temanın değerlerini almazsa koyu mavi koyu zemine düşer. Bu yüzden kartın
+   içinde token'lar karşı temanın değerleriyle yeniden tanımlanır.
+   ========================================================================== */
+:root[data-tema="koyu"] .formul {
+  color-scheme: light;
+  --text: #1F242B;  --text-2: #4B5461;  --text-3: #5A6370;  --text-guclu: #121924;
+  --border: #CAD6E6;  --border-strong: #AFC0D6;
+  --surface-2: #E2E9F3;  --surface-3: #D3DDEB;
+  --accent: #1C62C0;  --accent-soft: #DCE8F9;
+  --amber: #8A5606;  --violet: #6A46C0;  --green: #13744F;  --red: #A82C2C;  --cyan: #0B6F79;
+  --b1: #2266A4;  --b2: #007583;  --b3: #6953A0;  --b4: #0B7643;
+  --b5: #8A5700;  --b6: #964267;  --b7: #994920;
+}
+:root[data-tema="acik"] .formul {
+  color-scheme: dark;
+  --text: #EEF2F8;  --text-2: #B6C3D9;  --text-3: #98A8C2;  --text-guclu: #F8FAFD;
+  --border: #2E3C57;  --border-strong: #445A80;
+  --surface-2: #2A3752;  --surface-3: #33425F;
+  --accent: #6AAEFF;  --accent-soft: #1A3354;
+  --amber: #FFB020;  --violet: #A78BFA;  --green: #35C08A;  --red: #FF6B6B;  --cyan: #38D6E0;
+  --b1: #6DB0F4;  --b2: #26C0CF;  --b3: #B09BEE;  --b4: #66C189;
+  --b5: #D79F4C;  --b6: #E68AAF;  --b7: #E99169;
 }
