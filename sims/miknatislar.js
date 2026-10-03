@@ -579,7 +579,7 @@ function cizDunya(ctx, w, h, st, p) {
   uzayYazi(ctx, 'sapma δ = ' + D.biçim(p.sapma) + '°', kx, ky + 42, '#EAF0FA',
                '600 11px system-ui, sans-serif', 'center');
 
-  uzayYazi(ctx, 'Güneş rüzgârı saptırılır — Van Allen kuşakları', 10, h - 12,
+  uzayYazi(ctx, 'Güneş rüzgârı saptırılır: Van Allen kuşakları', 10, h - 12,
                '#8FB6EC', '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -652,7 +652,7 @@ function cizKlasik(ctx, w, h, st, p) {
 
     const hareket = Fb > FS;
     const satir = [
-      ['Karşılaşan kutuplar: ' + solSagUc(p) + ' — ' + sagSolUc(p), K.beyaz],
+      ['Karşılaşan kutuplar: ' + solSagUc(p) + ' – ' + sagSolUc(p), K.beyaz],
       [cek ? 'Zıt ⟹ ÇEKME' : 'Aynı ⟹ İTME', cek ? R.normal : R.kuvvet],
       ['F = ' + D.biçim(Fb, 3) + ' N  (4 kutbun toplamı)', R.kuvvet],
       ['fₛ,maks = μₛ·m·g = ' + D.biçim(FS, 3) + ' N', R.surtunme],
@@ -679,7 +679,7 @@ function cizKlasik(ctx, w, h, st, p) {
       ['B, çizgiye teğet', R.normal],
       ['B = ' + D.biçim(tekAlanMT(k.x, k.y, !!p.ters1), 2) + ' mT', K.beyaz],
       ['merkeze uzaklık ' + D.biçim(r, 1) + ' cm', K.metin2],
-      ['Dünya’nın alanı ≈ 0,05 mT — burada ihmal edilir', K.metin2]
+      ['Dünya’nın alanı ≈ 0,05 mT: burada ihmal edilir', K.metin2]
     ];
     let sy = 26;
     satir.forEach(([t, c]) => {
@@ -690,7 +690,7 @@ function cizKlasik(ctx, w, h, st, p) {
   /* alan çizgisi kuralları */
   const kural = [
     'N’den çıkar, S’ye girer (dışarıda)',
-    'Kapalı eğridir — mıknatısın içinde S’den N’ye',
+    'Kapalı eğridir: mıknatısın içinde S’den N’ye',
     'Asla kesişmez',
     'Sıklık = alanın şiddeti'
   ];
@@ -867,7 +867,7 @@ function okumalar(st, p) {
   if (p.mod < 1.5) {
     const cek = cekiyor(p);
     return [
-      { et: 'Karşılaşan kutuplar', dg: solSagUc(p) + ' — ' + sagSolUc(p), birim: '' },
+      { et: 'Karşılaşan kutuplar', dg: solSagUc(p) + ' – ' + sagSolUc(p), birim: '' },
       { et: 'Etkileşim',           dg: cek ? 'Çekme' : 'İtme',            birim: '' },
       { et: 'Aralık',              dg: D.biçim(st.g * 100, 2),            birim: 'cm' },
       { et: 'Manyetik kuvvet F',   dg: D.biçim(Math.abs(kuvvet(st.g, p)), 3), birim: 'N' },
@@ -878,7 +878,7 @@ function okumalar(st, p) {
   }
   const k = gezginKonum(st.gezginAci || 0);
   return [
-    { et: 'Mıknatıs',          dg: p.ters1 ? 'S — N' : 'N — S', birim: '' },
+    { et: 'Mıknatıs',          dg: p.ters1 ? 'S – N' : 'N – S', birim: '' },
     { et: 'Pusuladaki B',      dg: D.biçim(tekAlanMT(k.x, k.y, !!p.ters1), 2), birim: 'mT' },
     { et: 'Merkeze uzaklık',   dg: D.biçim(Math.hypot(k.x, k.y) * 100, 1), birim: 'cm' },
     { et: 'Pusula iğnesi',     dg: 'Çizgiye teğet',             birim: '' },
@@ -903,12 +903,12 @@ D.simler['miknatislar'] = {
       { d: 4, e: 'Kitap örneği: terazideki mıknatıs' }
     ]},
     { anahtar: 'ters1', etiket: 'Sol mıknatıs (1–2. düzenek)', tur: 'secim', deger: 0, secenekler: [
-      { d: 0, e: 'N — S' },
-      { d: 1, e: 'S — N (çevrik)' }
+      { d: 0, e: 'N – S' },
+      { d: 1, e: 'S – N (çevrik)' }
     ]},
     { anahtar: 'ters2', etiket: 'Sağ mıknatıs (1. düzenek)', tur: 'secim', deger: 0, secenekler: [
-      { d: 0, e: 'N — S' },
-      { d: 1, e: 'S — N (çevrik)' }
+      { d: 0, e: 'N – S' },
+      { d: 1, e: 'S – N (çevrik)' }
     ]},
     { anahtar: 'ara',   etiket: 'Aralarındaki uzaklık (1. düzenek)', min: 1, max: 10, adim: 0.5, deger: 2, birim: 'cm' },
     { anahtar: 'enlem', etiket: 'Manyetik enlem (3. düzenek)', min: 0, max: 90, adim: 1, deger: 39, birim: '°' },

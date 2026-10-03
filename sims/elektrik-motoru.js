@@ -239,7 +239,7 @@ function cizGercek(ctx, w, h, st, p) {
     D.yaziAydinlik(ctx, 'komütatör yok ⟹ çerçeve dönmez, θ = 90° çevresinde SALINIR',
                    cx, h - 12, '#B03030', '700 11px system-ui, sans-serif', 'center');
   else if (oluNoktada(st, p))
-    D.yaziAydinlik(ctx, 'ÖLÜ NOKTA · tork sıfır — gerçek motorlar bu yüzden çok çerçeveli',
+    D.yaziAydinlik(ctx, 'ÖLÜ NOKTA · tork sıfır: gerçek motorlar bu yüzden çok çerçeveli',
                    cx, h - 12, '#B03030', '700 11px system-ui, sans-serif', 'center');
 }
 
@@ -508,8 +508,8 @@ D.simler['elektrik-motoru'] = {
   grafikYukseklik: 170,
   parametreler: [
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
-      { d: 1, e: 'Motor (komütatörlü) — sürekli döner' },
-      { d: 2, e: 'Komütatörsüz çerçeve — yalnızca salınır' },
+      { d: 1, e: 'Motor (komütatörlü): sürekli döner' },
+      { d: 2, e: 'Komütatörsüz çerçeve: yalnızca salınır' },
       { d: 3, e: 'Galvanometre (yaylı, ibreli)' }
     ]},
     { anahtar: 'B', etiket: 'Manyetik alan B', min: 0.1, max: 2, adim: 0.1, deger: 0.6, birim: 'T' },

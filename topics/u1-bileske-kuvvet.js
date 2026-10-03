@@ -11,7 +11,7 @@ const F = window.F11;
 
 F.konuKaydet('u1-bileske-kuvvet', {
 
-ozet: `Kuvvet cismi hareket ettirmez — <strong>hızını değiştirir</strong>. Bu ayrım
+ozet: `Kuvvet cismi hareket ettirmez: <strong>hızını değiştirir</strong>. Bu ayrım
 Newton’ın üç yasasının tamamının özüdür. Cisme etki eden kuvvetlerin vektörel toplamı
 olan <strong>bileşke kuvvet</strong> sıfırsa hız hiç değişmez; sıfırdan farklıysa
 cisim ivmelenir.`,
@@ -24,8 +24,8 @@ belirleyen tek şey budur. Tek tek kuvvetlerin büyüklüğü değil, <strong>to
 
 <p>Kuvvetler ikiye ayrılır:</p>
 <ul>
-  <li><strong>Temas kuvvetleri:</strong> İtme, çekme, sürtünme, yay kuvveti — dokunmak gerekir.</li>
-  <li><strong>Alan kuvvetleri:</strong> Yer çekimi, manyetik kuvvet, elektriksel kuvvet —
+  <li><strong>Temas kuvvetleri:</strong> İtme, çekme, sürtünme, yay kuvveti, dokunmak gerekir.</li>
+  <li><strong>Alan kuvvetleri:</strong> Yer çekimi, manyetik kuvvet, elektriksel kuvvet,
   uzaktan etki eder, dokunmaya gerek yoktur.</li>
 </ul>
 
@@ -52,7 +52,7 @@ masa örtüsü hızla çekildiğinde tabakların yerinde kalması hep eylemsizli
 <div class="formul" style="max-width:200px;margin:12px 0">
   <div class="fm" style="color:var(--accent)">F = m · a</div>
 </div>
-<p>İvme her zaman <strong>bileşke kuvvetle aynı yönlüdür</strong> — hızla aynı yönlü olmak
+<p>İvme her zaman <strong>bileşke kuvvetle aynı yönlüdür</strong>: hızla aynı yönlü olmak
 zorunda değildir. Frende kuvvet geriye, hız ileriye doğrudur.</p>
 
 <h3 style="margin-top:22px">Newton’ın III. Hareket Yasası · Etki-tepki</h3>
@@ -63,7 +63,7 @@ kuvvet uygular. Kuvvetler daima çiftler hâlinde bulunur.</p>
   <div class="kutu-bas"><span class="ikon">⚠</span>Bu konunun en kritik ayrıntısı</div>
   <p style="margin:0">Etki ve tepki kuvvetleri <strong>farklı cisimlere</strong> etki eder.
   Bu yüzden birbirlerini <strong>asla götürmezler</strong>.</p>
-  <p style="margin:8px 0 0">Sen duvarı itersin, duvar da seni iter — ama senin kuvvetin
+  <p style="margin:8px 0 0">Sen duvarı itersin, duvar da seni iter, ama senin kuvvetin
   <em>duvara</em>, duvarınki <em>sana</em> etkir. Bileşke kuvvet hesaplanırken yalnızca
   <strong>tek bir cisme etki eden</strong> kuvvetler toplanır. Etki-tepki çifti hiçbir zaman
   aynı serbest cisim diyagramında yer almaz.</p>
@@ -84,7 +84,7 @@ kuvvet uygular. Kuvvetler daima çiftler hâlinde bulunur.</p>
 formuller: {
   liste: [
     { fm: 'F<sub>net</sub> = ΣF',  aciklama: 'Kuvvetlerin vektörel toplamı' },
-    { fm: 'F = m · a',              aciklama: 'Newton II — dinamiğin temel yasası' },
+    { fm: 'F = m · a',              aciklama: 'Newton II: dinamiğin temel yasası' },
     { fm: 'G = m · g',              aciklama: 'Ağırlık, Newton II’nin serbest düşmeye uygulanmış hâli' },
     { fm: 'F<sub>net</sub> = 0 ⟹ a = 0', aciklama: 'Denge: hız değişmez (durur ya da sabit hızla gider)' }
   ],
@@ -155,14 +155,14 @@ turetim: {
                  <div class="formul" style="max-width:240px"><div class="fm">F<sub>net</sub> = m · a ⟹ G = m · g</div></div>` },
 
         { baslik: 'Bu neyi açıklıyor?',
-          html: `<p>Ağırlık ayrı bir yasa değil — <strong>Newton II’nin yer çekimine
+          html: `<p>Ağırlık ayrı bir yasa değil: <strong>Newton II’nin yer çekimine
                  uygulanmış hâli.</strong></p>
                  <p>Ayrıca 1.1’deki "kütle neden sadeleşiyor" sorusunun cevabı da burada:</p>
                  <p>a = F/m = (m·g)/m = g</p>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Ağır cisme daha büyük çekim kuvveti etki eder,
                    ama aynı oranda daha büyük eylemsizliği vardır. İkisi tam olarak birbirini
-                   götürür — bu yüzden herkes aynı ivmeyle düşer.</p>
+                   götürür: bu yüzden herkes aynı ivmeyle düşer.</p>
                  </div>` }
       ]
     },
@@ -191,7 +191,7 @@ turetim: {
                    <li>Atın çekme kuvveti (ileri)</li>
                    <li>Yerle olan sürtünme kuvveti (geri)</li>
                  </ul>
-                 <p>Arabanın ata uyguladığı tepki bu listede <strong>yoktur</strong> — çünkü
+                 <p>Arabanın ata uyguladığı tepki bu listede <strong>yoktur</strong>, çünkü
                  o kuvvet arabaya değil, ata etki eder.</p>
                  <p>Atın çekmesi sürtünmeden büyükse bileşke ileri doğrudur ve araba ivmelenir.</p>` },
 
@@ -205,7 +205,7 @@ turetim: {
                  anlamanın kesin yolu: <strong>aynı cisme mi etki ediyorlar?</strong>
                  Evetse etki-tepki değildir.</p>
                  <p>Örnek: Masadaki kitaba etki eden ağırlık (G) ve normal kuvvet (N) eşit ve zıttır
-                 ama <strong>etki-tepki çifti değildir</strong> — ikisi de aynı cisme, kitaba etki eder.
+                 ama <strong>etki-tepki çifti değildir</strong>, ikisi de aynı cisme, kitaba etki eder.
                  Bunlar sadece birbirini <em>dengeleyen</em> kuvvetlerdir.</p>` }
       ]
     }
@@ -238,12 +238,12 @@ puf: {
     </ul>
 
     <p><strong>5 · Ağırlık N, kütle kg.</strong> Soruda "kütlesi 600 N olan cisim" gibi bir
-    ifade görürsen bu bir tuzaktır — N ağırlığın birimidir. g = 10 iken kütle 60 kg’dır.</p>
+    ifade görürsen bu bir tuzaktır: N ağırlığın birimidir. g = 10 iken kütle 60 kg’dır.</p>
 
     <p style="margin-bottom:0"><strong>6 · Asansör soruları için tek cümle:</strong>
     İvme yukarıysa cisim kendini <strong>ağır</strong> hisseder (N > G),
     ivme aşağıysa <strong>hafif</strong> hisseder (N &lt; G).
-    Serbest düşüşte N = 0 — ağırlıksızlık budur.</p>`,
+    Serbest düşüşte N = 0: ağırlıksızlık budur.</p>`,
 
   ornekler: [
     {
@@ -313,7 +313,7 @@ osym: [
       <p>Kitap durduğuna göre ivmesi sıfırdır, dolayısıyla bileşke kuvvet de sıfırdır:
       <strong>N = G</strong>. Bu E’yi eler, C’yi de eler.</p>
       <p>Ama <strong>etki-tepki çifti değildirler.</strong> Sebep: ikisi de
-      <strong>aynı cisme</strong> — kitaba — etki eder. Etki-tepki çiftinin iki kuvveti
+      <strong>aynı cisme</strong>, kitaba, etki eder. Etki-tepki çiftinin iki kuvveti
       daima farklı cisimlere etkir.</p>
       <p>Bu iki kuvvetin gerçek tepkileri şunlardır:</p>
       <ul>
@@ -324,7 +324,7 @@ osym: [
         <p style="margin:0"><strong>A şıkkı bu konudaki en yaygın hatadır.</strong> "Eşit ve zıt"
         olmak etki-tepki için yeterli değildir. Testi şu: <em>aynı cisme mi etki ediyorlar?</em>
         Evetse dengeleyen kuvvetlerdir. Farklı cisimlereyse etki-tepki çiftidir.
-        <br>D şıkkı ise okun nereden çıktığına bakmadan cevap verenleri toplar — her iki ok da
+        <br>D şıkkı ise okun nereden çıktığına bakmadan cevap verenleri toplar: her iki ok da
         kitaptan çıkıyor, masadan değil.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B</strong></p>`
@@ -351,9 +351,9 @@ osym: [
       <ol>
         <li><strong>Doğru.</strong> İvme hıza zıt olduğu için cisim yavaşlar.</li>
         <li><strong>Doğru.</strong> a = F/m, F sola ⟹ a sola.</li>
-        <li><strong>Doğru.</strong> Yavaşlar, sıfırlanır, sonra sola doğru hızlanır —
+        <li><strong>Doğru.</strong> Yavaşlar, sıfırlanır, sonra sola doğru hızlanır:
         tıpkı yukarı atılan taşın hikâyesi gibi.</li>
-        <li><strong>YANLIŞ — aranan cevap bu.</strong> Cisim durduğu anda <em>hızı</em> sıfırdır,
+        <li><strong>YANLIŞ: aranan cevap bu.</strong> Cisim durduğu anda <em>hızı</em> sıfırdır,
         <em>ivmesi</em> değil. Kuvvet hâlâ etki ettiği için ivme hâlâ F/m’dir. İvme sıfır olsaydı
         cisim orada kalırdı.</li>
         <li><strong>Doğru.</strong> F ve m sabit ⟹ a sabit.</li>
@@ -405,15 +405,15 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'İddiayı incele',
-        metin: 'Öğrenci "yolcuyu öne iten bir kuvvet var" diyor. Fizikte bir iddiayı sınamanın yolu: <strong>o kuvveti kim uyguluyor?</strong> Kuvvet iki cisim arasındaki etkileşimdir — uygulayıcısı olmayan kuvvet olmaz.' },
+        metin: 'Öğrenci "yolcuyu öne iten bir kuvvet var" diyor. Fizikte bir iddiayı sınamanın yolu: <strong>o kuvveti kim uyguluyor?</strong> Kuvvet iki cisim arasındaki etkileşimdir: uygulayıcısı olmayan kuvvet olmaz.' },
       { bas: 'Uygulayıcıyı ara',
-        metin: 'Yolcuya öne doğru kuvvet uygulayan bir cisim yok. Koltuk arkadan itemez (temas kopuyor), hava itemez. <strong>Öne doğru bir kuvvet yoktur</strong> — öğrencinin açıklaması yanlıştır.' },
+        metin: 'Yolcuya öne doğru kuvvet uygulayan bir cisim yok. Koltuk arkadan itemez (temas kopuyor), hava itemez. <strong>Öne doğru bir kuvvet yoktur</strong>: öğrencinin açıklaması yanlıştır.' },
       { bas: 'Olayı Newton I ile kur',
         metin: 'Çarpışmadan önce araç ve yolcu <strong>birlikte</strong> 50 km/s ile gidiyordu. Çarpışmada <em>araca</em> büyük bir kuvvet etki edip onu durdurdu. Ama <strong>yolcuya hiçbir kuvvet etki etmedi</strong>.' },
       { bas: 'Sonucu çıkar',
-        metin: 'Newton I gereği, üzerine kuvvet etki etmeyen yolcu <strong>hızını korur</strong> — yani 50 km/s ile ileri gitmeye devam eder. Araç durduğu için yolcu araca göre öne gidiyormuş gibi görünür. Aslında yolcu hareketini sürdürüyor, araç onun altından çekiliyor.' },
+        metin: 'Newton I gereği, üzerine kuvvet etki etmeyen yolcu <strong>hızını korur</strong>, yani 50 km/s ile ileri gitmeye devam eder. Araç durduğu için yolcu araca göre öne gidiyormuş gibi görünür. Aslında yolcu hareketini sürdürüyor, araç onun altından çekiliyor.' },
       { bas: 'Kemerin işlevini açıkla',
-        metin: 'Emniyet kemeri, yolcuya <strong>geriye doğru bir kuvvet uygulayarak</strong> onu araçla birlikte yavaşlatır. Yani kemer "tutmaz", <strong>ivmelendirir</strong> — eksik olan kuvveti sağlar.' }
+        metin: 'Emniyet kemeri, yolcuya <strong>geriye doğru bir kuvvet uygulayarak</strong> onu araçla birlikte yavaşlatır. Yani kemer "tutmaz", <strong>ivmelendirir</strong>: eksik olan kuvveti sağlar.' }
     ],
     secenekler: [
       'Öğrenci haklı, araca uygulanan kuvvet yolcuyu da öne iter',
@@ -432,7 +432,7 @@ baglam: [
         <p style="margin:0"><strong>C şıkkındaki "merkezkaç kuvveti"</strong> gerçek bir kuvvet
         değildir; hareketli bir gözlem çerçevesinde ortaya çıkan görünür bir etkidir ve zaten
         doğrusal harekette adı bile geçmez.
-        <br><strong>E şıkkı</strong> ise eylemsizliği yanlış kullanır — kütlenin küçük olması
+        <br><strong>E şıkkı</strong> ise eylemsizliği yanlış kullanır: kütlenin küçük olması
         yolcuyu fırlatmaz. Kütle ne olursa olsun, kuvvet uygulanmayan her cisim hızını korur.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B</strong></p>`
@@ -469,7 +469,7 @@ baglam: [
       { bas: 'Verilenleri ayıkla',
         metin: 'm = 500 kg, a = 2 m/s² yukarı, g = 10 m/s², halat sınırı 6000 N. Depo, kargo gibi ayrıntılar sahne unsuru.' },
       { bas: 'Yanılgıyı fark et',
-        metin: 'İlk akla gelen G = 500 · 10 = 5000 N < 6000 N, "taşır" demek. <strong>Bu eksik bir hesaptır</strong> — asansör duruyor olsaydı doğru olurdu. Ama asansör <em>ivmeleniyor</em>.' },
+        metin: 'İlk akla gelen G = 500 · 10 = 5000 N < 6000 N, "taşır" demek. <strong>Bu eksik bir hesaptır</strong>: asansör duruyor olsaydı doğru olurdu. Ama asansör <em>ivmeleniyor</em>.' },
       { bas: 'Serbest cisim diyagramını çiz',
         metin: 'Kabine etki eden iki kuvvet: halatın gerilmesi <strong>T (yukarı)</strong> ve ağırlık <strong>G = 5000 N (aşağı)</strong>. İvme yukarı olduğuna göre T, G’den büyük olmalı.' },
       { bas: 'Newton II’yi uygula',
@@ -477,7 +477,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'T = G + m·a = 5000 + 500·2 = 5000 + 1000 = <strong>6000 N</strong>' },
       { bas: 'Yorumla',
-        metin: 'Gerilme tam olarak halatın sınırına eşit — <strong>hiç güvenlik payı yok</strong>. Mühendislikte kabul edilemez. Çözüm: yükü azaltmak ya da daha yavaş ivmelenmek. İvme 1 m/s² olsaydı T = 5500 N olurdu.' }
+        metin: 'Gerilme tam olarak halatın sınırına eşit: <strong>hiç güvenlik payı yok</strong>. Mühendislikte kabul edilemez. Çözüm: yükü azaltmak ya da daha yavaş ivmelenmek. İvme 1 m/s² olsaydı T = 5500 N olurdu.' }
     ],
     secenekler: [
       'Evet, gerilme 5000 N olur',
@@ -493,9 +493,9 @@ baglam: [
       <div class="formul" style="max-width:260px"><div class="fm">T − G = m · a</div></div>
       <p>T = 5000 + 500·2 = <strong>6000 N</strong></p>
       <p>Halatın sınırına <em>tam olarak</em> eşit. Teknik olarak kopmaz ama
-      <strong>güvenlik payı sıfırdır</strong> — kabul edilemez.</p>
+      <strong>güvenlik payı sıfırdır</strong>: kabul edilemez.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>A şıkkı (5000 N)</strong> ivmeyi hesaba katmayanlar için —
+        <p style="margin:0"><strong>A şıkkı (5000 N)</strong> ivmeyi hesaba katmayanlar için:
         bu sorudaki asıl tuzak odur. Cisim ivmeleniyorsa gerilme ağırlığa eşit değildir.
         <br><strong>Ezberlenecek üç durum:</strong> yukarı ivmeli → T = m(g+a) · aşağı ivmeli →
         T = m(g−a) · sabit hız veya duruyor → T = m·g. Asansör sorularının tamamı bu üç satırda.</p>

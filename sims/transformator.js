@@ -165,12 +165,12 @@ function cizGercek(ctx, w, h, st, pHam) {
   D.yaziAydinlik(ctx, 'V_s = ' + D.biçim(dcMi(p) ? v2a : v2(p), dcMi(p) ? 2 : 1) + ' V' + (dcMi(p) ? '' : ' (etkin)'), w - 10, 24, R.ivme,
                  '700 13px system-ui, sans-serif', 'right');
 
-  D.rozet(ctx, dcMi(p) ? 'DC — ÇALIŞMAZ' : tur(p), w / 2, 52,
+  D.rozet(ctx, dcMi(p) ? 'DC: ÇALIŞMAZ' : tur(p), w / 2, 52,
           dcMi(p) ? 'rgba(176,48,48,.95)' : (oran(p) > 1 ? 'rgba(226,72,63,.92)' : 'rgba(47,111,208,.92)'),
           '#FFFFFF', '700 12px system-ui, sans-serif', true);
 
   D.yaziAydinlik(ctx, dcMi(p) ? 'anahtar kapanırken kısa bir darbe, sonra ΔΦ = 0 ⟹ V_s = 0 · birincil sargı ISINIR'
-                              : 'gerilim yükselirse akım düşer — güç korunur (ağır çekim ×' + AGIR + ')',
+                              : 'gerilim yükselirse akım düşer: güç korunur (ağır çekim ×' + AGIR + ')',
                  w / 2, h - 12, dcMi(p) ? '#B03030' : R.mur, '600 11px system-ui, sans-serif', 'center');
 }
 
@@ -281,7 +281,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
   let sy = 46;
   satir.forEach(([t, c, f]) => { if (t) D.yaziHaleli(ctx, t, bx, sy, c, f, 'left'); sy += 17; });
 
-  D.yaziHaleli(ctx, 'Gerilim kazanırsan akım kaybedersin — bedava enerji yok',
+  D.yaziHaleli(ctx, 'Gerilim kazanırsan akım kaybedersin: bedava enerji yok',
                12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -350,13 +350,13 @@ function okumalar(st, pHam) {
     ];
   }
   return [
-    { et: 'Tür',        dg: dcMi(p) ? 'DC — çalışmaz' : tur(p),     birim: '' },
+    { et: 'Tür',        dg: dcMi(p) ? 'DC: çalışmaz' : tur(p),     birim: '' },
     { et: 'N_p / N_s',  dg: D.biçim(p.N1) + ' / ' + D.biçim(p.N2),  birim: '' },
     { et: 'V_p',        dg: D.biçim(p.V1),                          birim: 'V' },
     { et: 'V_s',        dg: dcMi(p) ? D.biçim(v2An(st, p), 2) : D.biçim(v2(p), 1), birim: 'V' },
     { et: 'i_p',        dg: dcMi(p) ? 'Çok büyük (ısınır)' : D.biçim(i1(p), 3), birim: dcMi(p) ? '' : 'A' },
     { et: 'i_s',        dg: D.biçim(dcMi(p) ? v2An(st, p) / Math.max(1, p.Ryuk) : i2(p), 3), birim: 'A' },
-    { et: 'P_p / P_s',  dg: dcMi(p) ? '—' : D.biçim(p1(p)) + ' / ' + D.biçim(p2(p)), birim: 'W' }
+    { et: 'P_p / P_s',  dg: dcMi(p) ? '–' : D.biçim(p1(p)) + ' / ' + D.biçim(p2(p)), birim: 'W' }
   ];
 }
 

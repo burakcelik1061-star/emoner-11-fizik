@@ -42,7 +42,7 @@ kavram: `
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Her iki durumda da yansıma yasası
 <strong>geçerlidir</strong>. Fark yüzeyin pürüzünde: dağınık yansımada her küçük parçanın
-normali farklı yöne baktığı için ışınlar dağılır. Bu sayede bu yazıyı okuyabiliyorsun —
+normali farklı yöne baktığı için ışınlar dağılır. Bu sayede bu yazıyı okuyabiliyorsun:
 kâğıt ışığı her yöne dağıtıyor.</p>
 
 <h3 style="margin-top:22px">Düzlem aynada görüntü</h3>
@@ -53,7 +53,7 @@ kâğıt ışığı her yöne dağıtıyor.</p>
     <tr><td>Yeri</td><td>aynanın <strong>arkasında</strong>, cisimle <strong>eşit uzaklıkta</strong></td></tr>
     <tr><td>Boyu</td><td>cisimle <strong>aynı</strong></td></tr>
     <tr><td>Yönü</td><td><strong>düz</strong> (ters değil)</td></tr>
-    <tr><td>Cinsi</td><td><strong>sanal</strong> — perdeye düşmez</td></tr>
+    <tr><td>Cinsi</td><td><strong>sanal</strong>: perdeye düşmez</td></tr>
   </tbody>
 </table>
 
@@ -61,7 +61,7 @@ kâğıt ışığı her yöne dağıtıyor.</p>
   <div class="kutu-bas"><span class="ikon">🪞</span><span>Ayna neden sağ-solu ters gösterir?</span></div>
   <p style="margin:0">Aslında <strong>göstermiyor</strong>. Ayna sağ ile solu değil,
   <strong>önü ile arkayı</strong> ters çevirir. Sen aynaya bakarken sağ elini kaldırırsan,
-  görüntündeki el de <em>aynı taraftadır</em> — ama karşındaki bir insan gibi düşündüğün
+  görüntündeki el de <em>aynı taraftadır</em>, ama karşındaki bir insan gibi düşündüğün
   için onu “sol el” sanarsın.</p>
   <p style="margin:8px 0 0">Kanıt: Aynaya bir yazı tut. Harfler sağa sola değil,
   <strong>içten dışa</strong> dönmüş görünür.</p>
@@ -158,7 +158,7 @@ turetim: {
           html: `<p>Türetimin hiçbir adımında <strong>aynaya uzaklık kullanılmadı</strong>.
                  Uzaklaşınca ışınlar daha dar açıyla gelir ama aynadaki çarpma noktaları
                  <em>aynı hizada</em> kalır.</p>
-                 <p>Uzaklaşınca görüntün küçülmez de — çünkü görüntü de seninle birlikte
+                 <p>Uzaklaşınca görüntün küçülmez de, çünkü görüntü de seninle birlikte
                  uzaklaşır. Gözünde oluşan görüntü küçülür, ama aynadaki görüntünün
                  <strong>boyu</strong> hep senin boyun kadardır.</p>` }
       ]
@@ -253,7 +253,7 @@ puf: {
 
     <p style="margin-top:14px"><strong>6 · Görüntü SANALDIR.</strong> Perdeye düşürülemez.
     “Aynanın arkasına perde koyarsak görüntü düşer mi?” sorusunun cevabı
-    <strong>hayır</strong>&rsquo;dır — orada gerçek ışık yoktur, ışınların uzantıları vardır.</p>
+    <strong>hayır</strong>&rsquo;dır: orada gerçek ışık yoktur, ışınların uzantıları vardır.</p>
 
     <p><strong>7 · Cisim aynaya ϑ hızıyla yaklaşırsa</strong>, görüntü de ϑ hızıyla yaklaşır.
     Aralarındaki uzaklık <strong>2ϑ</strong> hızıyla azalır. Bu, sık sorulan bir ayrıntıdır.</p>
@@ -316,7 +316,7 @@ osym: [
         <div class="fm" style="color:var(--accent)">(170 + 0)/2 = <strong>85 cm</strong></div>
       </div>
 
-      <p><strong>Kontrol — üst kenar:</strong> Baş ile gözün ortası:
+      <p><strong>Kontrol · üst kenar:</strong> Baş ile gözün ortası:
       <code>(180 + 170)/2 = 175 cm</code>.
       Ayna 85&rsquo;ten 175&rsquo;e kadar ⟹ boyu <code>175 − 85 = 90 cm</code> ✓
       İki yoldan da aynı sonuç.</p>
@@ -324,11 +324,11 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı</strong> tam da sınanan noktadır: <strong>2 m
         uzaklık çeldiricidir.</strong> Ne ayna boyunu ne de alt kenar yüksekliğini etkiler.
-        <br><strong>B şıkkı</strong> alt kenarı boyun yarısı sanıyor — hayır, alt kenar
+        <br><strong>B şıkkı</strong> alt kenarı boyun yarısı sanıyor: hayır, alt kenar
         <em>göz yüksekliğinin</em> yarısıdır.
         <br><strong>D şıkkı</strong> boyu dörtte bir alıyor.
         <br><strong>Uygulama:</strong> Evdeki boy aynasını ölç. Muhtemelen boyunun yarısından
-        uzundur — çünkü üreticiler herkese uysun diye pay bırakır.</p>
+        uzundur, çünkü üreticiler herkese uysun diye pay bırakır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -360,7 +360,7 @@ osym: [
         <li><strong>Doğru.</strong> İkisi de birbirine 2&rsquo;şer m/s ile yaklaştığına göre
         aralarındaki uzaklık <strong>4 m/s</strong> hızla azalır.</li>
         <li><strong>Yanlış.</strong> Düzlem aynada görüntünün boyu <strong>her zaman</strong>
-        cisme eşittir. Daha büyük <em>görünmesi</em>, göze daha büyük açıyla gelmesindendir —
+        cisme eşittir. Daha büyük <em>görünmesi</em>, göze daha büyük açıyla gelmesindendir:
         görüntünün gerçek boyu değişmez.</li>
         <li><strong>Doğru.</strong> Kişi 1 m yaklaşırsa görüntü de 1 m yaklaşır, toplam
         <strong>2 m</strong>.</li>
@@ -369,11 +369,11 @@ osym: [
         <p style="margin:0"><strong>III. yargı bu sorunun ayırt edici noktası.</strong>
         “Aynaya yaklaşınca görüntü büyüyor” hissi gerçektir ama görüntünün <em>boyu</em>
         değişmiyor; <strong>görme açın</strong> büyüyor. Aynı şey uzaktaki bir arabaya
-        yaklaşırken de olur — araba büyümüyor.
+        yaklaşırken de olur: araba büyümüyor.
         <br><strong>Sağlama:</strong> Aynaya burnunu değdirsen bile görüntünün boyu
         senin boyun kadardır. Ama artık kendini ancak burnun kadar bir alanda görürsün.
         <br><strong>Bağıl hız hatırlatması:</strong> Bu, 1. ünitedeki bağıl hız mantığının
-        aynısı — zıt yönde yaklaşan iki cismin bağıl hızı toplanır.</p>
+        aynısı: zıt yönde yaklaşan iki cismin bağıl hızı toplanır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }
@@ -387,7 +387,7 @@ baglam: [
       <p>Denizaltılar su altındayken yüzeyi görmek için <strong>periskop</strong> kullanır.
       Periskop, uzun bir borunun iki ucuna <strong>45°</strong> eğimle yerleştirilmiş
       <strong>iki düzlem aynadan</strong> oluşur.</p>
-      <p>Aynı düzeneği kalabalıkta öndekilerin arkasından bakmak için de kullanabilirsin —
+      <p>Aynı düzeneği kalabalıkta öndekilerin arkasından bakmak için de kullanabilirsin:
       kutu ve iki ayna parçasıyla evde yapılabilir.</p>
       <p><strong>Işının izlediği yolu adım adım çıkar. Görüntü ters mi düz mü olur?
       Aynalar 45° yerine 40° olsaydı ne olurdu?</strong></p>`,
@@ -441,12 +441,12 @@ baglam: [
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı</strong> “iki kez yansıma ⟹ ters” diye
-        düşünüyor — tam tersi doğru: <em>tek</em> yansıma ters çevirir, <em>çift</em> sayıda
+        düşünüyor, tam tersi doğru: <em>tek</em> yansıma ters çevirir, <em>çift</em> sayıda
         yansıma düze döndürür.
         <br><strong>D şıkkı</strong> açının kritikliğini küçümsüyor. Aynaların açısı
         birbirine tam paralel değilse ışın borudan hiç çıkamaz.
         <br><strong>Kendin yap:</strong> Bir karton kutu, iki küçük ayna ve bir cetvelle
-        periskop yapılabilir. Aynaları 45°&rsquo;ye ayarlamak işin en zor kısmıdır —
+        periskop yapılabilir. Aynaları 45°&rsquo;ye ayarlamak işin en zor kısmıdır 
         ve bu sorunun cevabını elinle hissedersin.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -478,7 +478,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Yaygın yanlışı düzelt',
-        metin: 'Ayna sağ ile solu <strong>ters çevirmez</strong>. Ayna, <strong>önü ile arkayı</strong> ters çevirir — yani sana doğru olan yön, görüntüde senden uzağa doğru olur.' },
+        metin: 'Ayna sağ ile solu <strong>ters çevirmez</strong>. Ayna, <strong>önü ile arkayı</strong> ters çevirir, yani sana doğru olan yön, görüntüde senden uzağa doğru olur.' },
       { bas: 'Peki neden ters görünüyor?',
         metin: 'Yazıyı aynada görmek için <strong>aynaya doğru çevirmen</strong> gerekir. O çevirme işlemini <em>sen</em> yaparsın ve yazının sağ-sol ekseni tersine döner. Ayna değil, <strong>senin çevirmen</strong> ters gösterir.' },
       { bas: 'Neden yalnızca yatayda?',
@@ -486,7 +486,7 @@ baglam: [
       { bas: 'Denemesi kolay',
         metin: 'Bir yazıyı aynaya <strong>alt üst</strong> çevirerek tut (takla attırarak). Bu kez aynada yazı <strong>baş aşağı</strong> ama harfleri düz görünür. Yani ters çevrilen eksen, <em>senin hangi eksende döndürdüğüne</em> bağlı.' },
       { bas: 'Ambulansa dön',
-        metin: 'Sürücü dikiz aynasından bakarken görüntü yatayda tersine döner. Bu yüzden yazı araca <strong>yatayda ters</strong> yazılır — iki ters çevirme birbirini götürür ve yazı düz okunur.' },
+        metin: 'Sürücü dikiz aynasından bakarken görüntü yatayda tersine döner. Bu yüzden yazı araca <strong>yatayda ters</strong> yazılır: iki ters çevirme birbirini götürür ve yazı düz okunur.' },
       { bas: 'Gerçek hayatta',
         metin: 'Ambulans ve itfaiye araçlarında bu uygulama zorunludur. Aynı mantık, tıraş aynasına yapıştırılan uyarı yazılarında ve bazı yarış arabalarının önündeki numaralarda da kullanılır.' }
     ],
@@ -509,7 +509,7 @@ baglam: [
         aynaya dik eksen ters çevrilir, diğer ikisi olduğu gibi kalır. “Sağ-sol tersliği”
         bir fizik olayı değil, bizim yorumumuz.
         <br><strong>Sağ el testi:</strong> Aynaya bak, sağ elini kaldır. Görüntündeki el
-        senin sağ elinin karşısındadır — gerçekten “sol el” olsaydı çapraz olurdu.</p>
+        senin sağ elinin karşısındadır: gerçekten “sol el” olsaydı çapraz olurdu.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }

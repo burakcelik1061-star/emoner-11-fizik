@@ -107,7 +107,7 @@ function durumAdi(a, f) {
 /** Görüntünün üç özelliği. */
 function goruntuOzellik(a, f) {
   const b = goruntuB(a, f);
-  if (b === null) return { cins: 'Oluşmaz', yon: '—', boy: '—' };
+  if (b === null) return { cins: 'Oluşmaz', yon: '–', boy: '–' };
   const m = Math.abs(b / a);
   return {
     cins: b > 0 ? 'Gerçek' : 'Sanal',
@@ -253,9 +253,9 @@ function cizGercek(ctx, w, h, st, pHam) {
   const bxPanel = y.b === null ? null : xKonum(y, y.b);
   if (y.b === null || bxPanel < w * 0.01 || bxPanel > w * 0.99) {
     D.yaziAydinlik(ctx,
-      y.b === null ? 'Cisim tam odakta — yansıyan ışınlar PARALEL, görüntü oluşmaz'
+      y.b === null ? 'Cisim tam odakta: yansıyan ışınlar PARALEL, görüntü oluşmaz'
                    : (y.b > 0 ? 'Görüntü önde ' : 'Sanal görüntü arkada ') + D.biçim(Math.abs(y.b)) +
-                     ' cm uzakta — panelin dışında',
+                     ' cm uzakta: panelin dışında',
       w * 0.5, h * 0.95, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   } else {
     const bx = xKonum(y, y.b);
@@ -418,7 +418,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['Görüntünün yeri: odak noktası', K.metin2, '12px system-ui, sans-serif'],
       ['Özelliği: nokta şeklinde, ' + (f > 0 ? 'gerçek' : 'sanal'), R.kuvvet, '700 12px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
-      ['Kitap Tablo 3.3 ve 3.4 — ilk satır', K.metin2, '11px system-ui, sans-serif'],
+      ['Kitap Tablo 3.3 ve 3.4: ilk satır', K.metin2, '11px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
       ['Grafikte cisim uzaklaşıyor:', K.beyaz, '700 12px system-ui, sans-serif'],
       ['a = ' + D.biçim(ga, 0) + ' cm  ⟹  b = ' + D.biçim(gb, 1) + ' cm', R.hiz, '700 13px system-ui, sans-serif'],
@@ -445,9 +445,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
         const hucre = [
           D.biçim(aa / 100, 0),
           !goster ? '…' : yok ? 'oluşmaz' : D.biçim(oo.b / 100, 2),
-          !goster ? '…' : yok ? '—' : D.biçim(180 * oo.m, 0),
-          !goster ? '…' : yok ? '—' : oo.cins,
-          !goster ? '…' : yok ? '—' : oo.yon
+          !goster ? '…' : yok ? '–' : D.biçim(180 * oo.m, 0),
+          !goster ? '…' : yok ? '–' : oo.cins,
+          !goster ? '…' : yok ? '–' : oo.yon
         ];
         hucre.forEach((t, j) => D.yaziHaleli(ctx, t, kx[j], yy, j === 0 ? K.beyaz : (ff > 0 ? R.normal : '#8FA8C8'),
                                              '700 12px system-ui, sans-serif', 'left'));
@@ -476,7 +476,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       R.kuvvet, '700 14px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Büyütme = |b/a|', K.beyaz, '700 12px system-ui, sans-serif'],
-    ['= ' + (o.m === undefined ? '—' : D.biçim(o.m, 3)), R.normal, '700 13px system-ui, sans-serif']
+    ['= ' + (o.m === undefined ? '–' : D.biçim(o.m, 3)), R.normal, '700 13px system-ui, sans-serif']
   ];
   let sy = 46;
   sol.forEach(([t, c, fo]) => { if (t) D.yaziHaleli(ctx, t, 12, sy, c, fo, 'left'); sy += 17; });
@@ -618,7 +618,7 @@ D.simler['kuresel-goruntu'] = {
     { anahtar: 'mod', etiket: 'Düzenek', tur: 'secim', deger: 1, secenekler: [
       { d: 1, e: 'Cisim uzaklığını tara' },
       { d: 3, e: 'Cisim sonsuzda (paralel ışınlar)' },
-      { d: 2, e: 'Otomatik tur — beş durum' },
+      { d: 2, e: 'Otomatik tur: beş durum' },
       { d: 4, e: 'Kitap örneği: Toprak ve r = 4 m’lik ayna' }
     ]},
     { anahtar: 'tur', etiket: 'Ayna türü', tur: 'secim', deger: 1, secenekler: [

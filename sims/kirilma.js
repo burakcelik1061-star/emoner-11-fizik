@@ -214,7 +214,7 @@ function cizGercek(ctx, w, h, st, pHam) {
 
   /* kırılan ışın */
   if (t2 === null) {
-    D.yaziAydinlik(ctx, 'TAM YANSIMA — ışık ikinci ortama HİÇ geçemiyor',
+    D.yaziAydinlik(ctx, 'TAM YANSIMA: ışık ikinci ortama HİÇ geçemiyor',
                    w * 0.5, h * 0.93, R.kuvvet,
                    '700 13px system-ui, sans-serif', 'center');
   } else {
@@ -258,7 +258,7 @@ function cizGercek(ctx, w, h, st, pHam) {
     /* sınır açısında kırılan ışın yüzey boyunca gider */
     D.kesikliCizgi(ctx, ox, oy, ox + L * 0.9, oy, R.surtunme, 1.6, [4, 4]);
   } else if (p.mod > 1.5) {
-    D.yaziAydinlik(ctx, 'n₁ ≤ n₂ olduğu için sınır açısı YOKTUR — tam yansıma olamaz',
+    D.yaziAydinlik(ctx, 'n₁ ≤ n₂ olduğu için sınır açısı YOKTUR: tam yansıma olamaz',
                    w * 0.5, h * 0.93, R.surtunme,
                    '700 12px system-ui, sans-serif', 'center');
   }
@@ -396,9 +396,9 @@ function cizBeyaz(ctx, w, h, st, p, ox, oy, L) {
     ctx.restore();
   });
   serit(ctx, ox, oy, rx, ry, alfalar);
-  D.yaziAydinlik(ctx, 'Havaya geçen: ' + (gecen.length ? gecen.join(', ') : '—'), 10, h - 26,
+  D.yaziAydinlik(ctx, 'Havaya geçen: ' + (gecen.length ? gecen.join(', ') : '–'), 10, h - 26,
                  R.kuvvet, '700 12px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, 'Tam yansıyan: ' + (yansiyan.length ? yansiyan.join(', ') : '—'), 10, h - 9,
+  D.yaziAydinlik(ctx, 'Tam yansıyan: ' + (yansiyan.length ? yansiyan.join(', ') : '–'), 10, h - 9,
                  '#5B3FA0', '700 12px system-ui, sans-serif', 'left');
 }
 
@@ -485,7 +485,7 @@ function cizDalga(ctx, w, h, st, p, ox, oy) {
   const lam2 = lam1 * (p.n1 / p.n2);                  // λ ∝ 1/n
 
   if (t2 === null) {
-    D.yaziAydinlik(ctx, 'Tam yansıma — ikinci ortama dalga geçmiyor',
+    D.yaziAydinlik(ctx, 'Tam yansıma: ikinci ortama dalga geçmiyor',
                    w * 0.5, h * 0.93, R.kuvvet, '700 13px system-ui, sans-serif', 'center');
   }
 
@@ -529,7 +529,7 @@ function cizDalga(ctx, w, h, st, p, ox, oy) {
                  '700 12px system-ui, sans-serif', 'left');
   D.yaziAydinlik(ctx, 'λ₂ = λ₁·n₁/n₂  ·  frekans DEĞİŞMEZ', 10, oy + 24, R.kuvvet,
                  '700 12px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, 'Cepheler yüzeyi aynı noktalarda keser — kırılmanın sebebi bu',
+  D.yaziAydinlik(ctx, 'Cepheler yüzeyi aynı noktalarda keser: kırılmanın sebebi bu',
                  w * 0.5, h - 10, R.surtunme, '600 11px system-ui, sans-serif', 'center');
 }
 
@@ -581,7 +581,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       R.kuvvet, '700 13px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Sapma açısı α = |θ₁ − θ₂|', K.beyaz, '700 12px system-ui, sans-serif'],
-    ['α = ' + (t2 === null ? '—' : D.biçim(Math.abs(p.gelme - derece(t2)), 3) + '°'),
+    ['α = ' + (t2 === null ? '–' : D.biçim(Math.abs(p.gelme - derece(t2)), 3) + '°'),
       R.surtunme, '700 13px system-ui, sans-serif']
   ];
   let sy = 46;
@@ -678,7 +678,7 @@ function okumalar(st, pHam) {
     { et: '2. ortam', dg: ortamAdi(p.n2) + ' · n₂ = ' + D.biçim(p.n2, 3), birim: '' },
     { et: 'Gelme açısı θ₁', dg: D.biçim(p.gelme), birim: '°' },
     { et: 'Kırılma açısı θ₂',
-      dg: t2 === null ? 'Yok — tam yansıma' : D.biçim((t2 * 180) / Math.PI, 4), birim: t2 === null ? '' : '°' }
+      dg: t2 === null ? 'Yok: tam yansıma' : D.biçim((t2 * 180) / Math.PI, 4), birim: t2 === null ? '' : '°' }
   ];
 
   if (p.mod < 1.5) {

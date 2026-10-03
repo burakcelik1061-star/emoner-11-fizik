@@ -11,7 +11,7 @@ F.konuKaydet('u3-kirilma', {
 
 ozet: `Işık bir ortamdan başka bir ortama geçerken <strong>hız değiştirir</strong> ve bu
 yüzden <strong>yön değiştirir</strong>. Kırılmanın tek sebebi budur. Bu konuda Snell
-yasasını, kırılma indisini, sınır açısını ve tam yansımayı kuruyoruz — 3.6, 3.7 ve
+yasasını, kırılma indisini, sınır açısını ve tam yansımayı kuruyoruz: 3.6, 3.7 ve
 3.8&rsquo;in tamamı buraya dayanacak.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -75,7 +75,7 @@ gösterilir; tarama sırasında büyüdüğü görülür.</p>
     </tbody>
   </table>
   <p style="margin:8px 0 0">Frekans kaynağın özelliğidir; ortam onu değiştiremez. Suya
-  giren kırmızı ışık suyun içinde de kırmızıdır — dalga boyu kısalmış olsa bile.</p>
+  giren kırmızı ışık suyun içinde de kırmızıdır, dalga boyu kısalmış olsa bile.</p>
 </div>
 
 <h3 style="margin-top:22px">Sınır açısı ve tam yansıma</h3>
@@ -155,7 +155,7 @@ formuller: {
     { fm: 'α = |θ₁ − θ₂|',               aciklama: 'Sapma açısı' }
   ],
   degiskenler: [
-    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '—' },
+    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '-' },
     { sembol: 'c',  ad: 'Boşlukta ışık hızı', birim: '3×10⁸ m/s' },
     { sembol: 'v',  ad: 'Ortamdaki hız',    birim: 'm/s' },
     { sembol: 'θ₁', ad: 'Gelme açısı',      birim: '°' },
@@ -185,7 +185,7 @@ turetim: {
                  <div class="formul" style="max-width:260px">
                    <div class="fm">x₁ = v₁·Δt &nbsp;&nbsp; x₂ = v₂·Δt</div>
                  </div>
-                 <p>Bu, cephenin <strong>dönmesine</strong> — yani ışının sapmasına — yol açar.</p>` },
+                 <p>Bu, cephenin <strong>dönmesine</strong>, yani ışının sapmasına, yol açar.</p>` },
 
         { baslik: 'Geometriyi yaz',
           html: `<p>Sınır üzerinde ortak bir <code>L</code> uzunluğu alırsak:</p>
@@ -233,7 +233,7 @@ turetim: {
                    <div class="fm">sin θ<sub>s</sub> = 1,00/1,33 = 0,752 ⟹ θ<sub>s</sub> = <strong>48,8°</strong></div>
                  </div>
                  <p>Havuzun dibinden 48,8°&rsquo;den eğik bakarsan yüzeyi ayna gibi
-                 görürsün — üstünü değil, havuzun tabanını.</p>` }
+                 görürsün: üstünü değil, havuzun tabanını.</p>` }
       ]
     },
     {
@@ -244,7 +244,7 @@ turetim: {
 
         { baslik: 'Frekans sabit',
           html: `<p>Sınırda birim zamanda gelen dalga sayısı ile giden dalga sayısı
-                 <strong>eşit olmak zorundadır</strong> — yoksa sınırda dalga birikirdi.
+                 <strong>eşit olmak zorundadır</strong>: yoksa sınırda dalga birikirdi.
                  Dolayısıyla <strong>f değişmez</strong>.</p>` },
 
         { baslik: 'Sonuç',
@@ -261,7 +261,7 @@ turetim: {
                  <div class="formul" style="max-width:300px">
                    <div class="fm">λ = 550/1,33 = <strong>413,5 nm</strong></div>
                  </div>
-                 <p>Frekans ise her iki ortamda da <code>545 THz</code> — bu yüzden ışık
+                 <p>Frekans ise her iki ortamda da <code>545 THz</code>: bu yüzden ışık
                  hâlâ yeşildir.</p>` }
       ]
     }
@@ -289,14 +289,14 @@ puf: {
     kırılmaz” ifadesi <em>sapmaz</em> anlamında doğru, <em>hızı değişmez</em> anlamında
     yanlıştır.</p>
 
-    <p><strong>5 · Frekans değişmez — ezberin en kârlısı.</strong> “Suya girince ışığın
+    <p><strong>5 · Frekans değişmez: ezberin en kârlısı.</strong> “Suya girince ışığın
     frekansı azalır” diyen şık daima yanlıştır.</p>
 
     <p><strong>6 · n &lt; 1 olamaz.</strong> Hiçbir maddede ışık boşluktakinden hızlı
     gitmez. Soruda n = 0,8 gibi bir değer varsa ya birimler farklıdır ya da o şık yanlıştır.</p>
 
     <p><strong>7 · Oranları zincir gibi kullan.</strong>
-    <code>v₁/v₂ = n₂/n₁ = λ₁/λ₂ = sin θ₁/sin θ₂</code> — dördü birbirine eşittir.
+    <code>v₁/v₂ = n₂/n₁ = λ₁/λ₂ = sin θ₁/sin θ₂</code>: dördü birbirine eşittir.
     Soruda hangisi verilmişse zincirin öbür ucundan çekersin.</p>
 
     <p><strong>8 · sin 90° = 1.</strong> Sınır açısı sorularının tamamı bu tek bilgiye
@@ -348,7 +348,7 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Yol 1 — indislerle.</strong> <code>n = c/v</code>:</p>
+      <p><strong>Yol 1: indislerle.</strong> <code>n = c/v</code>:</p>
       <div class="formul" style="max-width:420px;margin:10px 0">
         <div class="fm">n₁ = 3/3 = 1,00 &nbsp; n₂ = 3/2 = 1,50 &nbsp; n₃ = 3/2,4 = 1,25</div>
       </div>
@@ -361,7 +361,7 @@ osym: [
         <div class="fm" style="color:var(--accent)">sin θ₃ = 0,50 / 1,25 = <strong>0,40</strong></div>
       </div>
 
-      <p><strong>Yol 2 — doğrudan hızlarla.</strong>
+      <p><strong>Yol 2: doğrudan hızlarla.</strong>
       <code>sin θ₁ / sin θ₃ = v₁ / v₃</code>:</p>
       <div class="formul" style="max-width:340px;margin:10px 0">
         <div class="fm">sin θ₃ = sin30° · (v₃/v₁) = 0,5 · (2,4/3,0) = <strong>0,40</strong></div>
@@ -373,7 +373,7 @@ osym: [
         için aradaki katmanlar cevabı değiştirmez; yalnızca ışının <em>yanal kaymasını</em>
         etkilerler.
         <br><strong>B şıkkı (0,50)</strong> aradaki ortamları yok sayıp “açı değişmez”
-        diyor — ilk ve son ortamın <em>indisleri eşit olsaydı</em> doğru olurdu.
+        diyor: ilk ve son ortamın <em>indisleri eşit olsaydı</em> doğru olurdu.
         <br><strong>D şıkkı (0,60)</strong> oranı ters kuruyor: <code>0,5·(3,0/2,4)</code>.
         <br><strong>Kontrol:</strong> n₃ (1,25) &gt; n₁ (1,00) olduğuna göre ışın normale
         yaklaşmalı ⟹ sin θ₃ &lt; sin θ₁ = 0,5 ✓ 0,40 bu koşulu sağlıyor, 0,60 sağlamıyor.</p>
@@ -412,7 +412,7 @@ osym: [
         <li><strong>Doğru.</strong> Havada <code>n₂ = 1,00</code>:
         <code>sin θ_s = 1,00/1,50 = 0,667</code> ⟹ <code>θ_s = 41,8°</code>.
         62,5° &gt; 41,8° olduğuna göre sınır açısı gerçekten <strong>küçüldü</strong>.</li>
-        <li><strong>Yanlış.</strong> Tam yansımada ışığın <strong>tamamı</strong> yansır —
+        <li><strong>Yanlış.</strong> Tam yansımada ışığın <strong>tamamı</strong> yansır:
         adı zaten bu. İkinci ortama geçen ışık yoktur.</li>
       </ol>
       <div class="kutu puf" style="margin-top:12px">
@@ -471,9 +471,9 @@ baglam: [
       { bas: 'Koninin dışında ne olur?',
         metin: '48,8°&rsquo;den daha eğik yönlerden gelen ışık yüzeyden <strong>tam yansımaya</strong> uğrar. Dalgıç o yönlerde havayı değil, havuzun <strong>tabanının yansımasını</strong> görür.' },
       { bas: 'Dışarısı nasıl görünür?',
-        metin: 'Ufuktan tepeye kadar <strong>180°</strong>&rsquo;lik tüm dış dünya, o 97,5°&rsquo;lik koninin içine <strong>sıkışır</strong>. Bu yüzden dışarıdaki her şey dairenin kenarına doğru giderek ezilmiş görünür — balık gözü objektifi etkisi.' },
+        metin: 'Ufuktan tepeye kadar <strong>180°</strong>&rsquo;lik tüm dış dünya, o 97,5°&rsquo;lik koninin içine <strong>sıkışır</strong>. Bu yüzden dışarıdaki her şey dairenin kenarına doğru giderek ezilmiş görünür: balık gözü objektifi etkisi.' },
       { bas: 'Derinlikle değişir mi?',
-        metin: '<strong>Açı değişmez</strong> — sınır açısı yalnızca indislere bağlıdır. Ama dalgıç derinleştikçe koninin yüzeydeki <strong>çapı</strong> büyür: <code>çap = 2·h·tan48,8° = 2,28·h</code>. 3 m derinde yaklaşık 6,8 m çapında bir pencere.' }
+        metin: '<strong>Açı değişmez</strong>: sınır açısı yalnızca indislere bağlıdır. Ama dalgıç derinleştikçe koninin yüzeydeki <strong>çapı</strong> büyür: <code>çap = 2·h·tan48,8° = 2,28·h</code>. 3 m derinde yaklaşık 6,8 m çapında bir pencere.' }
     ],
     secenekler: [
       '48,8°; bu açıdan eğik bakışlarda tam yansıma olur ve tüm dış dünya 97,5°’lik bir koniye sıkışır',
@@ -542,7 +542,7 @@ baglam: [
       { bas: 'Göze yukarıdan geliyor',
         metin: 'Işın gözümüze <strong>aşağıdan yukarı</strong> doğru gelir. Beynimiz ışığın daima düz gittiğini varsaydığı için kaynağı <strong>yerde</strong> sanır.' },
       { bas: 'Neden “su” gibi?',
-        metin: 'Yerde gördüğümüz şey <strong>gökyüzünün görüntüsüdür</strong> — mavi, parlak ve titrek. Yerde mavi parlak bir yüzey görünce beyin bunu <strong>su</strong> diye yorumlar. Titreklik, hava tabakalarının sürekli hareket etmesindendir.' },
+        metin: 'Yerde gördüğümüz şey <strong>gökyüzünün görüntüsüdür</strong>: mavi, parlak ve titrek. Yerde mavi parlak bir yüzey görünce beyin bunu <strong>su</strong> diye yorumlar. Titreklik, hava tabakalarının sürekli hareket etmesindendir.' },
       { bas: 'Yaklaşınca neden kaybolur?',
         metin: 'Yaklaştıkça bakış açın <strong>dikleşir</strong>; gelme açısı sınır açısının altına iner ve tam yansıma sona erer. Serap hep “biraz ileride” kalır.' },
       { bas: 'Ters serap',
@@ -557,7 +557,7 @@ baglam: [
     ],
     dogru: 0,
     cozum: `
-      <p>Serap bir <strong>göz yanılması değil</strong>, gerçek bir optik olaydır —
+      <p>Serap bir <strong>göz yanılması değil</strong>, gerçek bir optik olaydır:
       fotoğrafı bile çekilebilir. Sebebi tam yansımadır.</p>
       <div class="formul" style="max-width:400px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">sıcak hava ⟹ seyrek ⟹ n küçük ⟹ ışın normalden uzaklaşır</div>
@@ -569,7 +569,7 @@ baglam: [
         <em>gökyüzünün</em> rengidir, kırılmanın değil.
         <br><strong>Bağlantı:</strong> Burada tabakalar arasında <em>keskin</em> bir sınır
         yok, n sürekli değişiyor. Bu yüzden ışının yolu kırık bir çizgi değil,
-        <strong>eğri</strong>dir. Snell yasası bu durumda da geçerlidir — yalnızca sonsuz
+        <strong>eğri</strong>dir. Snell yasası bu durumda da geçerlidir: yalnızca sonsuz
         ince tabakalara uygulanır.
         <br><strong>Aynı olay:</strong> Gün batımında Güneş&rsquo;i ufkun altına indikten
         sonra bile birkaç dakika görmemizin sebebi de atmosferdeki kademeli kırılmadır.</p>

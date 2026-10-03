@@ -448,7 +448,7 @@ function cizDuzgunAlan(ctx, w, h, st, p) {
           oran >= 0.99 ? 'rgba(53,192,138,.92)' : 'rgba(255,176,32,.92)',
           oran >= 0.99 ? '#0A2A1E' : '#2A1E05', '700 11px system-ui, sans-serif', true);
 
-  D.yaziAydinlik(ctx, 'gerçekte ≈ 10⁻¹⁹ s — burada yavaşlatıldı', 12, h - 7,
+  D.yaziAydinlik(ctx, 'gerçekte ≈ 10⁻¹⁹ s: burada yavaşlatıldı', 12, h - 7,
                  R.mur, '600 10px system-ui, sans-serif', 'left');
   D.yaziAydinlik(ctx, 'E_dış = ' + D.biçim(p.E0) + ' N/C  →', w - 12, h - 7, '#2A7FA0',
                  '700 12px system-ui, sans-serif', 'right');
@@ -529,7 +529,7 @@ function cizYildirim(ctx, w, h, st, p) {
 
   D.rozet(ctx, 'MEB s.179 · araca ve uçağa yıldırım', w / 2, 52,
           'rgba(47,111,208,.92)', '#FFFFFF', '700 11px system-ui, sans-serif', true);
-  D.yaziAydinlik(ctx, 'koruyan METAL GÖVDE — lastikler değil', w - 12, 18, R.mur,
+  D.yaziAydinlik(ctx, 'koruyan METAL GÖVDE, lastikler değil', w - 12, 18, R.mur,
                  '700 11px system-ui, sans-serif', 'right');
 }
 
@@ -766,7 +766,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       D.yaziHaleli(ctx, t, w - 12, sy, c, '700 12px system-ui, sans-serif', 'right'); sy += 18;
     });
 
-    D.yaziHaleli(ctx, 'Dış alan YOK OLMAZ — yüzey yükleri onu tam olarak götürür',
+    D.yaziHaleli(ctx, 'Dış alan YOK OLMAZ: yüzey yükleri onu tam olarak götürür',
                  12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 
     /* yüzeyin hemen dışı: dengede alan yüzeye DİK, paralel bileşen yok */
@@ -787,7 +787,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
   } else if (p.mod < 2.5) {
     /* --- Yıldırım: kesit ve yük dağılımı --- */
     const kx = w * 0.16, kw = w * 0.46, ky = h * 0.26, kh = h * 0.40;
-    D.yaziHaleli(ctx, 'İletken kabuk — kesit', 12, 22, K.beyaz,
+    D.yaziHaleli(ctx, 'İletken kabuk: kesit', 12, 22, K.beyaz,
                  '700 12px system-ui, sans-serif', 'left');
 
     ctx.save();
@@ -1044,7 +1044,7 @@ function okumalar(st, pHam) {
     return [
       { et: 'Yıldırım',     dg: st.aktif ? 'Çarptı' : 'İniyor', birim: '' },
       { et: 'Dış yüzeyde akım', dg: D.biçim(yildirimAkimi(st), 1), birim: 'kA' },
-      { et: 'Yük nerede?',  dg: !st.aktif ? '—' : yildirimAkimi(st) > 0.3 ? 'Dış yüzeyden yere akıyor' : 'Toprağa geçti', birim: '' },
+      { et: 'Yük nerede?',  dg: !st.aktif ? '–' : yildirimAkimi(st) > 0.3 ? 'Dış yüzeyden yere akıyor' : 'Toprağa geçti', birim: '' },
       { et: 'İç boşlukta E',dg: '0',                            birim: 'N/C' },
       { et: 'Yolcu',        dg: 'Güvende',                      birim: '' }
     ];

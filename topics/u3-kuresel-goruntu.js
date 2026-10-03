@@ -39,7 +39,7 @@ kavram: `
 <div class="kutu puf" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">🔑</span><span>Tek cümlelik kural</span></div>
   <p style="margin:0"><strong>Gerçek görüntü daima TERS, sanal görüntü daima DÜZDÜR.</strong>
-  Bunu bilirsen “ters mi düz mü?” sorusunu ayrı hesaplamana gerek kalmaz — b&rsquo;nin
+  Bunu bilirsen “ters mi düz mü?” sorusunu ayrı hesaplamana gerek kalmaz: b&rsquo;nin
   işaretine bakman yeter.</p>
 </div>
 
@@ -61,7 +61,7 @@ düzeneğini çalıştır; cisim uzaktan yaklaşırken bu beş satırı sırayla
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>Cisim ve görüntü yer değiştirir</span></div>
   <p style="margin:0">Tabloya dikkatli bak: cisim M&rsquo;nin dışındayken görüntü F–M arasında,
-  cisim F–M arasındayken görüntü M&rsquo;nin dışında. Bu bir tesadüf değil —
+  cisim F–M arasındayken görüntü M&rsquo;nin dışında. Bu bir tesadüf değil:
   <strong>a ile b denklemde simetriktir</strong>. Cismi görüntünün yerine koyarsan
   görüntü cismin yerine gelir. Buna <strong>eşlenik noktalar</strong> denir.</p>
 </div>
@@ -325,16 +325,16 @@ osym: [
     dogru: 0,
     cozum: `
       <p>“3 kat büyük” demek <code>|b| = 3a</code> demektir. Görüntü <strong>gerçek</strong>
-      da olabilir, <strong>sanal</strong> da — ikisini de denemek gerekir.</p>
+      da olabilir, <strong>sanal</strong> da: ikisini de denemek gerekir.</p>
 
-      <p><strong>Durum 1 — gerçek görüntü (b = +3a, ters):</strong></p>
+      <p><strong>Durum 1 · gerçek görüntü (b = +3a, ters):</strong></p>
       <div class="formul" style="max-width:360px;margin:10px 0">
         <div class="fm">1/15 = 1/a + 1/(3a) = 4/(3a) ⟹ 3a = 60 ⟹ a = <strong>20 cm</strong></div>
       </div>
       <p>Kontrol: a = 20, f = 15 ⟹ F (15) ile M (30) arasında ⟹ gerçek, ters, büyük ✓
       b = 3·20 = 60 cm.</p>
 
-      <p><strong>Durum 2 — sanal görüntü (b = −3a, düz):</strong></p>
+      <p><strong>Durum 2 · sanal görüntü (b = −3a, düz):</strong></p>
       <div class="formul" style="max-width:380px;margin:10px 0">
         <div class="fm">1/15 = 1/a − 1/(3a) = 2/(3a) ⟹ 3a = 30 ⟹ a = <strong>10 cm</strong></div>
       </div>
@@ -351,7 +351,7 @@ osym: [
         <strong>iki durum da geçerlidir</strong>. Soru “3 kat büyük ve ters” deseydi cevap
         yalnız 20, “3 kat büyük ve düz” deseydi yalnız 10 olurdu.
         <br><strong>Genel kural:</strong> Çukur aynada belli bir büyütme değeri
-        <strong>iki</strong> cisim konumundan elde edilir — biri F&rsquo;nin içinde
+        <strong>iki</strong> cisim konumundan elde edilir, biri F&rsquo;nin içinde
         (sanal), biri F ile M arasında (gerçek).
         <br><strong>Simülasyonda:</strong> f = 15 sabit tutup a&rsquo;yı 10 ve 20 yap;
         büyütme okumasının her ikisinde de 3,000 olduğunu gör.</p>
@@ -397,14 +397,14 @@ baglam: [
         <text x="434" y="190" fill="#FF6B6B" font-size="11" font-family="system-ui" text-anchor="middle">gerçek · TERS</text>
       </svg>`,
     adimlar: [
-      { bas: 'Aşama 1 — yüz odağın içinde',
+      { bas: 'Aşama 1: yüz odağın içinde',
         metin: '<code>a &lt; f</code> ⟹ <code>a − f &lt; 0</code> ⟹ <code>b &lt; 0</code>: görüntü <strong>sanal, düz ve büyük</strong>. Makyaj aynasının kullanıldığı bölge burasıdır.' },
       { bas: 'Uzaklaştıkça neden büyüyor?',
         metin: 'Büyütme <code>|b/a| = f/(f−a)</code>. a, f&rsquo;ye yaklaştıkça payda küçülür ve büyütme <strong>hızla artar</strong>. a = 20, f = 30 için 3 kat; a = 25 için 6 kat.' },
-      { bas: 'Aşama 2 — yüz tam odakta',
+      { bas: 'Aşama 2: yüz tam odakta',
         metin: '<code>a = f</code> ⟹ payda sıfır. Yansıyan ışınlar <strong>paralel</strong> çıkar, hiçbir yerde kesişmez ⟹ <strong>görüntü oluşmaz</strong>. Öğrencinin gördüğü “bulanıklaşıp kaybolma” tam olarak budur.' },
-      { bas: 'Aşama 3 — yüz odağın dışında',
-        metin: '<code>a &gt; f</code> ⟹ <code>b &gt; 0</code>: görüntü <strong>gerçek ve ters</strong>. Baş aşağı görünmesinin sebebi budur — gerçek görüntü daima terstir.' },
+      { bas: 'Aşama 3: yüz odağın dışında',
+        metin: '<code>a &gt; f</code> ⟹ <code>b &gt; 0</code>: görüntü <strong>gerçek ve ters</strong>. Baş aşağı görünmesinin sebebi budur: gerçek görüntü daima terstir.' },
       { bas: 'Sayı: f = 30 cm',
         metin: 'Yüz aynaya <strong>30 cm&rsquo;den yakın</strong> olmalı. 20 cm&rsquo;de: <code>b = 20·30/(20−30) = −60 cm</code>, büyütme <code>60/20 = 3 kat</code>, sanal ve düz ✓' },
       { bas: 'Tasarım sonucu',
@@ -427,7 +427,7 @@ baglam: [
         <em>asla</em> büyütmez. Büyüten tek küresel ayna, cismi odağının içinde tutan
         <strong>çukur</strong> aynadır.
         <br><strong>Kendin dene:</strong> Bir çelik kaşığın iç yüzüne bak ve yavaşça
-        uzaklaştır. Görüntü büyür, kaybolur, ters döner — üç aşamayı da 20 saniyede
+        uzaklaştır. Görüntü büyür, kaybolur, ters döner: üç aşamayı da 20 saniyede
         görürsün. Kaşığın odak uzaklığı birkaç cm olduğu için geçişler çok hızlıdır.
         <br><strong>Simülasyonda:</strong> “Otomatik tur” düzeneğini çalıştır; cisim
         uzaktan yaklaşırken bu üç aşamayı ters sırada izleyeceksin.</p>
@@ -467,7 +467,7 @@ baglam: [
       { bas: 'Denklemi sadeleştir',
         metin: '<code>1/b = 1/f − 1/a</code>. Burada <code>1/a</code> öyle küçük ki (<code>2,6×10<sup>−11</sup></code>) <code>1/f</code> (<code>0,00833</code>) yanında <strong>tamamen ihmal edilir</strong>.' },
       { bas: 'Sonuç',
-        metin: '<code>b ≈ f = <strong>120 cm</strong></code>. Sonsuzdaki cismin görüntüsü <strong>odakta</strong> oluşur. Tam hesap 120,0000004 cm verir — fark bir mikronun altında.' },
+        metin: '<code>b ≈ f = <strong>120 cm</strong></code>. Sonsuzdaki cismin görüntüsü <strong>odakta</strong> oluşur. Tam hesap 120,0000004 cm verir: fark bir mikronun altında.' },
       { bas: 'Görüntünün cinsi',
         metin: '<code>b &gt; 0</code> ⟹ <strong>gerçek</strong> ve <strong>ters</strong>. Astronomik teleskoplarda görüntünün ters olması sorun değildir; gökyüzünde “yukarı” diye bir yön yok.' },
       { bas: 'Boyu ne kadar?',
@@ -487,7 +487,7 @@ baglam: [
       <div class="formul" style="max-width:360px;margin:10px 0">
         <div class="fm">a → ∞ ⟹ 1/a → 0 ⟹ 1/b = 1/f ⟹ <strong>b = f</strong></div>
       </div>
-      <p>Bu, “sonsuzdaki cismin görüntüsü odaktadır” kuralının ta kendisidir — 3.3&rsquo;te
+      <p>Bu, “sonsuzdaki cismin görüntüsü odaktadır” kuralının ta kendisidir: 3.3&rsquo;te
       güneş fırınında kullandığımız kuralın aynısı.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı (240 cm)</strong> b = 2f = R sanıyor; bu
@@ -496,10 +496,10 @@ baglam: [
         <code>1/a</code> terimi ihmal edilebilir hâle gelir.
         <br><strong>Newton neden ayna kullandı?</strong> Mercekli teleskoplarda renkler
         farklı kırıldığı için görüntünün kenarları renklenir (renk sapması). Ayna,
-        <em>tüm</em> renkleri aynı açıyla yansıtır — bu sorun aynada <strong>hiç
+        <em>tüm</em> renkleri aynı açıyla yansıtır: bu sorun aynada <strong>hiç
         yoktur</strong>. Bu yüzden büyük teleskopların hepsi aynalıdır.
         <br><strong>Ölçek duygusu:</strong> James Webb Uzay Teleskobu&rsquo;nun ana aynası
-        6,5 m çapında ve odak uzaklığı yaklaşık 131,4 m&rsquo;dir — aynı denklem, aynı
+        6,5 m çapında ve odak uzaklığı yaklaşık 131,4 m&rsquo;dir, aynı denklem, aynı
         mantık.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

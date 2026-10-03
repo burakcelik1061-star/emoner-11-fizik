@@ -48,7 +48,7 @@ konan <em>pozitif</em> bir yükün itileceği yöndür.</p>
 <p>Alan görünmez olduğu için onu <strong>çizgilerle</strong> resmederiz. Kuralları katıdır:</p>
 <ul>
   <li>Pozitif yükten <strong>çıkar</strong>, negatif yüke <strong>girer</strong></li>
-  <li><strong>Asla kesişmezler</strong> — kesişselerdi o noktada alanın iki yönü olurdu, bu imkânsızdır</li>
+  <li><strong>Asla kesişmezler</strong>: kesişselerdi o noktada alanın iki yönü olurdu, bu imkânsızdır</li>
   <li><strong>Sıklıkları</strong> alanın şiddetini gösterir: çizgiler sıksa alan güçlüdür</li>
   <li>İletken yüzeye daima <strong>dik</strong> çıkarlar</li>
   <li>Bir noktadaki alan vektörü, çizgiye o noktada <strong>teğettir</strong></li>
@@ -56,7 +56,7 @@ konan <em>pozitif</em> bir yükün itileceği yöndür.</p>
 
 <h3 style="margin-top:22px">Birden çok yük: süperpozisyon</h3>
 <p>Her yük kendi alanını yaratır; toplam alan bunların <strong>vektörel toplamıdır</strong>.
-Sayısal toplama değil — yönler önemlidir.</p>
+Sayısal toplama değil: yönler önemlidir.</p>
 <table class="degisken-tablo">
   <thead><tr><th>Durum</th><th>Tam ortada alan</th><th>Sebep</th></tr></thead>
   <tbody>
@@ -66,7 +66,7 @@ Sayısal toplama değil — yönler önemlidir.</p>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Dikkat: <strong>kuvvet</strong> için nötr nokta
 aynı işaretlilerde <em>arada</em>, zıt işaretlilerde <em>dışarıdaydı</em>. <strong>Alan</strong>
-için de kural birebir aynıdır — çünkü alan zaten kuvvetin yüke bölünmüşüdür.</p>
+için de kural birebir aynıdır, çünkü alan zaten kuvvetin yüke bölünmüşüdür.</p>
 
 <h3 style="margin-top:22px">Düzgün alan: paralel levhalar</h3>
 <p>Zıt yüklü iki paralel levha arasında alan, kenarlar hariç <strong>her noktada aynıdır</strong>:
@@ -87,7 +87,7 @@ soruda hangisi geçerse geçsin aynı büyüklüktür.</p>
   <div class="formul" style="max-width:300px;margin:12px 0">
     <div class="fm">x = ϑ₀·t &nbsp;&nbsp; y = ½·a·t²</div>
   </div>
-  <p style="margin:0">Simülasyonda üçüncü düzeneği seç ve sağdaki paneli izle — aynı parabol.</p>
+  <p style="margin:0">Simülasyonda üçüncü düzeneği seç ve sağdaki paneli izle: aynı parabol.</p>
 </div>
 
 <h3 style="margin-top:22px">İletkenin içinde alan sıfırdır</h3>
@@ -98,12 +98,12 @@ konunun (Faraday kafesi) tamamıdır.</p>`,
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'E = F / q₀',        aciklama: 'Tanım — birim yüke düşen kuvvet' },
+    { fm: 'E = F / q₀',        aciklama: 'Tanım: birim yüke düşen kuvvet' },
     { fm: 'F = q · E',         aciklama: 'Alandaki yüke etkiyen kuvvet' },
-    { fm: 'E = k · |q| / d²',  aciklama: 'Nokta yükün alanı — ters kare' },
+    { fm: 'E = k · |q| / d²',  aciklama: 'Nokta yükün alanı: ters kare' },
     { fm: 'E = V / d',         aciklama: 'Paralel levhalar arasında düzgün alan' },
     { fm: 'N/C = V/m',         aciklama: 'Alanın iki eşdeğer birimi' },
-    { fm: 'a = q·E / m',       aciklama: 'Düzgün alandaki yüklü zerrenin ivmesi — sabittir' }
+    { fm: 'a = q·E / m',       aciklama: 'Düzgün alandaki yüklü zerrenin ivmesi: sabittir' }
   ],
   degiskenler: [
     { sembol: 'E',  ad: 'Elektriksel alan',   birim: 'N/C = V/m' },
@@ -123,7 +123,7 @@ turetim: {
       adimlar: [
         { baslik: 'Sorunu gör',
           html: `<p>Coulomb yasası kuvveti verir ama kuvvet <strong>iki yüke birden</strong>
-                 bağlıdır. “Şu noktada ne var?” diye sorduğunda cevap veremezsin — çünkü
+                 bağlıdır. “Şu noktada ne var?” diye sorduğunda cevap veremezsin, çünkü
                  oraya hangi yükü koyacağını bilmiyorsun.</p>` },
 
         { baslik: 'Test yükünden kurtul',
@@ -218,7 +218,7 @@ puf: {
     </table>
 
     <p style="margin-top:14px"><strong>2 · Düzgün alanda uzaklık işe yaramaz.</strong>
-    <code>E = V/d</code>&rsquo;deki d, <strong>levha aralığıdır</strong> — zerrenin levhaya
+    <code>E = V/d</code>&rsquo;deki d, <strong>levha aralığıdır</strong>: zerrenin levhaya
     uzaklığı değil. Levhalar arasında nereye gidersen git alan aynıdır. Bu, ters kare
     alışkanlığından gelen en sık hatadır.</p>
 
@@ -284,7 +284,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>D şıkkı</strong> test yükünün katlanmasını kuvvete
         yansıtmayanlar için.
-        <br><strong>B şıkkı</strong> test yükünü alana da katanlar için — en sık hata budur.
+        <br><strong>B şıkkı</strong> test yükünü alana da katanlar için: en sık hata budur.
         <strong>Test yükü alanı değiştirmez.</strong>
         <br><strong>E şıkkı</strong> uzaklık değişimini tümden atlayanlar için.
         <br>Simülasyonda birinci düzeneği aç, q₀ kaydırıcısını sonuna kadar kaydır:
@@ -328,18 +328,18 @@ osym: [
       '1,8 cm',
       '0,9 cm',
       '3,6 cm',
-      '2,5 cm — levhaya çarpar',
+      '2,5 cm: levhaya çarpar',
       '18 cm'
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1 — Alan.</strong> Düzgün alanda uzaklık, levha aralığıdır:</p>
+      <p><strong>Adım 1: Alan.</strong> Düzgün alanda uzaklık, levha aralığıdır:</p>
       <p>E = V/d = 1000 / 0,05 = <strong>20 000 N/C</strong></p>
-      <p><strong>Adım 2 — Kuvvet.</strong></p>
+      <p><strong>Adım 2: Kuvvet.</strong></p>
       <p>F = q·E = 10·10⁻⁹ · 20 000 = <strong>2·10⁻⁴ N</strong></p>
-      <p><strong>Adım 3 — İvme.</strong> 5 mg = 5·10⁻⁶ kg:</p>
+      <p><strong>Adım 3: İvme.</strong> 5 mg = 5·10⁻⁶ kg:</p>
       <p>a = F/m = 2·10⁻⁴ / 5·10⁻⁶ = <strong>40 m/s²</strong></p>
-      <p><strong>Adım 4 — Artık bu bir yatay atış.</strong></p>
+      <p><strong>Adım 4: Artık bu bir yatay atış.</strong></p>
       <p>t = L/ϑ₀ = 0,30 / 10 = <strong>0,03 s</strong></p>
       <div class="formul" style="max-width:320px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">y = ½·a·t² = ½·40·(0,03)² = 0,018 m</div>
@@ -352,7 +352,7 @@ osym: [
         onluk kaçıranlar için.
         <br><strong>B şıkkı</strong> <code>y = ½at²</code> yerine <code>y = at²</code> ya da
         yarıyı unutanlar için.
-        <br><strong>D şıkkı</strong> zerrenin mutlaka çarpacağını varsayanlar için —
+        <br><strong>D şıkkı</strong> zerrenin mutlaka çarpacağını varsayanlar için:
         her zaman sapmayı <em>yarı aralıkla</em> karşılaştır.
         <br>Simülasyonda bu değerleri gir ve sağdaki panelde 1,8 cm&rsquo;yi kendin gör.</p>
       </div>
@@ -413,12 +413,12 @@ baglam: [
       { bas: 'Yatay atışa çevir',
         metin: 't = L/ϑ₀ = 0,016 / 20 = <strong>8·10⁻⁴ s</strong><br>y = ½·a·t² = ½ · 10⁵ · (8·10⁻⁴)² = ½ · 10⁵ · 6,4·10⁻⁷ = <strong>0,032 m = 3,2 cm</strong>' },
       { bas: 'Sonucu sorgula',
-        metin: 'Levha aralığı yalnızca 2 mm! Hesaplanan 32 mm sapma <strong>imkânsızdır</strong> — damla daha yolun başında levhaya çarpar. Gerçek yazıcılarda ya gerilim çok daha düşüktür ya da damla çok daha hızlıdır. <strong>Sonucu fizikle sınamak, hesabı yapmak kadar önemlidir.</strong>' },
+        metin: 'Levha aralığı yalnızca 2 mm! Hesaplanan 32 mm sapma <strong>imkânsızdır</strong>: damla daha yolun başında levhaya çarpar. Gerçek yazıcılarda ya gerilim çok daha düşüktür ya da damla çok daha hızlıdır. <strong>Sonucu fizikle sınamak, hesabı yapmak kadar önemlidir.</strong>' },
       { bas: 'Gerilimi yarıya indir',
         metin: 'y ∝ V olduğu için sapma da <strong>yarıya</strong> iner: 1,6 cm. Hâlâ 1 mm’lik yarı aralıktan büyük. Bu yazıcının çalışması için gerilimin yaklaşık <strong>30 kat</strong> düşürülmesi gerekir.' }
     ],
     secenekler: [
-      '3,2 cm çıkar; bu aralıktan büyük olduğu için damla levhaya çarpar — gerilim düşürülmeli',
+      '3,2 cm çıkar; bu aralıktan büyük olduğu için damla levhaya çarpar: gerilim düşürülmeli',
       '3,2 cm çıkar ve damla sorunsuz kâğıda ulaşır',
       '0,32 mm çıkar; gerilim yarıya inince 0,16 mm olur',
       '1 mm çıkar; damla tam sınırda geçer',
@@ -437,7 +437,7 @@ baglam: [
         Sınavda da aynı refleks işe yarar: levhalar arası sapma <em>her zaman</em> yarı
         aralıkla karşılaştırılmalıdır.
         <br><strong>B şıkkı</strong> hesabı doğru yapıp denetlemeyenler için.
-        <br><strong>E şıkkı</strong> ise gereksiz veri arayanlar için — sapma yalnızca levhalar
+        <br><strong>E şıkkı</strong> ise gereksiz veri arayanlar için: sapma yalnızca levhalar
         arasında oluşur, kâğıdın uzaklığı yalnızca <em>kâğıttaki</em> izin yerini etkiler.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -473,7 +473,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Hangi formül?',
-        metin: 'Parmak ve kapı kolu, aralarında küçük bir boşluk olan iki iletken — yaklaşık olarak <strong>paralel levha</strong> gibi davranırlar. Düzgün alan formülü uygundur: <strong>E = V/d</strong>' },
+        metin: 'Parmak ve kapı kolu, aralarında küçük bir boşluk olan iki iletken: yaklaşık olarak <strong>paralel levha</strong> gibi davranırlar. Düzgün alan formülü uygundur: <strong>E = V/d</strong>' },
       { bas: 'Bilinmeyeni yalnız bırak',
         metin: 'V = E · d' },
       { bas: 'Değerleri yerine koy',
@@ -481,11 +481,11 @@ baglam: [
       { bas: 'Sonucu yorumla',
         metin: 'Üç bin volt kulağa korkunç gelir ama <strong>tehlikeli değildir</strong>, çünkü biriken <em>yük</em> çok azdır. Tehlikeli olan gerilim değil, <strong>akımın büyüklüğü ve süresi</strong>dir. Bu yüzden statik çarpılma canını yakar ama zarar vermez.' },
       { bas: 'Yıldırıma ölçekle',
-        metin: 'Aynı formül, d = 1000 m için:<br>V = 3·10⁶ · 10³ = <strong>3·10⁹ V</strong> — üç milyar volt mertebesinde. Gerçek yıldırımlarda hava nemli ve iyonize olduğu için eşik daha düşüktür, ölçülen değerler <strong>10⁸ V</strong> civarındadır.' }
+        metin: 'Aynı formül, d = 1000 m için:<br>V = 3·10⁶ · 10³ = <strong>3·10⁹ V</strong>: üç milyar volt mertebesinde. Gerçek yıldırımlarda hava nemli ve iyonize olduğu için eşik daha düşüktür, ölçülen değerler <strong>10⁸ V</strong> civarındadır.' }
     ],
     secenekler: [
-      '3000 V; yıldırımda 10⁹ V mertebesinde — yüksek gerilim tek başına tehlike demek değildir',
-      '3000 V; yıldırımda da 3000 V — gerilim uzaklıktan bağımsızdır',
+      '3000 V; yıldırımda 10⁹ V mertebesinde: yüksek gerilim tek başına tehlike demek değildir',
+      '3000 V; yıldırımda da 3000 V: gerilim uzaklıktan bağımsızdır',
       '3·10⁶ V; kıvılcım için bu kadar gerilim gerekir',
       '300 V; bu yüzden statik elektrik zararsızdır',
       '3 V; kıvılcım aslında gerilimle değil nemle ilgilidir'
@@ -495,7 +495,7 @@ baglam: [
       <p><strong>V = E·d = 3·10⁶ · 10⁻³ = 3000 V</strong></p>
       <p>1 km&rsquo;lik bulut-yer aralığı için aynı hesap <strong>3·10⁹ V</strong> mertebesi verir.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> alanı doğrudan gerilim sanıyor — birimler
+        <p style="margin:0"><strong>C şıkkı</strong> alanı doğrudan gerilim sanıyor, birimler
         farklıdır: E birimi V/<strong>m</strong>, V birimi V.
         <br><strong>B şıkkı</strong> <code>V = E·d</code>&rsquo;deki d&rsquo;yi görmezden geliyor.
         <br><strong>Kalıcı ders:</strong> Gerilim tek başına tehlikeyi ölçmez. Statik çarpılmada

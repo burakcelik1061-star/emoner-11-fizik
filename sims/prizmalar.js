@@ -231,7 +231,7 @@ function cizIsinYolu(ctx, w, h, g, p, n, renk, kalinlik, oranSol, etiket,
       const q = adaylar.reduce((a, b) => (b.t < a.t ? b : a));
       D.isin(ctx, k.x, k.y, q.x, q.y, renk, kalinlik, true);
     }
-    D.yaziAydinlik(ctx, 'TAM YANSIMA — ışın sağ yüzeyden çıkamıyor, içeri yansıyor',
+    D.yaziAydinlik(ctx, 'TAM YANSIMA: ışın sağ yüzeyden çıkamıyor, içeri yansıyor',
                    w * 0.5, h - 30, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
     return gec;
   }
@@ -280,8 +280,8 @@ function cizGercek(ctx, w, h, st, pHam) {
 
   const dmin = enKucukSapma(p, n);
   D.yaziAydinlik(ctx,
-    'Sapma δ = ' + (gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) + '°' : '—') +
-    '   ·   en küçük sapma ' + (dmin === null ? '—' : D.biçim(dmin, 4) + '°'),
+    'Sapma δ = ' + (gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) + '°' : '–') +
+    '   ·   en küçük sapma ' + (dmin === null ? '–' : D.biçim(dmin, 4) + '°'),
     10, h - 10, R.kuvvet, '700 12px system-ui, sans-serif', 'left');
 }
 
@@ -424,7 +424,7 @@ function cizDispersiyon(ctx, w, h, p) {
   const k = [[g.tx, g.ty], [g.lx, g.ly], [g.rx, g.ry]];
   const gec0 = gecis(p, indis(p, 589));
   if (!gec0 || gec0.tamYansima) {
-    D.yaziAydinlik(ctx, 'Bu açıda ışın prizmadan çıkamıyor — tepe açısını küçült',
+    D.yaziAydinlik(ctx, 'Bu açıda ışın prizmadan çıkamıyor: tepe açısını küçült',
                    w * 0.5, h * 0.92, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   }
   const [x0, y0, dx, dy] = gelisNoktasi(k, p, w);
@@ -500,7 +500,7 @@ function cizTamYansimaPrizmasi(ctx, w, h, st, p) {
     akanNoktalar(ctx, iz, st.t || 0, renk);
     const ilk = iz.olaylar.find(e => e.iceriden), sa = sinirAcisi(n);
     const tam = ilk && ilk.tam;
-    D.yaziAydinlik(ctx, (ad ? ad + ': ' : '') + 'gelme ' + (ilk ? D.biçim(ilk.gelme, 3) : '—') + '° · sınır ' +
+    D.yaziAydinlik(ctx, (ad ? ad + ': ' : '') + 'gelme ' + (ilk ? D.biçim(ilk.gelme, 3) : '–') + '° · sınır ' +
                    D.biçim(sa, 3) + '° ⟹ ' + (tam ? 'TAM YANSIMA' : 'kırılarak ÇIKAR'),
                    10, satir, tam ? R.hiz : R.kuvvet, '700 12px system-ui, sans-serif', 'left');
     satir += 18;
@@ -629,8 +629,8 @@ function cizKlasik(ctx, w, h, st, pHam) {
       const g1 = gecis(p, indis(p, 400)), g2 = gecis(p, indis(p, 700));
       liste.push(['Renkleri birleştirme (Alıştırma 23 b)', K.beyaz, '700 12px system-ui, sans-serif'],
         ['1. prizma beyaz ışığı ayırır:', K.metin2, '11px system-ui, sans-serif'],
-        ['mor δ = ' + (g1 && g1.sapma !== null ? D.biçim(g1.sapma, 3) + '°' : '—') + ' · kırmızı δ = ' +
-          (g2 && g2.sapma !== null ? D.biçim(g2.sapma, 3) + '°' : '—'), R.normal, '700 12px system-ui, sans-serif'],
+        ['mor δ = ' + (g1 && g1.sapma !== null ? D.biçim(g1.sapma, 3) + '°' : '–') + ' · kırmızı δ = ' +
+          (g2 && g2.sapma !== null ? D.biçim(g2.sapma, 3) + '°' : '–'), R.normal, '700 12px system-ui, sans-serif'],
         ['', K.metin2, '11px'],
         ['2. prizma aynı camdan, 180° döndürülmüş:', K.metin2, '11px system-ui, sans-serif'],
         ['yüzeyleri 1.’nin yüzeylerine PARALEL', K.metin2, '11px system-ui, sans-serif'],
@@ -671,7 +671,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       const ilk = iz.olaylar.find(e => e.iceriden);
       liste.push(['', K.metin2, '11px'],
         [ad + ': n = ' + D.biçim(nn, 4) + ' ⟹ θ_s = ' + D.biçim(sinirAcisi(nn), 3) + '°', renk, '700 12px system-ui, sans-serif'],
-        ['yüzeye gelme ' + (ilk ? D.biçim(ilk.gelme, 3) : '—') + '° ⟹ ' +
+        ['yüzeye gelme ' + (ilk ? D.biçim(ilk.gelme, 3) : '–') + '° ⟹ ' +
           (ilk && ilk.tam ? 'TAM YANSIMA' : 'kırılarak çıkar'), ilk && ilk.tam ? R.hiz : R.kuvvet, '700 12px system-ui, sans-serif']);
     });
     liste.push(['', K.metin2, '11px'],
@@ -697,13 +697,13 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['n(700 nm) = ' + D.biçim(nk, 5) + '   kırmızı', R.kuvvet, '700 12px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
       ['Sapma açıları', K.beyaz, '700 12px system-ui, sans-serif'],
-      ['mor     δ = ' + (gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) + '°' : '—'),
+      ['mor     δ = ' + (gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) + '°' : '–'),
         '#9B5CF6', '12px system-ui, sans-serif'],
-      ['kırmızı δ = ' + (gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) + '°' : '—'),
+      ['kırmızı δ = ' + (gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) + '°' : '–'),
         R.kuvvet, '12px system-ui, sans-serif'],
       ['açısal ayrım = ' +
         (gm && gk && gm.sapma !== null && gk.sapma !== null
-          ? D.biçim(gm.sapma - gk.sapma, 3) + '°' : '—'),
+          ? D.biçim(gm.sapma - gk.sapma, 3) + '°' : '–'),
         R.normal, '700 13px system-ui, sans-serif'],
       ['', K.metin2, '11px'],
       ['λ küçük ⟹ n büyük ⟹ çok sapar', R.surtunme, '700 12px system-ui, sans-serif'],
@@ -725,11 +725,11 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['A  = ' + D.biçim(p.tepe) + '°', R.normal, '12px system-ui, sans-serif'],
     ['n  = ' + D.biçim(n, 4), R.normal, '12px system-ui, sans-serif'],
     ['θ₁ = ' + D.biçim(p.giris) + '°', R.ivme, '700 13px system-ui, sans-serif'],
-    ['θ₂ = ' + (gec ? D.biçim(der(gec.t2), 4) + '°' : '—'), K.metin2, '12px system-ui, sans-serif'],
-    ['θ₃ = A − θ₂ = ' + (gec ? D.biçim(der(gec.t3), 4) + '°' : '—'), K.metin2, '12px system-ui, sans-serif'],
+    ['θ₂ = ' + (gec ? D.biçim(der(gec.t2), 4) + '°' : '–'), K.metin2, '12px system-ui, sans-serif'],
+    ['θ₃ = A − θ₂ = ' + (gec ? D.biçim(der(gec.t3), 4) + '°' : '–'), K.metin2, '12px system-ui, sans-serif'],
     ['θ₄ = ' + (gec && gec.t4 !== null ? D.biçim(der(gec.t4), 4) + '°' : 'ÇIKAMIYOR'),
       R.kuvvet, '700 13px system-ui, sans-serif'],
-    ['δ  = ' + (gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) + '°' : '—'),
+    ['δ  = ' + (gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) + '°' : '–'),
       R.kuvvet, '700 14px system-ui, sans-serif']
   ];
   let sy = 62;
@@ -740,15 +740,15 @@ function cizKlasik(ctx, w, h, st, pHam) {
   const sag = [
     ['En küçük sapma', K.beyaz, '700 12px system-ui, sans-serif'],
     ['δ_min = 2·arcsin(n·sin(A/2)) − A', K.metin, '11px system-ui, sans-serif'],
-    ['δ_min = ' + (dmin === null ? '—' : D.biçim(dmin, 4) + '°'), R.hiz, '700 14px system-ui, sans-serif'],
+    ['δ_min = ' + (dmin === null ? '–' : D.biçim(dmin, 4) + '°'), R.hiz, '700 14px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Simetrik geçişte oluşur:', K.metin2, '11px system-ui, sans-serif'],
-    ['θ₁ = θ₄ = ' + (dmin === null ? '—' : D.biçim((p.tepe + dmin) / 2, 4) + '°'),
+    ['θ₁ = θ₄ = ' + (dmin === null ? '–' : D.biçim((p.tepe + dmin) / 2, 4) + '°'),
       K.metin2, '11px system-ui, sans-serif'],
     ['θ₂ = θ₃ = A/2 = ' + D.biçim(p.tepe / 2, 3) + '°', K.metin2, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Prizma içi sınır açısı', K.beyaz, '700 12px system-ui, sans-serif'],
-    ['θ_s = ' + (sa === null ? '—' : D.biçim(sa, 4) + '°'), R.surtunme, '700 13px system-ui, sans-serif'],
+    ['θ_s = ' + (sa === null ? '–' : D.biçim(sa, 4) + '°'), R.surtunme, '700 13px system-ui, sans-serif'],
     ['θ₃ > θ_s ise ışın çıkamaz', K.metin2, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['n ölçmek için:', K.beyaz, '700 12px system-ui, sans-serif'],
@@ -775,7 +775,7 @@ function cizGrafik(ctx, w, h, st, pHam) {
   const dmin = enKucukSapma(p, n);
   D.miniGrafik(ctx, {
     x: pay, y: 3, w: gw, h: gh,
-    baslik: 'δ − θ₁   (en küçük sapma ' + (dmin === null ? '—' : D.biçim(dmin, 4) + '°') + ')',
+    baslik: 'δ − θ₁   (en küçük sapma ' + (dmin === null ? '–' : D.biçim(dmin, 4) + '°') + ')',
     birim: '°', tEtiket: 'θ₁ (°)',
     imlec: (() => { const g = gecis(p, n); return (g && g.sapma !== null) ? { t: p.giris, v: g.sapma } : null; })(),
     veri: v1, tMax: 89, vMin: 0,
@@ -886,8 +886,8 @@ function okumalar(st, pHam) {
       return [
         { et: 'Sistem',          dg: 'İki özdeş prizma · ikincisi ters', birim: '' },
         { et: 'Giriş açısı θ₁',  dg: D.biçim(p.giris), birim: '°' },
-        { et: '1. prizmada mor', dg: gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) : '—', birim: '°' },
-        { et: '1. prizmada kırmızı', dg: gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) : '—', birim: '°' },
+        { et: '1. prizmada mor', dg: gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) : '–', birim: '°' },
+        { et: '1. prizmada kırmızı', dg: gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) : '–', birim: '°' },
         { et: 'İkisinden sonra', dg: 'Sapma 0 · renkler paralel', birim: '' }
       ];
     }
@@ -909,7 +909,7 @@ function okumalar(st, pHam) {
       { et: 'Düzen',            dg: ['', 'a) 90° döndürür', 'b) 180° döndürür', 'c) paralel çıkarır', '30°–60°–90°', 'K prizması'][p.duzen], birim: '' },
       { et: (p.duzen === 5 ? 'Kırmızı ' : '') + 'indis n', dg: D.biçim(nn, 4), birim: '' },
       { et: 'Sınır açısı θ_s',  dg: D.biçim(sinirAcisi(nn), 4), birim: '°' },
-      { et: 'Yüzeye gelme',     dg: ilk ? D.biçim(ilk.gelme, 4) : '—', birim: '°' },
+      { et: 'Yüzeye gelme',     dg: ilk ? D.biçim(ilk.gelme, 4) : '–', birim: '°' },
       { et: 'Sonuç',            dg: ilk && ilk.tam ? 'Tam yansıma' : 'Kırılarak çıkar', birim: '' }
     ];
     if (p.duzen === 5) {
@@ -926,11 +926,11 @@ function okumalar(st, pHam) {
       { et: 'n (400 nm · mor)',     dg: D.biçim(nm, 5), birim: '' },
       { et: 'n (589 nm · sarı)',    dg: D.biçim(n, 5),  birim: '' },
       { et: 'n (700 nm · kırmızı)', dg: D.biçim(nk, 5), birim: '' },
-      { et: 'Mor sapması',     dg: gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) : '—', birim: '°' },
-      { et: 'Kırmızı sapması', dg: gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) : '—', birim: '°' },
+      { et: 'Mor sapması',     dg: gm && gm.sapma !== null ? D.biçim(gm.sapma, 4) : '–', birim: '°' },
+      { et: 'Kırmızı sapması', dg: gk && gk.sapma !== null ? D.biçim(gk.sapma, 4) : '–', birim: '°' },
       { et: 'Açısal ayrım',
         dg: gm && gk && gm.sapma !== null && gk.sapma !== null
-              ? D.biçim(gm.sapma - gk.sapma, 4) : '—', birim: '°' },
+              ? D.biçim(gm.sapma - gk.sapma, 4) : '–', birim: '°' },
       { et: 'En çok sapan', dg: 'Mor (λ küçük ⟹ n büyük)', birim: '' }
     ];
   }
@@ -940,15 +940,15 @@ function okumalar(st, pHam) {
   return [
     { et: 'Tepe açısı A',    dg: D.biçim(p.tepe), birim: '°' },
     { et: 'Giriş açısı θ₁',  dg: D.biçim(p.giris), birim: '°' },
-    { et: 'θ₂ (içeride)',    dg: gec ? D.biçim(der(gec.t2), 4) : '—', birim: '°' },
-    { et: 'θ₃ = A − θ₂',     dg: gec ? D.biçim(der(gec.t3), 4) : '—', birim: '°' },
+    { et: 'θ₂ (içeride)',    dg: gec ? D.biçim(der(gec.t2), 4) : '–', birim: '°' },
+    { et: 'θ₃ = A − θ₂',     dg: gec ? D.biçim(der(gec.t3), 4) : '–', birim: '°' },
     { et: 'θ₄ (çıkış)',
       dg: gec && gec.t4 !== null ? D.biçim(der(gec.t4), 4) : 'Çıkamıyor',
       birim: gec && gec.t4 !== null ? '°' : '' },
     { et: 'Sapma δ',
-      dg: gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) : '—', birim: '°' },
-    { et: 'En küçük sapma',  dg: dmin === null ? '—' : D.biçim(dmin, 4), birim: '°' },
-    { et: 'Prizma içi θ_s',  dg: sa === null ? '—' : D.biçim(sa, 4), birim: '°' }
+      dg: gec && gec.sapma !== null ? D.biçim(gec.sapma, 4) : '–', birim: '°' },
+    { et: 'En küçük sapma',  dg: dmin === null ? '–' : D.biçim(dmin, 4), birim: '°' },
+    { et: 'Prizma içi θ_s',  dg: sa === null ? '–' : D.biçim(sa, 4), birim: '°' }
   ];
 }
 

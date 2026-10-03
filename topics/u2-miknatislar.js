@@ -62,7 +62,7 @@ ama <strong>bir tanesi farklıdır</strong>:</p>
 <ul>
   <li>Mıknatısın <strong>dışında</strong> N&rsquo;den çıkar, S&rsquo;ye girer</li>
   <li>Mıknatısın <strong>içinde</strong> S&rsquo;den N&rsquo;ye devam eder</li>
-  <li>Yani çizgiler <strong>kapalı eğrilerdir</strong> — başlangıcı ve sonu yoktur</li>
+  <li>Yani çizgiler <strong>kapalı eğrilerdir</strong>: başlangıcı ve sonu yoktur</li>
   <li>Asla <strong>kesişmezler</strong></li>
   <li><strong>Sıklıkları</strong> alanın şiddetini gösterir</li>
 </ul>
@@ -76,7 +76,7 @@ manyetik kuvvet, kutup şiddetleriyle <strong>doğru</strong>, kutuplar arasınd
   <p style="margin:0">Elektriksel alan çizgileri <strong>açıktır</strong>: artı yükte
   <em>başlar</em>, eksi yükte <em>biter</em>. Manyetik alan çizgileri
   <strong>kapalıdır</strong>: hiçbir yerde başlamaz, hiçbir yerde bitmez.
-  Sebebi tektir — <strong>manyetik tek kutup olmadığı için</strong> çizginin
+  Sebebi tektir: <strong>manyetik tek kutup olmadığı için</strong> çizginin
   başlayacağı ya da biteceği bir “kaynak” yoktur.</p>
 </div>
 
@@ -87,7 +87,7 @@ manyetik kuvvet, kutup şiddetleriyle <strong>doğru</strong>, kutuplar arasınd
 <div class="kutu puf" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">🧭</span><span>Coğrafi kuzeyde manyetik GÜNEY kutbu var</span></div>
   <p style="margin:0">Pusulanın N ucu kuzeyi gösteriyorsa, oraya çeken şey bir
-  <strong>S kutbu</strong> olmalıdır — çünkü zıt kutuplar çeker. Yani Dünya&rsquo;nın
+  <strong>S kutbu</strong> olmalıdır, çünkü zıt kutuplar çeker. Yani Dünya&rsquo;nın
   <strong>manyetik güney kutbu coğrafi kuzeyindedir</strong>. Bu, konunun en sık
   sorulan ayrıntısıdır.</p>
 </div>
@@ -143,17 +143,17 @@ oluşturur.</p>`,
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'B — manyetik alan',      aciklama: 'Birimi tesla (T)' },
+    { fm: 'B: manyetik alan',      aciklama: 'Birimi tesla (T)' },
     { fm: '1 G = 10⁻⁴ T',           aciklama: 'Gauss da kullanılır (1 T = 10⁴ G)' },
     { fm: 'F ∝ (kutup şiddetleri) / d²', aciklama: 'Kutuplar arası kuvvet; ortam da etkiler' },
     { fm: '1 μT = 10⁻⁶ T',          aciklama: 'Dünya’nın alanı bu mertebededir' },
     { fm: 'B<sub>Dünya</sub> ≈ 50 μT', aciklama: 'Ülkemizde ≈ 48 μT, yatay bileşeni ≈ 25 μT' },
-    { fm: 'B<sub>top</sub>² = B<sub>yatay</sub>² + B<sub>düşey</sub>²', aciklama: 'Bileşenler dik — Pisagor' }
+    { fm: 'B<sub>top</sub>² = B<sub>yatay</sub>² + B<sub>düşey</sub>²', aciklama: 'Bileşenler dik: Pisagor' }
   ],
   degiskenler: [
     { sembol: 'B', ad: 'Manyetik alan',     birim: 'T' },
-    { sembol: 'N', ad: 'Kuzey kutbu',       birim: '—' },
-    { sembol: 'S', ad: 'Güney kutbu',       birim: '—' },
+    { sembol: 'N', ad: 'Kuzey kutbu',       birim: '-' },
+    { sembol: 'S', ad: 'Güney kutbu',       birim: '-' },
     { sembol: 'δ', ad: 'Sapma açısı',       birim: '°' }
   ]
 },
@@ -252,7 +252,7 @@ puf: {
     <strong>S</strong>&rsquo;dir.</p>
 
     <p><strong>2 · Manyetik çizgiler KAPALI, elektrikse AÇIK.</strong> Şık içinde
-    “manyetik alan çizgileri N&rsquo;de başlar S&rsquo;de biter” geçiyorsa <strong>yanlıştır</strong> —
+    “manyetik alan çizgileri N&rsquo;de başlar S&rsquo;de biter” geçiyorsa <strong>yanlıştır</strong>:
     doğrusu “dışarıda N&rsquo;den çıkar S&rsquo;ye girer, <em>içeride devam eder</em>”.</p>
 
     <p><strong>3 · Mıknatısı bölme sorusu.</strong> Kaç parçaya bölersen böl, her parça
@@ -272,7 +272,7 @@ puf: {
     kesmez. Şekilli sorularda iğneyi çizgiye dik çizen şık yanlıştır.</p>
 
     <p><strong>6 · Ferromanyetik üçlüyü ezberle:</strong> <strong>demir, nikel, kobalt</strong>.
-    Alüminyum ve bakır bu listede <em>yoktur</em> — bakır elektriği iyi iletir ama
+    Alüminyum ve bakır bu listede <em>yoktur</em>: bakır elektriği iyi iletir ama
     mıknatısa yapışmaz. Bu ikisi karıştırılır.</p>
 
     <p><strong>7 · Isıtma mıknatıslığı bozar.</strong> Curie sıcaklığının üstünde
@@ -283,7 +283,7 @@ puf: {
       <div class="kutu-bas"><span class="ikon">🔗</span><span>Sonraki konuya köprü</span></div>
       <p style="margin:0">Burada mıknatısın alanını gördük. Sıradaki konuda aynı alanın
       <strong>akım geçen bir telin</strong> çevresinde de oluştuğunu göreceğiz. O an
-      manyetizmanın aslında <em>hareketli yüklerin</em> işi olduğu ortaya çıkar — kalıcı
+      manyetizmanın aslında <em>hareketli yüklerin</em> işi olduğu ortaya çıkar: kalıcı
       mıknatıs ile elektromıknatıs aynı olayın iki yüzüdür.</p>
     </div>`
 },
@@ -344,14 +344,14 @@ osym: [
         <li><strong>Yanlış.</strong> Manyetik tek kutup <strong>yoktur</strong>. Bu, doğanın
         bilinen temel özelliklerinden biridir.</li>
         <li><strong>Doğru.</strong> Kesme yüzeyinde hemen yeni bir N ve karşısında yeni bir S
-        belirir — mıknatıslık atom ölçeğinden gelir.</li>
+        belirir: mıknatıslık atom ölçeğinden gelir.</li>
         <li><strong>Yanlış.</strong> Kutup sayısı azalmaz; her parçada <strong>daima iki</strong> kutup vardır.</li>
       </ol>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Neden böyle?</strong> Mıknatıslık, maddedeki her atomun
         küçük bir mıknatıs gibi davranmasından doğar. Bir mıknatısı kesmek, bu küçük
         mıknatısları <em>ikiye bölmek</em> değil, yalnızca <em>gruplarını ayırmak</em>tır.
-        Elektrikte ise tek bir elektronu ayırabilirsin — işte bu yüzden orada tek kutup vardır.</p>
+        Elektrikte ise tek bir elektronu ayırabilirsin: işte bu yüzden orada tek kutup vardır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -391,7 +391,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Sayıyla:</strong> Ankara&rsquo;da toplam alan
         ≈ 48 μT, yatay bileşeni ≈ 25 μT&rsquo;dir (IGRF 2026). Pisagor&rsquo;dan düşey bileşen:
-        √(48² − 25²) ≈ <strong>41 μT</strong>. Yani alan aslında oldukça <em>dik</em> iner —
+        √(48² − 25²) ≈ <strong>41 μT</strong>. Yani alan aslında oldukça <em>dik</em> iner:
         pusula bunun yalnızca küçük bir kısmını kullanır.
         <br><strong>E şıkkı</strong> III’ü de doğru sayanlar için konmuştur; sapma açısı
         olmasaydı haritacılıkta düzeltme yapmaya gerek kalmazdı.</p>
@@ -470,7 +470,7 @@ baglam: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı</strong> önemli bir yanlış varsayım içeriyor:
         Dünya&rsquo;nın alanı her yerde aynı <em>değildir</em>. Hem şiddeti hem eğimi enleme
-        göre değişir — zaten bilgi taşımasının sebebi de budur.
+        göre değişir: zaten bilgi taşımasının sebebi de budur.
         <br><strong>Bağlantı:</strong> Çizgilerin kutuplarda dikleşmesi, kutup ışıklarının
         neden yalnızca kutup bölgelerinde görüldüğünü de açıklar: yüklü parçacıklar
         çizgileri izleyerek oralarda atmosfere dalar.</p>
@@ -517,7 +517,7 @@ baglam: [
       { bas: 'Parçacıkların yolunu düşün',
         metin: 'Yüklü parçacıklar manyetik alanda serbestçe her yöne gidemez; <strong>alan çizgilerini izleyerek</strong> sarmal çizerler.' },
       { bas: 'Çizgilerin şekline bak',
-        metin: 'Dünya’nın alan çizgileri ekvator üzerinde <strong>yatay</strong> geçer, yani atmosfere girmez — parçacıkları teğet geçirip uzaklaştırır.' },
+        metin: 'Dünya’nın alan çizgileri ekvator üzerinde <strong>yatay</strong> geçer, yani atmosfere girmez: parçacıkları teğet geçirip uzaklaştırır.' },
       { bas: 'Kutuplarda ne değişiyor?',
         metin: 'Çizgiler kutuplara yaklaştıkça <strong>dikleşir ve atmosfere dalar</strong>. Parçacıklar da onları izleyerek üst atmosfere girer.' },
       { bas: 'Işık nereden geliyor?',

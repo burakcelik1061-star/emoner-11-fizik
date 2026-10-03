@@ -24,31 +24,29 @@ kimyasal bağlar kurulur. Sürtünme kuvveti bu ikisinin sonucudur ve temelde
 ve yüzeye paraleldir.</p>
 
 <h3 style="margin-top:22px">İki tür sürtünme</h3>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:14px 0">
-  <div style="background:var(--violet-soft);border:1px solid #453A72;border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:var(--violet);font-weight:700;font-size:.9em;margin-bottom:8px">
-      STATİK  f<sub>s</sub></div>
-    <p style="margin:0 0 6px">Cisim <strong>durgunken</strong> etki eder.</p>
-    <p style="margin:0 0 6px"><strong>Sabit bir sayı değildir!</strong> Uygulanan kuvvete
+<div class="iki-sutun">
+  <div class="yan-kart" style="--c:var(--q-surtunme)">
+    <div class="yan-kart-bas"><span>STATİK f<sub>s</sub></span></div>
+    <p>Cisim <strong>durgunken</strong> etki eder.</p>
+    <p><strong>Sabit bir sayı değildir!</strong> Uygulanan kuvvete
     eşit olacak şekilde kendini ayarlar.</p>
-    <p style="margin:0;font-family:var(--font-mono);color:#fff">f<sub>s</sub> = F &nbsp;(F ≤ f<sub>s,maks</sub> iken)</p>
+    <p class="kart-formul">f<sub>s</sub> = F &nbsp;(F ≤ f<sub>s,maks</sub> iken)</p>
   </div>
-  <div style="background:var(--amber-soft);border:1px solid #6B4A12;border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:var(--amber);font-weight:700;font-size:.9em;margin-bottom:8px">
-      KİNETİK  f<sub>k</sub></div>
-    <p style="margin:0 0 6px">Cisim <strong>kayarken</strong> etki eder.</p>
-    <p style="margin:0 0 6px"><strong>Sabittir.</strong> Uygulanan kuvvetten ve hızdan
+  <div class="yan-kart" style="--c:var(--amber)">
+    <div class="yan-kart-bas"><span>KİNETİK f<sub>k</sub></span></div>
+    <p>Cisim <strong>kayarken</strong> etki eder.</p>
+    <p><strong>Sabittir.</strong> Uygulanan kuvvetten ve hızdan
     bağımsızdır.</p>
-    <p style="margin:0;font-family:var(--font-mono);color:#fff">f<sub>k</sub> = sabit &nbsp;(&lt; f<sub>s,maks</sub>)</p>
+    <p class="kart-formul">f<sub>k</sub> = sabit &nbsp;(&lt; f<sub>s,maks</sub>)</p>
   </div>
 </div>
 
 <h3 style="margin-top:22px">Statik sürtünme neden "kendini ayarlar"?</h3>
-<p>Duran bir dolabı parmağınla it. Kıpırdamaz. Demek ki bileşke kuvvet sıfır — yani
+<p>Duran bir dolabı parmağınla it. Kıpırdamaz. Demek ki bileşke kuvvet sıfır, yani
 sürtünme senin uyguladığın kuvvete <strong>tam olarak eşit</strong> bir tepki verdi.</p>
 <p>Şimdi biraz daha kuvvetle it. Yine kıpırdamıyor. Sürtünme yine seninle eşitlendi.</p>
 <p>Bu, sürtünmenin "hazır bir sayı" olmadığını gösterir. Statik sürtünme
-<strong>0 ile f<sub>s,maks</sub> arasında herhangi bir değer alabilir</strong> —
+<strong>0 ile f<sub>s,maks</sub> arasında herhangi bir değer alabilir</strong>:
 hangisi gerekiyorsa onu alır. Ancak bir sınırı vardır; o sınırı aşınca cisim kopar.</p>
 
 <div class="kutu puf" style="margin:14px 0">
@@ -75,7 +73,7 @@ açıkça göreceksin: önce 45°’lik bir doğru, sonra ani bir düşüş, son
 Kitabın bisiklet örneği (s.68):</p>
 <ul>
   <li><strong>Kalkışta:</strong> Arka tekerlek geriye doğru iter, yer de tekerleği
-  <em>ileriye</em> iter. Sürtünme hareket yönündedir — onsuz kalkış imkânsızdır.</li>
+  <em>ileriye</em> iter. Sürtünme hareket yönündedir: onsuz kalkış imkânsızdır.</li>
   <li><strong>Sabit hızda (pedal çevrilmiyorsa):</strong> Sürtünme yok sayılırsa bileşke sıfırdır.</li>
   <li><strong>Frende:</strong> Sürtünme hareketi yavaşlatacak şekilde ters yöne döner.</li>
 </ul>
@@ -87,7 +85,7 @@ formuller: {
   liste: [
     { fm: 'f<sub>s</sub> = F', aciklama: 'Cisim durgunken, F ≤ f<sub>s,maks</sub> olduğu sürece' },
     { fm: 'f<sub>s</sub> ≤ f<sub>s,maks</sub>', aciklama: 'Statik sürtünmenin bir üst sınırı vardır' },
-    { fm: 'f<sub>k</sub> = sabit', aciklama: 'Cisim kayarken — F’den ve hızdan bağımsız' },
+    { fm: 'f<sub>k</sub> = sabit', aciklama: 'Cisim kayarken: F’den ve hızdan bağımsız' },
     { fm: 'f<sub>k</sub> &lt; f<sub>s,maks</sub>', aciklama: 'Kinetik sürtünme daima daha küçüktür' },
     { fm: 'F<sub>net</sub> = F − f<sub>k</sub>', aciklama: 'Hareket başladıktan sonraki bileşke' }
   ],
@@ -145,7 +143,7 @@ turetim: {
                    <div class="formul"><div class="fm">f<sub>s,maks</sub> = 41 N</div></div>
                    <div class="formul"><div class="fm">f<sub>k</sub> = 35 N</div></div>
                  </div>
-                 <p style="margin-top:12px"><strong>f<sub>k</sub> &lt; f<sub>s,maks</sub></strong> —
+                 <p style="margin-top:12px"><strong>f<sub>k</sub> &lt; f<sub>s,maks</sub></strong>:
                  bu her zaman böyledir. Hareket hâlindeki yüzeylerin pürüzleri birbirine
                  kilitlenmeye fırsat bulamaz.</p>` },
 
@@ -170,7 +168,7 @@ turetim: {
           html: `<p>Cilalanmış mermer bile mikro ölçekte dağ silsilesi gibidir. İki yüzey
                  üst üste geldiğinde bu tümsekler birbirine <strong>geçer</strong>.</p>
                  <p>Cismi kaydırmak için bu tümseklerin ya kırılması ya da birbirinin üstüne
-                 tırmanması gerekir — işte bu direnç sürtünmenin bir bölümüdür.</p>` },
+                 tırmanması gerekir: işte bu direnç sürtünmenin bir bölümüdür.</p>` },
 
         { baslik: 'Temas noktalarında bağ kurulur',
           html: `<p>İki yüzey birbirine dokunduğunda temas noktalarındaki atomlar arasında
@@ -188,7 +186,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">f<sub>k</sub> &lt; f<sub>s,maks</sub></div>
                  </div>
                  <p style="margin-top:12px;color:var(--text-2)">Bu eşitsizliğin fiziksel sebebi
-                 budur — ezberlenecek bir kural değil, anlaşılabilir bir sonuç.</p>` }
+                 budur: ezberlenecek bir kural değil, anlaşılabilir bir sonuç.</p>` }
       ]
     }
   ]
@@ -206,7 +204,7 @@ puf: {
     Bu, bu konunun en çok puan kaybettiren sorusudur.</p>
 
     <p><strong>2 · Cisim kayıyorsa sürtünme SABİTTİR.</strong> Uygulanan kuvveti iki katına
-    çıkarsan bile f<sub>k</sub> değişmez — değişen şey bileşke kuvvet ve ivmedir.</p>
+    çıkarsan bile f<sub>k</sub> değişmez: değişen şey bileşke kuvvet ve ivmedir.</p>
 
     <p><strong>3 · Hareket edip etmediğini önce kontrol et.</strong> Her sürtünme sorusu
     tek bir soruyla başlar: <em>F &gt; f<sub>s,maks</sub> mı?</em></p>
@@ -222,7 +220,7 @@ puf: {
     bisiklet sürerken, araba kalkarken sürtünme <em>hareket yönündedir</em> ve hareketi
     o başlatır.</p>
 
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
+    <div class="alt-kutu">
       <p style="margin:0 0 8px;font-weight:600">Elif deneyinin tablosu (f<sub>s,maks</sub> = 41 N, f<sub>k</sub> = 35 N)</p>
       <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Uygulanan F</th><th>Sürtünme f</th><th>Tür</th><th>Durum</th></tr></thead>
@@ -322,14 +320,14 @@ osym: [
     cozum: `
       <p>Grafiğin iki bölgesi var:</p>
       <ul>
-        <li><strong>F ≤ 40 N:</strong> f = F (45°’lik doğru) — cisim durgun, statik sürtünme</li>
-        <li><strong>F &gt; 40 N:</strong> f = 30 N sabit — cisim kayıyor, kinetik sürtünme</li>
+        <li><strong>F ≤ 40 N:</strong> f = F (45°’lik doğru), cisim durgun, statik sürtünme</li>
+        <li><strong>F &gt; 40 N:</strong> f = 30 N sabit, cisim kayıyor, kinetik sürtünme</li>
       </ul>
       <ol>
         <li><strong>Doğru.</strong> Doğrunun bittiği nokta f<sub>s,maks</sub> = 40 N.</li>
         <li><strong>Doğru.</strong> Yatay doğrunun değeri f<sub>k</sub> = 30 N.</li>
         <li><strong>Doğru.</strong> 25 &lt; 40 olduğundan cisim henüz kopmamıştır.</li>
-        <li><strong>YANLIŞ — aranan cevap bu.</strong> F = 70 N’da cisim çoktan kayıyor,
+        <li><strong>YANLIŞ: aranan cevap bu.</strong> F = 70 N’da cisim çoktan kayıyor,
         dolayısıyla sürtünme <strong>30 N’dır</strong>, 70 N değil. Kinetik sürtünme
         uygulanan kuvvetle birlikte artmaz. Grafik de zaten orada yatay.</li>
         <li><strong>Doğru.</strong> F = 50 N ⟹ F<sub>net</sub> = 50 − 30 = 20 N ⟹ a &gt; 0.</li>
@@ -368,7 +366,7 @@ osym: [
         Tekerleğin yere değen noktası geriye kaymaya çalışır; sürtünme bunu engellemek için
         ileri yönlüdür.
         <br><strong>Sağlaması:</strong> Buzda bisiklet kalkamaz. Sürtünme hareketi engelleseydi
-        buzda daha kolay kalkman gerekirdi — oysa tam tersi olur. Yürümek, koşmak, araba
+        buzda daha kolay kalkman gerekirdi, oysa tam tersi olur. Yürümek, koşmak, araba
         kalkışı hep aynı mekanizmayla çalışır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B</strong></p>`
@@ -414,7 +412,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'İddiayı incele',
-        metin: '"Dolap hafifledi mi?" Hayır — dolabın kütlesi de ağırlığı da hiç değişmedi. Öyleyse değişen başka bir şey var.' },
+        metin: '"Dolap hafifledi mi?" Hayır: dolabın kütlesi de ağırlığı da hiç değişmedi. Öyleyse değişen başka bir şey var.' },
       { bas: 'İlk aşamayı modelle',
         metin: 'Dolap durgunken sürtünme <strong>statiktir</strong> ve uygulanan kuvvete eşit büyür. Öğrenci kuvveti artırdıkça sürtünme de artıyor; denge hiç bozulmuyor, dolap kıpırdamıyor.' },
       { bas: 'Kopma eşiğini bul',
@@ -447,7 +445,7 @@ baglam: [
       Bu yüzden devam etmek başlamaktan kolaydır.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı</strong> "hareket varsa sürtünme yok" gibi bir
-        yanılgıya oynuyor — sürtünme kaybolmuyor, sadece küçülüyor. Kaybolsaydı dolap
+        yanılgıya oynuyor: sürtünme kaybolmuyor, sadece küçülüyor. Kaybolsaydı dolap
         itmeyi bıraktığın anda durmaz, kaymaya devam ederdi.
         <br><strong>Günlük hayattaki eşleri:</strong> valizi çekmeye başlamak, kavanoz kapağını
         ilk kez çevirmek, arabayı iterek çalıştırmak. Hepsinde ilk kopuş en zor andır.</p>
@@ -489,15 +487,15 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'İki durumu ayır',
-        metin: 'Tekerlek <strong>kilitlenirse</strong> lastik asfaltın üzerinde <em>kayar</em>. Tekerlek <strong>dönmeye devam ederse</strong> lastiğin yere değen noktası yere göre kaymaz — sadece temas eder ve kalkar.' },
+        metin: 'Tekerlek <strong>kilitlenirse</strong> lastik asfaltın üzerinde <em>kayar</em>. Tekerlek <strong>dönmeye devam ederse</strong> lastiğin yere değen noktası yere göre kaymaz: sadece temas eder ve kalkar.' },
       { bas: 'Her duruma doğru sürtünmeyi ata',
-        metin: 'Kayma varsa <strong>kinetik sürtünme</strong> etki eder. Kayma yoksa yüzeyler arasında hâlâ <strong>statik sürtünme</strong> geçerlidir — çünkü temas noktası anlık olarak duruyordur.' },
+        metin: 'Kayma varsa <strong>kinetik sürtünme</strong> etki eder. Kayma yoksa yüzeyler arasında hâlâ <strong>statik sürtünme</strong> geçerlidir, çünkü temas noktası anlık olarak duruyordur.' },
       { bas: 'Hangisi büyük?',
         metin: 'Bu konunun temel sonucu: <strong>f<sub>k</sub> &lt; f<sub>s,maks</sub></strong>. Yani dönen tekerlek, kilitli tekerlekten <em>daha büyük</em> bir sürtünme kuvvetinden yararlanabilir.' },
       { bas: 'Öğrencinin iddiasını değerlendir',
         metin: 'Öğrenci <strong>yanılıyor</strong>. Kilitlemek sürtünmeyi artırmaz, tam tersine büyük olan statik sürtünmeyi kaybedip küçük olan kinetiğe düşürür. Fren mesafesi <em>uzar</em>.' },
       { bas: 'İkinci faydayı da gör',
-        metin: 'Kayan tekerlek <strong>yönlendirilemez</strong> — direksiyonu çevirsen de araç düz kayar. ABS tekerleği döndürdüğü için sürücü frende bile manevra yapabilir. Bu, can güvenliği açısından fren mesafesi kadar önemlidir.' }
+        metin: 'Kayan tekerlek <strong>yönlendirilemez</strong>: direksiyonu çevirsen de araç düz kayar. ABS tekerleği döndürdüğü için sürücü frende bile manevra yapabilir. Bu, can güvenliği açısından fren mesafesi kadar önemlidir.' }
     ],
     secenekler: [
       'Öğrenci haklı, kilitli tekerlek daha çok sürtünme sağlar',
@@ -515,7 +513,7 @@ baglam: [
       direksiyona tepki vermez.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0">Bu soru "sürtünme kötüdür, azaltmak gerekir" ezberini kırar.
-        Frende <strong>sürtünmeyi en büyük tutmak</strong> istersin — ABS tam olarak bunu yapar.
+        Frende <strong>sürtünmeyi en büyük tutmak</strong> istersin: ABS tam olarak bunu yapar.
         <br>Aynı mantık kışın zincir takmakta, yarış lastiklerinin geniş olmasında,
         spor ayakkabı tabanlarında da işler.</p>
       </div>

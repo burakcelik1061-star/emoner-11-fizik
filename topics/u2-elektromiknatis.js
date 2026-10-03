@@ -22,7 +22,7 @@ her biri kendi içinde hizalanmış, küçük birer mıknatıs gibi davranan bö
 bu bölgeler rastgele yönlenmiştir ve etkileri birbirini götürür.</p>
 
 <p>Makaranın alanı bu bölgeleri <strong>hizalar</strong>. Hizalanan bölgeler kendi
-alanlarını makaranın alanına <strong>ekler</strong> — ve bu katkı, makaranın kendi
+alanlarını makaranın alanına <strong>ekler</strong> ve bu katkı, makaranın kendi
 alanından kat kat büyüktür.</p>
 
 <div class="formul" style="max-width:320px;margin:14px 0;border-top-color:var(--accent)">
@@ -33,7 +33,7 @@ alanından kat kat büyüktür.</p>
 <table class="degisken-tablo">
   <thead><tr><th>Çekirdek</th><th>μ<sub>r</sub> (etkin)</th><th>Doyma alanı</th></tr></thead>
   <tbody>
-    <tr><td>Hava (çekirdeksiz)</td><td class="sembol">1</td><td>—</td></tr>
+    <tr><td>Hava (çekirdeksiz)</td><td class="sembol">1</td><td>-</td></tr>
     <tr><td>Nikel</td><td class="sembol">≈ 100</td><td>0,6 T</td></tr>
     <tr><td>Ferrit</td><td class="sembol">≈ 600</td><td>0,4 T</td></tr>
     <tr><td>Yumuşak demir</td><td class="sembol">≈ 1200</td><td>1,8 T</td></tr>
@@ -65,7 +65,7 @@ alanından kat kat büyüktür.</p>
   <strong>korur</strong>. Kalıcı mıknatıs yapımında kullanılır.</li>
 </ul>
 <p>Hurda vincinde sert çelik kullanılsaydı, akımı kestiğinde hurda
-<strong>yapışık kalırdı</strong> — vincin hiçbir işe yaramazdı. İstenen özellik burada
+<strong>yapışık kalırdı</strong>: vincin hiçbir işe yaramazdı. İstenen özellik burada
 <em>mıknatıslığı çabuk bırakmaktır</em>.</p>
 
 <h3 style="margin-top:22px">Kaldırma kuvveti</h3>
@@ -74,7 +74,7 @@ alanından kat kat büyüktür.</p>
   <div class="fm-ad">A: kutup yüzeyinin alanı</div>
 </div>
 <p><strong>Kuvvet B&rsquo;nin karesiyle artar.</strong> Alanı iki katına çıkarırsan kaldırma
-gücü <strong>dört katına</strong> çıkar. Bu yüzden doymaya yaklaşmak bu kadar değerlidir —
+gücü <strong>dört katına</strong> çıkar. Bu yüzden doymaya yaklaşmak bu kadar değerlidir 
 ve bu yüzden doymadan sonra akımı artırmanın hiçbir faydası yoktur.</p>
 
 <div class="kutu puf" style="margin:16px 0">
@@ -130,12 +130,12 @@ formuller: {
   liste: [
     { fm: 'B = μ₀·μ<sub>r</sub>·n·i',  aciklama: 'Çekirdekli makaranın alanı' },
     { fm: 'B ≤ B<sub>doyma</sub>',     aciklama: 'Malzemenin aşılamayan sınırı' },
-    { fm: 'F = B²·A / (2μ₀)',          aciklama: 'Kaldırma kuvveti — ideal üst sınır' },
+    { fm: 'F = B²·A / (2μ₀)',          aciklama: 'Kaldırma kuvveti: ideal üst sınır' },
     { fm: 'F ∝ B²',                    aciklama: 'Alan 2 katına → kuvvet 4 katına' },
     { fm: 'n = N / L',                 aciklama: 'Birim uzunluktaki sarım sayısı' }
   ],
   degiskenler: [
-    { sembol: 'μ<sub>r</sub>', ad: 'Bağıl manyetik geçirgenlik', birim: '—' },
+    { sembol: 'μ<sub>r</sub>', ad: 'Bağıl manyetik geçirgenlik', birim: '-' },
     { sembol: 'B', ad: 'Manyetik alan',    birim: 'T' },
     { sembol: 'A', ad: 'Kutup yüzey alanı', birim: 'm²' },
     { sembol: 'F', ad: 'Kaldırma kuvveti',  birim: 'N' },
@@ -183,7 +183,7 @@ turetim: {
 
         { baslik: 'Formülü sınırla',
           html: `<p>Bu noktadan sonra akımı artırmak yalnızca μ₀·n·i kadarlık
-                 <strong>çok küçük</strong> bir katkı ekler — yani çekirdek sanki yokmuş gibi:</p>
+                 <strong>çok küçük</strong> bir katkı ekler, yani çekirdek sanki yokmuş gibi:</p>
                  <div class="formul" style="max-width:280px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">B → B<sub>doyma</sub></div>
                  </div>` },
@@ -256,11 +256,11 @@ puf: {
     Şıklarda ikisi de bulunur.</p>
 
     <p><strong>5 · Kutupları akımın yönü belirler.</strong> Pilin uçları değişirse N ve S
-    yer değiştirir. Kalıcı mıknatısta bu imkânsızdır — sorularda ayırt edici özellik budur.</p>
+    yer değiştirir. Kalıcı mıknatısta bu imkânsızdır: sorularda ayırt edici özellik budur.</p>
 
     <p><strong>6 · Röle mantığı:</strong> küçük akımlı bir devre, elektromıknatıs aracılığıyla
     büyük akımlı bir devreyi <em>açıp kapatır</em>. İki devre birbirine
-    <strong>elektriksel olarak bağlı değildir</strong> — yalnızca manyetik olarak etkileşir.</p>
+    <strong>elektriksel olarak bağlı değildir</strong>: yalnızca manyetik olarak etkileşir.</p>
 
     <p><strong>7 · Isınma sınırı gerçek bir kısıttır.</strong> “Akımı istediğin kadar artır”
     diyen şık yanlıştır: <code>P = i²R</code> ile üretilen ısı teli eritir. Bu yüzden MR gibi
@@ -299,10 +299,10 @@ osym: [
         <div class="fm" style="color:var(--red)">P = i²·R ⟹ 4 katına çıkar</div>
       </div>
       <p>Yani akımı iki katına çıkarmak, hiçbir kazanç sağlamadan ısınmayı
-      <strong>dört katına</strong> çıkarır — bobini yakabilir.</p>
+      <strong>dört katına</strong> çıkarır: bobini yakabilir.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı</strong> F ∝ B² ilişkisini doğru kurup doymayı
-        gözden kaçıranlar için — en akla yatkın yanlış cevap budur.
+        gözden kaçıranlar için: en akla yatkın yanlış cevap budur.
         <br><strong>Doğru çözüm yolu:</strong> Daha ağır yük için akım değil,
         <strong>kutup yüzeyini büyütmek</strong> gerekir (F ∝ A). Simülasyonda “Kutup çapı”nı
         14&rsquo;ten 30 cm&rsquo;ye çıkar: kaldırma 794 kg&rsquo;dan 3645 kg&rsquo;a fırlar,
@@ -400,7 +400,7 @@ baglam: [
       { bas: 'Gerçek değere geç',
         metin: 'Temas kusursuz değil: F ≈ 91 200 · 0,40 ≈ <strong>36 500 N</strong><br>m = F/g = 36 500/10 ≈ <strong>3650 kg ≈ 3,6 ton</strong>' },
       { bas: 'Güvenlik notunu ekle',
-        metin: 'Elektrik kesilirse hurda <strong>düşer</strong>. Bu yüzden gerçek vinçlerde yedek akü bulunur ve mıknatısın altından geçmek kesinlikle yasaktır. Yani öğrencinin “elektrik kesilse bile çalışırdı” itirazı haklı bir <em>riski</em> işaret ediyor — ama bu risk, bırakabilme yeteneği için ödenen bedeldir.' }
+        metin: 'Elektrik kesilirse hurda <strong>düşer</strong>. Bu yüzden gerçek vinçlerde yedek akü bulunur ve mıknatısın altından geçmek kesinlikle yasaktır. Yani öğrencinin “elektrik kesilse bile çalışırdı” itirazı haklı bir <em>riski</em> işaret ediyor, ama bu risk, bırakabilme yeteneği için ödenen bedeldir.' }
     ],
     secenekler: [
       'Kalıcı mıknatıs hurdayı bırakamaz; vinç ≈ 3,6 ton kaldırır',
@@ -418,7 +418,7 @@ baglam: [
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı</strong> ideal formülü kullanıp temas verimini
-        atlayanlar için — hesap doğru ama gerçeğin iki buçuk katı.
+        atlayanlar için: hesap doğru ama gerçeğin iki buçuk katı.
         <br><strong>B şıkkı</strong> güç sorunu olduğunu sanıyor; oysa neodim kalıcı
         mıknatıslar da 1 T üzerine çıkabilir. Sorun güç değil, <em>kontrol</em>.
         <br><strong>Mühendislik notu:</strong> Gerçekte bir ara çözüm de var:
@@ -496,7 +496,7 @@ baglam: [
         Kalıcı mıknatısla röle yapılamaz.
         <br><strong>Ses ipucu:</strong> Kontağı çevirdiğinde duyduğun o “tak” sesi, rölenin
         demir dilinin çekilme sesidir. Akü zayıfsa röle çekip bırakır ve
-        <em>tak-tak-tak</em> diye ses gelir — elektromıknatıs yeterli akımı bulamıyordur.</p>
+        <em>tak-tak-tak</em> diye ses gelir: elektromıknatıs yeterli akımı bulamıyordur.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }

@@ -191,7 +191,7 @@ function cizMercekVeOdaklar(ctx, w, h, y, p) {
     D.olcu(ctx, y.mx, y.cy + h * 0.30, y.mx + fp, y.cy + h * 0.30,
            'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm', R.ivme);
   else
-    D.yaziAydinlik(ctx, 'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm — odak panelin dışında',
+    D.yaziAydinlik(ctx, 'f = ' + D.biçim(Math.abs(y.f), 4) + ' cm: odak panelin dışında',
                    y.mx, y.cy + h * 0.30, R.ivme, '700 11px system-ui, sans-serif', 'center');
   D.yaziAydinlik(ctx, p.mod > 1.5 && p.mod < 2.5
                    ? (y.ince ? 'Işığı TOPLUYOR · f > 0' : 'Işığı DAĞITIYOR · f < 0')
@@ -234,9 +234,9 @@ function cizGercek(ctx, w, h, st, pHam) {
       10, h - 10, R.ivme, '700 13px system-ui, sans-serif', 'left');
   } else {
     D.yaziAydinlik(ctx,
-      y.duz ? 'Güç sıfır — ışınlar sapmadan geçer'
-      : y.ince ? 'Paralel ışınlar F’de GERÇEKTEN kesişir — odak gerçek'
-             : 'Paralel ışınlar ıraksar; UZANTILARI F’de kesişir — odak sanal',
+      y.duz ? 'Güç sıfır: ışınlar sapmadan geçer'
+      : y.ince ? 'Paralel ışınlar F’de GERÇEKTEN kesişir: odak gerçek'
+             : 'Paralel ışınlar ıraksar; UZANTILARI F’de kesişir: odak sanal',
       10, h - 10, y.ince ? R.hiz : R.kuvvet,
       '700 12px system-ui, sans-serif', 'left');
   }
@@ -480,8 +480,8 @@ function cizSistem(ctx, w, h, st, p) {
   }
   D.yaziAydinlik(ctx, g.ad + (gozluk ? ' · gözlüklü' : ' · gözlüksüz') + ' · cisim ' + (x > 250 ? 'uzakta (' : '') +
                  D.biçim(x, 0) + ' cm' + (x > 250 ? ')' : ''), 10, 20, '#14506E', '700 12px system-ui, sans-serif', 'left');
-  D.yaziAydinlik(ctx, gh.net ? 'NET görüyor — odak retinada'
-                   : (gh.hata < 0 ? 'BULANIK — odak retinanın ÖNÜNDE' : 'BULANIK — odak retinanın ARKASINDA'),
+  D.yaziAydinlik(ctx, gh.net ? 'NET görüyor: odak retinada'
+                   : (gh.hata < 0 ? 'BULANIK: odak retinanın ÖNÜNDE' : 'BULANIK: odak retinanın ARKASINDA'),
                  10, h - 10, renk, '700 12px system-ui, sans-serif', 'left');
 }
 
@@ -758,7 +758,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['', K.metin2, '11px'],
     ['Merceğin İKİ odağı vardır', K.metin2, '11px system-ui, sans-serif'],
     ['ve ikisi de merkeze eşit', K.metin2, '11px system-ui, sans-serif'],
-    ['uzaklıktadır — aynadan farkı bu', K.metin2, '11px system-ui, sans-serif'],
+    ['uzaklıktadır: aynadan farkı bu', K.metin2, '11px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['Aynada ışık YANSIR,', R.surtunme, '11px system-ui, sans-serif'],
     ['mercekte KIRILIR', R.surtunme, '11px system-ui, sans-serif'],

@@ -377,7 +377,7 @@ function cizOzelIsinlar(ctx, w, h, y, p) {
   /* ---- görüntü ---- */
   if (b !== null && Math.abs(b) > 420) {
     /* cisim odağa çok yakın: görüntü panele sığmayacak kadar uzakta */
-    D.yaziAydinlik(ctx, 'Cisim odağa çok yakın — görüntü ' + D.biçim(Math.abs(b)) +
+    D.yaziAydinlik(ctx, 'Cisim odağa çok yakın: görüntü ' + D.biçim(Math.abs(b)) +
                    ' cm uzakta, panele sığmıyor', w * 0.5, h * 0.94, R.kuvvet,
                    '700 12px system-ui, sans-serif', 'center');
   } else if (b !== null) {
@@ -387,7 +387,7 @@ function cizOzelIsinlar(ctx, w, h, y, p) {
     if (bx < w * 0.01 || bx > w * 0.99) {
       /* görüntü panelin dışına düşüyor: yerini ve yönünü söyle */
       D.yaziAydinlik(ctx, (sanal ? 'sanal görüntü ' : 'görüntü ') + D.biçim(Math.abs(b)) +
-                     ' cm ' + (sanal ? 'aynanın arkasında' : 'önde') + ' — panelin dışında',
+                     ' cm ' + (sanal ? 'aynanın arkasında' : 'önde') + ': panelin dışında',
                      w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
     } else {
       /* çok büyük görüntü panel yüksekliğine kırpılır; gerçek boy yazılır */
@@ -399,7 +399,7 @@ function cizOzelIsinlar(ctx, w, h, y, p) {
                  sanal ? 'sanal görüntü' : 'görüntü');
       ctx.restore();
       if (gBoy !== gBoyGercek)
-        D.yaziAydinlik(ctx, 'görüntü ' + D.biçim(buyutme(p), 2) + ' kat büyük — ok kırpıldı',
+        D.yaziAydinlik(ctx, 'görüntü ' + D.biçim(buyutme(p), 2) + ' kat büyük: ok kırpıldı',
                        w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
     }
   } else {
@@ -546,7 +546,7 @@ function cizKlasik(ctx, w, h, st, pHam) {
       ['1/f = 1/a + 1/b', K.beyaz, '700 13px system-ui, sans-serif'],
       ['a = ' + D.biçim(p.cisimUzaklik) + '   f = ' + D.biçim(f) + '   b = ' +
         (b === null ? '∞' : D.biçim(b)) + ' cm', R.normal, '12px system-ui, sans-serif'],
-      ['Büyütme = |b/a| = ' + (m === null ? '—' : D.biçim(m, 3)),
+      ['Büyütme = |b/a| = ' + (m === null ? '–' : D.biçim(m, 3)),
         R.hiz, '700 12px system-ui, sans-serif']
     ];
     let sy = 46;
@@ -714,7 +714,7 @@ function okumalar(st, pHam) {
       { et: 'Gelme = yansıma',           dg: D.biçim(s.gelme, 2),         birim: '°' },
       { et: 'Yansıyanın kesimi (tam)',   dg: s.X === null ? 'paralel' : D.biçim(-s.X / fa, 3) + 'f', birim: '' },
       { et: 'Ayna denklemiyle',          dg: b === null ? 'paralel' : D.biçim(b / fa, 3) + 'f', birim: '' },
-      { et: 'Kesim',                     dg: s.X === null ? '—' : s.gercek ? 'Gerçek (ışının kendisi)' : 'Sanal (uzantısı)', birim: '' }
+      { et: 'Kesim',                     dg: s.X === null ? '–' : s.gercek ? 'Gerçek (ışının kendisi)' : 'Sanal (uzantısı)', birim: '' }
     ];
   }
   const t = aciklikRad(p);

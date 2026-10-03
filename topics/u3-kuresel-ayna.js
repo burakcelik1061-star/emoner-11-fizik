@@ -45,8 +45,8 @@ yüzün sırlandığına göre iki tür vardır:</p>
 
 <div class="kutu dikkat" style="margin:16px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span><span>M ve F nerede?</span></div>
-  <p style="margin:0"><strong>Çukur aynada</strong> M ve F aynanın <strong>önündedir</strong>
-  — ışığın geldiği tarafta. Işınlar orada <em>gerçekten</em> kesişir, oraya bir kâğıt tutsan
+  <p style="margin:0"><strong>Çukur aynada</strong> M ve F aynanın <strong>önündedir</strong>:
+  ışığın geldiği tarafta. Işınlar orada <em>gerçekten</em> kesişir, oraya bir kâğıt tutsan
   parlak bir nokta görürsün. Odak <strong>gerçektir</strong>.</p>
   <p style="margin:8px 0 0"><strong>Tümsek aynada</strong> M ve F aynanın
   <strong>arkasındadır</strong>. Yansıyan ışınlar ıraksar, hiçbir yerde kesişmez;
@@ -76,7 +76,7 @@ odağı, eksene yakın ışınlarınkiyle <strong>aynı yerde olmadığını</st
   <div class="fm">Δ = (R/2)·(sec θ − 1)</div>
   <div class="fm-ad">kenar ışınla paraksiyel odak arasındaki kayma</div>
 </div>
-<p>Yani <strong>f = R/2 bir yaklaşıklıktır</strong> — yalnızca eksene yakın (paraksiyel)
+<p>Yani <strong>f = R/2 bir yaklaşıklıktır</strong>: yalnızca eksene yakın (paraksiyel)
 ışınlar için tam doğrudur. Gerçek aynalarda kenar ışınlar odaktan öne kayar ve tek bir
 nokta yerine <strong>kostik</strong> denen bir eğri oluşur.</p>
 <p>Bu yüzden teleskop aynaları küresel değil <strong>paraboliktir</strong>: parabol,
@@ -121,7 +121,7 @@ turetim: {
         { baslik: 'Yansıma yasasını uygula',
           html: `<p>Yansıma açısı da θ&rsquo;dır. Gelen ışın eksene paralel olduğu için
                  <strong>iç ters açılar</strong> eşittir: yansıyan ışının ekseni kestiği
-                 noktaya K dersek, <strong>MK üçgeni ikizkenardır</strong> —
+                 noktaya K dersek, <strong>MK üçgeni ikizkenardır</strong>,
                  <code>MK = KT'</code>.</p>` },
 
         { baslik: 'Kesişme uzaklığını yaz',
@@ -136,7 +136,7 @@ turetim: {
                  <div class="formul" style="max-width:300px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">d = R − R/2 = R/2 = f</div>
                  </div>
-                 <p>İşte f = R/2 buradan gelir — ve <strong>neden yaklaşık olduğu</strong>
+                 <p>İşte f = R/2 buradan gelir ve <strong>neden yaklaşık olduğu</strong>
                  da buradan görülür.</p>` }
       ]
     },
@@ -216,7 +216,7 @@ puf: {
     ayrı ayrı kural ezberlemen gerekmez.</p>
 
     <p><strong>3 · Tümsek ayna asla büyütmez.</strong> Tümsek aynada görüntü
-    <strong>her zaman</strong> sanal, düz ve küçüktür — cisim nerede olursa olsun.
+    <strong>her zaman</strong> sanal, düz ve küçüktür: cisim nerede olursa olsun.
     “Tümsek aynada büyük görüntü” diyen şık her zaman yanlıştır.</p>
 
     <p><strong>4 · Üç ışından ikisi yeter.</strong> Sınavda hepsini çizmek zaman kaybı.
@@ -291,15 +291,15 @@ osym: [
         <div class="fm" style="color:var(--accent)">d = R − R/(2cos30°) = 48 − 48/(2·0,866) = 48 − 27,7 = <strong>20,3 cm</strong></div>
       </div>
 
-      <p><strong>Küresel sapma:</strong> <code>24 − 20,3 = 3,7 cm</code> — odak uzaklığının
+      <p><strong>Küresel sapma:</strong> <code>24 − 20,3 = 3,7 cm</code>, odak uzaklığının
       yaklaşık <strong>%15</strong>&rsquo;i. Hiç de ihmal edilebilir değil.</p>
 
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> “bütün ışınlar odakta toplanır”
-        varsayımını yapıyor — ders düzeyinde öğretilen ama <em>tam</em> olmayan cevap.
+        varsayımını yapıyor: ders düzeyinde öğretilen ama <em>tam</em> olmayan cevap.
         <br><strong>C şıkkı</strong> R ile f&rsquo;yi karıştırıyor.
         <br><strong>E şıkkı</strong> <code>R/(2cos θ) = 27,7</code> ara sonucunu cevap
-        sanıyor — bu, kesişme noktasının <em>merkeze</em> uzaklığı, tepeye değil.
+        sanıyor: bu, kesişme noktasının <em>merkeze</em> uzaklığı, tepeye değil.
         <br><strong>Simülasyonda:</strong> 3. düzenekte R = 48, açıklık 30° yap; okumalarda
         tam bu iki sayıyı göreceksin.</p>
       </div>
@@ -346,7 +346,7 @@ osym: [
         <br><strong>Hızlı sağlama:</strong> Tümsek ayna ışığı <em>dağıtır</em>. Dağılan
         ışınlar bir noktada buluşamaz; buluşamayan ışın gerçek görüntü veremez.
         <br><strong>Nerede görürsün:</strong> Market ve otopark güvenlik aynaları, araç
-        sağ dikiz aynası — hepsi tümsektir, çünkü <em>geniş alanı küçülterek</em> gösterirler.
+        sağ dikiz aynası, hepsi tümsektir, çünkü <em>geniş alanı küçülterek</em> gösterirler.
         Aynanın üzerindeki “cisimler göründüğünden daha yakındır” uyarısı da tam bu yüzden
         vardır.</p>
       </div>
@@ -386,17 +386,17 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Güneş ışınları neden paralel?',
-        metin: 'Güneş 150 milyon km uzakta. Bu kadar uzaktan gelen ışınlar birbirine pratik olarak <strong>paraleldir</strong> — yani asal eksene paralel gelen 1. özel ışın durumundayız.' },
+        metin: 'Güneş 150 milyon km uzakta. Bu kadar uzaktan gelen ışınlar birbirine pratik olarak <strong>paraleldir</strong>, yani asal eksene paralel gelen 1. özel ışın durumundayız.' },
       { bas: 'Nerede toplanırlar?',
         metin: 'Eksene paralel gelen ışınlar <strong>odakta</strong> toplanır. Optikte buna “sonsuzdaki cismin görüntüsü odaktadır” denir: <code>a = ∞ ⟹ b = f</code>.' },
       { bas: 'Kâğıdın yeri',
         metin: '<code>f = R/2 = 80/2 = <strong>40 cm</strong></code>. Kâğıt aynanın <strong>40 cm</strong> önüne tutulmalı.' },
       { bas: 'Neden tümsek olamaz?',
-        metin: 'Tümsek ayna ışığı <strong>dağıtır</strong>. Odağı sanaldır — ışınlar aynanın arkasındaki bir noktadan <em>geliyormuş gibi</em> yayılır ama oraya gerçek enerji ulaşmaz. Kâğıdı oraya tutamazsın bile, ayna orada.' },
+        metin: 'Tümsek ayna ışığı <strong>dağıtır</strong>. Odağı sanaldır: ışınlar aynanın arkasındaki bir noktadan <em>geliyormuş gibi</em> yayılır ama oraya gerçek enerji ulaşmaz. Kâğıdı oraya tutamazsın bile, ayna orada.' },
       { bas: 'Açıklık çok büyürse',
         metin: 'Küresel sapma devreye girer. Kenar ışınlar odaktan <strong>öne</strong> kayar; enerji tek bir noktaya değil bir <strong>lekeye</strong> yayılır, sıcaklık düşer. <code>Δ = (R/2)(sec θ − 1)</code> ile hesaplanır: 80 cm&rsquo;lik aynada θ = 30° için Δ = 6,2 cm.' },
       { bas: 'Gerçek çözüm',
-        metin: 'Odeillo gibi tesislerde ayna <strong>parabolik</strong>tir. Parabol, açıklık ne olursa olsun paralel ışınların <em>tamamını</em> tek noktada toplar — küresel sapma sıfırdır.' }
+        metin: 'Odeillo gibi tesislerde ayna <strong>parabolik</strong>tir. Parabol, açıklık ne olursa olsun paralel ışınların <em>tamamını</em> tek noktada toplar: küresel sapma sıfırdır.' }
     ],
     secenekler: [
       '40 cm; tümsek ayna ışığı dağıtır ve odağı sanaldır; açıklık büyürse küresel sapma yüzünden ışık lekeye yayılır',
@@ -413,7 +413,7 @@ baglam: [
       <p>Sonsuzdaki cismin (Güneş) görüntüsü odakta oluşur.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> R ile f&rsquo;yi karıştırıyor
-        <em>ve</em> tümsek aynayı kabul ediyor — iki hata birden.
+        <em>ve</em> tümsek aynayı kabul ediyor: iki hata birden.
         <br><strong>D şıkkı</strong> f&rsquo;yi R/4 sanıyor ve açıklık büyüyünce odağın
         keskinleşeceğini söylüyor; gerçekte tam tersi olur.
         <br><strong>Güvenlik notu:</strong> Bu deneyi yapacaksan <strong>odak noktasına
@@ -422,7 +422,7 @@ baglam: [
         saniyeler içinde tutuşturabilir.
         <br><strong>İlgili tarih:</strong> Arşimet&rsquo;in Roma gemilerini aynalarla
         yaktığı anlatısı da bu ilkeye dayanır; modern denemeler bunun pratikte çok zor
-        olduğunu gösterdi — çünkü açıklık büyüdükçe sapma da büyüyor.</p>
+        olduğunu gösterdi, çünkü açıklık büyüdükçe sapma da büyüyor.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -455,7 +455,7 @@ baglam: [
       { bas: 'Güvenlik aynasının işi',
         metin: 'Amaç, <strong>mümkün olduğunca geniş bir alanı</strong> tek bakışta görmek. Büyütme değil, <strong>görüş açısı</strong> önemli.' },
       { bas: 'Tümsek ayna neden uygun?',
-        metin: 'Tümsek ayna ışığı dağıttığı için çok geniş bir alandan gelen ışınları küçük bir görüntüye sıkıştırır. Görüntü daima <strong>sanal, düz ve küçüktür</strong> — “düz” olması önemli, ters görüntü sürücüyü yanıltırdı.' },
+        metin: 'Tümsek ayna ışığı dağıttığı için çok geniş bir alandan gelen ışınları küçük bir görüntüye sıkıştırır. Görüntü daima <strong>sanal, düz ve küçüktür</strong>: “düz” olması önemli, ters görüntü sürücüyü yanıltırdı.' },
       { bas: 'Bedeli ne?',
         metin: 'Cisimler <strong>olduğundan küçük</strong> göründüğü için beyin onları <em>uzak</em> sanar. Araç dikiz aynalarındaki “cisimler göründüğünden daha yakındır” uyarısı tam bu yüzden yazılıdır.' },
       { bas: 'Diş aynasının işi',
@@ -463,7 +463,7 @@ baglam: [
       { bas: 'Çukur ayna neden uygun?',
         metin: 'Çukur aynada cisim <strong>odakla ayna arasına</strong> konursa görüntü <strong>sanal, düz ve büyük</strong> olur. Hekim dişi aynaya yeterince yaklaştırdığında büyütülmüş ve düz bir görüntü elde eder.' },
       { bas: 'Kritik koşul',
-        metin: 'Diş, <strong>odaktan uzağa</strong> giderse görüntü gerçek ve <strong>ters</strong> olur — kullanılamaz. Bu yüzden diş aynalarının odak uzaklığı, kullanım mesafesinden <strong>büyük</strong> olacak şekilde seçilir (küçük R, az bükey).' }
+        metin: 'Diş, <strong>odaktan uzağa</strong> giderse görüntü gerçek ve <strong>ters</strong> olur: kullanılamaz. Bu yüzden diş aynalarının odak uzaklığı, kullanım mesafesinden <strong>büyük</strong> olacak şekilde seçilir (küçük R, az bükey).' }
     ],
     secenekler: [
       'Güvenlik aynası tümsektir çünkü geniş alanı sanal-düz-küçük gösterir; diş aynası çukurdur ve diş odak içine konularak sanal-düz-büyük görüntü elde edilir',
@@ -484,15 +484,15 @@ baglam: [
         </tbody>
       </table>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>D şıkkı</strong> iki tanımı da ters çevirmiş — ama
+        <p style="margin:0"><strong>D şıkkı</strong> iki tanımı da ters çevirmiş, ama
         sonucu doğru türlerle eşleştirdiği için hızlı okumada kaçabilir. Şıkları
         <em>gerekçesiyle</em> okumak gerekiyor.
         <br><strong>Ortak nokta:</strong> Her iki ayna da <strong>sanal ve düz</strong>
         görüntü verir. İnsanın doğrudan baktığı aynalar hep böyledir; ters görüntü
         kullanışsız olurdu.
         <br><strong>Kendin gör:</strong> Bir çelik kaşığın <em>iç</em> yüzüne bak
-        (çukur) — yakınken düz ve büyük, uzaklaştırınca ters döner. <em>Dış</em> yüzüne
-        bak (tümsek) — ne yaparsan yap hep düz ve küçük. Tek bir kaşıkla bu konunun
+        (çukur), yakınken düz ve büyük, uzaklaştırınca ters döner. <em>Dış</em> yüzüne
+        bak (tümsek): ne yaparsan yap hep düz ve küçük. Tek bir kaşıkla bu konunun
         tamamı test edilebilir.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

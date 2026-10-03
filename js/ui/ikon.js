@@ -65,6 +65,7 @@ const YOL = {
 /* Konu dosyalarındaki kutu başlığı emojileri ⟶ ikon adı.
    Tabloda olmayan karakter (ör. ⊙⊗) olduğu gibi kalır. */
 const EMOJI = {
+  '✓': 'check', '✗': 'x',
   '⚠': 'warning',
   '💡': 'lightbulb',
   '🎯': 'target',
@@ -98,7 +99,7 @@ function ikon(ad, sinif) {
 }
 
 function ikonlariCevir(kok) {
-  kok.querySelectorAll('.kutu-bas .ikon').forEach(el => {
+  kok.querySelectorAll('.kutu-bas .ikon, .yan-kart-bas .ikon').forEach(el => {
     const ad = EMOJI[el.textContent.trim()];
     if (ad) el.innerHTML = ikon(ad);
   });

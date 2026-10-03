@@ -86,9 +86,9 @@ düzlemindedir</strong>. Simülasyondaki iki düzenek tam olarak bu iki durumu g
 formuller: {
   liste: [
     { fm: 'F = B·i·L·sinα', aciklama: 'Manyetik alandaki akımlı tele etkiyen kuvvet' },
-    { fm: 'F = B·i·L',      aciklama: 'α = 90° ise (tel alana dik) — en büyük değer' },
+    { fm: 'F = B·i·L',      aciklama: 'α = 90° ise (tel alana dik): en büyük değer' },
     { fm: 'F = 0',          aciklama: 'α = 0° ise (tel alana paralel)' },
-    { fm: 'a = F / m',      aciklama: 'Serbest tel için Newton II — sabit kuvvet, sabit ivme' },
+    { fm: 'a = F / m',      aciklama: 'Serbest tel için Newton II: sabit kuvvet, sabit ivme' },
     { fm: 'F ⊥ i  ·  F ⊥ B', aciklama: 'Kuvvet her ikisine de diktir' }
   ],
   degiskenler: [
@@ -114,7 +114,7 @@ turetim: {
                  </ul>` },
 
         { baslik: 'Hangisi kuvvet üretir?',
-          html: `<p>Alana <strong>paralel</strong> hareket eden yükler kuvvet görmez —
+          html: `<p>Alana <strong>paralel</strong> hareket eden yükler kuvvet görmez:
                  bu deneysel bir gerçektir. Kuvveti üreten yalnızca <strong>dik</strong>
                  bileşendir.</p>` },
 
@@ -141,7 +141,7 @@ turetim: {
         { baslik: 'Kuvveti bul',
           html: `<p>Tel alana dik olduğu için α = 90°:</p>
                  <div class="formul" style="max-width:220px"><div class="fm">F = B·i·L</div></div>
-                 <p>Yönünü sağ el kuralıyla belirle — raylar boyuncadır.</p>` },
+                 <p>Yönünü sağ el kuralıyla belirle: raylar boyuncadır.</p>` },
 
         { baslik: 'Newton II’yi uygula',
           html: `<p>Tel serbest olduğuna göre hızlanır:</p>
@@ -273,20 +273,20 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Tuzak 1 — Hangi uzunluk?</strong> Telin boyu 80 cm ama alanın içinde
+      <p><strong>Tuzak 1: Hangi uzunluk?</strong> Telin boyu 80 cm ama alanın içinde
       kalan kısmı yalnızca <strong>20 cm</strong>. Kuvvet, telin <em>yalnızca alan içinde
       kalan kısmına</em> etki eder:</p>
       <div class="formul" style="max-width:260px;margin:10px 0">
         <div class="fm">L = 0,20 m &nbsp;(0,80 değil)</div>
       </div>
-      <p><strong>Tuzak 2 — Açıyı unutma.</strong> sin30° = 0,5</p>
+      <p><strong>Tuzak 2: Açıyı unutma.</strong> sin30° = 0,5</p>
       <p><strong>Hesap:</strong></p>
       <div class="formul" style="max-width:320px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">F = 0,5 · 6 · 0,20 · 0,5 = 0,3 N</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı (1,2 N)</strong> telin tam boyunu (0,80 m)
-        kullanıp açıyı da unutanlar için — iki hatayı birden yapanlar buraya düşer.
+        kullanıp açıyı da unutanlar için: iki hatayı birden yapanlar buraya düşer.
         <br><strong>C şıkkı (0,6 N)</strong> açıyı unutanlar için.
         <br><strong>D şıkkı (2,4 N)</strong> hem 0,80 m hem açısız.
         <br><strong>Not:</strong> Formüldeki L, telin alan içinde kalan
@@ -316,13 +316,13 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1 — Kuvvet.</strong> Tel alana dik (α = 90°):</p>
+      <p><strong>Adım 1: Kuvvet.</strong> Tel alana dik (α = 90°):</p>
       <p>F = B·i·L = 0,5 · 6 · 0,40 = <strong>1,2 N</strong></p>
 
-      <p><strong>Adım 2 — İvme.</strong> 40 g = 0,040 kg:</p>
+      <p><strong>Adım 2: İvme.</strong> 40 g = 0,040 kg:</p>
       <p>a = F/m = 1,2 / 0,040 = <strong>30 m/s²</strong></p>
 
-      <p><strong>Adım 3 — Artık bu 1. ünite.</strong> Sabit kuvvet ⟹ sabit ivme.
+      <p><strong>Adım 3: Artık bu 1. ünite.</strong> Sabit kuvvet ⟹ sabit ivme.
       Süre verilmediği için <strong>zamansız formülü</strong> seç:</p>
       <div class="formul" style="max-width:280px;margin:10px 0">
         <div class="fm">ϑ² = ϑ₀² + 2·a·x</div>
@@ -330,7 +330,7 @@ osym: [
       <p>ϑ² = 0 + 2 · 30 · 0,5 = 30 &nbsp;⟹&nbsp; ϑ = √30 ≈ <strong>5,5 m/s</strong></p>
 
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı (30)</strong> ivmeyi hız sanıyor — birim kontrolü
+        <p style="margin:0"><strong>B şıkkı (30)</strong> ivmeyi hız sanıyor, birim kontrolü
         bunu hemen yakalar: 30 m/s² bir <em>ivmedir</em>.
         <br><strong>Yöntem notu:</strong> Süre sorulmamış ve verilmemişse
         <code>ϑ² = ϑ₀² + 2ax</code> her zaman en kısa yoldur. 1. ünitedeki püf noktası
@@ -383,7 +383,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Yanlış varsayımı düzelt',
-        metin: 'Bobin <strong>yerinde durmuyor</strong>. Manyetik alanın içinde akım taşıdığı için kuvvet görüyor ve hareket ediyor — hareket çok küçük olduğu için gözle fark edilmiyor.' },
+        metin: 'Bobin <strong>yerinde durmuyor</strong>. Manyetik alanın içinde akım taşıdığı için kuvvet görüyor ve hareket ediyor: hareket çok küçük olduğu için gözle fark edilmiyor.' },
       { bas: 'Kuvveti yaz',
         metin: 'F = B·i·L. Mıknatıs sabit olduğu için <strong>B sabit</strong>, bobin sabit olduğu için <strong>L sabit</strong>. Geriye tek değişken kalıyor: <strong>F ∝ i</strong>' },
       { bas: 'Akım yön değiştirince',
@@ -393,7 +393,7 @@ baglam: [
       { bas: 'Yüksekliği belirle',
         metin: 'Akım büyükse kuvvet büyük olur, zar <strong>daha çok</strong> hareket eder, hava daha çok sıkışır. Yani <strong>akımın şiddeti = sesin yüksekliği</strong>. Ses düğmesi aslında akımı ayarlıyor.' },
       { bas: 'İki soruyu birleştir',
-        metin: 'Bas ve tiz aynı bobinden çıkabilir çünkü ikisi de <em>aynı</em> akımın içinde, farklı frekanslarda üst üste biner. Bobin bu karmaşık akımın toplamını takip eder — tek bir zar, bütün bir orkestrayı üretebilir.' }
+        metin: 'Bas ve tiz aynı bobinden çıkabilir çünkü ikisi de <em>aynı</em> akımın içinde, farklı frekanslarda üst üste biner. Bobin bu karmaşık akımın toplamını takip eder: tek bir zar, bütün bir orkestrayı üretebilir.' }
     ],
     secenekler: [
       'F = B·i·L ile bobin hareket eder; frekans tizliği, akım şiddeti ses yüksekliğini belirler',
@@ -461,7 +461,7 @@ baglam: [
       { bas: 'Dengeyi kur',
         metin: 'İbre, ikisinin eşitlendiği yerde durur:<br><strong>(akımla orantılı etki) = (açıyla orantılı etki)</strong><br>⟹ <strong>açı ∝ akım</strong>' },
       { bas: 'Eşit aralıklı ölçek koşulu',
-        metin: 'Açı akımla <em>doğru</em> orantılı olduğu için ölçek eşit aralıklı olabilir. Ama bu ancak bobin döndüğü her konumda <strong>B’nin aynı kalması</strong> hâlinde geçerlidir. Bu yüzden mıknatısın kutupları <strong>silindirik oyuklu</strong> yapılır — bobin nereye dönerse dönsün alanı aynı görsün diye.' },
+        metin: 'Açı akımla <em>doğru</em> orantılı olduğu için ölçek eşit aralıklı olabilir. Ama bu ancak bobin döndüğü her konumda <strong>B’nin aynı kalması</strong> hâlinde geçerlidir. Bu yüzden mıknatısın kutupları <strong>silindirik oyuklu</strong> yapılır: bobin nereye dönerse dönsün alanı aynı görsün diye.' },
       { bas: 'Ters bağlarsan',
         metin: 'Akım ters yönde geçer ⟹ kuvvet ters yöne döner ⟹ ibre <strong>sıfırın soluna</strong>, yani ölçeğin dışına vurur. Bu yüzden analog aletlerde <strong>+ ve − uçlara dikkat edilir</strong>; dijital aletler ise eksi işaretiyle gösterir.' }
     ],
@@ -481,7 +481,7 @@ baglam: [
         <p style="margin:0"><strong>Tasarım ayrıntısı:</strong> Eşit aralıklı ölçek
         kendiliğinden gelmez. Bobin dönerken alanı değişseydi sapma akımla orantılı
         olmaz, ölçek sıkışık ve seyrek bölgeler içerirdi. Mühendisler bu yüzden kutupları
-        oyuk yapıp bobinin her açıda aynı B&rsquo;yi görmesini sağlar —
+        oyuk yapıp bobinin her açıda aynı B&rsquo;yi görmesini sağlar:
         <strong>fizik bilgisi doğrudan tasarıma dönüşür</strong>.
         <br><strong>E şıkkı</strong> ilginç bir noktaya değiniyor: bu tip aletler
         <em>alternatif akımda</em> gerçekten düzgün çalışmaz, çünkü kuvvet sürekli yön

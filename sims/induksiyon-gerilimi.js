@@ -261,7 +261,7 @@ function cizRay(ctx, w, h, st, p) {
                  w - 10, 20, R.normal, '700 13px system-ui, sans-serif', 'right');
   D.yaziAydinlik(ctx, 'i = ' + D.biçim(Math.abs(i), 3) + ' A · F_karşı = ' + D.biçim(Fk, 3) + ' N', w - 10, 38, R.ivme,
                  '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, 'çekmek için harcanan güç F·ϑ = elektrik gücü ε·i — bedava enerji yok',
+  D.yaziAydinlik(ctx, 'çekmek için harcanan güç F·ϑ = elektrik gücü ε·i: bedava enerji yok',
                  10, h - 12, R.mur, '600 11px system-ui, sans-serif', 'left');
 }
 
@@ -412,7 +412,7 @@ function cizKlasik(ctx, w, h, st, p) {
                    cx, cy + 12, K.beyaz, '600 11px system-ui, sans-serif', 'center');
   }
 
-  D.yaziHaleli(ctx, 'Lenz: indüksiyon akımı akı değişimine karşı koyar — enerji korunumu',
+  D.yaziHaleli(ctx, 'Lenz: indüksiyon akımı akı değişimine karşı koyar, enerji korunumu',
                12, h - 16, R.ivme, '600 11px system-ui, sans-serif', 'left');
 }
 

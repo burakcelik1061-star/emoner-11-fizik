@@ -53,7 +53,7 @@ Bu ayrışan yükler <strong>kendi alanlarını</strong> yaratır ve bu alan dı
   üç oku birlikte izle: E_dış sabit kalır, E_ind büyür, E_iç sıfıra iner.</p>
 </div>
 
-<p>Bu dengeleme <strong>inanılmaz hızlıdır</strong> — bakır gibi iyi bir iletkende
+<p>Bu dengeleme <strong>inanılmaz hızlıdır</strong>: bakır gibi iyi bir iletkende
 mertebesi <code>10⁻¹⁹ s</code>&rsquo;dir. Simülasyonda görebilmen için yavaşlatıldı.</p>
 
 <h3 style="margin-top:22px">Kitaptaki örnek: kafes ve metal küre</h3>
@@ -86,7 +86,7 @@ olmalıdır.</strong></p>
   <tbody>
     <tr><td>Cep telefonu (900 MHz)</td><td class="sembol">33 cm</td><td>birkaç cm yeter</td></tr>
     <tr><td>Mikrodalga fırın (2450 MHz)</td><td class="sembol">12 cm</td><td>1 mm delikler yeter</td></tr>
-    <tr><td>Görünür ışık</td><td class="sembol">≈ 0,0005 mm</td><td>engellenemez — bu yüzden içeriyi görürsün</td></tr>
+    <tr><td>Görünür ışık</td><td class="sembol">≈ 0,0005 mm</td><td>engellenemez: bu yüzden içeriyi görürsün</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Mikrodalga fırının kapağındaki delikli metal
@@ -108,7 +108,7 @@ levhanın sırrı budur: mikrodalgayı tutar, ışığı geçirir.</p>
   <div class="kutu-bas"><span class="ikon">🚗</span><span>Yaygın yanılgı: lastikler korumaz</span></div>
   <p style="margin:0">“Arabada güvendesin çünkü lastikler yalıtkan” cümlesi
   <strong>yanlıştır</strong>. Yıldırım kilometrelerce havayı delip gelmiştir; birkaç
-  santim lastik onu durduramaz. Seni koruyan şey <strong>metal gövdedir</strong> —
+  santim lastik onu durduramaz. Seni koruyan şey <strong>metal gövdedir</strong>:
   yük dış yüzeyden akar, içeride alan sıfır kalır. Bu yüzden
   <strong>üstü açık araçlar ve motosikletler korumaz</strong>.</p>
 </div>`,
@@ -117,7 +117,7 @@ levhanın sırrı budur: mikrodalgayı tutar, ışığı geçirir.</p>
 formuller: {
   liste: [
     { fm: 'E<sub>iç</sub> = 0',                 aciklama: 'Dengedeki iletkenin içinde alan yoktur' },
-    { fm: 'E<sub>iç</sub> = E<sub>dış</sub> + E<sub>ind</sub>', aciklama: 'Süperpozisyon — ikisi birbirini götürür' },
+    { fm: 'E<sub>iç</sub> = E<sub>dış</sub> + E<sub>ind</sub>', aciklama: 'Süperpozisyon: ikisi birbirini götürür' },
     { fm: 'q<sub>iç yüzey</sub> = −q<sub>boşluktaki</sub>', aciklama: 'Oyuk iletkende iç yüzey, boşluktaki yükün tersini toplar' },
     { fm: 'λ = c / f',                          aciklama: 'Ekranlanacak dalganın boyu (c = 3·10⁸ m/s)' },
     { fm: 'göz ≪ λ',                            aciklama: 'Kafesin dalgayı tutma koşulu' }
@@ -156,7 +156,7 @@ turetim: {
                  <div class="formul" style="max-width:260px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">iç bölge: q = 0 ⟹ E = 0</div>
                  </div>
-                 <p>Hâlâ hareket eden bir yük olsaydı, denge kurulmamış demektir —
+                 <p>Hâlâ hareket eden bir yük olsaydı, denge kurulmamış demektir,
                  yani içeride bir alan kalmış olurdu. Denge tanımı gereği alan sıfırdır.</p>` }
       ]
     },
@@ -201,18 +201,18 @@ turetim: {
                  <p>λ = 3·10⁸ / 9·10⁸ = <strong>0,33 m = 33 cm</strong></p>` },
 
         { baslik: 'Göz aralığıyla karşılaştır',
-          html: `<p>Dalga, kendi boyundan <strong>çok küçük</strong> bir delikten geçemez —
+          html: `<p>Dalga, kendi boyundan <strong>çok küçük</strong> bir delikten geçemez:
                  delik ona “yokmuş” gibi gelir, örgü kesintisiz bir metal levha gibi davranır.</p>
                  <div class="formul" style="max-width:220px"><div class="fm">göz ≪ λ ⟹ geçemez</div></div>` },
 
         { baslik: 'Sayıyla gör',
           html: `<p>2 cm&rsquo;lik göz, 33 cm&rsquo;lik dalga için:</p>
-                 <p>göz/λ = 2/33 ≈ <strong>0,06</strong> — dalga boyunun yalnızca %6&rsquo;sı.
+                 <p>göz/λ = 2/33 ≈ <strong>0,06</strong>: dalga boyunun yalnızca %6&rsquo;sı.
                  Sinyal geçemez, asansörde telefon çekmez.</p>` },
 
         { baslik: 'Işık neden geçiyor?',
           html: `<p>Görünür ışığın dalga boyu <code>≈ 5·10⁻⁷ m</code>&rsquo;dir. 2 cm&rsquo;lik
-                 göz, bu dalga boyunun <strong>40 000 katıdır</strong> — ışık için orası
+                 göz, bu dalga boyunun <strong>40 000 katıdır</strong>: ışık için orası
                  kocaman bir kapıdır. Bu yüzden kafesin içini <strong>görürsün</strong> ama
                  telefonun çekmez.</p>` }
       ]
@@ -309,7 +309,7 @@ osym: [
       <p><strong>İç yüzey:</strong> Boşluktaki +4q, iletkenin serbest elektronlarını
       <em>kendine doğru</em> çeker. İç yüzeyde <strong>−4q</strong> toplanır.</p>
       <p><strong>Dış yüzey:</strong> Küre başlangıçta <strong>nötrdü</strong>, toplam yükü
-      sıfırdı. İçeriye −4q gittiyse dışarıda <strong>+4q</strong> kalmak zorundadır —
+      sıfırdı. İçeriye −4q gittiyse dışarıda <strong>+4q</strong> kalmak zorundadır:
       yük korunumu.</p>
       <div class="formul" style="max-width:300px;margin:10px 0">
         <div class="fm">(−4q) + (+4q) = 0 ✓ küre hâlâ nötr</div>
@@ -318,7 +318,7 @@ osym: [
       <strong>her zaman E = 0</strong>&rsquo;dır. İç yüzeydeki −4q ile boşluktaki +4q&rsquo;nun
       alanları maddede tam olarak birbirini götürür.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> yük korunumunu atlıyor — içeri −4q
+        <p style="margin:0"><strong>C şıkkı</strong> yük korunumunu atlıyor: içeri −4q
         gittiyse o yük bir yerden geldi.
         <br><strong>B şıkkı</strong> işaretleri ters çeviriyor: iç yüzey daima boşluktaki
         yükün <em>tersini</em> toplar.
@@ -361,7 +361,7 @@ osym: [
           <tr><td>IV · ışık</td><td class="sembol">5·10⁻⁷ m</td><td class="sembol">60 000</td><td><strong>girer</strong></td></tr>
         </tbody>
       </table>
-      <p style="margin-top:10px">İlk üçünde göz aralığı dalga boyundan çok küçük — örgü onlara
+      <p style="margin-top:10px">İlk üçünde göz aralığı dalga boyundan çok küçük: örgü onlara
       <strong>kesintisiz levha</strong> gibi görünür. Işıkta ise durum tersine döner: göz,
       dalga boyunun altmış bin katıdır.</p>
       <div class="kutu puf" style="margin-top:12px">
@@ -439,7 +439,7 @@ baglam: [
         <br><strong>D şıkkı</strong> konunun en sık yapılan kavram hatası: kafes yükü
         <em>soğurmaz</em>, alanı <em>dengeler</em>.
         <br><strong>Hayatta karşılığı:</strong> Aynı sebeple yıldırımlı havada arabada
-        kalmak güvenlidir — ama üstü açık araçta ve motosiklette değil.</p>
+        kalmak güvenlidir, ama üstü açık araçta ve motosiklette değil.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -449,7 +449,7 @@ baglam: [
       <p>Mikrodalga fırının camına yakından bakarsan, içinde <strong>küçük delikli metal bir
       levha</strong> görürsün. Delik çapları yaklaşık <strong>1 mm</strong>&rsquo;dir.</p>
       <p>Bu levha ilginç bir iş yapar: <strong>mikrodalgayı dışarı bırakmaz</strong>, ama
-      <strong>ışığı geçirir</strong> — yemeğin piştiğini görebilirsin.</p>
+      <strong>ışığı geçirir</strong>, yemeğin piştiğini görebilirsin.</p>
       <p>Mikrodalga fırınlar <strong>2450 MHz</strong> frekansında çalışır. Görünür ışığın
       dalga boyu ise yaklaşık <strong>5·10⁻⁷ m</strong>&rsquo;dir.</p>
       <p><strong>İki durumu da sayıyla göster ve levhanın nasıl hem tuttuğunu hem
@@ -481,9 +481,9 @@ baglam: [
       { bas: 'Mikrodalganın boyunu bul',
         metin: 'f = 2450 MHz = 2,45·10⁹ Hz<br>λ = c/f = 3·10⁸ / 2,45·10⁹ = <strong>0,122 m = 12,2 cm</strong>' },
       { bas: 'Delikle karşılaştır',
-        metin: 'Delik 1 mm = 0,1 cm.<br>delik/λ = 0,1 / 12,2 ≈ <strong>0,008</strong><br>Delik, dalga boyunun binde sekizi. Mikrodalga için levha <strong>kesintisiz metal</strong> gibidir — geçemez.' },
+        metin: 'Delik 1 mm = 0,1 cm.<br>delik/λ = 0,1 / 12,2 ≈ <strong>0,008</strong><br>Delik, dalga boyunun binde sekizi. Mikrodalga için levha <strong>kesintisiz metal</strong> gibidir: geçemez.' },
       { bas: 'Işık için aynı hesabı yap',
-        metin: 'Işığın dalga boyu 5·10⁻⁷ m = 0,00005 cm.<br>delik/λ = 0,1 / 0,00005 = <strong>2000</strong><br>Delik, ışığın dalga boyunun iki bin katı — ışık için orası kocaman bir pencere.' },
+        metin: 'Işığın dalga boyu 5·10⁻⁷ m = 0,00005 cm.<br>delik/λ = 0,1 / 0,00005 = <strong>2000</strong><br>Delik, ışığın dalga boyunun iki bin katı: ışık için orası kocaman bir pencere.' },
       { bas: 'Tek cümlede topla',
         metin: 'Aynı delik, <strong>büyük dalga boyu</strong> için yok hükmünde, <strong>küçük dalga boyu</strong> için kapı. Ölçüt deliğin mutlak boyu değil, <strong>dalga boyuna oranı</strong>dır.' },
       { bas: 'Güvenlik notunu ekle',
@@ -505,7 +505,7 @@ baglam: [
       <p>Aynı delik, iki dalga için tamamen farklı davranır. Belirleyici olan
       <strong>delik/λ oranıdır</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>C şıkkı</strong> yine “soğurma” yanılgısı — kafes soğurmaz,
+        <p style="margin:0"><strong>C şıkkı</strong> yine “soğurma” yanılgısı: kafes soğurmaz,
         yansıtır ve dengeler.
         <br><strong>D şıkkı</strong> 10⁸/10⁹ bölmesini 10⁻¹ yerine 10⁻² alanlar için.
         <br><strong>Bağlantı:</strong> Bu soru aslında 3. ünitenin (Optik) kapısını aralıyor.

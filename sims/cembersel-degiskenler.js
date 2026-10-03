@@ -260,7 +260,7 @@ function cizKlasik(ctx, w, h, st, p) {
       D.yaziHaleli(ctx, sag, w - 12, by, K.beyaz, '11px system-ui, sans-serif', 'right');
       by += 19;
     });
-    D.yaziHaleli(ctx, 'ϑ_maks = √(μs·g·r) — kütle sadeleşir, ağır araç da hafif araç da aynı',
+    D.yaziHaleli(ctx, 'ϑ_maks = √(μs·g·r): kütle sadeleşir, ağır araç da hafif araç da aynı',
                  w - 12, h - 8, K.metin2, '10px system-ui, sans-serif', 'right');
   } else {
     const alt = [

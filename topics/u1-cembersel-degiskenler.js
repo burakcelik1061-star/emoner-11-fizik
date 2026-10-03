@@ -11,7 +11,7 @@ const F = window.F11;
 F.konuKaydet('u1-cembersel-degiskenler', {
 
 ozet: `Çembersel hareketin altı değişkeni var: <strong>T, f, ω, ϑ, a<sub>m</sub>, F<sub>m</sub></strong>.
-İyi haber şu — hepsi birbirine bağlı. Birini bilirsen zincirleme diğerlerine ulaşırsın.
+İyi haber şu: hepsi birbirine bağlı. Birini bilirsen zincirleme diğerlerine ulaşırsın.
 Bu konunun tamamı o zinciri kurmaktan ibaret.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -19,12 +19,12 @@ kavram: `
 <h3>Altı değişken, tek zincir</h3>
 <p>Değişkenleri ezberlemek yerine aralarındaki geçişleri kur. Zincir şöyle işler:</p>
 
-<div style="background:var(--surface-0);border:1px solid var(--border);border-radius:var(--r-sm);padding:16px;margin:14px 0">
-  <p style="margin:0 0 10px;font-family:var(--font-mono);font-size:1.05em;color:#fff;line-height:2">
+<div class="alt-kutu">
+  <p class="zincir-satir">
     T &nbsp;→&nbsp; f = 1/T &nbsp;→&nbsp; ω = 2πf &nbsp;→&nbsp; ϑ = ω·r
     &nbsp;→&nbsp; a<sub>m</sub> = ϑ²/r &nbsp;→&nbsp; F<sub>m</sub> = m·a<sub>m</sub>
   </p>
-  <p style="margin:0;font-size:.88em;color:var(--text-3)">
+  <p class="zincir-not">
     Soruda hangisi verilirse zincirin o halkasından başla, istenene kadar ilerle.
   </p>
 </div>
@@ -32,10 +32,10 @@ kavram: `
 <table class="degisken-tablo">
   <thead><tr><th>Büyüklük</th><th>Tanım</th><th>Formül</th><th>Birim</th></tr></thead>
   <tbody>
-    <tr><td class="sembol">T</td><td>Periyot — bir tur süresi</td><td class="sembol">T = t/n</td><td class="birim">s</td></tr>
-    <tr><td class="sembol">f</td><td>Frekans — saniyedeki tur sayısı</td><td class="sembol">f = 1/T</td><td class="birim">Hz</td></tr>
-    <tr><td class="sembol">ω</td><td>Açısal hız — saniyedeki açı</td><td class="sembol">ω = 2π/T = 2πf</td><td class="birim">rad/s</td></tr>
-    <tr><td class="sembol">ϑ</td><td>Çizgisel hız — teğetsel sürat</td><td class="sembol">ϑ = ω·r = 2πr/T</td><td class="birim">m/s</td></tr>
+    <tr><td class="sembol">T</td><td>Periyot: bir tur süresi</td><td class="sembol">T = t/n</td><td class="birim">s</td></tr>
+    <tr><td class="sembol">f</td><td>Frekans: saniyedeki tur sayısı</td><td class="sembol">f = 1/T</td><td class="birim">Hz</td></tr>
+    <tr><td class="sembol">ω</td><td>Açısal hız: saniyedeki açı</td><td class="sembol">ω = 2π/T = 2πf</td><td class="birim">rad/s</td></tr>
+    <tr><td class="sembol">ϑ</td><td>Çizgisel hız: teğetsel sürat</td><td class="sembol">ϑ = ω·r = 2πr/T</td><td class="birim">m/s</td></tr>
     <tr><td class="sembol">a<sub>m</sub></td><td>Merkezcil ivme</td><td class="sembol">a<sub>m</sub> = ϑ²/r = ω²r</td><td class="birim">m/s²</td></tr>
     <tr><td class="sembol">F<sub>m</sub></td><td>Merkezcil kuvvet</td><td class="sembol">F<sub>m</sub> = m·ϑ²/r</td><td class="birim">N</td></tr>
   </tbody>
@@ -46,7 +46,7 @@ kavram: `
   <div class="kutu-bas"><span class="ikon">⚠</span>Bu konunun en kritik cümlesi</div>
   <p style="margin:0">Serbest cisim diyagramına <strong>"merkezcil kuvvet" diye ayrı bir ok
   çizilmez.</strong> Merkezcil kuvvet, zaten var olan bir kuvvetin merkeze doğru olan
-  bileşenine verilen <em>isimdir</em> — kuvvetin kendisi değil, <strong>görevidir</strong>.</p>
+  bileşenine verilen <em>isimdir</em>: kuvvetin kendisi değil, <strong>görevidir</strong>.</p>
 </div>
 
 <table class="degisken-tablo">
@@ -62,7 +62,7 @@ kavram: `
 
 <h3 style="margin-top:22px">Merkezcil ivme neden merkeze doğru?</h3>
 <p>Hızın <strong>büyüklüğü</strong> değişmiyor, yalnızca <strong>yönü</strong> değişiyor.
-Yalnızca yönü değiştiren bir ivme, hıza <strong>dik</strong> olmak zorundadır — çünkü hız
+Yalnızca yönü değiştiren bir ivme, hıza <strong>dik</strong> olmak zorundadır, çünkü hız
 doğrultusunda bir bileşeni olsaydı sürati de değiştirirdi.</p>
 <p>Hız teğet olduğuna göre, ona dik olan doğrultu <strong>yarıçap doğrultusudur</strong>.
 İki seçenek kalır: merkeze doğru ya da merkezden dışarı. Cisim merkez etrafında
@@ -80,12 +80,12 @@ doğrultusunda bir bileşeni olsaydı sürati de değiştirirdi.</p>
 <div class="kutu puf" style="margin:14px 0">
   <div class="kutu-bas"><span class="ikon">🎯</span><span>Neden μ<sub>s</sub>, neden μ<sub>k</sub> değil?</span></div>
   <p style="margin:0 0 8px">Buradaki sürtünme <strong>statik</strong> sürtünmedir. Sebebi şu:
-  lastik viraj boyunca <strong>yana doğru kaymaz</strong> — yuvarlanarak ilerler, yolla temas
+  lastik viraj boyunca <strong>yana doğru kaymaz</strong>, yuvarlanarak ilerler, yolla temas
   eden noktası o an yola göre durgundur. Kinetik sürtünmeye geçtiği an araç zaten
   <strong>savrulmuş</strong>tur; artık "güvenli sürat" diye bir şey kalmamıştır.</p>
   <p style="margin:0">Bunun pratik sonucu var: μ<sub>s</sub> &gt; μ<sub>k</sub> olduğu için
   <strong>kaymadan önceki tutunma, kaydıktan sonrakinden daha güçlüdür</strong>. Araç bir kez
-  savrulmaya başlayınca toparlanması zorlaşır — ABS’in varlık sebebi de budur (1.4.1).</p>
+  savrulmaya başlayınca toparlanması zorlaşır: ABS’in varlık sebebi de budur (1.4.1).</p>
   <p style="margin:8px 0 0;color:var(--text-2);font-size:.94em">Sorularda çoğu zaman yalnızca
   “sürtünme katsayısı μ” diye verilir. Viraj sorusuysa <strong>onu μ<sub>s</sub> olarak al</strong>,
   formül değişmez.</p>
@@ -101,7 +101,7 @@ formuller: {
     { fm: 'f = 1 / T',                         aciklama: 'Frekans, periyodun tersi' },
     { fm: 'ω = 2π / T = 2π·f',                 aciklama: 'Açısal hız' },
     { fm: 'ϑ = ω · r = 2π·r / T',              aciklama: 'Çizgisel (teğetsel) hız' },
-    { fm: 'a<sub>m</sub> = ϑ² / r = ω²·r',     aciklama: 'Merkezcil ivme — merkeze doğru' },
+    { fm: 'a<sub>m</sub> = ϑ² / r = ω²·r',     aciklama: 'Merkezcil ivme: merkeze doğru' },
     { fm: 'F<sub>m</sub> = m·ϑ² / r = m·ω²·r', aciklama: 'Merkezcil kuvvet' },
     { fm: 'ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r)',       aciklama: 'Yatay virajda güvenli sürat' }
   ],
@@ -112,7 +112,7 @@ formuller: {
     { sembol: 'ϑ',              ad: 'Çizgisel hız',     birim: 'm/s' },
     { sembol: 'a<sub>m</sub>',  ad: 'Merkezcil ivme',   birim: 'm/s²' },
     { sembol: 'F<sub>m</sub>',  ad: 'Merkezcil kuvvet', birim: 'N' },
-    { sembol: 'μ<sub>s</sub>',  ad: 'Statik sürtünme katsayısı', birim: '—' }
+    { sembol: 'μ<sub>s</sub>',  ad: 'Statik sürtünme katsayısı', birim: '-' }
   ]
 },
 
@@ -134,7 +134,7 @@ turetim: {
           html: `<p>Bir tam tur <strong>2π radyan</strong>lık bir açıdır. Bu açı T sürede
                  taranıyorsa saniyede taranan açı:</p>
                  <div class="formul" style="max-width:240px"><div class="fm">ω = 2π / T = 2π·f</div></div>
-                 <p style="margin-top:10px">ω, cismin <em>ne kadar hızlı döndüğünü</em> anlatır —
+                 <p style="margin-top:10px">ω, cismin <em>ne kadar hızlı döndüğünü</em> anlatır:
                  yarıçaptan tamamen bağımsızdır.</p>` },
 
         { baslik: 'Çizgisel hız',
@@ -203,12 +203,12 @@ turetim: {
           html: `<p>Δθ sıfıra giderken Δϑ vektörünün yönü, ϑ’ya <strong>dik</strong> hâle gelir
                  ve <strong>merkeze</strong> bakar.</p>
                  <p>Bunu şöyle de görebilirsin: ivmenin hız doğrultusunda bir bileşeni olsaydı
-                 sürat değişirdi. Sürat sabit olduğuna göre ivme hıza tam dik olmalıdır —
+                 sürat değişirdi. Sürat sabit olduğuna göre ivme hıza tam dik olmalıdır:
                  o da yarıçap doğrultusudur.</p>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0"><strong>ϑ²/r formülünün söylediği:</strong> Hız iki katına
                    çıkarsa merkezcil ivme <strong>dört katına</strong> çıkar. Virajı iki kat hızlı
-                   dönmek dört kat sürtünme ister — bu yüzden hız sınırları bu kadar önemlidir.</p>
+                   dönmek dört kat sürtünme ister: bu yüzden hız sınırları bu kadar önemlidir.</p>
                  </div>` }
       ]
     },
@@ -240,7 +240,7 @@ turetim: {
         { baslik: 'Formülü yorumla',
           html: `<p>ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r) üç şey söylüyor:</p>
                  <ul>
-                   <li><strong>Yarıçap büyükse</strong> daha hızlı dönebilirsin — geniş virajlar
+                   <li><strong>Yarıçap büyükse</strong> daha hızlı dönebilirsin: geniş virajlar
                    bu yüzden daha güvenlidir</li>
                    <li><strong>Yol ıslaksa</strong> μ<sub>s</sub> düşer ⟹ güvenli hız düşer. μ<sub>s</sub> dörtte birine
                    inerse hız yarıya iner</li>
@@ -265,14 +265,14 @@ sim: F.simler['cembersel-degiskenler'],
 puf: {
   html: `
     <p><strong>1 · Aynı katı cisim ⟹ T, f, ω aynı; ϑ yarıçapla orantılı.</strong>
-    Plak, çark, pervane, dönme dolap — hepsinde geçerli. <code>ϑ ∝ r</code></p>
+    Plak, çark, pervane, dönme dolap: hepsinde geçerli. <code>ϑ ∝ r</code></p>
 
     <p><strong>2 · Kayış/dişli ile bağlıysa tam tersi:</strong> temas noktasındaki
     <strong>çizgisel hızlar eşittir</strong>, açısal hızlar yarıçapla ters orantılıdır.
     <code>ω ∝ 1/r</code>. Bisiklet dişlileri böyle çalışır.</p>
 
     <p><strong>3 · Merkezcil kuvvet diyagrama ayrı ok olarak çizilmez.</strong>
-    Soruda "cisme etki eden kuvvetler" isteniyorsa ip gerilmesi, sürtünme, ağırlık yaz —
+    Soruda "cisme etki eden kuvvetler" isteniyorsa ip gerilmesi, sürtünme, ağırlık yaz:
     merkezcil kuvvet yazma.</p>
 
     <p><strong>4 · Kare ve karekök orantılarını ezberle:</strong></p>
@@ -282,21 +282,21 @@ puf: {
       <li>Periyot 2 katına → ϑ yarıya, a<sub>m</sub> <strong>dörtte bire</strong></li>
     </ul>
 
-    <p><strong>5 · “Sabit” kelimesi tuzaktır — neyin sabit olduğuna bak.</strong>
+    <p><strong>5 · “Sabit” kelimesi tuzaktır: neyin sabit olduğuna bak.</strong>
     Öncülde <em>“düzgün çembersel harekette merkezcil ivme sabittir”</em> ya da
     <em>“merkezcil kuvvet sabittir”</em> yazıyorsa bu <strong>yanlıştır</strong>: ikisi de
     <strong>vektördür</strong> ve yönleri her an merkeze döndüğü için sürekli değişir.
     Sabit olan yalnızca <strong>büyüklükleridir</strong>.</p>
 
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:12px 0">
-      <table class="degisken-tablo" style="margin:0">
+    <div class="alt-kutu">
+      <table class="degisken-tablo">
         <thead><tr><th>Nicelik</th><th>Büyüklüğü</th><th>Yönü</th><th>Kendisi sabit mi?</th></tr></thead>
         <tbody>
-          <tr><td>Sürat (ϑ)</td><td>sabit</td><td>—<span style="color:var(--text-3)"> (skaler)</span></td><td class="sembol" style="color:var(--basari)">SABİT</td></tr>
+          <tr><td>Sürat (ϑ)</td><td>sabit</td><td>-<span style="color:var(--text-3)"> (skaler)</span></td><td class="sembol" style="color:var(--basari)">SABİT</td></tr>
           <tr><td>Hız vektörü</td><td>sabit</td><td>değişir</td><td class="sembol" style="color:var(--uyari)">DEĞİL</td></tr>
           <tr><td>Merkezcil ivme a<sub>m</sub></td><td>sabit</td><td>değişir</td><td class="sembol" style="color:var(--uyari)">DEĞİL</td></tr>
           <tr><td>Merkezcil kuvvet F<sub>m</sub></td><td>sabit</td><td>değişir</td><td class="sembol" style="color:var(--uyari)">DEĞİL</td></tr>
-          <tr><td>Açısal hız ω</td><td>sabit</td><td>—<span style="color:var(--text-3)"> (dönme ekseni sabit)</span></td><td class="sembol" style="color:var(--basari)">SABİT</td></tr>
+          <tr><td>Açısal hız ω</td><td>sabit</td><td>-<span style="color:var(--text-3)"> (dönme ekseni sabit)</span></td><td class="sembol" style="color:var(--basari)">SABİT</td></tr>
         </tbody>
       </table>
       <p style="margin:10px 0 0;font-size:.94em;color:var(--text-2)">Düzgün çembersel harekette
@@ -307,21 +307,21 @@ puf: {
     <p><strong>6 · Virajda kütle sadeleşir:</strong> <code>ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r)</code>.
     Soruda araç kütlesi verilmişse büyük ihtimalle tuzaktır.</p>
 
-    <p><strong>7 · Düşey düzlemde dönme — en üst ve en alt nokta.</strong>
+    <p><strong>7 · Düşey düzlemde dönme: en üst ve en alt nokta.</strong>
     Merkezcil kuvvet her zaman <strong>merkeze doğru</strong>dur; ağırlık ise her zaman
-    <strong>aşağı</strong>. İkisinin yönü tepede aynı, dipte zıttır — gerilmenin
+    <strong>aşağı</strong>. İkisinin yönü tepede aynı, dipte zıttır: gerilmenin
     farklı çıkmasının tek sebebi budur.</p>
 
-    <div style="display:grid;gap:10px;margin:12px 0">
-      <div style="background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b1);border-radius:var(--r-sm);padding:12px 14px">
-        <strong style="color:var(--b1)">🔺 EN ÜST</strong> — merkez <em>aşağıdadır</em>, ağırlık da aşağı:
+    <div class="asamalar">
+      <div class="yan-kart">
+        <strong>En üst noktada</strong> merkez <em>aşağıdadır</em>, ağırlık da aşağı:
         <div class="formul" style="max-width:340px;margin:8px 0 0">
           <div class="fm">T<sub>üst</sub> + mg = F<sub>m,üst</sub> &nbsp;⟹&nbsp; T<sub>üst</sub> = F<sub>m,üst</sub> − mg</div>
         </div>
         <p style="margin:8px 0 0">Ağırlık merkezcil kuvvete <em>yardım eder</em> ⟹ ipe daha az iş düşer ⟹ <strong>gerilme en küçük</strong>.</p>
       </div>
-      <div style="background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b7);border-radius:var(--r-sm);padding:12px 14px">
-        <strong style="color:var(--b7)">🔻 EN ALT</strong> — merkez <em>yukarıdadır</em>, ağırlık aşağı:
+      <div class="yan-kart">
+        <strong>En alt noktada</strong> merkez <em>yukarıdadır</em>, ağırlık aşağı:
         <div class="formul" style="max-width:340px;margin:8px 0 0">
           <div class="fm">T<sub>alt</sub> − mg = F<sub>m,alt</sub> &nbsp;⟹&nbsp; T<sub>alt</sub> = F<sub>m,alt</sub> + mg</div>
         </div>
@@ -333,7 +333,7 @@ puf: {
       <div class="kutu-bas"><span class="ikon">⚠</span><span>Buradaki asıl tuzak: F<sub>m</sub> iki noktada aynı değildir</span></div>
       <p>Çok yaygın bir hata, iki denklemi aynı F<sub>m</sub> ile yazıp
       <code>T<sub>alt</sub> − T<sub>üst</sub> = 2mg</code> sonucuna varmaktır. Bu
-      <strong>yanlıştır</strong> — çünkü düşey düzlemdeki dönme
+      <strong>yanlıştır</strong>, çünkü düşey düzlemdeki dönme
       <strong>düzgün çembersel hareket değildir</strong>: cisim inerken hızlanır, çıkarken yavaşlar.
       Dolayısıyla <code>ϑ<sub>alt</sub> &gt; ϑ<sub>üst</sub></code> ve
       <code>F<sub>m,alt</sub> &gt; F<sub>m,üst</sub></code>.</p>
@@ -351,12 +351,12 @@ puf: {
     </div>
 
     <p><strong>Tepe noktasının sınır hızı:</strong> Suyun dökülmemesi (ya da ipin gevşememesi)
-    için en üstte en az <code>ϑ = √(g·r)</code> gerekir — bu hızda
+    için en üstte en az <code>ϑ = √(g·r)</code> gerekir, bu hızda
     <code>T<sub>üst</sub> = 0</code> olur ve merkezcil kuvveti tek başına ağırlık sağlar.
     Bu durumda dipte <code>ϑ<sub>alt</sub>² = 5g·r</code> ve
-    <code>T<sub>alt</sub> = 6mg</code> çıkar — yukarıdaki sonucun kontrolü.</p>
+    <code>T<sub>alt</sub> = 6mg</code> çıkar: yukarıdaki sonucun kontrolü.</p>
 
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
+    <div class="alt-kutu">
       <p style="margin:0 0 8px;font-weight:600">8 · Hangi formülden başlamalı?</p>
       <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Soruda verilen</th><th>Başlangıç formülü</th></tr></thead>
@@ -454,7 +454,7 @@ osym: [
       <p>Yani <strong>D doğru, E yanlıştır</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı çok cazip bir tuzaktır.</strong> "Hız 3 katıysa
-        ivme 9 katıdır" diye düşünen öğrenci a = ϑ²/r formülünü kullanıyor — ama <em>r de
+        ivme 9 katıdır" diye düşünen öğrenci a = ϑ²/r formülünü kullanıyor, ama <em>r de
         değişiyor</em>! Doğru hesap: a = ϑ²/r = (3ϑ)²/(3r) = 9ϑ²/3r = <strong>3</strong>·(ϑ²/r).
         <br><strong>Kural:</strong> Aynı cisim üzerindeki noktaları karşılaştırırken
         <strong>ω sabittir</strong>, o yüzden <code>a = ω²r</code> formülünü seç.
@@ -480,7 +480,7 @@ osym: [
       <p>Güvenli azami sürat: <strong>ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r)</strong></p>
       <p>Formülde yalnızca <strong>μ<sub>s</sub></strong>, <strong>g</strong> ve <strong>r</strong> var.</p>
       <ul>
-        <li><strong>A ve B · Kütle:</strong> Formülde <em>yok</em> — sadeleşti. Değiştirmez.</li>
+        <li><strong>A ve B · Kütle:</strong> Formülde <em>yok</em>, sadeleşti. Değiştirmez.</li>
         <li><strong>C · Yarıçap:</strong> r artarsa ϑ<sub>maks</sub> <strong>artar</strong> ✓</li>
         <li><strong>D · Yolu ıslatmak:</strong> μ<sub>s</sub> <em>düşer</em> ⟹ güvenli sürat <em>azalır</em>.</li>
         <li><strong>E · Lastik genişletmek:</strong> Sürtünme temas alanına bağlı değildir
@@ -542,9 +542,9 @@ baglam: [
       { bas: 'Formülü sen çıkar',
         metin: 'm·ϑ²/r ≤ μ<sub>s</sub>·m·g ⟹ kütle sadeleşir ⟹ <strong>ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r)</strong>' },
       { bas: 'Kuru zemini hesapla',
-        metin: 'ϑ<sub>maks</sub> = √(0,8 · 10 · 50) = √400 = <strong>20 m/s</strong> = 72 km/s.<br>Levhadaki sınıra <strong>tam olarak eşit</strong> — güvenlik payı sıfır.' },
+        metin: 'ϑ<sub>maks</sub> = √(0,8 · 10 · 50) = √400 = <strong>20 m/s</strong> = 72 km/s.<br>Levhadaki sınıra <strong>tam olarak eşit</strong>: güvenlik payı sıfır.' },
       { bas: 'Yağmuru hesapla',
-        metin: 'ϑ<sub>maks</sub> = √(0,2 · 10 · 50) = √100 = <strong>10 m/s</strong> = 36 km/s.<br>Yani yağmurda güvenli hız <strong>yarıya</strong> iniyor — levhadaki 72 km/s son derece tehlikeli.' },
+        metin: 'ϑ<sub>maks</sub> = √(0,2 · 10 · 50) = √100 = <strong>10 m/s</strong> = 36 km/s.<br>Yani yağmurda güvenli hız <strong>yarıya</strong> iniyor: levhadaki 72 km/s son derece tehlikeli.' },
       { bas: 'İki planı karşılaştır',
         metin: '<strong>A planı</strong> (r = 100 m): kuruda √(0,8·10·100) = 28,3 m/s (102 km/s), yağmurda 14,1 m/s (51 km/s).<br><strong>B planı</strong> (sınır 15 m/s): yağmurdaki 10 m/s sınırının hâlâ üstünde.' },
       { bas: 'Karar ver ve yorumla',
@@ -560,16 +560,16 @@ baglam: [
     dogru: 0,
     cozum: `
       <p>ϑ<sub>maks</sub> = √(μ<sub>s</sub>·g·r)</p>
-      <p><strong>Kuru:</strong> √(0,8·10·50) = √400 = <strong>20 m/s</strong> = 72 km/s —
+      <p><strong>Kuru:</strong> √(0,8·10·50) = √400 = <strong>20 m/s</strong> = 72 km/s,
       levhadaki sınıra tam eşit, güvenlik payı yok.</p>
-      <p><strong>Yağmurlu:</strong> √(0,2·10·50) = √100 = <strong>10 m/s</strong> = 36 km/s —
+      <p><strong>Yağmurlu:</strong> √(0,2·10·50) = √100 = <strong>10 m/s</strong> = 36 km/s,
       güvenli hız yarıya iner.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Karekökün anlamı:</strong> μ<sub>s</sub> dörtte birine (0,8 → 0,2) indi,
-        ama hız yarıya (20 → 10) indi — çünkü karekök içinde. Bu, ıslak yolda neden bu kadar
+        ama hız yarıya (20 → 10) indi, çünkü karekök içinde. Bu, ıslak yolda neden bu kadar
         dikkatli olunması gerektiğini gösterir: sürtünme az değil <em>çok</em> düşer, hız sınırı ise
         sezgisel olarak sandığından fazla düşmelidir.
-        <br><strong>D şıkkı</strong> kütle tuzağıdır — formülde kütle yok, sadeleşti.</p>
+        <br><strong>D şıkkı</strong> kütle tuzağıdır: formülde kütle yok, sadeleşti.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   },
@@ -607,18 +607,18 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Yanılgıyı adlandır',
-        metin: '"Yer çekimi çalışmıyor" fikri yanlış. Yer çekimi her an çalışıyor ve su gerçekten <strong>düşüyor</strong> — ama kova da aynı hızla düştüğü için su kovadan ayrılamıyor.' },
+        metin: '"Yer çekimi çalışmıyor" fikri yanlış. Yer çekimi her an çalışıyor ve su gerçekten <strong>düşüyor</strong>, ama kova da aynı hızla düştüğü için su kovadan ayrılamıyor.' },
 
       { bas: 'Tepe noktasındaki kuvvetleri yaz',
         metin: 'Kova tepedeyken merkez <strong>aşağıdadır</strong>. Suya etki eden iki kuvvet de aşağı doğrudur: <strong>ağırlık G</strong> ve <strong>kovanın tabanının uyguladığı N</strong>. İkisi birlikte merkezcil kuvveti sağlar.' },
       { bas: 'Denklemi kur',
         metin: 'Merkeze (aşağı) doğru pozitif alalım:<br><strong>G + N = m·ϑ²/r</strong>' },
       { bas: 'En küçük hız koşulunu bul',
-        metin: 'N hiçbir zaman negatif olamaz (kova suyu çekemez, sadece itebilir). En küçük hız, <strong>N = 0</strong> olduğu andır — o anda merkezcil kuvveti tek başına ağırlık sağlar.' },
+        metin: 'N hiçbir zaman negatif olamaz (kova suyu çekemez, sadece itebilir). En küçük hız, <strong>N = 0</strong> olduğu andır: o anda merkezcil kuvveti tek başına ağırlık sağlar.' },
       { bas: 'Hesapla',
         metin: 'N = 0 ⟹ m·g = m·ϑ²/r ⟹ kütle sadeleşir ⟹ <strong>ϑ = √(g·r)</strong><br>ϑ = √(10 · 1) = <strong>3,16 m/s</strong>' },
       { bas: 'Gerçek açıklamayı ver',
-        metin: 'Su dökülmüyor çünkü <strong>zaten düşüyor</strong> — ama düşerken izlediği eğri, kovanın izlediği çemberden daha "dışta" kalıyor. Yani kova suyun altından kaçmıyor, suyu yakalamaya devam ediyor. Bu hızın altına inersen su gerçekten dökülür.' }
+        metin: 'Su dökülmüyor çünkü <strong>zaten düşüyor</strong>, ama düşerken izlediği eğri, kovanın izlediği çemberden daha "dışta" kalıyor. Yani kova suyun altından kaçmıyor, suyu yakalamaya devam ediyor. Bu hızın altına inersen su gerçekten dökülür.' }
     ],
     secenekler: [
       'ϑ ≥ 3,16 m/s; su düşüyor ama kova da aynı ivmeyle düştüğü için ayrılamıyor',
@@ -634,7 +634,7 @@ baglam: [
       <div class="formul" style="max-width:260px"><div class="fm">G + N = m·ϑ²/r</div></div>
       <p>En küçük hız N = 0 olduğunda: m·g = m·ϑ²/r ⟹ <strong>ϑ = √(g·r) = √10 ≈ 3,16 m/s</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B ve E şıkları "merkezkaç kuvveti" uyduruyor</strong> —
+        <p style="margin:0"><strong>B ve E şıkları "merkezkaç kuvveti" uyduruyor</strong>:
         böyle bir kuvvet yoktur ve zaten olsaydı su dökülürdü, çünkü dışa doğru bir kuvvet
         suyu kovadan çıkarırdı.
         <br><strong>Doğru açıklama:</strong> Su gerçekten düşüyor. Ama serbest düşme yörüngesi,

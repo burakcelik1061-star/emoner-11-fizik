@@ -15,7 +15,7 @@ F.konuKaydet('u1-asagi-atis', {
 
 ozet: `İlk hızı sıfırdan farklı olmak şartıyla <strong>aşağı doğru</strong> atılan cisimlerin
 hareketidir. İlk bakışta en kolay durumdur: ilk hız harekete eklenir, cisim sürekli
-hızlanır, tek fazlıdır. Ama bir püf noktası var — cisim <strong>hareketli bir taşıyıcıdan</strong>
+hızlanır, tek fazlıdır. Ama bir püf noktası var: cisim <strong>hareketli bir taşıyıcıdan</strong>
 atılıyorsa (balon, asansör, helikopter) <strong>bağıl hız</strong> devreye girer ve
 "aşağı atılan" cisim yere göre <em>yukarı</em> gidiyor olabilir.`,
 
@@ -34,13 +34,13 @@ hız <strong>aşağı yönde</strong> verilerek yapılan düşey harekettir. Cis
 <table class="degisken-tablo">
   <thead><tr><th>Hareket tipi</th><th>İlk hız</th><th>Başlangıçta ne oluyor?</th><th>Hareketin yapısı</th></tr></thead>
   <tbody>
-    <tr><td>Serbest düşme</td><td class="sembol">ϑ₀ = 0</td><td>Yok — cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr style="background:var(--surface-2)"><td><strong>Yukarıdan aşağıya atış</strong></td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var — cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr><td>Aşağıdan yukarıya atış</td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var — cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
+    <tr><td>Serbest düşme</td><td class="sembol">ϑ₀ = 0</td><td>Yok: cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr class="vurgu-satir"><td><strong>Yukarıdan aşağıya atış</strong></td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var: cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr><td>Aşağıdan yukarıya atış</td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var: cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Üçünün de <strong>ivmesi aynıdır: a = g, aşağı doğru.</strong>
-Aralarındaki tek fark <strong>ilk hızdır</strong> — hareketi birbirinden ayıran şey budur.</p>
+Aralarındaki tek fark <strong>ilk hızdır</strong>: hareketi birbirinden ayıran şey budur.</p>
 
 <h3 style="margin-top:22px">Basit durum: sabit bir noktadan aşağı atış</h3>
 <p>Yukarı yönü pozitif seçtiğimizde aşağı atışta <strong>ϑ₀ negatiftir</strong>.
@@ -53,12 +53,12 @@ Tek fazlı, en basit durumdur.</p>
   <tbody>
     <tr><td>Aşağı (ϑ₀ = −10)</td><td>En kısa</td><td class="sembol">büyük</td></tr>
     <tr><td>Bırakma (ϑ₀ = 0)</td><td>Orta</td><td class="sembol">EN KÜÇÜK</td></tr>
-    <tr><td>Yukarı (ϑ₀ = +10)</td><td>En uzun</td><td class="sembol">büyük — aşağıyla EŞİT</td></tr>
+    <tr><td>Yukarı (ϑ₀ = +10)</td><td>En uzun</td><td class="sembol">büyük: aşağıyla EŞİT</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Son satır şaşırtıcıdır: yukarı ve aşağı atışın
 çarpma hızları <strong>eşittir</strong>, yalnızca süreleri farklıdır. Sebebi
-ϑ² = ϑ₀² + 2gh formülünde ϑ₀’ın <strong>kareli</strong> girmesi — işareti kayboluyor.</p>
+ϑ² = ϑ₀² + 2gh formülünde ϑ₀’ın <strong>kareli</strong> girmesi: işareti kayboluyor.</p>
 
 <h3 style="margin-top:22px">Zor durum: hareketli taşıyıcıdan atış</h3>
 <div class="kutu dikkat" style="margin:14px 0">
@@ -98,9 +98,9 @@ formuller: {
   liste: [
     { fm: 'ϑ₀ = ϑ<sub>taşıyıcı</sub> + ϑ<sub>bağıl</sub>', aciklama: 'Hareketli platformdan atışta ilk hız' },
     { fm: 'y = h₀ + ϑ₀·t − ½g·t²', aciklama: 'Konum (yukarı pozitif)' },
-    { fm: 'h = ϑ₀·t + ½g·t²',      aciklama: 'Aşağı pozitif seçilirse — işaretsiz ve kolay' },
+    { fm: 'h = ϑ₀·t + ½g·t²',      aciklama: 'Aşağı pozitif seçilirse: işaretsiz ve kolay' },
     { fm: 'ϑ = ϑ₀ + g·t',          aciklama: 'Aşağı pozitif seçimiyle hız' },
-    { fm: 'ϑ² = ϑ₀² + 2g·h',       aciklama: 'Zaman geçmeyen ifade — ϑ₀ kareli girer' }
+    { fm: 'ϑ² = ϑ₀² + 2g·h',       aciklama: 'Zaman geçmeyen ifade: ϑ₀ kareli girer' }
   ],
   degiskenler: [
     { sembol: 'ϑ₀',                     ad: 'Yere göre ilk hız',     birim: 'm/s' },
@@ -118,13 +118,13 @@ turetim: {
       adimlar: [
         { baslik: 'Eylemsizliği hatırla',
           html: `<p>Yukarı çıkan bir balonun sepetindeki taş, balonla birlikte
-                 <strong>20 m/s ile yukarı gidiyordur</strong>. Bu taşın <em>kendi hızıdır</em> —
+                 <strong>20 m/s ile yukarı gidiyordur</strong>. Bu taşın <em>kendi hızıdır</em>:
                  balon onu taşıdığı için değil.</p>
                  <p>Newton I gereği taş, serbest kaldığı anda bu hızı korumaya çalışır.</p>` },
 
         { baslik: '"Aşağı atmak" ne demek?',
           html: `<p>Kişi taşı balona göre 10 m/s aşağı atıyorsa, taşın hızını
-                 <strong>10 m/s azaltıyor</strong> demektir — sıfırlamıyor.</p>
+                 <strong>10 m/s azaltıyor</strong> demektir, sıfırlamıyor.</p>
                  <p>Taşın yere göre hızı, iki hızın <strong>vektörel toplamıdır</strong>:</p>
                  <div class="formul" style="max-width:400px">
                    <div class="fm">ϑ₀ = ϑ<sub>taşıyıcı</sub> + ϑ<sub>bağıl</sub></div>
@@ -135,7 +135,7 @@ turetim: {
                  <div class="formul" style="max-width:340px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">ϑ₀ = (+20) + (−10) = +10 m/s</div>
                  </div>
-                 <p style="margin-top:12px"><strong>Sonuç pozitif</strong> — taş
+                 <p style="margin-top:12px"><strong>Sonuç pozitif</strong>: taş
                  "aşağı atılmasına rağmen" yere göre <strong>hâlâ yukarı gidiyor</strong>.</p>
                  <p style="color:var(--text-2)">Yön değiştirmesi için balona göre
                  20 m/s’den <em>hızlı</em> atılması gerekirdi.</p>` },
@@ -175,12 +175,12 @@ turetim: {
 
         { baslik: 'Ne zaman kullanamazsın?',
           html: `<p>Cisim <strong>yön değiştiriyorsa</strong> (yukarı çıkıp sonra iniyorsa)
-                 bu kısayol işe yaramaz — o zaman yukarıyı pozitif seçip tek denklemle çözmek
+                 bu kısayol işe yaramaz: o zaman yukarıyı pozitif seçip tek denklemle çözmek
                  daha güvenlidir.</p>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0"><strong>Karar kuralı:</strong> Hareket tek yönlüyse
                    o yönü pozitif seç. Yön değişiyorsa yukarıyı pozitif seç ve tek denklem kur.
-                   <br>İşaret seçimi <em>serbesttir</em> — işini kolaylaştıranı seç,
+                   <br>İşaret seçimi <em>serbesttir</em>: işini kolaylaştıranı seç,
                    ama <strong>seçtikten sonra sonuna kadar sadık kal</strong>.</p>
                  </div>` },
 
@@ -215,8 +215,8 @@ puf: {
 
     <p><strong>4 · Saniye kuralı (g = 10):</strong> Aşağı atışta ilk saniyede alınan yol
     <strong>ϑ₀ + 5</strong>, sonra 10’ar 10’ar artar:</p>
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:12px 0">
-      <table class="degisken-tablo" style="margin:0">
+    <div class="alt-kutu">
+      <table class="degisken-tablo">
         <thead><tr><th>ϑ₀ = 10 m/s aşağı</th><th>1. sn</th><th>2. sn</th><th>3. sn</th><th>4. sn</th></tr></thead>
         <tbody>
           <tr><td>O saniyedeki yol (m)</td><td class="sembol">15</td><td class="sembol">25</td><td class="sembol">35</td><td class="sembol">45</td></tr>
@@ -252,7 +252,7 @@ puf: {
       taktikle: `<p>"Serbest kalma" ⟹ asansöre göre hız sıfır ⟹ ϑ<sub>bağıl</sub> = 0</p>
                  <p style="margin-bottom:0">ϑ₀ = 15 + 0 = <strong>+15 m/s (yukarı)</strong></p>`,
       uzun: `<p>Vida asansörle birlikte 15 m/s ile yukarı gidiyordu. Serbest kaldığında
-             Newton I gereği bu hızı korur — yani bir süre daha <em>yükselir</em>,
+             Newton I gereği bu hızı korur, yani bir süre daha <em>yükselir</em>,
              sonra düşmeye başlar.</p>
              <p style="color:var(--text-3)">"0" diyenler eylemsizliği hesaba katmamıştır;
              bu, bağıl hız konusunun en temel hatasıdır.</p>`
@@ -263,7 +263,7 @@ puf: {
       taktikle: `<p>Yukarı pozitif: balon <strong>−8</strong>, atış <strong>+12</strong></p>
                  <p style="margin-bottom:0">ϑ₀ = (−8) + (+12) = <strong>+4 m/s (yukarı)</strong></p>`,
       uzun: `<p>Balon aşağı indiği için hızı negatif. Taş balona göre yukarı atıldığı için pozitif.</p>
-             <p>Toplam +4 m/s ⟹ taş yere göre yukarı gidiyor, ama sadece 4 m/s ile —
+             <p>Toplam +4 m/s ⟹ taş yere göre yukarı gidiyor, ama sadece 4 m/s ile:
              balonun aşağı hareketi atışın çoğunu yemiş.</p>`
     }
   ]
@@ -315,20 +315,20 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1 — Yere göre ilk hızı bul.</strong> Bu sorunun tamamı burada düğümleniyor.</p>
+      <p><strong>Adım 1: Yere göre ilk hızı bul.</strong> Bu sorunun tamamı burada düğümleniyor.</p>
       <p>Taş, atılmadan önce balonla birlikte <strong>+20 m/s</strong> ile yukarı gidiyordu.
-      Balona göre 10 m/s aşağı atılması, hızını 10 azaltır — sıfırlamaz:</p>
+      Balona göre 10 m/s aşağı atılması, hızını 10 azaltır, sıfırlamaz:</p>
       <div class="formul" style="max-width:340px">
         <div class="fm">ϑ₀ = (+20) + (−10) = <strong>+10 m/s</strong></div>
       </div>
       <p style="margin-top:10px"><strong>Taş "aşağı atılmasına rağmen" yukarı gidiyor.</strong>
       Önce 5 m daha yükselip 80 m’de tepe yapar, sonra iner.</p>
 
-      <p><strong>Adım 2 — Yere iniş süresi.</strong> Yukarı pozitif, sıfır zeminde:</p>
+      <p><strong>Adım 2: Yere iniş süresi.</strong> Yukarı pozitif, sıfır zeminde:</p>
       <p>0 = 75 + 10t − 5t² ⟹ 5’e böl ⟹ t² − 2t − 15 = 0 ⟹ (t−5)(t+3) = 0 ⟹
       <strong>t = 5 s</strong></p>
 
-      <p><strong>Adım 3 — Çarpma hızı.</strong></p>
+      <p><strong>Adım 3: Çarpma hızı.</strong></p>
       <p>ϑ = ϑ₀ − g·t = 10 − 10·5 = <strong>−40 m/s</strong> (büyüklük 40 m/s, aşağı)</p>
 
       <div class="kutu puf" style="margin-top:12px">
@@ -340,7 +340,7 @@ osym: [
           <li><strong>D (t = 4 s):</strong> Balonun hızını tamamen yok sayıp serbest bırakma sananlar.</li>
         </ul>
         <p style="margin:8px 0 0"><strong>Sağlama:</strong> Simülasyonun varsayılan değerleri
-        tam olarak bu sorudur. <strong>Oynat</strong>’a bas — taşın önce <em>yükseldiğini</em>,
+        tam olarak bu sorudur. <strong>Oynat</strong>’a bas: taşın önce <em>yükseldiğini</em>,
         80 m’de tepe yaptığını, sonra 5. saniyede 40 m/s ile yere çarptığını göreceksin.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -362,12 +362,12 @@ osym: [
       <div class="formul" style="max-width:300px"><div class="fm">ϑ₀ = (+20) + (−ϑ<sub>b</sub>)</div></div>
       <p>Taşın <strong>hiç yükselmemesi</strong> için ϑ₀ ≤ 0 olmalı:</p>
       <p>20 − ϑ<sub>b</sub> ≤ 0 ⟹ <strong>ϑ<sub>b</sub> ≥ 20 m/s</strong></p>
-      <p>En küçük değer <strong>20 m/s</strong>’dir. Tam 20 m/s’de ϑ₀ = 0 olur — taş bir an
+      <p>En küçük değer <strong>20 m/s</strong>’dir. Tam 20 m/s’de ϑ₀ = 0 olur: taş bir an
       havada asılı kalır (yere göre hızı sıfırdır), sonra düşmeye başlar.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Bu soru bağıl hızın "eşik" hâlidir.</strong> Taşın yön
         değiştirmesi için atış hızının, taşıyıcının hızını <strong>yenmesi</strong> gerekir.
-        <br><strong>A şıkkı (10 m/s)</strong> bir önceki soruda gördüğümüz durumdur — orada taş
+        <br><strong>A şıkkı (10 m/s)</strong> bir önceki soruda gördüğümüz durumdur: orada taş
         hâlâ +10 m/s ile yukarı gidiyordu.
         <br><strong>Simülasyonla dene:</strong> Platform hızını 20, atış hızını sırayla
         −10, −20, −25 yap. Rozetteki "Taş YUKARI / AŞAĞI" bilgisinin tam 20’de değiştiğini gör.</p>
@@ -415,7 +415,7 @@ baglam: [
       </svg>`,
     adimlar: [
       { bas: 'Kritik kelimeyi yakala',
-        metin: '"<strong>Serbest bırakıyor</strong>" — yani helikoptere göre ilk hız <strong>sıfır</strong>. Ama bu, yere göre ilk hızın sıfır olduğu anlamına <em>gelmez</em>.' },
+        metin: '"<strong>Serbest bırakıyor</strong>", yani helikoptere göre ilk hız <strong>sıfır</strong>. Ama bu, yere göre ilk hızın sıfır olduğu anlamına <em>gelmez</em>.' },
       { bas: 'Bağıl hızı topla',
         metin: 'ϑ₀ = ϑ<sub>helikopter</sub> + ϑ<sub>bağıl</sub> = (+5) + 0 = <strong>+5 m/s (yukarı)</strong><br>Paket helikopterle birlikte yükseliyordu ve eylemsizlik gereği o hızı koruyor.' },
       { bas: 'Sorunun ikinci kısmını cevapla',
@@ -425,7 +425,7 @@ baglam: [
       { bas: 'Çöz',
         metin: 't = (1 + √(1 + 64))/2 = (1 + √65)/2 ≈ (1 + 8,06)/2 ≈ <strong>4,53 s</strong>' },
       { bas: 'Yorumla',
-        metin: 'Helikopter dursaydı süre √(2·80/10) = 4 s olurdu. Yükseliyor olması ekibe yarım saniyeden fazla ek süre kazandırdı. Helikopter <em>alçalıyor</em> olsaydı süre 4 saniyenin altına inerdi — bu yüzden bırakma anındaki düşey hız, operasyonun bir parçasıdır.' }
+        metin: 'Helikopter dursaydı süre √(2·80/10) = 4 s olurdu. Yükseliyor olması ekibe yarım saniyeden fazla ek süre kazandırdı. Helikopter <em>alçalıyor</em> olsaydı süre 4 saniyenin altına inerdi: bu yüzden bırakma anındaki düşey hız, operasyonun bir parçasıdır.' }
     ],
     secenekler: [
       'Yükselmez; t = 4,00 s',
@@ -436,13 +436,13 @@ baglam: [
     ],
     dogru: 1,
     cozum: `
-      <p>"Serbest bırakma" helikoptere göre ilk hızın sıfır olmasıdır — yere göre değil.</p>
+      <p>"Serbest bırakma" helikoptere göre ilk hızın sıfır olmasıdır, yere göre değil.</p>
       <p>ϑ₀ = +5 + 0 = <strong>+5 m/s (yukarı)</strong> ⟹ paket önce yükselir.</p>
       <p><strong>Ek yükseklik:</strong> ϑ₀²/(2g) = 25/20 = <strong>1,25 m</strong></p>
       <p><strong>İniş süresi:</strong> 0 = 80 + 5t − 5t² ⟹ t² − t − 16 = 0 ⟹
       t = (1 + √65)/2 ≈ <strong>4,53 s</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>A şıkkı (4,00 s)</strong> helikopterin hızını yok sayanlar için —
+        <p style="margin:0"><strong>A şıkkı (4,00 s)</strong> helikopterin hızını yok sayanlar için:
         bu sorudaki asıl tuzak odur. "Serbest bırakıldı" ifadesi ϑ₀ = 0 gibi okunuyor,
         oysa o sıfır <em>helikoptere göredir</em>.
         <br><strong>Genel kural:</strong> Hareketli bir taşıyıcıdan bırakılan her cisim,
@@ -494,7 +494,7 @@ baglam: [
       { bas: 'Çöz',
         metin: 't = (−2 + √(4 + 36))/2 = (−2 + √40)/2 ≈ (−2 + 6,32)/2 ≈ <strong>2,16 s</strong>' },
       { bas: 'Öneriyi değerlendir',
-        metin: 'Süre 3 s’den 2,16 s’ye düşüyor — ekip üyesi <strong>süre konusunda haklı</strong>. Ama ölçüm <em>hassasiyeti</em> açısından haksız: kısa süreyi kronometreyle ölçmek daha zordur ve atış hızını tam 10 m/s tutturmak neredeyse imkânsızdır.' },
+        metin: 'Süre 3 s’den 2,16 s’ye düşüyor: ekip üyesi <strong>süre konusunda haklı</strong>. Ama ölçüm <em>hassasiyeti</em> açısından haksız: kısa süreyi kronometreyle ölçmek daha zordur ve atış hızını tam 10 m/s tutturmak neredeyse imkânsızdır.' },
       { bas: 'Daha iyi öneriyi çıkar',
         metin: 'Serbest bırakma yöntemi <strong>daha güvenilirdir</strong>, çünkü tek bilinmeyen süredir ve ϑ₀ = 0 kesindir. İyi ölçüm, az sayıda ve kontrol edilebilir değişkenle yapılandır.' }
     ],
@@ -512,7 +512,7 @@ baglam: [
       <p>t = (−2 + √40)/2 ≈ <strong>2,16 s</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı (1,50 s)</strong> "hız iki katına çıktı, süre yarıya
-        indi" diye düşünenler için. Serbest düşmede böyle bir doğrusal ilişki yoktur —
+        indi" diye düşünenler için. Serbest düşmede böyle bir doğrusal ilişki yoktur:
         yol süreyle değil <strong>sürenin karesiyle</strong> ilişkilidir.
         <br><strong>İşaret ipucu:</strong> Cisim baştan sona aşağı gidiyorsa <strong>aşağı yönü
         pozitif</strong> seçmek denklemi sadeleştirir; hiç eksi işaretle uğraşmazsın.</p>

@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u1-surtunme-degiskenler', {
 
 ozet: `Sürtünme kuvvetinin sayısal değeri neye bağlı? Cevap şaşırtıcı derecede kısa:
-<strong>yalnızca iki şeye</strong> — yüzeylerin cinsine ve normal kuvvete.
+<strong>yalnızca iki şeye</strong>, yüzeylerin cinsine ve normal kuvvete.
 Temas alanı, hız, cismin şekli… hiçbiri girmiyor.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -27,7 +27,7 @@ daha kuvvetli bastırır ve mikro pürüzler birbirine daha çok geçer.</p>
   </div>
   <div class="formul" style="border-top-color:var(--amber)">
     <div class="fm">f<sub>k</sub> = μ<sub>k</sub> · N</div>
-    <div class="aciklama">kinetik sürtünme — doğrudan eşitlik</div>
+    <div class="aciklama">kinetik sürtünme: doğrudan eşitlik</div>
   </div>
 </div>
 
@@ -35,7 +35,7 @@ daha kuvvetli bastırır ve mikro pürüzler birbirine daha çok geçer.</p>
   <div class="kutu-bas"><span class="ikon">📖</span>Sembol notu</div>
   <p style="margin:0">Ders kitabın sürtünme katsayısı için <strong>k</strong> harfini
   kullanıyor (k<sub>s</sub>, k<sub>k</sub>). Bu sistemde uluslararası standart olan
-  <strong>μ</strong> (mü) kullanılıyor. <strong>Tamamen aynı şey</strong> — sadece harf farkı.
+  <strong>μ</strong> (mü) kullanılıyor. <strong>Tamamen aynı şey</strong>: sadece harf farkı.
   Sınavda hangisi yazarsa yazsın aynı kavramdır.</p>
 </div>
 
@@ -51,7 +51,7 @@ daha kuvvetli bastırır ve mikro pürüzler birbirine daha çok geçer.</p>
 <h3 style="margin-top:22px">Sürtünme katsayısı nedir?</h3>
 <p>μ, iki yüzeyin <strong>birlikte</strong> ne kadar tuttuğunu anlatan
 <strong>birimsiz</strong> bir sayıdır. Tek bir maddenin değil, <strong>yüzey çiftinin</strong>
-özelliğidir — "lastiğin katsayısı" diye bir şey yoktur, "lastik-asfalt katsayısı" vardır.</p>
+özelliğidir: "lastiğin katsayısı" diye bir şey yoktur, "lastik-asfalt katsayısı" vardır.</p>
 
 <table class="degisken-tablo">
   <thead><tr><th>Yüzey çifti</th><th>μ<sub>s</sub></th><th>μ<sub>k</sub></th></tr></thead>
@@ -63,12 +63,12 @@ daha kuvvetli bastırır ve mikro pürüzler birbirine daha çok geçer.</p>
   </tbody>
 </table>
 <p style="color:var(--text-2);font-size:.94em;margin-top:10px">Her satırda
-μ<sub>s</sub> &gt; μ<sub>k</sub> olduğuna dikkat et — bu istisnasız bir kuraldır.</p>
+μ<sub>s</sub> &gt; μ<sub>k</sub> olduğuna dikkat et: bu istisnasız bir kuraldır.</p>
 <div class="kutu nott" style="margin-top:12px">
   <p style="margin:0"><strong>Bu sayılar kesin değildir.</strong> Sürtünme katsayısı yüzeyin
   pürüzlülüğüne, nemine, sıcaklığına ve temizliğine göre belirgin biçimde değişir; kaynaklarda
   aralık olarak verilir (ör. ahşap–ahşap için μ<sub>s</sub> = 0,25–0,50). Tablodaki değerler
-  <strong>tipik</strong> değerlerdir. Sınavda katsayı her zaman soruda verilir — ezberlemen
+  <strong>tipik</strong> değerlerdir. Sınavda katsayı her zaman soruda verilir, ezberlemen
   gerekmez, <em>büyüklük sırasını</em> bilmen yeter: buz &lt; ahşap &lt; beton &lt; lastik.</p>
 </div>
 
@@ -152,7 +152,7 @@ turetim: {
 
         { baslik: 'Yüzeyi değiştir',
           html: `<p>Aynı deneyi buz, beton ve lastik üzerinde tekrarla. Her seferinde yine
-                 <strong>doğru</strong> çıkar — ama <strong>eğimleri farklıdır</strong>.</p>
+                 <strong>doğru</strong> çıkar, ama <strong>eğimleri farklıdır</strong>.</p>
                  <p>Demek ki μ, deneyde ölçülen ve <strong>yüzey çiftine özgü</strong> bir sayıdır.
                  Formülde yüzeyin cinsi işte bu katsayıyla temsil edilir.</p>
                  <p style="color:var(--text-2)">Simülasyonda yüzeyi değiştir; grafiğin
@@ -162,7 +162,7 @@ turetim: {
           html: `<p>Aynı bloğu önce dik, sonra yan yatırarak temas alanını iki katına çıkar.
                  Kopma kuvveti ölçüldüğünde: <strong>hiç değişmez</strong>.</p>
                  <p>Neden? Alan iki katına çıkınca birim alana düşen baskı yarıya iner.
-                 Toplam etki aynı kalır — ikisi birbirini tam olarak götürür.</p>
+                 Toplam etki aynı kalır: ikisi birbirini tam olarak götürür.</p>
                  <p>Hız için de aynısı geçerlidir: kayan cismin hızını değiştirmek
                  f<sub>k</sub>’yı değiştirmez.</p>
                  <div class="formul" style="max-width:380px;border-top-color:var(--accent)">
@@ -209,7 +209,7 @@ turetim: {
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Bu çok kullanışlı bir sonuç: <strong>bir cismin kaymaya
                    başladığı açının tanjantı, statik sürtünme katsayısını verir.</strong>
-                   Eğimli bir tahtaya cisim koyup yavaşça kaldırarak μ<sub>s</sub>’yi ölçebilirsin —
+                   Eğimli bir tahtaya cisim koyup yavaşça kaldırarak μ<sub>s</sub>’yi ölçebilirsin:
                    hiçbir kuvvetölçere gerek kalmadan.</p>
                  </div>` }
       ]
@@ -225,8 +225,8 @@ puf: {
   html: `
     <p><strong>1 · N her zaman m·g değildir.</strong> Bu, sürtünme sorularının bir numaralı
     tuzağıdır. Önce normal kuvveti doğru bul, sonra μ ile çarp:</p>
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:12px 0">
-      <table class="degisken-tablo" style="margin:0">
+    <div class="alt-kutu">
+      <table class="degisken-tablo">
         <thead><tr><th>Durum</th><th>N</th></tr></thead>
         <tbody>
           <tr><td>Yatay düzlem, sadece ağırlık</td><td class="sembol">N = m·g</td></tr>
@@ -252,7 +252,7 @@ puf: {
     "Cisim kaç derecede kaymaya başlar" sorusunun tek satırlık cevabı.</p>
 
     <p style="margin-bottom:0"><strong>6 · Sürtünmeli eğik düzlemde ivme:</strong>
-    <code>a = g(sin α − μ<sub>k</sub>cos α)</code>. Kütle yine yok — soruda kütle verilmişse
+    <code>a = g(sin α − μ<sub>k</sub>cos α)</code>. Kütle yine yok: soruda kütle verilmişse
     ya normal kuvvet için gerekiyordur ya da tuzaktır.</p>`,
 
   ornekler: [
@@ -270,7 +270,7 @@ puf: {
                  <p style="margin-bottom:0">f<sub>s,maks</sub> = 0,4 · 300 = <strong>120 N</strong></p>`,
       uzun: `<p>Düşey denge: N − m·g − 100 = 0 ⟹ N = 300 N</p>
              <p>f<sub>s,maks</sub> = μ<sub>s</sub>·N = 120 N</p>
-             <p style="color:var(--text-3)">80 N diyenler N’yi güncellemeyi unutmuştur —
+             <p style="color:var(--text-3)">80 N diyenler N’yi güncellemeyi unutmuştur:
              en sık yapılan hata budur.</p>`
     },
     {
@@ -281,7 +281,7 @@ puf: {
                  <p style="margin-bottom:0">μ<sub>s</sub> = tan37° = <strong>0,75</strong></p>`,
       uzun: `<p>Kayma sınırında: m·g·sin α = μ<sub>s</sub>·m·g·cos α</p>
              <p>m ve g sadeleşir: sin α = μ<sub>s</sub>·cos α ⟹ μ<sub>s</sub> = tan α = 0,75</p>
-             <p style="color:var(--text-3)">Kütle, tahtanın uzunluğu, cismin şekli — hiçbiri gerekmedi.</p>`
+             <p style="color:var(--text-3)">Kütle, tahtanın uzunluğu, cismin şekli: hiçbiri gerekmedi.</p>`
     }
   ]
 },
@@ -314,7 +314,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Bu üçlü neredeyse her sınavda karşına çıkar.</strong>
         Formülde bir büyüklük görünmüyorsa, o büyüklüğü değiştirmek sonucu etkilemez.
-        Sürtünme formülünde yalnızca <strong>μ</strong> ve <strong>N</strong> var —
+        Sürtünme formülünde yalnızca <strong>μ</strong> ve <strong>N</strong> var:
         gerisi hep tuzaktır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B) Yalnız III</strong></p>`
@@ -359,14 +359,14 @@ osym: [
     cozum: `
       <p>F kuvvetini bileşenlerine ayıralım:</p>
       <ul>
-        <li><strong>Yatay bileşen:</strong> F·cos θ — cismi ileri çeker, sürtünmeyle yarışır</li>
-        <li><strong>Düşey bileşen:</strong> F·sin θ — cismi <strong>yukarı kaldırmaya çalışır</strong></li>
+        <li><strong>Yatay bileşen:</strong> F·cos θ, cismi ileri çeker, sürtünmeyle yarışır</li>
+        <li><strong>Düşey bileşen:</strong> F·sin θ, cismi <strong>yukarı kaldırmaya çalışır</strong></li>
       </ul>
       <p>Düşeyde hareket yok, denge var. Yukarı pozitif:</p>
       <p>N + F·sin θ − m·g = 0 ⟹ <strong>N = m·g − F·sin θ</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Pratik sonucu:</strong> Bir valizi <em>eğik yukarı</em> çekmek,
-        yatay itmekten kolaydır — çünkü düşey bileşen zemine binen yükü azaltır, dolayısıyla
+        yatay itmekten kolaydır, çünkü düşey bileşen zemine binen yükü azaltır, dolayısıyla
         sürtünme de azalır. Bavul saplarının neden yukarı doğru tasarlandığının fizik cevabı budur.
         <br><strong>B şıkkı</strong> ise kuvvet <em>aşağı</em> eğik uygulansaydı doğru olurdu.
         Vektörün yönüne dikkat etmeyenler oraya düşer.</p>
@@ -412,9 +412,9 @@ baglam: [
       { bas: 'Varsayımın nerede bozulduğunu bul',
         metin: 'Lastik <strong>sert değildir</strong>. Yol yüzeyine bastırıldığında ezilir, şekil değiştirir ve asfaltın pürüzlerinin arasına girer. Bu, basit modelin kapsamadığı bir durumdur.' },
       { bas: 'Ek mekanizmaları say',
-        metin: 'Geniş lastikte: (a) daha fazla kauçuk asfaltla moleküler bağ kurar, (b) birim alana düşen basınç azaldığı için lastik daha az ezilip daha az ısınır, (c) ısınan lastiğin tutuşu düşer — geniş lastik bunu geciktirir.' },
+        metin: 'Geniş lastikte: (a) daha fazla kauçuk asfaltla moleküler bağ kurar, (b) birim alana düşen basınç azaldığı için lastik daha az ezilip daha az ısınır, (c) ısınan lastiğin tutuşu düşer, geniş lastik bunu geciktirir.' },
       { bas: 'İki cevabı birden ver',
-        metin: 'Öğrenci <strong>haklı</strong> — ders kapsamında f = μ·N geçerlidir ve alan sonucu değiştirmez. Ama <strong>fizik yanlış değil</strong>: model belirli varsayımlar altında kurulmuştur, lastik o varsayımları karşılamaz.' },
+        metin: 'Öğrenci <strong>haklı</strong>: ders kapsamında f = μ·N geçerlidir ve alan sonucu değiştirmez. Ama <strong>fizik yanlış değil</strong>: model belirli varsayımlar altında kurulmuştur, lastik o varsayımları karşılamaz.' },
       { bas: 'Genel dersi çıkar',
         metin: 'Her fiziksel model bir <strong>geçerlilik alanına</strong> sahiptir. Model yanlış değildir; kullanıldığı yer yanlış olabilir. Bu, sınav sorularıyla gerçek hayat arasındaki farkı anlamanın anahtarıdır.' }
     ],
@@ -487,7 +487,7 @@ baglam: [
       { bas: 'Karşılaştır',
         metin: 'Gereken 4800 N, sürtünmenin verebileceği en fazla 4000 N. <strong>4800 &gt; 4000</strong> ⟹ sürtünme yetmez ⟹ <strong>makine kayar</strong> ve öne doğru kasada ilerler.' },
       { bas: 'Güvenli sınırı hesapla',
-        metin: 'Kaymaması için: m·a ≤ μ<sub>s</sub>·m·g ⟹ <strong>a ≤ μ<sub>s</sub>·g = 5 m/s²</strong>. Kütle sadeleşti — <strong>yükün ne kadar ağır olduğu fark etmez</strong>. Şoför ya daha yumuşak fren yapmalı ya da yükü bağlamalıdır.' }
+        metin: 'Kaymaması için: m·a ≤ μ<sub>s</sub>·m·g ⟹ <strong>a ≤ μ<sub>s</sub>·g = 5 m/s²</strong>. Kütle sadeleşti: <strong>yükün ne kadar ağır olduğu fark etmez</strong>. Şoför ya daha yumuşak fren yapmalı ya da yükü bağlamalıdır.' }
     ],
     secenekler: [
       'Kaymaz, sürtünme 8000 N’a kadar dayanır',

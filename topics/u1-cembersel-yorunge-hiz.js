@@ -10,7 +10,7 @@ const F = window.F11;
 F.konuKaydet('u1-cembersel-yorunge-hiz', {
 
 ozet: `Bir cisim sabit süratle çember çiziyorsa hızı değişiyor mudur? Cevap
-<strong>evet</strong> — çünkü hız bir vektördür ve <strong>yönü sürekli değişir</strong>.
+<strong>evet</strong>, çünkü hız bir vektördür ve <strong>yönü sürekli değişir</strong>.
 Bu tek cümle, düzgün çembersel hareketin neden ivmeli bir hareket olduğunu açıklar.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -20,15 +20,15 @@ rüzgâr türbini kanatları, ipe bağlı sallanan taş… Hepsi <strong>çember
 hareket eder.</p>
 
 <p>Bu hareketi tanımlayan iki vektör vardır:</p>
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px;margin:14px 0">
-  <div style="background:var(--surface-0);border:1px solid var(--border);border-top:2px solid var(--b1);border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:var(--b1);font-weight:700;font-size:.85em;margin-bottom:6px">YARIÇAP VEKTÖRÜ</div>
-    <p style="margin:0">Merkezden cisme doğrudur. Büyüklüğü <strong>sabittir</strong> (r),
+<div class="iki-sutun">
+  <div class="yan-kart" style="--c:var(--q-konum)">
+    <div class="yan-kart-bas">YARIÇAP VEKTÖRÜ</div>
+    <p>Merkezden cisme doğrudur. Büyüklüğü <strong>sabittir</strong> (r),
     yönü cisimle birlikte döner.</p>
   </div>
-  <div style="background:var(--surface-0);border:1px solid var(--border);border-top:2px solid var(--b4);border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:var(--b4);font-weight:700;font-size:.85em;margin-bottom:6px">HIZ VEKTÖRÜ</div>
-    <p style="margin:0">Yörüngeye <strong>teğettir</strong>, yani yarıçapa
+  <div class="yan-kart" style="--c:var(--q-hiz)">
+    <div class="yan-kart-bas">HIZ VEKTÖRÜ</div>
+    <p>Yörüngeye <strong>teğettir</strong>, yani yarıçapa
     <strong>diktir</strong> (90°). Büyüklüğü sabit, yönü sürekli değişir.</p>
   </div>
 </div>
@@ -36,11 +36,11 @@ hareket eder.</p>
 <h3 style="margin-top:22px">Sürat sabit ama hız değişiyor</h3>
 <p>Günlük dilde "hız" ve "sürat" aynı anlamda kullanılır, fizikte değil:</p>
 <ul>
-  <li><strong>Sürat</strong> skalerdir — sadece bir sayı. Düzgün çembersel harekette sabittir.</li>
-  <li><strong>Hız</strong> vektörel — sayı <em>ve</em> yön. Yön değiştiği için hız değişir.</li>
+  <li><strong>Sürat</strong> skalerdir: sadece bir sayı. Düzgün çembersel harekette sabittir.</li>
+  <li><strong>Hız</strong> vektörel: sayı <em>ve</em> yön. Yön değiştiği için hız değişir.</li>
 </ul>
 <p>Hız değişiyorsa ivme vardır. Bu yüzden <strong>düzgün çembersel hareket ivmeli bir
-harekettir</strong> — "düzgün" kelimesi yalnızca süratin sabit olduğunu anlatır.</p>
+harekettir</strong>: "düzgün" kelimesi yalnızca süratin sabit olduğunu anlatır.</p>
 
 <div class="kutu puf" style="margin:14px 0">
   <div class="kutu-bas"><span class="ikon">🧭</span>Hız vektörünü çizmenin kesin yolu</div>
@@ -54,7 +54,7 @@ harekettir</strong> — "düzgün" kelimesi yalnızca süratin sabit olduğunu a
 Yaygın sanı: cisim merkezden <em>dışarı doğru</em> fırlar.</p>
 
 <p><strong>Doğrusu:</strong> İp koptuğu anda cisme merkeze doğru çeken kuvvet ortadan kalkar.
-Newton I gereği cisim, o andaki <strong>hızını korur</strong> — yani
+Newton I gereği cisim, o andaki <strong>hızını korur</strong>, yani
 <strong>teğet doğrultuda düz bir çizgi boyunca</strong> gider.</p>
 
 <p>Simülasyonda <strong>İp kopsun</strong> seçeneğini kullan: doğru yol yeşille, yanlış sanılan
@@ -79,7 +79,7 @@ formuller: {
   degiskenler: [
     { sembol: 'r', ad: 'Yörünge yarıçapı',       birim: 'm' },
     { sembol: 'ϑ', ad: 'Çizgisel hız (teğetsel)', birim: 'm/s' },
-    { sembol: 'T', ad: 'Periyot — bir tur süresi', birim: 's' }
+    { sembol: 'T', ad: 'Periyot: bir tur süresi', birim: 's' }
   ]
 },
 
@@ -93,7 +93,7 @@ turetim: {
           html: `<p>Hız, <strong>yer değiştirmenin zamana oranıdır</strong>. Yani cismin
                  <em>bir sonraki an nereye gideceğini</em> gösterir.</p>
                  <p>Çember üzerinde çok kısa bir zaman aralığı alalım: cisim A noktasından
-                 B noktasına gitsin. Yer değiştirme vektörü A’dan B’ye doğrudur — yani
+                 B noktasına gitsin. Yer değiştirme vektörü A’dan B’ye doğrudur, yani
                  çemberin bir <strong>kirişi</strong> boyuncadır.</p>` },
 
         { baslik: 'Zaman aralığını küçült',
@@ -151,7 +151,7 @@ turetim: {
         { baslik: 'Kopmadan önceki durumu yaz',
           html: `<p>Cisim çember çiziyorsa ona <strong>merkeze doğru</strong> bir kuvvet
                  etki ediyordur. Bu kuvveti ip sağlar.</p>
-                 <p>Bu kuvvet cismi sürekli "yoldan saptırır" — düz gitmesini engeller.</p>` },
+                 <p>Bu kuvvet cismi sürekli "yoldan saptırır": düz gitmesini engeller.</p>` },
 
         { baslik: 'Kopma anında ne kayboluyor?',
           html: `<p>İp koptuğunda <strong>merkeze doğru olan kuvvet ortadan kalkar.</strong></p>
@@ -159,7 +159,7 @@ turetim: {
                  Bileşke kuvvet sıfırdır.</p>` },
 
         { baslik: 'Newton I’i uygula',
-          html: `<p>Bileşke kuvvet sıfırsa cisim <strong>hızını korur</strong> —
+          html: `<p>Bileşke kuvvet sıfırsa cisim <strong>hızını korur</strong>:
                  hem büyüklüğünü hem yönünü.</p>
                  <p>Kopma anındaki hız <strong>teğet doğrultudaydı</strong>. Demek ki cisim
                  o doğrultuda, aynı süratle, <strong>düz bir çizgi</strong> boyunca gider.</p>
@@ -178,7 +178,7 @@ turetim: {
                    <p style="margin:0"><strong>Günlük kanıt:</strong> Çamaşır makinesinin
                    sıkma programında su, tamburun deliklerinden <em>teğet</em> doğrultuda fırlar.
                    Çim biçme makinesinden fırlayan taşlar da öyle. Hatta bir çekiç atma
-                   sporcusunun bıraktığı çekiç de teğet gider — bu yüzden atletler
+                   sporcusunun bıraktığı çekiç de teğet gider: bu yüzden atletler
                    bırakma anını çok dikkatli seçer.</p>
                  </div>` }
       ]
@@ -208,13 +208,13 @@ puf: {
     bütün noktaların <strong>periyodu ve açısal hızı aynıdır</strong>, ama merkeze uzak
     noktaların <strong>çizgisel hızı daha büyüktür</strong> (ϑ = ω·r).</p>
 
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
-      <p style="margin:0 0 8px;font-weight:600">Vektörlerin yönleri — ezber kartı</p>
+    <div class="alt-kutu">
+      <p style="margin:0 0 8px;font-weight:600">Vektörlerin yönleri: ezber kartı</p>
       <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Büyüklük</th><th>Yönü</th></tr></thead>
         <tbody>
           <tr><td>Yarıçap vektörü</td><td>Merkezden cisme doğru</td></tr>
-          <tr><td>Hız (ϑ)</td><td><strong>Teğet</strong> — yarıçapa dik</td></tr>
+          <tr><td>Hız (ϑ)</td><td><strong>Teğet</strong>: yarıçapa dik</td></tr>
           <tr><td>Merkezcil ivme (a<sub>m</sub>)</td><td><strong>Merkeze</strong> doğru</td></tr>
           <tr><td>Merkezcil kuvvet (F<sub>m</sub>)</td><td><strong>Merkeze</strong> doğru</td></tr>
           <tr><td>İp koptuktan sonraki hareket</td><td><strong>Teğet</strong> doğrultuda düz</td></tr>
@@ -240,7 +240,7 @@ puf: {
       taktikle: `<p>Teğet doğrultu = yarıçapa dik doğrultu. En üst noktada yarıçap düşey
                  olduğuna göre teğet <strong>yatay</strong>dır.</p>
                  <p style="margin-bottom:0">Taş, dönme yönüne göre <strong>sağa veya sola
-                 doğru yatay bir doğru</strong> boyunca gider — merkezden dışarı değil.</p>`,
+                 doğru yatay bir doğru</strong> boyunca gider, merkezden dışarı değil.</p>`,
       uzun: `<p>Newton I: kuvvet kalmayınca cisim hızını korur. Kopma anındaki hız teğet
              doğrultudaydı ⟹ hareket o doğrultuda devam eder.</p>`
     },
@@ -290,9 +290,9 @@ osym: [
         <text x="380" y="198" fill="#A78BFA" font-size="13" font-family="system-ui">III</text>
       </svg>`,
     secenekler: [
-      'I — teğet doğrultuda, dönme yönünde düz gider',
-      'II — merkezden dışarı doğru düz gider',
-      'III — eğri bir yol izleyerek uzaklaşır',
+      'I: teğet doğrultuda, dönme yönünde düz gider',
+      'II: merkezden dışarı doğru düz gider',
+      'III: eğri bir yol izleyerek uzaklaşır',
       'Çembersel harekete devam eder',
       'Olduğu yerde durur'
     ],
@@ -304,11 +304,11 @@ osym: [
       K noktasında yarıçap yatay olduğuna göre teğet <strong>düşeydir</strong> ve
       saat yönünün tersine dönüldüğü için <strong>yukarı</strong> yönlüdür. Bu, I numaralı yoldur.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>II şıkkı bu konunun klasik yanılgısıdır</strong> —
+        <p style="margin:0"><strong>II şıkkı bu konunun klasik yanılgısıdır</strong>:
         "merkezkaç kuvveti dışarı fırlatır" sanısı. Böyle bir kuvvet yoktur; ip koptuktan sonra
         taşa dışarı doğru kuvvet uygulayan hiçbir şey kalmaz.
         <br><strong>III şıkkı</strong> ise kuvvet olmadan eğri yörünge çizilebileceğini varsayar.
-        Eğri yörünge için <em>sürekli bir kuvvet</em> gerekir — o da artık yok.
+        Eğri yörünge için <em>sürekli bir kuvvet</em> gerekir: o da artık yok.
         <br><strong>Hızlı kontrol:</strong> Çamaşır makinesi sıkarken su delikten teğet fırlar,
         dışarı doğru değil.</p>
       </div>
@@ -389,7 +389,7 @@ baglam: [
       { bas: 'Teğet doğrultunun nereye baktığını bul',
         metin: 'Bıçak yatay düzlemde döndüğü için teğet doğrultular da <strong>yataydır</strong> ve makinenin <strong>yan taraflarına</strong> bakar. Taş yukarı değil, yana doğru fırlar.' },
       { bas: 'Uyarıyı açıkla',
-        metin: 'Bu yüzden tehlikeli bölge makinenin <strong>önü ve yanlarıdır</strong>. Ayrıca bıçak ucundaki çizgisel hız çok yüksektir (ϑ = ω·r, r büyük) — taş mermi gibi hızla fırlar.' },
+        metin: 'Bu yüzden tehlikeli bölge makinenin <strong>önü ve yanlarıdır</strong>. Ayrıca bıçak ucundaki çizgisel hız çok yüksektir (ϑ = ω·r, r büyük): taş mermi gibi hızla fırlar.' },
       { bas: 'Genelle',
         metin: 'Aynı fizik: çamaşır makinesinin sıkma programında suyun teğet fırlaması, çekiç atma sporcusunun bırakma anını dikkatle seçmesi, virajda savrulan aracın <em>yoldan teğet çıkması</em>.' }
     ],
@@ -404,14 +404,14 @@ baglam: [
     cozum: `
       <p>Taş bıçaktan ayrıldığı anda üzerine kuvvet kalmaz. Newton I gereği hızını korur ve
       <strong>teğet doğrultuda düz</strong> gider.</p>
-      <p>Bıçak yatay düzlemde döndüğü için teğetler de yataydır — taşlar makinenin
+      <p>Bıçak yatay düzlemde döndüğü için teğetler de yataydır: taşlar makinenin
       <strong>yanlarına ve önüne</strong> doğru fırlar, yukarı değil.</p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>E şıkkı:</strong> Yolun <em>doğrultusu</em> kütleye bağlı değildir —
+        <p style="margin:0"><strong>E şıkkı:</strong> Yolun <em>doğrultusu</em> kütleye bağlı değildir,
         teğet doğrultu geometriden gelir. Kütle sadece taşın <em>ne kadar uzağa</em> gideceğini
         (hava direnci ve ağırlık etkisiyle) belirler, hangi yöne gideceğini değil.
         <br><strong>Sayısal fikir:</strong> Tipik bir çim biçme bıçağı r = 0,25 m yarıçapta
-        saniyede 50 tur atar. ϑ = 2πr·f ≈ 78 m/s — yani 280 km/s. Uyarı ciddi.</p>
+        saniyede 50 tur atar. ϑ = 2πr·f ≈ 78 m/s, yani 280 km/s. Uyarı ciddi.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B</strong></p>`
   },
@@ -451,7 +451,7 @@ baglam: [
       { bas: 'Verilenleri ayıkla',
         metin: 'r₁ = 12 m (dış kabin), r₂ = 4 m (iç platform), T = 60 s. İkisi <strong>aynı katı cisme</strong> bağlı.' },
       { bas: 'Kritik gözlemi yap',
-        metin: 'Her ikisi de <strong>aynı sürede bir tur</strong> atar — çünkü aynı yapıya bağlılar. Demek ki <strong>periyotları eşittir</strong>: T₁ = T₂ = 60 s.' },
+        metin: 'Her ikisi de <strong>aynı sürede bir tur</strong> atar, çünkü aynı yapıya bağlılar. Demek ki <strong>periyotları eşittir</strong>: T₁ = T₂ = 60 s.' },
       { bas: 'Açısal hızı karşılaştır',
         metin: 'ω = 2π/T ifadesinde yalnızca T var, r yok. Periyotlar eşitse <strong>açısal hızlar da eşittir</strong>: ω = 2·3/60 = 0,1 rad/s.' },
       { bas: 'Çizgisel hızı karşılaştır',
@@ -459,7 +459,7 @@ baglam: [
       { bas: 'Hesapla',
         metin: 'ϑ₁ = 0,1 · 12 = <strong>1,2 m/s</strong><br>ϑ₂ = 0,1 · 4 = <strong>0,4 m/s</strong><br>Oran: ϑ₁/ϑ₂ = 12/4 = <strong>3</strong>' },
       { bas: 'Yorumla',
-        metin: 'Dış kabin 3 kat hızlı gidiyor ama aynı sürede tur atıyor — çünkü 3 kat uzun bir yol kat ediyor. Bu yüzden lunaparklarda heyecan hep <strong>dış çemberde</strong>dir. Aynı sebeple bir plakta iğne dışa kaydıkça altındaki şerit hızlanır.' }
+        metin: 'Dış kabin 3 kat hızlı gidiyor ama aynı sürede tur atıyor, çünkü 3 kat uzun bir yol kat ediyor. Bu yüzden lunaparklarda heyecan hep <strong>dış çemberde</strong>dir. Aynı sebeple bir plakta iğne dışa kaydıkça altındaki şerit hızlanır.' }
     ],
     secenekler: [
       'Periyot ve açısal hız eşit, dış kabinin çizgisel hızı 3 kat büyük',
@@ -478,7 +478,7 @@ baglam: [
         <p style="margin:0"><strong>Ezberlenecek kural:</strong> Aynı katı cisim üzerindeki
         bütün noktaların <strong>T, f ve ω’sı aynıdır</strong>; <strong>ϑ ise yarıçapla
         orantılıdır</strong>. Dönen her sistemde (plak, çark, pervane, dünya) bu böyledir.
-        <br>Kayışla/dişliyle bağlı sistemler farklıdır — orada <em>çizgisel hızlar</em> eşit,
+        <br>Kayışla/dişliyle bağlı sistemler farklıdır: orada <em>çizgisel hızlar</em> eşit,
         açısal hızlar yarıçapla ters orantılı olur. Hangi tür bağlantı olduğuna dikkat et.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

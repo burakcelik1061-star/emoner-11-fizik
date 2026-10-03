@@ -883,7 +883,7 @@ function guzelAlt(v, hedefBolme = 4) {
 
 /** Sayıyı Türkçe biçimde ve gereksiz ondalık olmadan yazar. */
 function biçim(v, basamak = null) {
-  if (!isFinite(v)) return '—';
+  if (!isFinite(v)) return '–';
   let s;
   if (basamak !== null) s = v.toFixed(basamak);
   else if (Math.abs(v - Math.round(v)) < 1e-9) s = String(Math.round(v));

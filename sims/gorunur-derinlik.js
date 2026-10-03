@@ -263,8 +263,8 @@ function cizBardak(ctx, w, h, st, p) {
                    '700 11px system-ui, sans-serif', 'left');
   }
   D.yaziAydinlik(ctx, sivi(p.n) + ' · n = ' + D.biçim(p.n, 3), w - 10, 20, '#1B3A52', '700 12px system-ui, sans-serif', 'right');
-  D.yaziAydinlik(ctx, ik.gorunur ? 'PARA GÖRÜNÜYOR — ışın kenarı aşıp göze geliyor'
-                                 : 'Para görünmüyor — ışın bardağın kenarına çarpıyor',
+  D.yaziAydinlik(ctx, ik.gorunur ? 'PARA GÖRÜNÜYOR: ışın kenarı aşıp göze geliyor'
+                                 : 'Para görünmüyor: ışın bardağın kenarına çarpıyor',
                  10, h - 8, ik.gorunur ? R.ivme : '#C0392B', '700 12px system-ui, sans-serif', 'left');
 }
 
@@ -348,7 +348,7 @@ function cizGercek(ctx, w, h, st, pHam) {
   const gorunur = tamGorunur(p);
 
   if (t2 === null) {
-    D.yaziAydinlik(ctx, 'Bu bakış açısında havadan ışık gelemez — Snell penceresinin dışı (su yüzeyi ayna gibi)',
+    D.yaziAydinlik(ctx, 'Bu bakış açısında havadan ışık gelemez: Snell penceresinin dışı (su yüzeyi ayna gibi)',
                    w * 0.5, h * 0.94, R.kuvvet, '700 12px system-ui, sans-serif', 'center');
   }
 
@@ -399,7 +399,7 @@ function cizGercek(ctx, w, h, st, pHam) {
   const ph = paraksiyel(p);
   D.yaziAydinlik(ctx,
     'Dik bakışta (○): ' + D.biçim(ph, 4) + ' cm   ·   ' + D.biçim(p.aci) + '° bakışta (●): ' +
-    (gorunur === null ? '—' : D.biçim(gorunur, 4) + ' cm'),
+    (gorunur === null ? '–' : D.biçim(gorunur, 4) + ' cm'),
     10, h - 10, R.surtunme, '700 12px system-ui, sans-serif', 'left');
 }
 
@@ -447,7 +447,7 @@ function cizLevha(ctx, w, h, p) {
   D.olcu(ctx, mx, my, mx + dpx * Math.cos(t1), my - dpx * Math.sin(t1),
          'd = ' + D.biçim(d, 3) + ' cm', R.surtunme);
 
-  D.yaziAydinlik(ctx, 'Çıkan ışın gelen ışına PARALELDİR — yalnızca yana kayar',
+  D.yaziAydinlik(ctx, 'Çıkan ışın gelen ışına PARALELDİR: yalnızca yana kayar',
                  w * 0.5, h - 10, R.surtunme, '700 12px system-ui, sans-serif', 'center');
 }
 
@@ -519,9 +519,9 @@ function cizKlasik(ctx, w, h, st, pHam) {
     ['h′ = h · tanθ_cisim / tanθ_göz', K.metin, '12px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     ['θ_göz = ' + D.biçim(p.aci, 0) + '°  (bakış)', R.ivme, '12px system-ui, sans-serif'],
-    ['θ_cisim = ' + (tc === null ? 'yok — Snell penceresi dışı' : D.biçim(der(tc), 4) + '°'),
+    ['θ_cisim = ' + (tc === null ? 'yok: Snell penceresi dışı' : D.biçim(der(tc), 4) + '°'),
       R.kuvvet, '12px system-ui, sans-serif'],
-    ['h′ = ' + (tg === null ? '—' : D.biçim(tg, 4) + ' cm'),
+    ['h′ = ' + (tg === null ? '–' : D.biçim(tg, 4) + ' cm'),
       R.kuvvet, '700 14px system-ui, sans-serif'],
     ['', K.metin2, '11px'],
     [p.mod < 1.5 ? 'Eğik bakışta daha SIĞ' : 'Eğik bakışta daha YÜKSEK',
@@ -619,7 +619,7 @@ function klasikBardak(ctx, w, h, st, p) {
   sol.push(['kenarı aşma payı = ' + D.biçim(ik.pay, 2) + ' cm', ik.gorunur ? R.ivme : '#C0392B', '700 12px system-ui, sans-serif'],
            [ik.gorunur ? '≥ 0 ⟹ para GÖRÜNÜYOR' : '< 0 ⟹ para görünmüyor', ik.gorunur ? R.ivme : '#C0392B', '700 12px system-ui, sans-serif'],
            ['', K.metin2, '11px'],
-           ['görünür derinlik = ' + (ik.gorunur ? D.biçim(ik.gDerinlik, 3) + ' cm' : '—'), R.kuvvet, '700 13px system-ui, sans-serif'],
+           ['görünür derinlik = ' + (ik.gorunur ? D.biçim(ik.gDerinlik, 3) + ' cm' : '–'), R.kuvvet, '700 13px system-ui, sans-serif'],
            ['dik bakışta d/n = ' + D.biçim(d / p.n, 3) + ' cm', K.metin2, '11px system-ui, sans-serif']);
   let sy = 68;
   sol.forEach(([t, c, f]) => { if (t) D.yaziHaleli(ctx, t, 12, sy, c, f, 'left'); sy += 18; });
@@ -629,7 +629,7 @@ function klasikBardak(ctx, w, h, st, p) {
   D.yaziHaleli(ctx, 'Görünme eşiği', sx, 68, K.beyaz, '700 12px system-ui, sans-serif', 'left');
   SIVILAR.forEach((sv, i) => {
     const es = esikYukseklik(sv.n);
-    D.yaziHaleli(ctx, sv.ad + ' (' + D.biçim(sv.n, 2) + '): ' + (es === null ? '—' : D.biçim(es, 2) + ' cm'),
+    D.yaziHaleli(ctx, sv.ad + ' (' + D.biçim(sv.n, 2) + '): ' + (es === null ? '–' : D.biçim(es, 2) + ' cm'),
                  sx, 90 + i * 19, sv.c, '700 12px system-ui, sans-serif', 'left');
   });
   ['n büyüdükçe eşik AZALIR:', 'para daha az sıvıyla görünür.', '', 'Sıvı arttıkça görünür', 'derinlik de artar.']
@@ -673,7 +673,7 @@ function okumalar(st, pHam) {
       { et: 'Sıvı yüksekliği',  dg: D.biçim(d, 2), birim: 'cm' },
       { et: 'Görünme eşiği',    dg: e === null ? 'bardak dolsa da görünmez' : D.biçim(e, 2), birim: e === null ? '' : 'cm' },
       { et: 'Para',             dg: ik.gorunur ? 'GÖRÜNÜYOR' : 'görünmüyor', birim: '' },
-      { et: 'Görünür derinlik', dg: ik.gorunur ? D.biçim(ik.gDerinlik, 3) : '—', birim: ik.gorunur ? 'cm' : '' }
+      { et: 'Görünür derinlik', dg: ik.gorunur ? D.biçim(ik.gDerinlik, 3) : '–', birim: ik.gorunur ? 'cm' : '' }
     ];
   }
   if (p.mod > 2.5) {

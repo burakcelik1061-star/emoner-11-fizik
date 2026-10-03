@@ -22,25 +22,25 @@ akışkan tarafından bir kuvvet uygulanır. Buna <strong>direnç kuvveti</stron
 <p>Bu kuvvetin en kritik özelliği şudur: <strong>hız arttıkça büyür.</strong> Serbest
 düşmedeki sabit yer çekimi kuvvetinden temel farkı budur.</p>
 
-<h3 style="margin-top:22px">Paraşütçünün hikâyesi — dört aşama</h3>
-<div style="display:grid;gap:10px;margin:14px 0">
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b1);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b1);flex:0 0 auto">1</strong>
+<h3 style="margin-top:22px">Paraşütçünün hikâyesi: dört aşama</h3>
+<div class="asamalar">
+  <div class="asama">
+    <strong class="asama-no">1</strong>
     <div><strong>Atlayış anı:</strong> ϑ = 0 olduğu için F<sub>d</sub> = 0.
     Cisme etki eden tek kuvvet ağırlık ⟹ <strong>a = g</strong>. Tam serbest düşme.</div>
   </div>
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b5);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b5);flex:0 0 auto">2</strong>
+  <div class="asama">
+    <strong class="asama-no">2</strong>
     <div><strong>Hızlanma:</strong> Hız arttıkça F<sub>d</sub> büyür, net kuvvet küçülür.
     Cisim <em>hâlâ hızlanıyor</em> ama <strong>gittikçe daha yavaş hızlanıyor</strong>.</div>
   </div>
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b4);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b4);flex:0 0 auto">3</strong>
+  <div class="asama">
+    <strong class="asama-no">3</strong>
     <div><strong>Limit hız:</strong> F<sub>d</sub> = G olduğu an net kuvvet sıfırlanır ⟹
     <strong>a = 0</strong>. Hız artık değişmez, cisim <strong>sabit hızla</strong> düşer.</div>
   </div>
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b7);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b7);flex:0 0 auto">4</strong>
+  <div class="asama">
+    <strong class="asama-no">4</strong>
     <div><strong>Paraşüt açılınca:</strong> Kesit alanı aniden büyür ⟹ F<sub>d</sub> fırlar ⟹
     net kuvvet <em>yukarı</em> döner ⟹ cisim <strong>yavaşlar</strong> ve
     çok daha küçük yeni bir limit hızda sabitlenir.</div>
@@ -50,7 +50,7 @@ düşmedeki sabit yer çekimi kuvvetinden temel farkı budur.</p>
 <div class="kutu dikkat" style="margin:14px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span>2. aşamadaki incelik</div>
   <p style="margin:0">"İvme azalıyor" ile "hız azalıyor" aynı şey <strong>değildir</strong>.
-  İkinci aşamada ivme küçülür ama hâlâ pozitiftir — yani cisim hızlanmaya devam eder,
+  İkinci aşamada ivme küçülür ama hâlâ pozitiftir, yani cisim hızlanmaya devam eder,
   sadece daha isteksizce. Hız ancak paraşüt açıldığında (4. aşama) gerçekten azalır.</p>
 </div>
 
@@ -75,14 +75,14 @@ bir <strong>D</strong> katsayısında toplarsak:</p>
 <strong>1357,6 km/s</strong> hıza ulaşarak ses hızını serbest düşüşle aşan ilk insan oldu.</p>
 <p>Peki neden bu kadar hızlanabildi? Çünkü 39 km’de <strong>hava neredeyse yok</strong>.
 Hava yoksa direnç de yok, dolayısıyla limit hız çok yüksek. Alçaldıkça hava yoğunlaştı,
-direnç büyüdü ve <em>yavaşlamaya</em> başladı — paraşütünü açmadan önce bile.</p>
+direnç büyüdü ve <em>yavaşlamaya</em> başladı, paraşütünü açmadan önce bile.</p>
 <p style="color:var(--text-2)">Aynı sebeple Ay’da limit hız diye bir şey yoktur:
 atmosfer olmadığı için cisimler sonsuza kadar hızlanır.</p>`,
 
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'F<sub>d</sub> = D · ϑ²',            aciklama: 'Direnç kuvveti — hızın karesiyle büyür' },
+    { fm: 'F<sub>d</sub> = D · ϑ²',            aciklama: 'Direnç kuvveti: hızın karesiyle büyür' },
     { fm: 'F<sub>net</sub> = G − F<sub>d</sub>', aciklama: 'Düşerken net kuvvet' },
     { fm: 'a = g − (D/m)·ϑ²',                  aciklama: 'Anlık ivme' },
     { fm: 'F<sub>d</sub> = G ⟹ a = 0',         aciklama: 'Limit hız koşulu' },
@@ -106,8 +106,8 @@ turetim: {
         { baslik: 'Serbest cisim diyagramını kur',
           html: `<p>Düşen paraşütçüye <strong>iki</strong> kuvvet etki eder:</p>
                  <ul>
-                   <li><strong>Ağırlık G = m·g</strong> — aşağı, <em>sabit</em></li>
-                   <li><strong>Direnç F<sub>d</sub> = D·ϑ²</strong> — yukarı, <em>hızla büyüyen</em></li>
+                   <li><strong>Ağırlık G = m·g</strong>: aşağı, <em>sabit</em></li>
+                   <li><strong>Direnç F<sub>d</sub> = D·ϑ²</strong>: yukarı, <em>hızla büyüyen</em></li>
                  </ul>
                  <p>Aşağı yönü pozitif alalım:</p>
                  <div class="formul" style="max-width:260px"><div class="fm">F<sub>net</sub> = G − F<sub>d</sub></div></div>` },
@@ -123,7 +123,7 @@ turetim: {
           html: `<p>"Limit hız" ne demek? <strong>Hızın artık değişmediği</strong> durum,
                  yani <strong>a = 0</strong>.</p>
                  <p>0 = g − (D/m)·ϑ<sub>L</sub>²</p>
-                 <p>Bu, aynı zamanda <strong>F<sub>d</sub> = G</strong> demektir —
+                 <p>Bu, aynı zamanda <strong>F<sub>d</sub> = G</strong> demektir:
                  direnç ağırlığa yetişmiştir.</p>` },
 
         { baslik: 'ϑ_L’yi çek',
@@ -133,13 +133,13 @@ turetim: {
                  </div>
                  <p style="margin-top:12px">Formülün söyledikleri:</p>
                  <ul>
-                   <li><strong>Kütle artarsa</strong> limit hız <em>artar</em> — ağır cisim daha hızlı düşer</li>
+                   <li><strong>Kütle artarsa</strong> limit hız <em>artar</em>: ağır cisim daha hızlı düşer</li>
                    <li><strong>Kesit alanı artarsa</strong> (D büyür) limit hız <em>azalır</em></li>
                  </ul>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Dikkat: burada kütlenin önemi var! Serbest düşmede kütle
                    sadeleşiyordu, <strong>hava direnci varken sadeleşmiyor</strong>. Tüy ile taşın
-                   farklı hızlarda düşmesinin nedeni tam olarak budur — 1.1’deki cevabın
+                   farklı hızlarda düşmesinin nedeni tam olarak budur: 1.1’deki cevabın
                    matematiksel hâli.</p>
                  </div>` }
       ]
@@ -160,7 +160,7 @@ turetim: {
                    <li>Düz kâğıt: kesit alanı büyük ⟹ D büyük ⟹ ϑ<sub>L</sub> <strong>küçük</strong></li>
                    <li>Buruşuk kâğıt: kesit alanı küçük ⟹ D küçük ⟹ ϑ<sub>L</sub> <strong>büyük</strong></li>
                  </ul>
-                 <p><strong>Buruşuk kâğıt önce iner</strong> — kütlesi aynı olmasına rağmen.</p>` },
+                 <p><strong>Buruşuk kâğıt önce iner</strong>, kütlesi aynı olmasına rağmen.</p>` },
 
         { baslik: 'Şimdi kütleyi değiştir',
           html: `<p>Aynı büyüklükte iki paraşütçü, biri 60 kg diğeri 90 kg, aynı duruşta atlasın.
@@ -197,7 +197,7 @@ puf: {
     <strong>F<sub>d</sub> = G</strong> yaz. Sorunun çoğu burada biter.</p>
 
     <p><strong>2 · İvme azalır ≠ hız azalır.</strong> Limit hıza yaklaşırken ivme küçülür
-    ama hız <em>hâlâ artıyordur</em>. Hız ancak direnç ağırlığı <strong>aşarsa</strong> azalır —
+    ama hız <em>hâlâ artıyordur</em>. Hız ancak direnç ağırlığı <strong>aşarsa</strong> azalır:
     bu da ancak paraşüt açılınca olur.</p>
 
     <p><strong>3 · Hava direnci varken kütle sadeleşmez.</strong> Serbest düşmede
@@ -226,7 +226,7 @@ puf: {
       taktikle: `<p>"Limit hız" ⟹ a = 0 ⟹ denge ⟹ <strong>F<sub>d</sub> = G</strong></p>
                  <p style="margin-bottom:0">F<sub>d</sub> = 70 · 10 = <strong>700 N</strong></p>`,
       uzun: `<p>a = 0 ⟹ F<sub>net</sub> = 0 ⟹ G − F<sub>d</sub> = 0 ⟹ F<sub>d</sub> = m·g = 700 N</p>
-             <p style="color:var(--text-3)">D katsayısı, hız, kesit alanı — hiçbiri gerekmedi.</p>`
+             <p style="color:var(--text-3)">D katsayısı, hız, kesit alanı: hiçbiri gerekmedi.</p>`
     },
     {
       soru: `<p>Bir cismin limit hızı 40 m/s’dir. Aynı şekle sahip ama kütlesi
@@ -245,7 +245,7 @@ puf: {
                  <p style="margin-bottom:0">Bu, Newton I’in düşen bir cisimdeki hâlidir:
                  bileşke kuvvet sıfır, hız değişmiyor.</p>`,
       uzun: `<p>F<sub>d</sub> = G ⟹ F<sub>net</sub> = 0 ⟹ a = 0. Hız sabit kalır (ϑ<sub>L</sub>).</p>
-             <p style="color:var(--text-3)">"İvme sıfırsa hız da sıfırdır" en klasik yanılgıdır —
+             <p style="color:var(--text-3)">"İvme sıfırsa hız da sıfırdır" en klasik yanılgıdır:
              1.3.1’de de aynı tuzağı görmüştük.</p>`
     }
   ]
@@ -296,12 +296,12 @@ osym: [
         <li><strong>t₁ sonrası düşüş:</strong> Hız azalıyor ⟹ ivme hareketin tersine,
         yani <em>yukarı</em> ✓ (C doğru)</li>
       </ul>
-      <p><strong>E YANLIŞ — aranan cevap bu.</strong> ϑ₂ bölgesi yine bir <em>düzlüktür</em>;
+      <p><strong>E YANLIŞ: aranan cevap bu.</strong> ϑ₂ bölgesi yine bir <em>düzlüktür</em>;
       eğim sıfır olduğuna göre ivme de <strong>sıfırdır</strong>, g değil. Burası paraşüt
       açıkken ulaşılan <strong>yeni limit hızdır</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Grafik okuma refleksi:</strong> ϑ − t grafiğinde
-        <strong>eğim = ivme</strong>. Yatay bölge gördüğün her yerde ivme sıfırdır —
+        <strong>eğim = ivme</strong>. Yatay bölge gördüğün her yerde ivme sıfırdır:
         cisim ister dursun, ister 5 m/s ile, ister 50 m/s ile gitsin.
         <br>a = g olan tek yer grafiğin <em>başlangıcındaki</em> en dik noktadır,
         çünkü yalnızca orada hava direnci sıfırdır.</p>
@@ -323,12 +323,12 @@ osym: [
       <strong>ϑ<sub>L</sub> ∝ √m</strong>.</p>
       <p>ϑ<sub>K</sub>/ϑ<sub>L</sub> = √(m<sub>K</sub>/m<sub>L</sub>) = √9 = <strong>3</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>A şıkkı (9)</strong> karekökü almayı unutanlar için —
+        <p style="margin:0"><strong>A şıkkı (9)</strong> karekökü almayı unutanlar için:
         bu sorunun tek amacı odur. <strong>C şıkkı (1)</strong> ise "serbest düşmede kütle
         önemsizdir" ezberini buraya taşıyanlar için.
         <br><strong>Ayrım cümlesi:</strong> Hava direnci <em>yokken</em> kütle sadeleşir;
         hava direnci <em>varken</em> sadeleşmez. Soruda "hava direnci ihmal ediliyor" yazıp
-        yazmadığına her zaman bak — bu tek cümle cevabı tamamen değiştirir.</p>
+        yazmadığına her zaman bak: bu tek cümle cevabı tamamen değiştirir.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: B) 3</strong></p>`
   }
@@ -373,7 +373,7 @@ baglam: [
       { bas: 'Limit hızı hatırla',
         metin: 'Hava direnci varsa cisim sonsuza kadar hızlanmaz. Belli bir yükseklikten sonra kedi <strong>limit hızına</strong> ulaşır ve daha fazla hızlanmaz. Kedi için bu hız yaklaşık 27 m/s’dir (≈ 60 mil/saat).' },
       { bas: 'Kritik yüksekliği bul',
-        metin: 'Kedi limit hıza yaklaşık <strong>5-7 kat</strong> (15-20 m) sonunda ulaşır. Bundan sonra 10. kat da 20. kat da <strong>aynı hızla</strong> çarpar — yükseklik artık fark etmez.' },
+        metin: 'Kedi limit hıza yaklaşık <strong>5-7 kat</strong> (15-20 m) sonunda ulaşır. Bundan sonra 10. kat da 20. kat da <strong>aynı hızla</strong> çarpar: yükseklik artık fark etmez.' },
       { bas: 'Asıl sürprizi açıkla',
         metin: 'Peki neden yüksekten düşen <em>daha az</em> yaralanıyor? Çünkü kedi hızlanırken (ivme varken) korkup <strong>kasılır</strong>. Limit hıza ulaşıp ivme sıfırlanınca serbest düşme hissi biter, kedi <strong>gevşer ve yayılır</strong>.' },
       { bas: 'Yayılmanın iki etkisi',
@@ -398,7 +398,7 @@ baglam: [
       ϑ<sub>L</sub> = √(mg/D) <strong>azalır</strong>.</p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı sinsi bir tuzaktır:</strong> yer çekimi ivmesi
-        gerçekten yükseklikle azalır — ama bu etki ancak <em>yüzlerce kilometrede</em> anlamlı olur.
+        gerçekten yükseklikle azalır, ama bu etki ancak <em>yüzlerce kilometrede</em> anlamlı olur.
         50 metrede g’deki değişim milyonda birler mertebesindedir, tamamen ihmal edilir.
         <br>Sınavda "yükseklikle g azalır" gerekçesi neredeyse her zaman yanlış cevaptır.</p>
       </div>
@@ -458,7 +458,7 @@ baglam: [
       <div class="formul" style="max-width:260px"><div class="fm">ϑ<sub>L</sub> = √(m·g / D)</div></div>
       <p>ϑ<sub>L</sub> = √(120 · 10 / 40) = √30 ≈ <strong>5,48 m/s</strong> ≤ 6 m/s ⟹ <strong>yeterli</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı (30 m/s)</strong> karekökü almayı unutanlar için —
+        <p style="margin:0"><strong>B şıkkı (30 m/s)</strong> karekökü almayı unutanlar için:
         √30 yerine 30 yazmak bu konudaki bir numaralı işlem hatasıdır.
         <br><strong>Tasarım mantığı:</strong> Güvenli kütle sınırı m ≤ ϑ<sub>hedef</sub>²·D/g
         = 36·40/10 = 144 kg. Paraşüt seçimi hep böyle yapılır: önce kabul edilebilir çarpma

@@ -256,6 +256,11 @@ math { font-size: 1.05em; }
 .degisken-tablo tr:last-child td { border-bottom: 0; }
 .degisken-tablo .sembol { font-size: 1.08em; font-weight: 600; color: var(--text-guclu); white-space: nowrap; }
 .degisken-tablo .birim { color: var(--text-2); white-space: nowrap; font-variant-numeric: tabular-nums; }
+/* Telefonda dört-beş sütunlu tablo içerik alanından taşıyor ve kırpılıyordu:
+   tablo kendi içinde yatay kayar, sayfa kaymaz. */
+@media (max-width: 600px) {
+  .degisken-tablo { display: block; overflow-x: auto; }
+}
 
 /* ------------------------------------------------------ Türetim adımı */
 .turetim { background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--r); overflow: hidden; }
@@ -516,6 +521,68 @@ select, input[type="number"], input[type="text"] {
 
 .sim-ipucu { font-size: .89em; color: var(--text-3); margin: var(--s3) 0 0; }
 
+/* ------------------------------------------------- Konu içi düzenler
+   Konu metinlerinde tekrar eden yapılar satır içi stil yerine bunları
+   kullanır. Renk tek değişkenden gelir: --c. */
+
+/* İç kutu: püf noktası ya da soru içinde tablo veya not taşıyan sade zemin. */
+.alt-kutu { background: var(--surface-0); border-radius: var(--r-sm); padding: 14px; margin: var(--s3) 0; }
+.alt-kutu > .degisken-tablo { margin: 0; }
+
+/* Sıralı aşamalar: solda numara ya da kısa etiket, sağda açıklama.
+   Renkli yan kenarlık yok; sıra numarası yeterli. */
+.asamalar { display: grid; gap: var(--s2); margin: var(--s4) 0; }
+.asama {
+  display: flex; align-items: baseline; gap: var(--s3);
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: var(--s3) var(--s4);
+}
+.asama > div { min-width: 0; }
+.asama-no { flex: 0 0 1.4em; font-weight: 700; color: var(--text-guclu); font-variant-numeric: tabular-nums; }
+.asamalar.etiketli .asama-no { flex-basis: 4.6em; font-size: .89em; letter-spacing: .03em; }
+
+/* Yan yana iki kart; dar ekranda alt alta iner. */
+.iki-sutun {
+  display: grid; gap: var(--s3); margin: var(--s4) 0;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+}
+.yan-kart {
+  display: flex; flex-direction: column;
+  background: var(--surface-1); border: 1px solid var(--border);
+  border-radius: var(--r-sm); padding: 14px var(--s4);
+}
+.yan-kart > p, .yan-kart > ul { margin: 0; }
+.yan-kart > p + p { margin-top: var(--s2); }
+.yan-kart-bas {
+  display: flex; align-items: center; gap: var(--s2); margin-bottom: var(--s2);
+  font-weight: 700; font-size: .87em; letter-spacing: .03em; color: var(--text-guclu);
+}
+/* Renk işareti: büyüklüğün simülasyondaki rengi. Yazı nötr kalır ki
+   iki temada da okunsun. */
+.yan-kart-bas::before {
+  content: ""; flex: 0 0 auto; width: .75em; height: .75em; border-radius: 50%;
+  background: var(--c, var(--text-3));
+}
+.yan-kart-bas .ikon { display: inline-grid; line-height: 1; }
+.yan-kart-bas .ikon .ik { width: 1.15em; height: 1.15em; }
+/* Anlam taşıyan kart (girer / girmez): kendi renginde yumuşak zemin. */
+.yan-kart.ton {
+  background: color-mix(in srgb, var(--c) 10%, var(--surface-1));
+  border-color: color-mix(in srgb, var(--c) 40%, transparent);
+}
+.yan-kart.ton .yan-kart-bas { color: var(--c); }
+.yan-kart.ton .yan-kart-bas::before { content: none; }
+.kart-formul { font-weight: 600; font-size: 1.05em; color: var(--text-guclu); }
+/* Yan yana kartlarda formül satırı hep aynı hizada: kartın dibinde. */
+.yan-kart > p.kart-formul { margin-top: auto; padding-top: var(--s3); }
+
+/* Değişkenler arası zincir (T → f → ω → ...). */
+.zincir-satir { margin: 0 0 var(--s2); font-size: 1.05em; font-weight: 600; line-height: 2; color: var(--text-guclu); }
+.zincir-not { margin: 0; font-size: .88em; color: var(--text-3); }
+
+/* Karşılaştırma tablosunda konunun kendi satırı. */
+.degisken-tablo tr.vurgu-satir td { background: var(--surface-2); }
+
 /* ------------------------------------------------------------- Soru
    Soru başına tek kart. Numara nötr kare: sorular gerçekten sıralı. */
 .soru {
@@ -523,7 +590,7 @@ select, input[type="number"], input[type="text"] {
   border-radius: var(--r); padding: var(--pad); margin-bottom: var(--s4);
 }
 .soru-ust {
-  display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s3);
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin-bottom: var(--s3);
   font-size: .89em; color: var(--text-2);
 }
 .soru-no {
@@ -533,7 +600,8 @@ select, input[type="number"], input[type="text"] {
 .soru-baslik { font-weight: 600; color: var(--text); }
 .soru-kaynak {
   margin-left: auto; padding: 2px 10px; border-radius: 999px;
-  background: var(--surface-2); color: var(--text-2); font-size: .89em; white-space: nowrap;
+  background: var(--surface-2); color: var(--text-2); font-size: .89em;
+  max-width: 100%;   /* uzun kaynak adı dar ekranda alt satıra iner, taşmaz */
 }
 .soru-govde { margin-bottom: var(--s4); }
 .soru-gorsel {

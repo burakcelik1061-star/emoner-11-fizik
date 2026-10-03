@@ -11,14 +11,14 @@ F.konuKaydet('u3-prizmalar', {
 
 ozet: `Prizma, yüzeyleri <strong>paralel olmayan</strong> saydam bir cisimdir. Bu tek fark,
 3.6&rsquo;daki levhadan ayrılmasına yeter: levha ışını <em>kaydırır</em>, prizma
-<strong>saptırır</strong>. Üstelik her rengi <strong>farklı</strong> saptırır — gökkuşağının
+<strong>saptırır</strong>. Üstelik her rengi <strong>farklı</strong> saptırır: gökkuşağının
 ve beyaz ışığın ayrışmasının sebebi budur.`,
 
 /* ------------------------------------------------------------- Kavram */
 kavram: `
 <h3>Prizmada sapma</h3>
 <p>Işın prizmaya girerken bir kez, çıkarken bir kez kırılır. İki kırılma
-<strong>aynı yöne</strong> olur — çünkü yüzeyler paralel değil, birbirine A açısıyla
+<strong>aynı yöne</strong> olur, çünkü yüzeyler paralel değil, birbirine A açısıyla
 eğiktir. Toplam sapma:</p>
 <div class="formul" style="max-width:280px;margin:14px 0;border-top-color:var(--accent)">
   <div class="fm" style="color:var(--accent)">δ = θ₁ + θ₄ − A</div>
@@ -61,7 +61,7 @@ yolu elde edilir:</p>
 <p>Laboratuvarda yapılan tek iş, prizmayı yavaşça döndürüp sapmanın en küçük olduğu açıyı
 bulmak ve ölçmektir. Bu yönteme <strong>spektrometre yöntemi</strong> denir.</p>
 
-<h3 style="margin-top:22px">Dispersiyon — beyaz ışığın ayrılması</h3>
+<h3 style="margin-top:22px">Dispersiyon: beyaz ışığın ayrılması</h3>
 <p>Kırılma indisi aslında <strong>sabit bir sayı değildir</strong>; dalga boyuna bağlıdır.
 Yaklaşık olarak:</p>
 <div class="formul" style="max-width:260px;margin:14px 0">
@@ -81,7 +81,7 @@ değerler:</p>
 <div class="formul" style="max-width:340px;margin:14px 0;border-top-color:var(--accent)">
   <div class="fm" style="color:var(--accent)">Açısal ayrım = 39,92 − 38,36 = <strong>1,56°</strong></div>
 </div>
-<p>Yalnızca 1,5 derece — ama bu kadarı, 1 m ötede renkleri <strong>2,7 cm</strong> ayırmaya
+<p>Yalnızca 1,5 derece, ama bu kadarı, 1 m ötede renkleri <strong>2,7 cm</strong> ayırmaya
 yeter. Bu yüzden prizma deneyinde perde yeterince uzağa konur.</p>
 
 <div class="kutu puf" style="margin:16px 0">
@@ -150,7 +150,7 @@ formuller: {
     { fm: 'δ = θ₁ + θ₄ − A',                   aciklama: 'Toplam sapma açısı' },
     { fm: 'δ<sub>min</sub> = 2arcsin(n·sin(A/2)) − A', aciklama: 'En küçük sapma' },
     { fm: 'n = sin((A+δ<sub>min</sub>)/2)/sin(A/2)',   aciklama: 'İndis ölçme bağıntısı' },
-    { fm: 'n(λ) = n₀ + B/λ²',                  aciklama: 'Cauchy — dispersiyon' },
+    { fm: 'n(λ) = n₀ + B/λ²',                  aciklama: 'Cauchy: dispersiyon' },
     { fm: 'n ≥ 1/sin45° = 1,414',              aciklama: '45° prizmasında tam yansıma koşulu' }
   ],
   degiskenler: [
@@ -159,7 +159,7 @@ formuller: {
     { sembol: 'θ₁', ad: 'Giriş açısı',      birim: '°' },
     { sembol: 'θ₄', ad: 'Çıkış açısı',      birim: '°' },
     { sembol: 'λ',  ad: 'Dalga boyu',       birim: 'nm' },
-    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '—' }
+    { sembol: 'n',  ad: 'Kırılma indisi',   birim: '-' }
   ]
 },
 
@@ -196,7 +196,7 @@ turetim: {
           html: `<div class="formul" style="max-width:240px;border-top-color:var(--accent)">
                    <div class="fm" style="color:var(--accent)">θ₂ + θ₃ = A ⟹ θ₃ = A − θ₂</div>
                  </div>
-                 <p>Bu bağıntı <strong>ışının açısından bağımsızdır</strong> — yalnızca
+                 <p>Bu bağıntı <strong>ışının açısından bağımsızdır</strong>: yalnızca
                  prizmanın geometrisine bağlıdır.</p>` }
       ]
     },
@@ -241,8 +241,8 @@ turetim: {
                  sapmayı verir.</p>` },
 
         { baslik: 'Eğri simetrik',
-          html: `<p>Yani δ–θ₁ eğrisinde her δ değerine <strong>iki</strong> θ₁ karşılık gelir
-                 — biri küçük, biri büyük. Grafik panelinde bu U biçimini görebilirsin.</p>` },
+          html: `<p>Yani δ–θ₁ eğrisinde her δ değerine <strong>iki</strong> θ₁ karşılık gelir:
+                 biri küçük, biri büyük. Grafik panelinde bu U biçimini görebilirsin.</p>` },
 
         { baslik: 'Tek çözüm nerede?',
           html: `<p>İki çözümün birbirine eşit olduğu <strong>tek</strong> nokta, eğrinin en
@@ -265,7 +265,7 @@ turetim: {
                    <div class="fm">δ_min = 2·arcsin(1,517 × 0,5) − 60 = 2 × 49,332 − 60 = <strong>38,66°</strong></div>
                  </div>
                  <p>Simetrik giriş açısı <code>θ₁ = (60 + 38,66)/2 = 49,33°</code>.
-                 Yukarıdaki 50° hesabı 38,67° vermişti — neredeyse aynı, çünkü 50°
+                 Yukarıdaki 50° hesabı 38,67° vermişti: neredeyse aynı, çünkü 50°
                  minimuma çok yakın. Eğri dip noktasında <strong>çok düzdür</strong>;
                  ölçümü kolaylaştıran da budur.</p>` }
       ]
@@ -303,7 +303,7 @@ puf: {
 
     <p><strong>8 · 45° prizmasında n &gt; 1,414 olmalı.</strong> Bu sayıyı ezberle;
     <code>1/sin45° = √2</code>&rsquo;dir. Sıradan camın (1,5) bu koşulu sağlaması
-    tesadüf değil — prizmalar bu yüzden camdan yapılır.</p>
+    tesadüf değil: prizmalar bu yüzden camdan yapılır.</p>
 
     <p><strong>9 · Tam yansıma prizması AYNA DEĞİLDİR.</strong> “Prizmanın arkası
     sırlanmıştır” diyen şık yanlıştır; sırlama olmadan, sadece tam yansımayla çalışır.</p>`
@@ -369,7 +369,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Bu prizma özel bir durum:</strong> n = √2 olduğu için
         sınır açısı tam 45°&rsquo;dir. Yani bu prizmadan yapılmış bir 45° prizması
-        <strong>tam sınırda</strong> çalışırdı — en ufak bir sapmada ışık kaçardı. Gerçek
+        <strong>tam sınırda</strong> çalışırdı: en ufak bir sapmada ışık kaçardı. Gerçek
         optik prizmalar bu yüzden n = 1,5 ve üstü camdan yapılır.
         <br><strong>B şıkkı</strong> sık görülen bir refleks: “cam ⟹ n = 1,5”. Ama soru
         ölçüm verisi veriyor; ölçüme uymak gerekir.
@@ -402,7 +402,7 @@ osym: [
     dogru: 0,
     cozum: `
       <ol>
-        <li><strong>Doğru</strong> — ama gerekçesi ince. Levhada da her renk
+        <li><strong>Doğru</strong>, ama gerekçesi ince. Levhada da her renk
         <em>farklı açıyla</em> kırılır, yani levhanın içinde renkler ayrılır. Ancak ikinci
         yüzeyde her renk <strong>tam ters yönde</strong> aynı kadar kırılır ve
         <strong>hepsi yeniden paralel</strong> hâle gelir. Çıkışta renkler birleşir, ayrım
@@ -423,10 +423,10 @@ osym: [
         <em>yeniden birleşir</em>”. Prizmayı özel kılan, ikinci yüzeyin birinciyi
         <strong>geri almamasıdır</strong>.
         <br><strong>Sağlama:</strong> İki prizmayı ters çevirip birbirine yapıştırırsan bir
-        paralel levha elde edersin — ve renkler yine birleşir. Newton bu deneyi yapmış,
+        paralel levha elde edersin ve renkler yine birleşir. Newton bu deneyi yapmış,
         böylece rengin camdan değil <em>ışığın kendisinden</em> geldiğini kanıtlamıştır.
         <br><strong>IV. yargı için:</strong> Bir dürbünü ışığa tutup içine bakarsan
-        prizmaların tamamen saydam olduğunu görürsün — hiçbir sırlı yüzey yoktur.</p>
+        prizmaların tamamen saydam olduğunu görürsün, hiçbir sırlı yüzey yoktur.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }
@@ -465,11 +465,11 @@ baglam: [
       { bas: 'Damla bir prizma gibi davranıyor',
         metin: 'Işık damlaya girerken kırılır. Kırılma indisi renge bağlı olduğu için renkler <strong>daha bu ilk adımda</strong> ayrılmaya başlar.' },
       { bas: 'Arka yüzde yansıma',
-        metin: 'Işın damlanın arka iç yüzeyine çarpar. Buradaki açı sınır açısından küçük olduğu için <strong>tam yansıma değil</strong>, kısmî yansıma olur — ışığın bir kısmı damlanın arkasından çıkıp gider, bir kısmı geri döner.' },
+        metin: 'Işın damlanın arka iç yüzeyine çarpar. Buradaki açı sınır açısından küçük olduğu için <strong>tam yansıma değil</strong>, kısmî yansıma olur: ışığın bir kısmı damlanın arkasından çıkıp gider, bir kısmı geri döner.' },
       { bas: 'Çıkışta ikinci kırılma',
         metin: 'Geri dönen ışın damladan çıkarken tekrar kırılır ve renk ayrımı <strong>iki katına</strong> çıkar. Levhadan farklı olarak burada ikinci kırılma birinciyi geri almaz.' },
       { bas: 'Neden 42°?',
-        metin: 'Damlaya farklı yüksekliklerden giren ışınlar farklı açılarla çıkar. Ama çıkış açısının bir <strong>en büyük değeri</strong> vardır (yaklaşık 42°) ve o açı civarında ışınlar <strong>yığılır</strong>. Bu yığılma açısında parlaklık en yüksektir — gördüğümüz gökkuşağı odur.' },
+        metin: 'Damlaya farklı yüksekliklerden giren ışınlar farklı açılarla çıkar. Ama çıkış açısının bir <strong>en büyük değeri</strong> vardır (yaklaşık 42°) ve o açı civarında ışınlar <strong>yığılır</strong>. Bu yığılma açısında parlaklık en yüksektir: gördüğümüz gökkuşağı odur.' },
       { bas: 'Renk sırası',
         metin: 'Kırmızı için bu açı <strong>42,4°</strong>, mor için <strong>40,7°</strong>. Kırmızının açısı büyük olduğu için gökkuşağının <strong>dış</strong> kenarında, mor <strong>iç</strong> kenarında görünür.' },
       { bas: 'Neden yay biçiminde?',
@@ -539,14 +539,14 @@ baglam: [
         metin: 'Objektif bir çukur ayna ya da yakınsak mercek gibi davranır ve <strong>gerçek</strong> görüntü oluşturur. 3.3.2&rsquo;de öğrendiğimiz gibi gerçek görüntü <strong>daima terstir</strong>.' },
       { bas: 'Prizmalar ne yapıyor?',
         metin: 'İki prizma, ışını dört kez tam yansıtır. Her yansıma görüntüyü bir eksende çevirir; <strong>dört yansıma</strong> hem sağ-solu hem alt-üstü düzeltir.' },
-      { bas: 'Ayna kullanılsaydı — kayıp',
+      { bas: 'Ayna kullanılsaydı: kayıp',
         metin: 'İyi bir alüminyum ayna yaklaşık <strong>%90</strong> yansıtır. Dört yansımada: <code>0,90⁴ = <strong>0,656</strong></code> ⟹ ışığın yalnızca <strong>%66</strong>&rsquo;sı kalır.' },
       { bas: 'Prizmayla kayıp',
         metin: 'Tam yansımada kayıp <strong>sıfırdır</strong>. Geriye yalnızca dört hava–cam yüzeyindeki Fresnel yansımaları kalır: yüzey başına %4, yani <code>0,96⁴ = 0,849</code> ⟹ <strong>%85</strong>. Kaplama yapılırsa %99&rsquo;a çıkar.' },
       { bas: 'Fark ne kadar?',
         metin: '%85&rsquo;e karşı %66. Prizma, aynaya göre yaklaşık <strong>%29 daha fazla</strong> ışık geçirir. Alacakaranlıkta kullanılan bir dürbün için bu çok büyük bir farktır.' },
       { bas: 'Neden şişman?',
-        metin: 'Prizmalar ışının yolunu <strong>katlayarak uzatır</strong>. Böylece objektif ile göz merceği arasındaki uzun optik yol, kısa bir gövdeye sığar. Dürbünün geniş omuzlu görünmesinin sebebi budur — içinde prizmalar var.' },
+        metin: 'Prizmalar ışının yolunu <strong>katlayarak uzatır</strong>. Böylece objektif ile göz merceği arasındaki uzun optik yol, kısa bir gövdeye sığar. Dürbünün geniş omuzlu görünmesinin sebebi budur: içinde prizmalar var.' },
       { bas: 'Başka avantajlar',
         metin: 'Prizma sırlanmadığı için <strong>kararmaz</strong> ve zamanla matlaşmaz. Ayrıca tek parça cam olduğu için darbeye ve titreşime aynadan çok daha dayanıklıdır.' }
     ],
@@ -572,11 +572,11 @@ baglam: [
         <em>kusur</em>dur.
         <br><strong>C şıkkı</strong> yanlış: büyütmeyi mercekler yapar, prizmaların
         büyütmeye katkısı yoktur.
-        <br><strong>Bağlantı:</strong> Bu soru üç konuyu birleştiriyor — 3.4 (gerçek görüntü
+        <br><strong>Bağlantı:</strong> Bu soru üç konuyu birleştiriyor, 3.4 (gerçek görüntü
         terstir), 3.2 (çift yansıma görüntüyü düzeltir), 3.5/3.8 (tam yansımada kayıp yok).
         <br><strong>Kendin bak:</strong> Dürbünün objektifine ışık tutup içine bakarsan
         prizmaların parıltısını görürsün. Ucuz dürbünlerde prizma yerine küçük ayna
-        kullanılır — bu modeller alacakaranlıkta gözle görülür biçimde daha karanlıktır.</p>
+        kullanılır: bu modeller alacakaranlıkta gözle görülür biçimde daha karanlıktır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
   }

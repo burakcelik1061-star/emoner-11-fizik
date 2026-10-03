@@ -16,7 +16,7 @@ F.konuKaydet('u1-yukari-atis', {
 ozet: `İlk hızı sıfırdan farklı olmak şartıyla <strong>yukarı doğru</strong> atılan cisimlerin
 hareketidir. Cisim <strong>iki fazlı</strong> bir hareket yapar: önce yavaşlayarak
 çıkar, bir an durur, sonra hızlanarak iner. Bu hareketin en güçlü özelliği
-<strong>simetrik</strong> olmasıdır — çıkışta ne yaşandıysa inişte aynısı tersten yaşanır.
+<strong>simetrik</strong> olmasıdır: çıkışta ne yaşandıysa inişte aynısı tersten yaşanır.
 Bu simetriyi kullanan, soruların yarısını hiç hesap yapmadan çözer.`,
 
 /* ------------------------------------------------------------- Kavram */
@@ -42,16 +42,16 @@ hareket serbest düşme olurdu; ilk hız aşağı yönlü olsaydı yukarıdan a�
 <table class="degisken-tablo">
   <thead><tr><th>Hareket tipi</th><th>İlk hız</th><th>Başlangıçta ne oluyor?</th><th>Hareketin yapısı</th></tr></thead>
   <tbody>
-    <tr><td>Serbest düşme</td><td class="sembol">ϑ₀ = 0</td><td>Yok — cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr><td>Yukarıdan aşağıya atış</td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var — cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
-    <tr style="background:var(--surface-2)"><td><strong>Aşağıdan yukarıya atış</strong></td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var — cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
+    <tr><td>Serbest düşme</td><td class="sembol">ϑ₀ = 0</td><td>Yok: cisim yalnızca <strong>bırakılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr><td>Yukarıdan aşağıya atış</td><td class="sembol">ϑ₀ ≠ 0, aşağı</td><td>Var: cisim <strong>aşağı doğru atılır</strong></td><td>Tek fazlı, hızlanır</td></tr>
+    <tr class="vurgu-satir"><td><strong>Aşağıdan yukarıya atış</strong></td><td class="sembol">ϑ₀ ≠ 0, yukarı</td><td>Var: cisim <strong>yukarı doğru atılır</strong></td><td>İki fazlı: yavaşlar, durur, hızlanır</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px;color:var(--text-2)">Üçünün de <strong>ivmesi aynıdır: a = g, aşağı doğru.</strong>
-Aralarındaki tek fark <strong>ilk hızdır</strong> — hareketi birbirinden ayıran şey budur.</p>
+Aralarındaki tek fark <strong>ilk hızdır</strong>: hareketi birbirinden ayıran şey budur.</p>
 
 <h3 style="margin-top:22px">Hareketin iki fazı</h3>
-<p>Cisme etki eden tek kuvvet ağırlıktır ve <strong>daima aşağı doğrudur</strong> —
+<p>Cisme etki eden tek kuvvet ağırlıktır ve <strong>daima aşağı doğrudur</strong>:
 cisim yukarı çıkarken de. Bu yüzden:</p>
 <ul>
   <li><strong>Çıkış fazı:</strong> Hız yukarı, ivme aşağı ⟹ cisim <strong>yavaşlar</strong></li>
@@ -62,27 +62,27 @@ cisim yukarı çıkarken de. Bu yüzden:</p>
 <div class="kutu dikkat" style="margin:14px 0">
   <div class="kutu-bas"><span class="ikon">⚠</span>Tepe noktası tuzağı</div>
   <p style="margin:0">Tepede cisim bir an <em>duruyor gibi</em> görünür. Hızı gerçekten
-  sıfırdır — ama <strong>ivmesi sıfır değildir</strong>. İvme sıfır olsaydı cisim orada
+  sıfırdır, ama <strong>ivmesi sıfır değildir</strong>. İvme sıfır olsaydı cisim orada
   havada asılı kalırdı. Cisim havada olduğu sürece ivmesi g’dir.</p>
 </div>
 
-<h3 style="margin-top:22px">Simetri — bu konunun en güçlü aracı</h3>
+<h3 style="margin-top:22px">Simetri: bu konunun en güçlü aracı</h3>
 <p>Cisim atıldığı seviyeye döndüğünde hareket <strong>tam simetriktir</strong>:</p>
 
-<div style="display:grid;gap:10px;margin:14px 0">
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b4);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b4);flex:0 0 auto;min-width:64px">SÜRE</strong>
+<div class="asamalar etiketli">
+  <div class="asama">
+    <strong class="asama-no">SÜRE</strong>
     <div>Çıkış süresi = iniş süresi = <strong>ϑ₀/g</strong><br>
     Toplam uçuş süresi: <strong>t<sub>uçuş</sub> = 2ϑ₀/g</strong></div>
   </div>
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b1);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b1);flex:0 0 auto;min-width:64px">HIZ</strong>
+  <div class="asama">
+    <strong class="asama-no">HIZ</strong>
     <div>Aynı seviyede hız <strong>büyüklükleri eşit</strong>, yönleri zıttır.<br>
     Çıkarken 20 m/s ile geçtiğin noktadan inerken yine 20 m/s ile geçersin.</div>
   </div>
-  <div style="display:flex;gap:12px;background:var(--surface-0);border:1px solid var(--border);border-left:3px solid var(--b3);border-radius:var(--r-sm);padding:12px 14px">
-    <strong style="color:var(--b3);flex:0 0 auto;min-width:64px">GEÇİŞ</strong>
-    <div>Cisim her yükseklikten <strong>iki kez</strong> geçer — biri çıkarken,
+  <div class="asama">
+    <strong class="asama-no">GEÇİŞ</strong>
+    <div>Cisim her yükseklikten <strong>iki kez</strong> geçer: biri çıkarken,
     biri inerken. Bu yüzden "kaçıncı saniyede" soruları <strong>iki cevaplıdır</strong>.</div>
   </div>
 </div>
@@ -100,11 +100,11 @@ yükseltirsen ayrışır. İkisini karşılaştırarak farkı gör.</p>`,
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'ϑ = ϑ₀ − g·t',                aciklama: 'Hız — işaret değiştirdiği an tepe noktasıdır' },
+    { fm: 'ϑ = ϑ₀ − g·t',                aciklama: 'Hız: işaret değiştirdiği an tepe noktasıdır' },
     { fm: 't<sub>tepe</sub> = ϑ₀ / g',   aciklama: 'Tepeye çıkış süresi' },
     { fm: 'h<sub>maks</sub> = ϑ₀² / 2g', aciklama: 'Atış seviyesinden çıkılan yükseklik' },
     { fm: 't<sub>uçuş</sub> = 2ϑ₀ / g',  aciklama: 'Aynı seviyeye dönüş süresi (simetri)' },
-    { fm: 'y = h₀ + ϑ₀·t − ½g·t²',       aciklama: 'Konum — her iki fazı birden kapsar' },
+    { fm: 'y = h₀ + ϑ₀·t − ½g·t²',       aciklama: 'Konum: her iki fazı birden kapsar' },
     { fm: 'ϑ² = ϑ₀² − 2g·h',             aciklama: 'Zaman geçmeyen ifade' }
   ],
   degiskenler: [
@@ -156,7 +156,7 @@ turetim: {
           html: `<p>ϑ² = ϑ₀² − 2g·h denkleminde belirli bir h yüksekliği alalım.
                  Bu denklem ϑ için <strong>iki kök</strong> verir: <strong>+ϑ</strong> ve
                  <strong>−ϑ</strong>.</p>
-                 <p>Yani cisim o yükseklikten iki kez geçer — biri çıkarken, biri inerken —
+                 <p>Yani cisim o yükseklikten iki kez geçer (biri çıkarken, biri inerken)
                  ve <strong>hız büyüklükleri eşittir</strong>.</p>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Pratik sonucu: "Cisim atıldığı seviyeye hangi hızla döner?"
@@ -168,7 +168,7 @@ turetim: {
       ad: 'Tek denklemle çözmek',
       adimlar: [
         { baslik: 'İki fazı bölmek şart mı?',
-          html: `<p>Çoğu öğrenci çıkış ve iniş fazlarını ayrı ayrı hesaplar — doğru ama
+          html: `<p>Çoğu öğrenci çıkış ve iniş fazlarını ayrı ayrı hesaplar: doğru ama
                  <strong>uzun</strong> yoldur ve hata payı yüksektir.</p>
                  <p>Aslında tek bir denklem her iki fazı birden kapsar.</p>` },
 
@@ -176,7 +176,7 @@ turetim: {
           html: `<p>Yukarı pozitif, sıfır zeminde:</p>
                  <div class="formul" style="max-width:300px"><div class="fm">y = h₀ + ϑ₀·t − ½g·t²</div></div>
                  <p style="margin-top:10px">Bu denklem cismin <strong>her anki</strong> yüksekliğini
-                 verir — çıkarken de, tepedeyken de, inerken de. Faz ayrımına gerek yok.</p>` },
+                 verir: çıkarken de, tepedeyken de, inerken de. Faz ayrımına gerek yok.</p>` },
 
         { baslik: 'Aranan koşulu denkleme çevir',
           html: `<ul>
@@ -194,7 +194,7 @@ turetim: {
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">İki faza bölerek de aynı sonuca ulaşırsın (2 s çıkış +
                    3,61 s iniş), ama tek denklem daha hızlıdır.
-                   <strong>Sayıları sadeleştirmeyi unutma</strong> — 5’e böldüğümüzde
+                   <strong>Sayıları sadeleştirmeyi unutma</strong>: 5’e böldüğümüzde
                    işlem gözle görülür biçimde kolaylaştı.</p>
                  </div>` }
       ]
@@ -221,15 +221,15 @@ puf: {
     <p><strong>3 · Saniye kuralı burada da işler</strong> (g = 10 için). Yukarı atışta
     ilk saniyede alınan yol <strong>ϑ₀ − 5</strong>, sonra 10’ar 10’ar azalır.
     Negatife düştüğü saniye, cismin artık indiği saniyedir:</p>
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:12px 0">
-      <table class="degisken-tablo" style="margin:0">
+    <div class="alt-kutu">
+      <table class="degisken-tablo">
         <thead><tr><th>ϑ₀ = 25 m/s</th><th>1. sn</th><th>2. sn</th><th>3. sn</th><th>4. sn</th></tr></thead>
         <tbody>
           <tr><td>O saniyedeki yol</td><td class="sembol">20</td><td class="sembol">10</td><td class="sembol">0</td><td class="sembol">−10</td></tr>
         </tbody>
       </table>
       <p style="margin:10px 0 0;font-size:.86em;color:var(--text-3)">
-        3. saniyede yol sıfır — yani cisim o saniyenin başında ve sonunda aynı yükseklikte.
+        3. saniyede yol sıfır, yani cisim o saniyenin başında ve sonunda aynı yükseklikte.
         Tepe noktası tam o saniyenin ortasında (t = 2,5 s = ϑ₀/g).
       </p>
     </div>
@@ -325,8 +325,8 @@ osym: [
       <p>Burada ϑ₀ <strong>kareli</strong> girdiği için <strong>işareti kaybolur</strong>:</p>
       <ul>
         <li><strong>K (yukarı, +20):</strong> ϑ₀² = 400</li>
-        <li><strong>L (aşağı, −20):</strong> ϑ₀² = 400 — <strong>aynı</strong></li>
-        <li><strong>M (bırakma, 0):</strong> ϑ₀² = 0 — <strong>en küçük</strong></li>
+        <li><strong>L (aşağı, −20):</strong> ϑ₀² = 400, <strong>aynı</strong></li>
+        <li><strong>M (bırakma, 0):</strong> ϑ₀² = 0, <strong>en küçük</strong></li>
       </ul>
       <p>Yani <strong>K ve L aynı hızla çarpar</strong>, M daha yavaş.</p>
       <p><strong>Neden böyle?</strong> Simetri gereği K, atıldığı seviyeye döndüğünde
@@ -338,7 +338,7 @@ osym: [
         hızlı çarpar" sezgisi güçlüdür ama yanlıştır. O sezgi <em>süre</em> için doğrudur,
         <em>hız</em> için değil.
         <br><strong>Ayrım cümlesi:</strong> <strong>Süreler farklı, çarpma hızları eşit.</strong>
-        L en önce, M ortada, K en son iner — ama K ile L aynı hızla çarpar.</p>
+        L en önce, M ortada, K en son iner, ama K ile L aynı hızla çarpar.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: C</strong></p>`
   },
@@ -376,7 +376,7 @@ osym: [
         <strong>sabit hızlı yaklaşma</strong> kalır: aradaki 80 m’lik mesafe 40 m/s’lik bağıl
         hızla kapanır ⟹ t = 80/40 = 2 s.
         <br><strong>Genel kural:</strong> Aynı anda bırakılan iki cismin <em>aralarındaki uzaklık</em>
-        sadece bağıl hızla değişir — yer çekimi ikisini de eşit etkilediği için hesaptan düşer.
+        sadece bağıl hızla değişir, yer çekimi ikisini de eşit etkilediği için hesaptan düşer.
         Bu kısayolu bilirsen bu tip soruları tek satırda çözersin.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -389,7 +389,7 @@ baglam: [
     baslik: 'Voleybolcunun servis kararı',
     govde: `
       <p>Bir voleybol antrenörü, smaç servisi çalıştırıyor. Oyuncu topu havaya atıp
-      <strong>en yüksek noktada</strong> vurmalı — çünkü orada top bir an "asılı kalır"
+      <strong>en yüksek noktada</strong> vurmalı, çünkü orada top bir an "asılı kalır"
       ve zamanlama en kolaydır.</p>
       <p>Oyuncu topu <strong>2 m</strong> yükseklikten, <strong>düşey yukarı 6 m/s</strong>
       hızla atıyor.</p>
@@ -428,7 +428,7 @@ baglam: [
       { bas: 'Yüksekliği hesapla',
         metin: 'Çıkılan ek yükseklik: h = ϑ₀²/(2g) = 36/20 = 1,8 m<br>Yerden yükseklik: 2 + 1,8 = <strong>3,8 m</strong>' },
       { bas: 'Yorumla',
-        metin: '0,6 saniye çok kısa görünür ama top tepe noktasının <em>yakınında</em> çok daha uzun süre kalır — çünkü orada hızı çok küçüktür. Tepeden 10 cm aşağıda geçirdiği süre yaklaşık 0,3 saniyedir. "Asılı kalıyor" hissinin sebebi budur; topun gerçekten durduğu tek an t = 0,6 s’dir.' }
+        metin: '0,6 saniye çok kısa görünür ama top tepe noktasının <em>yakınında</em> çok daha uzun süre kalır, çünkü orada hızı çok küçüktür. Tepeden 10 cm aşağıda geçirdiği süre yaklaşık 0,3 saniyedir. "Asılı kalıyor" hissinin sebebi budur; topun gerçekten durduğu tek an t = 0,6 s’dir.' }
     ],
     secenekler: [
       't = 0,6 s · yerden 3,8 m',
@@ -445,7 +445,7 @@ baglam: [
       <p><strong>Yerden yükseklik:</strong> 2 + 1,8 = <strong>3,8 m</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı</strong> atış yüksekliğini (2 m) eklemeyi
-        unutanlar için — soru "<em>yerden</em> yükseklik" diyorsa h₀’ı eklemeyi unutma.
+        unutanlar için: soru "<em>yerden</em> yükseklik" diyorsa h₀’ı eklemeyi unutma.
         <br><strong>C şıkkı (1,2 s)</strong> ise <em>toplam uçuş</em> süresini verir,
         tepeye çıkış süresini değil. Tepeye çıkış, simetrik atışta toplam sürenin yarısıdır.</p>
       </div>
@@ -455,7 +455,7 @@ baglam: [
     baslik: 'Havai fişek gösterisi',
     govde: `
       <p>Bir belediye yeni yıl gösterisi planlıyor. Güvenlik uzmanı kuralı koyuyor:
-      <strong>fişek en yüksek noktada patlamalı</strong> — çünkü orada hızı sıfırdır ve
+      <strong>fişek en yüksek noktada patlamalı</strong>, çünkü orada hızı sıfırdır ve
       parçalar en simetrik dağılır.</p>
       <p>Fişek yerden <strong>40 m/s</strong> hızla düşey olarak fırlatılıyor. Teknisyen,
       fitilin kaç saniyede yanıp biteceğini ayarlamalı.</p>
@@ -497,9 +497,9 @@ baglam: [
       { bas: 'Patlama yüksekliğini hesapla',
         metin: 'ϑ² = ϑ₀² − 2gh ⟹ 0 = 1600 − 20h ⟹ <strong>h = 80 m</strong>' },
       { bas: 'Uçuş süresini bul',
-        metin: 'Patlamasaydı simetri gereği yere dönerdi: <strong>t<sub>uçuş</sub> = 2ϑ₀/g = 8 s</strong> — yani fitil süresinin tam iki katı.' },
+        metin: 'Patlamasaydı simetri gereği yere dönerdi: <strong>t<sub>uçuş</sub> = 2ϑ₀/g = 8 s</strong>, yani fitil süresinin tam iki katı.' },
       { bas: 'Yorumla',
-        metin: '80 m ≈ 25 katlı bina. Fitil erken yanarsa fişek hâlâ yükselirken patlar ve parçalar yukarı savrulur; geç yanarsa düşerken patlar ve parçalar yere doğru gider. İkisi de tehlikelidir — bu yüzden fitil süresi milisaniye hassasiyetinde ayarlanır.' }
+        metin: '80 m ≈ 25 katlı bina. Fitil erken yanarsa fişek hâlâ yükselirken patlar ve parçalar yukarı savrulur; geç yanarsa düşerken patlar ve parçalar yere doğru gider. İkisi de tehlikelidir: bu yüzden fitil süresi milisaniye hassasiyetinde ayarlanır.' }
     ],
     secenekler: [
       't_fitil = 4 s · h = 80 m · t_uçuş = 8 s',
@@ -516,10 +516,10 @@ baglam: [
       <p><strong>Uçuş süresi:</strong> t<sub>uçuş</sub> = 2ϑ₀/g = <strong>8 s</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>B şıkkı (160 m)</strong> h = ϑ₀·t = 40·4 diyenler için.
-        Ama hız sabit değil ki — ortalama hız (40+0)/2 = 20 m/s, dolayısıyla h = 20·4 = 80 m.
+        Ama hız sabit değil ki: ortalama hız (40+0)/2 = 20 m/s, dolayısıyla h = 20·4 = 80 m.
         <br><strong>E şıkkı</strong> uçuş süresini fitil süresine eşitliyor; oysa simetri gereği
         uçuş süresi tepeye çıkış süresinin <strong>iki katıdır</strong>.
-        <br><strong>Hatırlatma:</strong> t<sub>uçuş</sub> = 2·t<sub>tepe</sub> — bu ilişki
+        <br><strong>Hatırlatma:</strong> t<sub>uçuş</sub> = 2·t<sub>tepe</sub>, bu ilişki
         yukarı atış sorularının yarısını tek başına çözer.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`

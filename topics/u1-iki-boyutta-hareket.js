@@ -19,18 +19,18 @@ kavram: `
 <p>Bir top fırlattığında top eğri bir yol izler. Bu eğriyi tek parça olarak çözmeye
 çalışmak zordur. Fizikçilerin çözümü şu: <strong>hareketi iki eksene ayır</strong>.</p>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:16px 0">
-  <div style="background:var(--surface-0);border:1px solid var(--border);border-top:2px solid #FF7A45;border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:#FF7A45;font-weight:700;font-size:.85em;margin-bottom:6px">YATAY EKSEN (x)</div>
-    <p style="margin:0 0 6px"><strong>Hiçbir kuvvet yok</strong> (hava direnci ihmal).</p>
-    <p style="margin:0">İvme sıfır ⟹ hız hiç değişmez ⟹ <strong>sabit hızlı hareket</strong></p>
-    <p style="margin:8px 0 0;font-family:var(--font-mono);color:#fff">x = ϑ₀x · t</p>
+<div class="iki-sutun">
+  <div class="yan-kart" style="--c:var(--q-merkezcil)">
+    <div class="yan-kart-bas">YATAY EKSEN (x)</div>
+    <p><strong>Hiçbir kuvvet yok</strong> (hava direnci ihmal).</p>
+    <p>İvme sıfır ⟹ hız hiç değişmez ⟹ <strong>sabit hızlı hareket</strong></p>
+    <p class="kart-formul">x = ϑ₀x · t</p>
   </div>
-  <div style="background:var(--surface-0);border:1px solid var(--border);border-top:2px solid #35C08A;border-radius:var(--r-sm);padding:14px 16px">
-    <div style="color:#35C08A;font-weight:700;font-size:.85em;margin-bottom:6px">DÜŞEY EKSEN (y)</div>
-    <p style="margin:0 0 6px">Yalnızca <strong>yer çekimi</strong> etki eder.</p>
-    <p style="margin:0">İvme = g ⟹ <strong>serbest düşme</strong> — 1.1'de öğrendiğin hareketin aynısı</p>
-    <p style="margin:8px 0 0;font-family:var(--font-mono);color:#fff">y = h₀ + ϑ₀y·t − ½g·t²</p>
+  <div class="yan-kart" style="--c:var(--q-hiz)">
+    <div class="yan-kart-bas">DÜŞEY EKSEN (y)</div>
+    <p>Yalnızca <strong>yer çekimi</strong> etki eder.</p>
+    <p>İvme = g ⟹ <strong>serbest düşme</strong>: 1.1'de öğrendiğin hareketin aynısı</p>
+    <p class="kart-formul">y = h₀ + ϑ₀y·t − ½g·t²</p>
   </div>
 </div>
 
@@ -45,7 +45,7 @@ deneyle gösterilebilir bir gerçektir:</p>
   Fırlatılan top yatayda metrelerce yol alır, ama düşeydeki hikâyesi diğeriyle
   birebir aynıdır.</p>
   <p style="margin:8px 0 0">Aşağıdaki simülasyonda yeşil top bu karşılaştırma topudur.
-  Aralarındaki yeşil kesikli çizgi hep yataydır — yani ikisi hep aynı yüksekliktedir.
+  Aralarındaki yeşil kesikli çizgi hep yataydır, yani ikisi hep aynı yüksekliktedir.
   Açıyı 0° yaparsan kitaptaki görselin birebir aynısını elde edersin.</p>
 </div>
 
@@ -55,8 +55,8 @@ deneyle gösterilebilir bir gerçektir:</p>
 <h3 style="margin-top:20px">İlk hızı bileşenlere ayırmak</h3>
 <p>Cisim yatayla α açısıyla ϑ₀ hızında fırlatılıyorsa, bu hızın eksenlerdeki gölgeleri:</p>
 <div class="formul-serit" style="margin:12px 0">
-  <div class="formul"><div class="fm">ϑ₀x = ϑ₀ · cos α</div><div class="aciklama">yatay bileşen — sabit kalır</div></div>
-  <div class="formul"><div class="fm">ϑ₀y = ϑ₀ · sin α</div><div class="aciklama">düşey bileşen — g ile azalır</div></div>
+  <div class="formul"><div class="fm">ϑ₀x = ϑ₀ · cos α</div><div class="aciklama">yatay bileşen: sabit kalır</div></div>
+  <div class="formul"><div class="fm">ϑ₀y = ϑ₀ · sin α</div><div class="aciklama">düşey bileşen: g ile azalır</div></div>
 </div>
 <p style="color:var(--text-2)">Sınavda α genellikle <strong>37°, 45° veya 53°</strong> verilir
 ve sin/cos değerleri soruda yazar: sin37° = cos53° = 0,6 · cos37° = sin53° = 0,8 ·
@@ -108,7 +108,7 @@ turetim: {
 
         { baslik: 'Düşey eksende ne oluyor?',
           html: `<p>Düşeyde tek kuvvet ağırlık, tek ivme g. Bu <strong>tam olarak 1.1'de
-                 çalıştığın serbest düşmedir</strong> — sadece ilk hız ϑ₀y:</p>
+                 çalıştığın serbest düşmedir</strong>, sadece ilk hız ϑ₀y:</p>
                  <div class="formul-serit">
                    <div class="formul"><div class="fm">y = h₀ + ϑ₀y·t − ½g·t²</div></div>
                    <div class="formul"><div class="fm">ϑy = ϑ₀y − g·t</div></div>
@@ -167,7 +167,7 @@ turetim: {
                  </ul>
                  <div class="kutu puf" style="margin-top:12px">
                    <p style="margin:0">Simülasyonda ϑ₀'ı sabit tutup açıyı 37° ve 53° yap.
-                   Menzil aynı çıkar — ama yörünge şekli ve uçuş süresi farklıdır.
+                   Menzil aynı çıkar, ama yörünge şekli ve uçuş süresi farklıdır.
                    Büyük açı daha yükseğe çıkar ve havada daha uzun kalır.</p>
                  </div>` }
       ]
@@ -203,7 +203,7 @@ turetim: {
                  <p style="margin-top:12px">Yatay atışta sorulacak her şey bu iki formülde:
                  süre yükseklikten, uzaklık süreden gelir.</p>
                  <p style="color:var(--text-2)">Yere çarpma hızı gerekirse:
-                 ϑ = √(ϑ₀² + (g·t)²) — iki bileşenin Pisagor'u.</p>` }
+                 ϑ = √(ϑ₀² + (g·t)²), iki bileşenin Pisagor'u.</p>` }
       ]
     }
   ]
@@ -221,7 +221,7 @@ puf: {
     Hız sıfır olsaydı cisim orada asılı kalırdı.</p>
 
     <p><strong>2 · Süreyi hep düşeyden bul.</strong> Yatay hız süreyi asla etkilemez.
-    "Daha hızlı fırlatırsam daha uzun havada kalır" yanlıştır — sadece daha uzağa düşer.</p>
+    "Daha hızlı fırlatırsam daha uzun havada kalır" yanlıştır: sadece daha uzağa düşer.</p>
 
     <p><strong>3 · Tümler açılar aynı menzili verir.</strong> 37° ile 53°, 30° ile 60°,
     40° ile 50° aynı yere düşer. Ama büyük açı daha yükseğe çıkar ve daha uzun havada kalır.</p>
@@ -232,7 +232,7 @@ puf: {
     <p><strong>5 · Simetri kuralı.</strong> Aynı seviyeye inen atışta:
     çıkış süresi = iniş süresi, atış açısı = iniş açısı, atış hızı = iniş hızı.</p>
 
-    <div style="background:var(--surface-0);border-radius:var(--r-sm);padding:14px;margin:14px 0">
+    <div class="alt-kutu">
       <p style="margin:0 0 8px;font-weight:600">37° − 53° üçgeni ezberi</p>
       <table class="degisken-tablo" style="margin:0">
         <thead><tr><th>Açı</th><th>sin</th><th>cos</th></tr></thead>
@@ -326,7 +326,7 @@ osym: [
     cozum: `
       <p><strong>Süre:</strong> Yatay hareket düşey hareketi etkilemez. İkisinin de düşey
       hikâyesi aynı: h yüksekliğinden ϑ₀y = 0 ile serbest düşme.</p>
-      <p>t = √(2h/g) — bu ifadede yatay hız yok. <strong>İkisi aynı anda iner.</strong>
+      <p>t = √(2h/g): bu ifadede yatay hız yok. <strong>İkisi aynı anda iner.</strong>
       Bu, A, B ve E'yi eler.</p>
       <p><strong>Hız:</strong> Yere çarparken ikisinin de düşey hızı aynıdır: ϑy = g·t.
       Ama L'nin bir de yatay bileşeni var:</p>
@@ -337,7 +337,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>C şıkkı neden en çekici tuzak?</strong> "Aynı anda iner"
         kısmı doğru olduğu için öğrenci cümlenin devamını okumadan işaretliyor.
-        Aynı anda inmek <em>aynı hızla çarpmak</em> demek değildir — süreleri eşit,
+        Aynı anda inmek <em>aynı hızla çarpmak</em> demek değildir: süreleri eşit,
         <strong>hızları eşit değil</strong>. L'nin fazladan bir yatay bileşeni var ve o
         bileşen hiç kaybolmadı.</p>
       </div>
@@ -374,7 +374,7 @@ osym: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Tümler açı çiftlerini ezberle:</strong> 30-60, 37-53, 40-50, 15-75.
         Bunlardan biri soruda görünüyorsa aklına ilk gelen şey "menziller eşit" olmalı.
-        Ama <strong>yalnızca menzil</strong> eşittir — süre, yükseklik ve yörünge şekli farklıdır.</p>
+        Ama <strong>yalnızca menzil</strong> eşittir: süre, yükseklik ve yörünge şekli farklıdır.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: C</strong></p>`
   },
@@ -416,31 +416,31 @@ osym: [
     secenekler: ['50 m', '60 m', '70 m', '40 m', '30 m'],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1 — Toplam uçuş süresini bul.</strong> Buradaki anahtar fikir şu:
+      <p><strong>Adım 1: Toplam uçuş süresini bul.</strong> Buradaki anahtar fikir şu:
       duvar <strong>yalnızca yatay hızı</strong> değiştirir, düşey harekete hiç dokunmaz.
       Yani top, duvar olsa da olmasa da <strong>aynı anda</strong> yere iner.</p>
       <p>Yatay atış ⟹ ϑ₀y = 0:</p>
       <p>80 = ½ · 10 · t² ⟹ t² = 16 ⟹ <strong>t = 4 s</strong></p>
 
-      <p><strong>Adım 2 — Duvara varış anı.</strong></p>
+      <p><strong>Adım 2: Duvara varış anı.</strong></p>
       <p>t₁ = 60 / 20 = <strong>3 s</strong></p>
 
-      <p><strong>Adım 3 — Sekmeden sonra kalan süre ve yol.</strong></p>
+      <p><strong>Adım 3: Sekmeden sonra kalan süre ve yol.</strong></p>
       <p>Kalan süre: 4 − 3 = <strong>1 s</strong>. Yeni yatay hız: 20/2 = <strong>10 m/s</strong> (geri yönde)</p>
       <p>Geri gidilen yol: 10 · 1 = <strong>10 m</strong></p>
 
-      <p><strong>Adım 4 — İniş noktası.</strong></p>
+      <p><strong>Adım 4: İniş noktası.</strong></p>
       <p>60 − 10 = <strong>50 m</strong></p>
 
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Bu soru bağımsızlık ilkesinin en güzel sınavıdır.</strong>
-        Çarpışma korkutucu görünür ama düşey hareketi hiç bozmaz — süre baştan bellidir.
+        Çarpışma korkutucu görünür ama düşey hareketi hiç bozmaz: süre baştan bellidir.
         Yatay eksende ise iki ayrı sabit hızlı hareket vardır: önce +20, sonra −10.
         <br><strong>Çeldiriciler:</strong> <strong>B (60 m)</strong> sekmeyi hiç hesaba
         katmayanlar için. <strong>C (70 m)</strong> geri değil ileri gittiğini sananlar için.
         <strong>D (40 m)</strong> kalan süreyi 2 s sananlar için.
         <br><strong>Simülasyonla gör:</strong> ϑ₀ = 20, α = 0°, h₀ = 80, duvar = 60 yap.
-        Duvarı kaldırıp tekrar dene — <em>uçuş süresinin değişmediğini</em> göreceksin.</p>
+        Duvarı kaldırıp tekrar dene: <em>uçuş süresinin değişmediğini</em> göreceksin.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A) 50 m</strong></p>`
   }
@@ -454,7 +454,7 @@ baglam: [
       <p>Orman yangınına müdahale eden bir söndürme uçağı, yerden <strong>180 m</strong>
       yükseklikte, yere paralel olarak <strong>80 m/s</strong> sabit hızla uçuyor.</p>
       <p>Pilot, suyu tam olarak yangının üzerine boşaltmak istiyor. Ancak su bırakıldıktan
-      sonra hemen düşmüyor — havada bir süre yol alıyor.</p>
+      sonra hemen düşmüyor: havada bir süre yol alıyor.</p>
       <p><strong>Pilot suyu, yangına yatay olarak kaç metre kala bırakmalıdır?</strong>
       (g = 10 m/s², hava direnci ihmal ediliyor)</p>`,
     gorsel: `
@@ -495,7 +495,7 @@ baglam: [
       { bas: 'Yatay uzaklığı bul',
         metin: 'x = ϑ₀x · t = 80 · 6 = <strong>480 m</strong>' },
       { bas: 'Yorumla',
-        metin: 'Pilot yangını görüp tam üstünde bırakırsa su 480 m ileriye düşer. Yaklaşık yarım kilometre — bu yüzden gerçek müdahalede pilotlar hedefe epey önceden nişan alır. Uçak daha alçaktan uçarsa hem süre hem sapma azalır.' }
+        metin: 'Pilot yangını görüp tam üstünde bırakırsa su 480 m ileriye düşer. Yaklaşık yarım kilometre: bu yüzden gerçek müdahalede pilotlar hedefe epey önceden nişan alır. Uçak daha alçaktan uçarsa hem süre hem sapma azalır.' }
     ],
     secenekler: ['240 m', '480 m', '360 m', '600 m', '1440 m'],
     dogru: 1,
@@ -505,7 +505,7 @@ baglam: [
       <p><strong>Uzaklık (yataydan):</strong> x = 80 · 6 = <strong>480 m</strong></p>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>E şıkkı (1440 m)</strong> x = ϑ₀ · h / g gibi uydurma bir
-        işlem yapanlar için. <strong>A şıkkı (240 m)</strong> süreyi 3 s bulanlar için —
+        işlem yapanlar için. <strong>A şıkkı (240 m)</strong> süreyi 3 s bulanlar için:
         √(2h/g) yerine √(h/g) hesaplayınca çıkar.
         <br>Kontrol alışkanlığı edin: 6 saniye boyunca 80 m/s ile gidilen yol elbette
         480 m olmalı. Sonuç mantıklı mı diye sormak çoğu hatayı yakalar.</p>
@@ -519,7 +519,7 @@ baglam: [
       yatayla <strong>53°</strong> açıyla ve <strong>10 m/s</strong> hızla atıyor.
       Pota çemberi yerden <strong>3,05 m</strong> yükseklikte.</p>
       <p>Antrenör, topun <strong>tepe noktasına</strong> ne kadar sürede ulaştığını ve
-      o anda yerden ne kadar yüksekte olduğunu bilmek istiyor — çünkü topun çemberden
+      o anda yerden ne kadar yüksekte olduğunu bilmek istiyor, çünkü topun çemberden
       yüksekte olması gerekiyor.</p>
       <p><strong>Top tepe noktasına kaç saniyede ulaşır ve o noktada yerden kaç metre yüksektedir?</strong>
       (g = 10 m/s², sin53° = 0,8; cos53° = 0,6)</p>`,
@@ -556,13 +556,13 @@ baglam: [
       { bas: 'İlk hızı bileşenlere ayır',
         metin: 'ϑ₀x = 10 · cos53° = 10 · 0,6 = <strong>6 m/s</strong><br>ϑ₀y = 10 · sin53° = 10 · 0,8 = <strong>8 m/s</strong>' },
       { bas: 'Tepe noktasını fiziksel olarak tanımla',
-        metin: 'Tepe noktası, <strong>düşey hızın sıfırlandığı</strong> andır. Dikkat: top orada durmuyor — yatay olarak hâlâ 6 m/s ile ilerliyor.' },
+        metin: 'Tepe noktası, <strong>düşey hızın sıfırlandığı</strong> andır. Dikkat: top orada durmuyor, yatay olarak hâlâ 6 m/s ile ilerliyor.' },
       { bas: 'Süre için formülü seç',
         metin: 'ϑy = ϑ₀y − g·t ifadesinde ϑy = 0 koy: 0 = 8 − 10·t ⟹ <strong>t = 0,8 s</strong>' },
       { bas: 'Yüksekliği bul',
         metin: 'Atış seviyesinden çıkılan yükseklik: h = ϑ₀y²/(2g) = 64/20 = 3,2 m<br>Yerden yükseklik: 2 + 3,2 = <strong>5,2 m</strong>' },
       { bas: 'Yorumla',
-        metin: 'Top tepede 5,2 m’de — çemberden (3,05 m) yaklaşık 2,15 m yüksekte. Bu normaldir: basketbolda top potaya yukarıdan aşağı düşerek girer, çünkü bu açıyla çemberin etkin açıklığı en geniş görünür.' }
+        metin: 'Top tepede 5,2 m’de: çemberden (3,05 m) yaklaşık 2,15 m yüksekte. Bu normaldir: basketbolda top potaya yukarıdan aşağı düşerek girer, çünkü bu açıyla çemberin etkin açıklığı en geniş görünür.' }
     ],
     secenekler: [
       't = 0,8 s · yerden 5,2 m',
@@ -578,7 +578,7 @@ baglam: [
       <p><strong>Çıkılan yükseklik:</strong> h = ϑ₀y²/(2g) = 8²/20 = 3,2 m</p>
       <p><strong>Yerden yükseklik:</strong> 2 + 3,2 = <strong>5,2 m</strong></p>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> atış yüksekliğini (2 m) eklemeyi unutanlar için —
+        <p style="margin:0"><strong>B şıkkı</strong> atış yüksekliğini (2 m) eklemeyi unutanlar için:
         en sık yapılan hata budur. Soru "<em>yerden</em> yüksekliği" diyorsa h₀'ı eklemeyi unutma.
         <br><strong>E şıkkı (1,6 s)</strong> ise <em>toplam</em> uçuş süresini verir, tepeye çıkış
         süresini değil. Tepeye çıkış, simetrik atışta toplam sürenin yarısıdır.</p>

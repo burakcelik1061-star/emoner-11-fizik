@@ -29,7 +29,7 @@ kavram: `
   </tbody>
 </table>
 
-<p style="margin-top:14px">Işık şiddeti SI&rsquo;da <strong>temel bir büyüklüktür</strong> —
+<p style="margin-top:14px">Işık şiddeti SI&rsquo;da <strong>temel bir büyüklüktür</strong>:
 metre, kilogram, saniye gibi. Diğer ikisi ondan türetilir.</p>
 
 <div class="kutu puf" style="margin:16px 0">
@@ -57,13 +57,13 @@ duran bir yüzey için:</p>
 </div>
 
 <div class="kutu dikkat" style="margin:16px 0">
-  <div class="kutu-bas"><span class="ikon">↺</span><span>Ters kare — üçüncü kez</span></div>
+  <div class="kutu-bas"><span class="ikon">↺</span><span>Ters kare: üçüncü kez</span></div>
   <p style="margin:0">Bu formülü daha önce iki kez gördün: <strong>Coulomb kuvveti</strong>
   ve <strong>elektriksel alan</strong>. Sebep her üçünde de aynıdır: noktadan her yöne
   yayılan bir etki, d uzaklıkta <code>4πd²</code> alanlı bir küreye dağılır.
   Alan d² ile büyüdüğü için birim alana düşen pay <code>1/d²</code> ile azalır.</p>
   <p style="margin:8px 0 0">Aynı geometri, üç farklı fizik konusu. Formülü ezberlemene
-  gerek yok — <strong>küre yüzeyini hatırla, yeter</strong>.</p>
+  gerek yok: <strong>küre yüzeyini hatırla, yeter</strong>.</p>
 </div>
 
 <h3 style="margin-top:22px">Yüzey eğikse: kosinüs</h3>
@@ -88,8 +88,8 @@ aydınlanma azalır:</p>
 <table class="degisken-tablo">
   <thead><tr><th></th><th>Ne demek?</th></tr></thead>
   <tbody>
-    <tr><td><strong>Watt (W)</strong></td><td>elektrik <em>tüketimi</em> — faturaya yansır</td></tr>
-    <tr><td><strong>Lümen (lm)</strong></td><td>üretilen <em>ışık</em> — aydınlığı belirler</td></tr>
+    <tr><td><strong>Watt (W)</strong></td><td>elektrik <em>tüketimi</em>: faturaya yansır</td></tr>
+    <tr><td><strong>Lümen (lm)</strong></td><td>üretilen <em>ışık</em>: aydınlığı belirler</td></tr>
   </tbody>
 </table>
 <p style="margin-top:10px">Akkor ampullerde bu ikisi orantılıydı, bu yüzden eskiden
@@ -109,9 +109,9 @@ aydınlanma azalır:</p>
 /* ---------------------------------------------------------- Formüller */
 formuller: {
   liste: [
-    { fm: 'E = Φ / A',        aciklama: 'Aydınlanma — yüzeye düşen akı yoğunluğu' },
+    { fm: 'E = Φ / A',        aciklama: 'Aydınlanma: yüzeye düşen akı yoğunluğu' },
     { fm: 'E = I / d²',       aciklama: 'Nokta kaynak, yüzey ışınlara dik' },
-    { fm: 'E = I·cosα / d²',  aciklama: 'Yüzey eğikse — kosinüs yasası' },
+    { fm: 'E = I·cosα / d²',  aciklama: 'Yüzey eğikse: kosinüs yasası' },
     { fm: 'Φ = 4π·I',         aciklama: 'Nokta kaynağın toplam akısı' },
     { fm: '1 lx = 1 lm/m²',   aciklama: 'Lüks ile lümen arasındaki bağ' }
   ],
@@ -209,7 +209,7 @@ turetim: {
                    <div class="fm" style="color:var(--accent)">5 ampul</div>
                  </div>
                  <p>4 ampul yetmez (6400 lm &lt; 7500). Aydınlatma hesaplarında sonuç
-                 <strong>daima yukarı yuvarlanır</strong> — eksik ışık kabul edilmez.</p>
+                 <strong>daima yukarı yuvarlanır</strong>: eksik ışık kabul edilmez.</p>
                  <p style="color:var(--text-2)">Gerçek projelerde ayrıca duvar yansımaları,
                  armatür verimi ve zamanla kirlenme için pay bırakılır.</p>` }
       ]
@@ -223,7 +223,7 @@ sim: F.simler['aydinlanma'],
 /* ------------------------------------------------------- Püf noktası */
 puf: {
   html: `
-    <p><strong>1 · Ters kare oranları — üçüncü kez aynı tablo:</strong></p>
+    <p><strong>1 · Ters kare oranları, üçüncü kez aynı tablo:</strong></p>
     <table class="degisken-tablo" style="margin-top:8px">
       <thead><tr><th>Değişiklik</th><th>E</th></tr></thead>
       <tbody>
@@ -257,12 +257,12 @@ puf: {
     <strong>5</strong>&rsquo;tir.</p>
 
     <p><strong>7 · Kaynak noktasal mı?</strong> Formüller <em>noktasal</em> kaynak içindir.
-    Uzun bir floresan tüp ya da geniş bir pencere için ters kare tam geçerli değildir —
+    Uzun bir floresan tüp ya da geniş bir pencere için ters kare tam geçerli değildir,
     ama sınav soruları hep noktasal kabul eder.</p>
 
     <div class="kutu puf" style="margin-top:14px">
       <div class="kutu-bas"><span class="ikon">🔗</span><span>Üç ünitede aynı geometri</span></div>
-      <p style="margin:0">Coulomb (2.1.1), elektriksel alan (2.1.2) ve şimdi aydınlanma —
+      <p style="margin:0">Coulomb (2.1.1), elektriksel alan (2.1.2) ve şimdi aydınlanma:
       üçü de <code>1/d²</code>. Sebep fizik değil <strong>geometridir</strong>: noktadan
       yayılan her şey küre yüzeyine dağılır. Bunu bir kez anlarsan üç konuda da formül
       ezberlemene gerek kalmaz.</p>
@@ -311,24 +311,24 @@ osym: [
     ],
     dogru: 0,
     cozum: `
-      <p><strong>Adım 1 — Uzaklıklar.</strong> Yüzey K₁&rsquo;den 2 m uzakta, toplam aralık
+      <p><strong>Adım 1: Uzaklıklar.</strong> Yüzey K₁&rsquo;den 2 m uzakta, toplam aralık
       3 m ⟹ K₂&rsquo;den <strong>1 m</strong> uzakta.</p>
-      <p><strong>Adım 2 — Her kaynağın katkısı.</strong></p>
+      <p><strong>Adım 2: Her kaynağın katkısı.</strong></p>
       <p>E₁ = I₁/d₁² = 400 / 2² = 400/4 = <strong>100 lx</strong></p>
       <p>E₂ = I₂/d₂² = 100 / 1² = <strong>100 lx</strong></p>
-      <p><strong>Adım 3 — Topla.</strong> Aydınlanma <strong>skalerdir</strong>, doğrudan
+      <p><strong>Adım 3: Topla.</strong> Aydınlanma <strong>skalerdir</strong>, doğrudan
       toplanır:</p>
       <div class="formul" style="max-width:280px;margin:10px 0;border-top-color:var(--accent)">
         <div class="fm" style="color:var(--accent)">E = 100 + 100 = 200 lx</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>İlginç sonuç:</strong> K₁ dört kat güçlü ama iki kat uzak.
-        Ters kare yüzünden <code>4/2² = 1</code> — iki kaynağın katkısı <strong>tam
+        Ters kare yüzünden <code>4/2² = 1</code>: iki kaynağın katkısı <strong>tam
         eşit</strong> çıktı. Bu nokta aynı zamanda “eşit aydınlatma noktasıdır”.
         <br><strong>B şıkkı</strong> yalnızca uzaklıkların karesini alıp şiddeti unutanlar için.
         <br><strong>D şıkkı</strong> yalnız bir kaynağı hesaba katanlar için.
         <br><strong>Vektör tuzağı yok:</strong> Coulomb&rsquo;da alanları <em>vektörel</em>
-        toplamak gerekiyordu. Burada aydınlanma skaler olduğu için yön diye bir dert yok —
+        toplamak gerekiyordu. Burada aydınlanma skaler olduğu için yön diye bir dert yok:
         bu iki konunun en önemli farkı.</p>
       </div>
       <p style="margin-bottom:0"><strong>Cevap: A</strong></p>`
@@ -366,7 +366,7 @@ osym: [
         <div class="fm" style="color:var(--accent)">4 × 0,5 = 2 ⟹ E′ = 2E</div>
       </div>
       <div class="kutu puf" style="margin-top:12px">
-        <p style="margin:0"><strong>B şıkkı</strong> açıyı unutanlar için — yalnızca uzaklığı
+        <p style="margin:0"><strong>B şıkkı</strong> açıyı unutanlar için: yalnızca uzaklığı
         hesaba katarsan 4E bulursun.
         <br><strong>Pratik ders:</strong> Lambayı yaklaştırmak çok işe yarar (kare ile),
         ama eğik tutmak kazancın <em>yarısını geri alır</em>. Çalışma masasında lambayı
@@ -436,10 +436,10 @@ baglam: [
       { bas: 'Toplam birinci yıl maliyeti',
         metin: 'Akkor: 15 + 548 = <strong>563 TL</strong><br>LED: 90 + 82 = <strong>172 TL</strong><br>LED, ilk yılda bile <strong>üç kattan fazla</strong> ucuz. Üstelik 20 yıl dayanıyor.' },
       { bas: 'Sonucu söyle',
-        metin: 'Pahalı görünen LED, hem <strong>en aydınlık</strong> hem <strong>en ucuz</strong>. Ampulün fiyatı, toplam maliyetin küçük bir parçası — asıl para elektrikte gidiyor.' }
+        metin: 'Pahalı görünen LED, hem <strong>en aydınlık</strong> hem <strong>en ucuz</strong>. Ampulün fiyatı, toplam maliyetin küçük bir parçası: asıl para elektrikte gidiyor.' }
     ],
     secenekler: [
-      'Aydınlığı watt değil lümen belirler ve LED hem en çok ışık verir hem yılda yalnızca 27,4 kWh harcar — toplamda en ucuzdur',
+      'Aydınlığı watt değil lümen belirler ve LED hem en çok ışık verir hem yılda yalnızca 27,4 kWh harcar: toplamda en ucuzdur',
       'Arkadaşı haklı; 100 W en aydınlık ve en ucuz seçenektir',
       'Akkor ampul daha aydınlıktır ama LED daha uzun ömürlüdür',
       'Üçü de aynı ışığı verir, fark yalnızca ömürdedir',
@@ -508,11 +508,11 @@ baglam: [
       { bas: 'Gereken akıyı hesapla',
         metin: 'Φ_gerekli = E · A = 300 · 48 = <strong>14 400 lm</strong>' },
       { bas: 'Mevcut akıyı hesapla',
-        metin: 'Φ_mevcut = 6 · 2400 = <strong>14 400 lm</strong><br>İdeal hesapta <strong>tam sınırda</strong> — teorik olarak yeterli görünüyor.' },
+        metin: 'Φ_mevcut = 6 · 2400 = <strong>14 400 lm</strong><br>İdeal hesapta <strong>tam sınırda</strong>: teorik olarak yeterli görünüyor.' },
       { bas: 'Gerçekçi hesaba geç',
         metin: 'Işığın yalnızca %60’ı sıralara ulaşıyor:<br>Φ_etkin = 14 400 · 0,60 = <strong>8640 lm</strong><br>E_gerçek = 8640 / 48 = <strong>180 lx</strong>' },
       { bas: 'Karşılaştır',
-        metin: '180 lx &lt; 300 lx ⟹ sınıf <strong>YETERSİZ</strong>. Üstelik ideal hesap “tam yeterli” diyordu — aradaki fark tamamen verim kaybından.' },
+        metin: '180 lx &lt; 300 lx ⟹ sınıf <strong>YETERSİZ</strong>. Üstelik ideal hesap “tam yeterli” diyordu: aradaki fark tamamen verim kaybından.' },
       { bas: 'Kaç armatür gerekir?',
         metin: 'Gereken toplam akı: 14 400 / 0,60 = <strong>24 000 lm</strong><br>Armatür sayısı: 24 000 / 2400 = <strong>10 adet</strong><br>Yani <strong>4 armatür daha</strong> eklenmeli.' }
     ],
@@ -536,7 +536,7 @@ baglam: [
       <div class="kutu puf" style="margin-top:12px">
         <p style="margin:0"><strong>Bu sorunun asıl öğrettiği:</strong> İdeal formül doğru
         cevabı verir ama <em>gerçek cevabı</em> vermez. Mühendislikte her hesaba bir
-        <strong>verim katsayısı</strong> girer — tıpkı 2. ünitede elektromıknatısın temas
+        <strong>verim katsayısı</strong> girer: tıpkı 2. ünitede elektromıknatısın temas
         verimi ve transformatörün kayıpları gibi.
         <br><strong>E şıkkı</strong> önemli bir doğruya işaret ediyor ama sorunun cevabı
         değil: armatürlerin yeri gerçekten önemlidir (köşelerde aydınlanma düşer), ancak
